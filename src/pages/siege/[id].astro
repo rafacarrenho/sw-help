@@ -49,7 +49,9 @@ const leader = monsterById.get(defense.team[0])!;
           <span class="meta-label">Elementos</span>
           <div class="meta-chips">
             {defense.team.map((id) => (
-              <span class={`meta-chip meta-chip--${monsterById.get(id)!.element}`}>
+              <span
+                class={`meta-chip meta-chip--${monsterById.get(id)!.element}`}
+              >
                 <ElementIcon element={monsterById.get(id)!.element} />
               </span>
             ))}
@@ -108,7 +110,11 @@ const leader = monsterById.get(defense.team[0])!;
               <table class="counter-meta-table">
                 <thead>
                   <tr>
-                    <th scope="col" class="monster-col-header" aria-label="Monstro"></th>
+                    <th
+                      scope="col"
+                      class="monster-col-header"
+                      aria-label="Monstro"
+                    ></th>
                     <th scope="col" class="sequence-col-header">
                       Seq.
                     </th>
@@ -147,7 +153,9 @@ const leader = monsterById.get(defense.team[0])!;
                                 </span>
                               )}
                             </div>
-                            <span class="monster-inline-name">{monster.name}</span>
+                            <span class="monster-inline-name">
+                              {monster.name}
+                            </span>
                           </div>
                         </td>
                         <td class="sequence-cell">{index + 1}</td>
@@ -175,15 +183,6 @@ const leader = monsterById.get(defense.team[0])!;
                 <li>{step}</li>
               ))}
             </ol>
-            <div class="caution">
-              <Icon name="info" size={17} />
-              <p>{counter.caution}</p>
-            </div>
-            {counter.status === 'example' && (
-              <p class="example-disclaimer">
-                Demonstração de cadastro. Este matchup ainda não foi validado.
-              </p>
-            )}
             {counter.sources.length > 0 && (
               <div class="source-list">
                 <h4>Fontes</h4>

@@ -23,7 +23,9 @@ const count = getCounters(defense.id).length;
     aria-label={`Ver counters de ${teamName(defense.team)}`}
   >
     <div class="card-top">
-      <span class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}>
+      <span
+        class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}
+      >
         <Icon name="tower" size={13} />
         {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
       </span>
