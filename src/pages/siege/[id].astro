@@ -91,8 +91,12 @@ const name = teamName(defense.team);
               <table class="counter-meta-table">
                 <thead>
                   <tr>
-                    <th scope="col" class="monster-col-header">Monstro</th>
-                    <th scope="col" class="sequence-col-header">Seq.</th>
+                    <th scope="col" class="monster-col-header">
+                      Monstro
+                    </th>
+                    <th scope="col" class="sequence-col-header">
+                      Seq.
+                    </th>
                     <th scope="col">Runa</th>
                     <th scope="col">Tick</th>
                   </tr>
@@ -100,8 +104,15 @@ const name = teamName(defense.team);
                 <tbody>
                   {counter.turnOrder.map((id, index) => {
                     const monster = monsterById.get(id)!;
-                    const rune = counter.runes.find((entry) => entry.monsterId === id);
-                    const runeSets = rune ? rune.sets.split('/').map((entry) => entry.trim()).filter(Boolean) : [];
+                    const rune = counter.runes.find(
+                      (entry) => entry.monsterId === id,
+                    );
+                    const runeSets = rune
+                      ? rune.sets
+                          .split('/')
+                          .map((entry) => entry.trim())
+                          .filter(Boolean)
+                      : [];
                     return (
                       <tr>
                         <th scope="row">{monster.name}</th>
