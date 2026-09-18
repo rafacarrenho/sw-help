@@ -28,5 +28,11 @@ Este é um projeto pessoal de Rafael Carrenho.
 - Identificar conteúdo demonstrativo; não inventar taxas de vitória ou validação.
 - Preservar a legibilidade: textos principais de 16 px, secundários de 14 px
   e etiquetas curtas de pelo menos 12 px, inclusive no celular.
+- Nos counters, escrever sempre "Tick" com inicial maiúscula; quando houver
+  velocidade em runas, exibir o valor como `Tick 5` e não `tick 5`.
+- Na tabela de runas, exibir uma runa por linha, sem usar `/` entre as runas;
+  exemplo: "Vampire" em uma linha e "Will" em outra.
+- Na coluna de ordem de ataque, usar um título compacto como "Seq." em vez de
+  "Ordem de atk" para reduzir o espaço visual.
 - Validar as alterações com os comandos pertinentes: `pnpm test`, `pnpm build`
   e, para fluxos de navegação, `pnpm test:e2e` após gerar o build.

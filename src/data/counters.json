@@ -2,7 +2,11 @@
   {
     "id": "mimirr-elucia-loren",
     "defenseId": "morris-eshir-orion",
-    "team": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "team": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "title": "Burst com dano e suporte",
     "strategy": "A composição se aproveita da velocidade e do dano do primeiro alvo para preparar a sequência e manter pressão na defesa antes que o controle da equipe adversária responda.",
     "steps": [
@@ -10,7 +14,11 @@
       "Segure Elucia para sustentar o time e reforçar a sequência de ataque.",
       "Finalize com Loren para consolidar o setup e reduzir o tempo de resposta da defesa."
     ],
-    "turnOrder": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "turnOrder": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -18,21 +26,26 @@
       },
       {
         "monsterId": "elucia-water-1281",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "loren-light-410",
-        "sets": "Rage / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A ordem exata depende da velocidade da defesa e da qualidade das runas; ajuste a prioridade de alvo antes de confirmar a sequência.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona",
     "defenseId": "morris-eshir-orion",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -40,15 +53,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -57,12 +74,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta",
     "defenseId": "morris-eshir-orion",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Morris/Eshir/Orion demora para responder.",
     "steps": [
@@ -70,29 +92,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona",
     "defenseId": "morris-eshir-orion",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -100,29 +131,38 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "mimirr-elucia-loren-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "team": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "title": "Burst com dano e suporte",
     "strategy": "A composição se aproveita da velocidade e do dano do primeiro alvo para preparar a sequência e manter pressão na defesa antes que o controle da equipe adversária responda.",
     "steps": [
@@ -130,7 +170,11 @@
       "Segure Elucia para sustentar o time e reforçar a sequência de ataque.",
       "Finalize com Loren para consolidar o setup e reduzir o tempo de resposta da defesa."
     ],
-    "turnOrder": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "turnOrder": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -138,21 +182,26 @@
       },
       {
         "monsterId": "elucia-water-1281",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "loren-light-410",
-        "sets": "Rage / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A ordem exata depende da velocidade da defesa e da qualidade das runas; ajuste a prioridade de alvo antes de confirmar a sequência.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -160,15 +209,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -177,12 +230,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Morris/Trevor/Figaro demora para responder.",
     "steps": [
@@ -190,29 +248,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -220,29 +287,38 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "mimirr-elucia-loren-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "team": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "title": "Burst com dano e suporte",
     "strategy": "A composição se aproveita da velocidade e do dano do primeiro alvo para preparar a sequência e manter pressão na defesa antes que o controle da equipe adversária responda.",
     "steps": [
@@ -250,7 +326,11 @@
       "Segure Elucia para sustentar o time e reforçar a sequência de ataque.",
       "Finalize com Loren para consolidar o setup e reduzir o tempo de resposta da defesa."
     ],
-    "turnOrder": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
+    "turnOrder": [
+      "mimirr-light-655",
+      "elucia-water-1281",
+      "loren-light-410"
+    ],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -258,21 +338,26 @@
       },
       {
         "monsterId": "elucia-water-1281",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "loren-light-410",
-        "sets": "Rage / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A ordem exata depende da velocidade da defesa e da qualidade das runas; ajuste a prioridade de alvo antes de confirmar a sequência.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -280,15 +365,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -297,12 +386,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Morris/Orion/Trevor demora para responder.",
     "steps": [
@@ -310,29 +404,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -340,59 +443,38 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
-  },
-  {
-    "id": "mimirr-elucia-loren-solveig-vigor-cichlid",
-    "defenseId": "solveig-vigor-cichlid",
-    "team": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
-    "title": "Burst com dano e suporte",
-    "strategy": "A composição se aproveita da velocidade e do dano do primeiro alvo para preparar a sequência e manter pressão na defesa antes que o controle da equipe adversária responda.",
-    "steps": [
-      "Use Mimirr para abrir a pressão e ganhar vantagem de dano.",
-      "Segure Elucia para sustentar o time e reforçar a sequência de ataque.",
-      "Finalize com Loren para consolidar o setup e reduzir o tempo de resposta da defesa."
-    ],
-    "turnOrder": ["mimirr-light-655", "elucia-water-1281", "loren-light-410"],
-    "runes": [
-      {
-        "monsterId": "mimirr-light-655",
-        "sets": "Violent / Will"
-      },
-      {
-        "monsterId": "elucia-water-1281",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "loren-light-410",
-        "sets": "Rage / Will"
-      }
-    ],
-    "caution": "A ordem exata depende da velocidade da defesa e da qualidade das runas; ajuste a prioridade de alvo antes de confirmar a sequência.",
-    "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -400,15 +482,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -417,12 +503,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Solveig/Vigor/Cichlid demora para responder.",
     "steps": [
@@ -430,29 +521,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -460,29 +560,38 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -490,15 +599,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -507,12 +620,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Solveig/Cichlid/Molly demora para responder.",
     "steps": [
@@ -520,29 +638,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -550,29 +677,38 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Dano em sequência e controle",
     "strategy": "A ação segue em conjunto para acumular dano em poucos turnos, aproveitando a consistência de suporte e a capacidade de resposta de Platy e Iona.",
     "steps": [
@@ -580,15 +716,19 @@
       "Use Shihwa para manter a pressão do ataque em curso.",
       "Feche com Iona para estabilizar a cadeia e reforçar o dano final."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
@@ -597,12 +737,17 @@
     ],
     "caution": "Se a defesa tiver mais controle ou resistência do que o esperado, priorize a troca de alvo e reduza a dependência de um único burst.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "platy-shihwa-betta-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "team": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "title": "Pressão em combo",
     "strategy": "Este time prioriza pressão contínua e suporte para manter o dano constante, especialmente quando a defesa de Solveig/Iris/Hraesvelg demora para responder.",
     "steps": [
@@ -610,29 +755,38 @@
       "Shihwa mantém a ofensiva com pressão contínua.",
       "Betta fecha a sequência com sustain e controle de dano."
     ],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "turnOrder": [
+      "platy-fire-835",
+      "shihwa-fire-244",
+      "betta-dark-839"
+    ],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Swift / Will"
-      },
-      {
-        "monsterId": "shihwa-fire-244",
         "sets": "Violent / Will"
       },
       {
+        "monsterId": "shihwa-fire-244",
+        "sets": "Violent / Destroy"
+      },
+      {
         "monsterId": "betta-dark-839",
-        "sets": "Destroy / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   },
   {
     "id": "betta-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "team": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "title": "Controle e sustain em cadeia",
     "strategy": "A ideia é estabilizar a troca de turnos e terminar a sequência com dano consistente, mantendo o controle do tempo até a defesa falhar no setup.",
     "steps": [
@@ -640,23 +794,28 @@
       "Shihwa entra com pressão para abrir brechas.",
       "Iona fecha a cadeia e reforça a consistência do ataque."
     ],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "turnOrder": [
+      "betta-dark-839",
+      "shihwa-fire-244",
+      "iona-light-661"
+    ],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Vampire / Will"
+        "sets": "Violent / Will"
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Rage / Will"
+        "sets": "Violent / Destroy"
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Swift / Will"
+        "sets": "Violent / Will"
       }
     ],
     "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
     "status": "example",
-    "sources": []
+    "sources": [],
+    "speed": "Tick 5"
   }
 ]

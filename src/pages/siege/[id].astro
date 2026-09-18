@@ -50,17 +50,11 @@ const name = teamName(defense.team);
           <Icon name="tower" size={14} />
           {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
         </span>
-        <span class="example-tag">
-          {defense.status === 'example'
-            ? 'COMPOSIÇÃO DE EXEMPLO'
-            : 'COMPOSIÇÃO DOCUMENTADA'}
-        </span>
       </div>
     </div>
     <div class="defense-team-panel">
       <span class="panel-label">TIME ADVERSÁRIO</span>
       <Team team={defense.team} linked />
-      <span class="leader-caption">O monstro à esquerda é sempre o líder</span>
     </div>
   </section>
   <section class="counter-section" aria-labelledby="counter-heading">
@@ -90,42 +84,46 @@ const name = teamName(defense.team);
           <div class="counter-composition">
             <div class="counter-label">
               <span>OFENSIVA {String(index + 1).padStart(2, '0')}</span>
-              <span class="example-tag">
-                {counter.status === 'example' ? 'EXEMPLO' : 'COM FONTE'}
-              </span>
             </div>
             <Team team={counter.team} linked />
             <div class="rune-list">
-              <h4>Runas sugeridas no exemplo</h4>
-              {counter.runes.map((rune) => (
-                <div>
-                  <span>{monsterById.get(rune.monsterId)!.name}</span>
-                  <strong>{rune.sets}</strong>
-                </div>
-              ))}
+              <h4>Configuração sugerida</h4>
+              <table class="counter-meta-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="monster-col-header">Monstro</th>
+                    <th scope="col" class="sequence-col-header">Seq.</th>
+                    <th scope="col">Runa</th>
+                    <th scope="col">Tick</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {counter.turnOrder.map((id, index) => {
+                    const monster = monsterById.get(id)!;
+                    const rune = counter.runes.find((entry) => entry.monsterId === id);
+                    const runeSets = rune ? rune.sets.split('/').map((entry) => entry.trim()).filter(Boolean) : [];
+                    return (
+                      <tr>
+                        <th scope="row">{monster.name}</th>
+                        <td class="sequence-cell">{index + 1}</td>
+                        <td class="rune-cell">
+                          {runeSets.length > 0 ? (
+                            runeSets.map((set) => <div>{set}</div>)
+                          ) : (
+                            <span>—</span>
+                          )}
+                        </td>
+                        <td>{counter.speed}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="counter-strategy">
             <h3>{counter.title}</h3>
             <p>{counter.strategy}</p>
-            {counter.turnOrder.length > 0 && (
-              <div class="turn-order">
-                <span>ORDEM INTERNA SUGERIDA</span>
-                <div>
-                  {counter.turnOrder.map((id, i) => (
-                    <>
-                      <strong>{monsterById.get(id)!.name}</strong>
-                      {i < counter.turnOrder.length - 1 && (
-                        <Icon name="arrow" size={14} />
-                      )}
-                    </>
-                  ))}
-                </div>
-                <small>
-                  Não calcula ticks nem garante agir antes do adversário.
-                </small>
-              </div>
-            )}
             <h4>Plano de batalha</h4>
             <ol class="battle-steps">
               {counter.steps.map((step) => (

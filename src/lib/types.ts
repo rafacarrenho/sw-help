@@ -43,6 +43,7 @@ export interface Counter {
   steps: string[];
   turnOrder: string[];
   runes: { monsterId: string; sets: string }[];
+  speed: string;
   caution: string;
   status: 'example' | 'documented';
   sources: { title: string; url: string }[];

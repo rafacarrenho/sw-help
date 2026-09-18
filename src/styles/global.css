@@ -982,21 +982,57 @@ footer {
   letter-spacing: 0.1px;
   margin-bottom: 13px;
 }
-.rune-list > div {
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
+.counter-meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #171b20;
   font-size: var(--text-sm);
-  padding: 10px 0;
-  border-top: 1px solid var(--border);
 }
-.rune-list > div > span {
-  color: #aaafb9;
+.counter-meta-table thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a9adb7;
+  background: #1f252d;
+  border-bottom: 1px solid var(--border);
 }
-.rune-list strong {
-  font-weight: 400;
-  color: #d2c3ac;
+.counter-meta-table th,
+.counter-meta-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.counter-meta-table tbody tr:last-child th,
+.counter-meta-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.counter-meta-table tbody th {
+  font-weight: 600;
+  color: #f1d2a1;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+}
+.counter-meta-table td {
+  color: #d9dde6;
+}
+.counter-meta-table .monster-col-header {
+  min-width: 120px;
+}
+.counter-meta-table .sequence-col-header,
+.counter-meta-table .sequence-cell {
+  width: 64px;
+  text-align: center;
+}
+.counter-meta-table .rune-cell {
+  min-width: 110px;
+}
+.counter-meta-table .rune-cell div {
+  line-height: 1.5;
 }
 .counter-strategy {
   padding: 25px 28px;

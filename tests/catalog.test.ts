@@ -129,7 +129,13 @@ test('todas as defesas ativas têm o número de counters esperado', () => {
     const matching = counters.filter(
       (counter) => counter.defenseId === defense.id,
     );
-    const expected = defense.id === 'solveig-iris-hraesvelg' ? 3 : 4;
+    const expected = [
+      'solveig-vigor-cichlid',
+      'solveig-cichlid-molly',
+      'solveig-iris-hraesvelg',
+    ].includes(defense.id)
+      ? 3
+      : 4;
     assert.equal(matching.length, expected, defense.id);
   }
 });

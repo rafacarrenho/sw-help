@@ -138,6 +138,7 @@ export function validateCatalog(
       )
     )
       fail(`runas de ${counter.id}.`);
+    if (!counter.speed?.trim()) fail(`velocidade de ${counter.id}.`);
     if (
       !Array.isArray(counter.sources) ||
       counter.sources.some(
