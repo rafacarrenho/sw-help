@@ -3,12 +3,13 @@ import defenseData from './defenses.json';
 import counterData from './counters.json';
 import type { Monster, Defense, Counter } from '../lib/types';
 import { validateCatalog } from '../lib/validate';
-import { elementLabels } from '../lib/monster-catalog';
+import { elementLabels, isFinalMonster } from '../lib/monster-catalog';
 
-export const monsters = monsterData as Monster[];
+export const allMonsters = monsterData as Monster[];
+export const monsters = allMonsters.filter(isFinalMonster);
 export const defenses = defenseData as Defense[];
 export const counters = counterData as Counter[];
-validateCatalog(monsters, defenses, counters);
+validateCatalog(allMonsters, defenses, counters);
 
 export const monsterById = new Map(
   monsters.map((monster) => [monster.id, monster]),

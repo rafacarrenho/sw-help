@@ -53,10 +53,10 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
   </section>
   <div class="bestiary-summary">
     <span>
-      <strong>{monsters.length.toLocaleString('pt-BR')}</strong> monstros e
-      formas
+      <strong>{monsters.length.toLocaleString('pt-BR')}</strong> monstros
+      obtíveis
     </span>
-    <span>Base, despertar e segundo despertar</span>
+    <span>Última forma de cada família</span>
     <span>Atualizado em {updated}</span>
   </div>
   <section aria-label="Explorar monstros" data-monster-catalog data-page={page}>
@@ -97,15 +97,6 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
           </select>
         </label>
         <label>
-          Forma
-          <select name="form">
-            <option value="">Todas</option>
-            <option value="0">Forma base</option>
-            <option value="1">Despertado</option>
-            <option value="2">Segundo despertar</option>
-          </select>
-        </label>
-        <label>
           Habilidade de líder
           <select name="leader">
             <option value="">Todas</option>
@@ -114,14 +105,6 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
             {Object.entries(attributeLabels).map(([value, name]) => (
               <option value={value}>{name}</option>
             ))}
-          </select>
-        </label>
-        <label>
-          Disponibilidade
-          <select name="availability">
-            <option value="obtainable">Obtíveis</option>
-            <option value="all">Todos os registros</option>
-            <option value="unobtainable">Não obtíveis / NPCs</option>
           </select>
         </label>
         <label>
@@ -202,12 +185,11 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
   <aside class="catalog-note">
     <Icon name="info" size={18} />
     <p>
-      Inclui formas e materiais registrados no{' '}
+      Inclui apenas as formas finais obtíveis registradas no{' '}
       <a href="https://swarfarm.com/" target="_blank" rel="noreferrer">
         SWARFARM ↗
       </a>
-      . Selecione “Todos os registros” para incluir NPCs e formas não obtíveis.
-      Estrelas indicam a raridade natural.
+      . Estrelas indicam a raridade natural.
     </p>
   </aside>
   <script>

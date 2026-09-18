@@ -62,7 +62,10 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       <MonsterPortrait id={monster.id} />
       {!monster.image && <span>Retrato indisponível na fonte</span>}
       <span
-        class="natural-stars"
+        class:list={[
+          'natural-stars',
+          { 'natural-stars--second-awaken': monster.awakenLevel === 2 },
+        ]}
         aria-label={`${monster.naturalStars} estrelas naturais`}
       >
         {'★'.repeat(monster.naturalStars)}
@@ -177,8 +180,8 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
     for (const [key, value] of Object.entries(readMonsterFilters(params)))
       if (
         value &&
-        !(key === 'sort' && value === 'name') &&
-        !(key === 'availability' && value === 'obtainable')
+        key !== 'availability' &&
+        !(key === 'sort' && value === 'name')
       )
         back.set(key, value);
     const page = Math.max(1, Math.trunc(Number(params.get('page'))) || 1);

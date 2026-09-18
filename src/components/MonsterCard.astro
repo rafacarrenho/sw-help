@@ -16,7 +16,10 @@ const { monster } = Astro.props;
 >
   <div class="bestiary-card-top">
     <span
-      class="natural-stars"
+      class:list={[
+        'natural-stars',
+        { 'natural-stars--second-awaken': monster.awakenLevel === 2 },
+      ]}
       data-stars
       aria-label={`${monster.naturalStars} estrelas naturais`}
     >

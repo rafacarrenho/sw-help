@@ -36,6 +36,11 @@ export const archetypeLabels: Record<string, string> = {
   Material: 'Material',
   none: 'Não informado',
 };
+export function isFinalMonster(
+  monster: Pick<Monster, 'obtainable' | 'awakensTo'>,
+): boolean {
+  return monster.obtainable === true && !monster.awakensTo;
+}
 export function formLabel(monster: Pick<Monster, 'awakenLevel'>): string {
   return monster.awakenLevel === 2
     ? 'Segundo despertar'
@@ -76,14 +81,10 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
     q: (params.get('q') ?? '').slice(0, 200),
     element: allowed('element', Object.keys(elementLabels)),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
-    form: allowed('form', ['0', '1', '2']),
+    form: '',
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
     sort: allowed('sort', ['name', 'stars', 'speed'], 'name'),
-    availability: allowed(
-      'availability',
-      ['obtainable', 'all', 'unobtainable'],
-      'obtainable',
-    ),
+    availability: 'obtainable',
   };
 }
 export function filterMonsters(
@@ -93,12 +94,10 @@ export function filterMonsters(
   return monsters
     .filter(
       (monster) =>
+        isFinalMonster(monster) &&
         matchesSearch(monsterSearchText(monster), filters.q) &&
-        (filters.availability === 'all' ||
-          monster.obtainable === (filters.availability === 'obtainable')) &&
         (!filters.element || monster.element === filters.element) &&
         (!filters.stars || String(monster.naturalStars) === filters.stars) &&
-        (!filters.form || String(monster.awakenLevel) === filters.form) &&
         (!filters.leader ||
           (filters.leader === 'any'
             ? !!monster.leaderSkill

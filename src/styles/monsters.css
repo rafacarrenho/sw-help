@@ -115,6 +115,10 @@ a.monster:hover .monster-name {
   letter-spacing: 1px;
   white-space: nowrap;
 }
+.natural-stars--second-awaken {
+  color: #fc1002;
+  text-shadow: none;
+}
 .form-tag {
   color: var(--muted);
   font-size: 12px;
@@ -187,6 +191,10 @@ a.monster:hover .monster-name {
   font-size: 22px;
   color: var(--gold);
   margin: 10px 0 0;
+}
+.monster-profile-portrait > .natural-stars--second-awaken {
+  color: #fc1002;
+  text-shadow: none;
 }
 .monster-profile h1 {
   font-size: clamp(30px, 4vw, 44px);

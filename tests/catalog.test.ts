@@ -50,7 +50,7 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
     leaders.every((m, i) => i === 0 || leaders[i - 1].speed! >= m.speed!),
   );
   assert.ok(find('leader=none').every((m) => !m.leaderSkill));
-  assert.equal(find('availability=all').length, monsters.length);
+  assert.equal(find('availability=all').length, find('').length);
   assert.ok(find('').every((m) => m.obtainable));
   assert.equal(find('q=naoexiste123456').length, 0);
   assert.equal(
@@ -74,6 +74,25 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
   assert.equal(
     readMonsterFilters(new URLSearchParams('element=invalid&form=999')).element,
     '',
+  );
+});
+test('catálogo público mantém só a última forma obtível de cada família', () => {
+  const visible = filterMonsters(
+    monsters,
+    readMonsterFilters(new URLSearchParams()),
+  );
+  assert.ok(visible.some((m) => m.id === 'red-angelmon-fire-8'));
+  assert.ok(!visible.some((m) => m.id === 'angelmon-fire-7'));
+  assert.ok(visible.every((m) => m.obtainable));
+  assert.ok(visible.every((m) => !m.awakensTo));
+  assert.equal(
+    readMonsterFilters(new URLSearchParams('form=1&availability=all')).form,
+    '',
+  );
+  assert.equal(
+    readMonsterFilters(new URLSearchParams('form=1&availability=all'))
+      .availability,
+    'obtainable',
   );
 });
 test('rejeita IDs externos duplicados, formas quebradas e bônus inválidos', () => {

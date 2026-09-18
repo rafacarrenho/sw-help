@@ -42,13 +42,15 @@ function loadIndex() {
 function parameters() {
   const params = new URLSearchParams();
   const filters = readMonsterFilters(
-    new URLSearchParams(Array.from(new FormData(form), ([key, value]) => [key, String(value)])),
+    new URLSearchParams(
+      Array.from(new FormData(form), ([key, value]) => [key, String(value)]),
+    ),
   );
   for (const [key, value] of Object.entries(filters))
     if (
       value &&
-      !(key === 'sort' && value === 'name') &&
-      !(key === 'availability' && value === 'obtainable')
+      key !== 'availability' &&
+      !(key === 'sort' && value === 'name')
     )
       params.set(key, value);
   return params;
