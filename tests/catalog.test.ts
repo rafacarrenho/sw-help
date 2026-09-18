@@ -48,11 +48,6 @@ test('impede equipes incompletas e referências quebradas', () => {
   );
   assert.throws(
     () =>
-      validateCatalog(monsters, [{ ...defenses[0], leader: 'carcano' }], []),
-    /líder fora/,
-  );
-  assert.throws(
-    () =>
       validateCatalog(monsters, defenses, [
         { ...counters[0], defenseId: 'ausente' },
       ]),

@@ -16,14 +16,12 @@ export interface Defense {
   tower: Tower;
   label: string;
   description: string;
-  leader: string | null;
   status: 'example' | 'documented';
 }
 export interface Counter {
   id: string;
   defenseId: string;
   team: string[];
-  leader: string | null;
   title: string;
   strategy: string;
   steps: string[];

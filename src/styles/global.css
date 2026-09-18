@@ -635,25 +635,25 @@ h1 > span:not(.beta-badge) {
 }
 .monster {
   min-width: 0;
-  --element: #e89a80;
+  --element: #ff7867;
 }
 .monster--water {
-  --element: #86b8e8;
+  --element: #57caff;
 }
 .monster--wind {
-  --element: #e0c476;
+  --element: #ffda58;
 }
 .monster--light {
-  --element: #e8e2bf;
+  --element: #fff5d8;
 }
 .monster--dark {
-  --element: #c8a7e5;
+  --element: #d38bff;
 }
 .monster-portrait {
   position: relative;
   aspect-ratio: 1;
   max-width: 84px;
-  margin: 0 auto 9px;
+  margin: 0 auto 14px;
   border-radius: 9px;
   border: 1px solid #81776a;
   background: linear-gradient(140deg, #48413b, #222831);
@@ -695,17 +695,35 @@ h1 > span:not(.beta-badge) {
 }
 .element-marker {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid #1d2026;
-  background: #272b32;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  overflow: hidden;
+  border-radius: 0 8px 0 0;
   color: var(--element);
   z-index: 2;
+}
+.element-marker::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #050506;
+}
+.element-marker svg {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  stroke-width: 2;
+}
+.monster--fire .element-marker svg,
+.monster--water .element-marker svg,
+.monster--dark .element-marker svg {
+  fill: currentColor;
 }
 .monster-name {
   display: block;
@@ -713,24 +731,6 @@ h1 > span:not(.beta-badge) {
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
-}
-.monster-element {
-  display: block;
-  font-size: var(--text-sm);
-  color: #a0a5ae;
-  margin-top: 3px;
-}
-.defense-card h2 {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.card-description {
-  font-size: var(--text-base);
-  color: #a0a5af;
-  line-height: 1.65;
-  min-height: 3.3em;
-  margin-bottom: 17px;
 }
 .card-bottom {
   flex-wrap: wrap;
@@ -1455,10 +1455,6 @@ footer {
   }
   .card-top {
     padding: 17px 20px 0;
-  }
-  .card-description {
-    min-height: 0;
-    margin-bottom: 20px;
   }
   .card-bottom {
     flex-wrap: wrap;

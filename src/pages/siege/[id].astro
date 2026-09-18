@@ -56,8 +56,8 @@ const name = teamName(defense.team);
     </div>
     <div class="defense-team-panel">
       <span class="panel-label">TIME ADVERSÁRIO</span>
-      <Team team={defense.team} leader={defense.leader} />
-      <span class="leader-caption">L indica o líder da composição</span>
+      <Team team={defense.team} />
+      <span class="leader-caption">O monstro à esquerda é sempre o líder</span>
     </div>
   </section>
   <section class="counter-section" aria-labelledby="counter-heading">
@@ -91,7 +91,7 @@ const name = teamName(defense.team);
                 {counter.status === 'example' ? 'EXEMPLO' : 'COM FONTE'}
               </span>
             </div>
-            <Team team={counter.team} leader={counter.leader} />
+            <Team team={counter.team} />
             <div class="rune-list">
               <h4>Runas sugeridas no exemplo</h4>
               {counter.runes.map((rune) => (

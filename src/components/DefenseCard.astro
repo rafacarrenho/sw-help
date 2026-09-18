@@ -29,9 +29,7 @@ const count = getCounters(defense.id).length;
     href={`/siege/${defense.id}/`}
     aria-label={`Ver counters de ${teamName(defense.team)}`}
   >
-    <Team team={defense.team} leader={defense.leader} />
-    <h2>{defense.label}</h2>
-    <p class="card-description">{defense.description}</p>
+    <Team team={defense.team} />
     <div class="card-bottom">
       <span>
         <Icon name="swords" size={15} />

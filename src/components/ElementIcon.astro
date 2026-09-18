@@ -1,0 +1,12 @@
+---
+import Icon from './Icon.astro';
+import type { Element } from '../lib/types';
+
+interface Props {
+  element: Element;
+}
+
+const { element } = Astro.props;
+---
+
+<Icon name={element} size={16} />

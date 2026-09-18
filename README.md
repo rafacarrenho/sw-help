@@ -70,10 +70,13 @@ Os dados ficam em três arquivos JSON:
    após evolução. Para segundo despertar, mantenha a raridade natural.
 2. Adicione o retrato em `public/monsters/` e use `/monsters/arquivo.png` no
    campo `image`, ou omita `image` para usar o fallback com iniciais.
-3. Crie a defesa com exatamente três IDs distintos em `team`; `leader` recebe
-   o ID de um integrante ou `null`. `tower` aceita `4star` ou `open`.
+3. Crie a defesa com exatamente três IDs distintos em `team`. O primeiro monstro
+   é sempre o líder e aparece à esquerda; não há um campo `leader` separado.
+   `tower` aceita `4star` ou `open`. O catálogo mostra os monstros, nomes e badges
+   de elemento; `label` e `description` são usados somente na página de detalhes.
 4. Crie os counters com `defenseId` correspondente. Cada counter tem seu próprio
-   `id`, equipe, líder, título, estratégia, passos e observações. `turnOrder`
+   `id`, equipe, título, estratégia, passos e observações. Nos counters, o primeiro
+   integrante de `team` também é sempre o líder. `turnOrder`
    pode ser um array vazio se não houver ordem documentada. `runes` e `sources`
    também podem ser vazios. A ordem exibida é uma anotação; não calcula ticks.
 5. Use `status: "example"` para exemplos. Só altere para `"documented"` quando
@@ -92,7 +95,7 @@ Exemplo de fonte em um counter:
 ```
 
 A validação do catálogo interrompe o build se houver IDs duplicados,
-referências inexistentes, equipes inválidas, líderes fora do time, monstros 5★
+referências inexistentes, equipes inválidas, monstros 5★
 em torres 4★ (inclusive na ofensiva) ou counters documentados sem fonte.
 
 ## Estrutura
@@ -127,6 +130,10 @@ não substitui uma verificação em um dispositivo físico com Safari.
 
 ## Créditos e fontes
 
+- Os símbolos de elemento em `src/components/ElementIcon.astro` reutilizam
+  os ícones vetoriais do projeto: chama, gota, vento, sol e lua. São exibidos
+  em 16 px sobre um círculo preto parcialmente recortado no canto superior
+  direito dos retratos.
 - Metadados e retratos dos monstros consultados no
   [SWARFARM](https://github.com/swarfarm/swarfarm#api), com URLs de origem
   preservadas em cada registro de `monsters.json`. Esses dados foram baixados

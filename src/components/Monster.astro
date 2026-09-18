@@ -1,6 +1,6 @@
 ---
 import { monsterById, elementNames } from '../data/catalog';
-import Icon from './Icon.astro';
+import ElementIcon from './ElementIcon.astro';
 interface Props {
   id: string;
   leader?: boolean;
@@ -26,10 +26,14 @@ const monster = monsterById.get(id)!;
         L
       </span>
     )}
-    <span class="element-marker" title={elementNames[monster.element]}>
-      <Icon name={monster.element} size={12} />
+    <span
+      class="element-marker"
+      role="img"
+      aria-label={`Elemento: ${elementNames[monster.element]}`}
+      title={elementNames[monster.element]}
+    >
+      <ElementIcon element={monster.element} />
     </span>
   </div>
   <span class="monster-name">{monster.name}</span>
-  <span class="monster-element">{elementNames[monster.element]}</span>
 </div>

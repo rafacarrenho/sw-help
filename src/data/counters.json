@@ -3,7 +3,6 @@
     "id": "sustain-demo",
     "defenseId": "mo-long-nora-triana",
     "team": ["feng-yan", "lulu", "woosa"],
-    "leader": "feng-yan",
     "title": "Sustain para uma luta longa",
     "strategy": "Exemplo de composição defensiva para estudar uma abordagem de luta longa. A interação com esta defesa ainda precisa ser validada.",
     "steps": [
@@ -32,8 +31,7 @@
   {
     "id": "copper-demo",
     "defenseId": "mo-long-nora-triana",
-    "team": ["copper", "bulldozer", "imesety"],
-    "leader": "imesety",
+    "team": ["imesety", "copper", "bulldozer"],
     "title": "Burst baseado em defesa",
     "strategy": "Exemplo para registrar uma estratégia de dano baseado em DEF. Não representa um counter comprovado desta composição.",
     "steps": [
@@ -63,7 +61,6 @@
     "id": "cleave-demo",
     "defenseId": "carcano-clara-savannah",
     "team": ["galleon", "tiana", "kaki"],
-    "leader": "galleon",
     "title": "Abertura com dano em área",
     "strategy": "Modelo de uma sequência de preparação e dano em área, sujeito à disputa de velocidade e à resistência.",
     "steps": [
@@ -93,7 +90,6 @@
     "id": "tractor-demo",
     "defenseId": "carcano-vigor-triana",
     "team": ["tractor", "lulu", "windy"],
-    "leader": null,
     "title": "Composição de resistência",
     "strategy": "Exemplo para organizar uma abordagem com suporte e monstros resistentes. Matchup ainda não validado.",
     "steps": [
@@ -122,8 +118,7 @@
   {
     "id": "burst-demo",
     "defenseId": "khmun-vigor-skogul",
-    "team": ["copper", "bulldozer", "imesety"],
-    "leader": "imesety",
+    "team": ["imesety", "copper", "bulldozer"],
     "title": "Preparação e dano concentrado",
     "strategy": "Exemplo de cadastro de um time de dano concentrado; exige validação contra a defesa indicada.",
     "steps": [

@@ -49,8 +49,6 @@ export function validateCatalog(
       fail(`a equipe ${entry.id} precisa de três monstros distintos.`);
     if (entry.team.some((id) => !monsterMap.has(id)))
       fail(`monstro inexistente em ${entry.id}.`);
-    if (entry.leader && !entry.team.includes(entry.leader))
-      fail(`líder fora da equipe em ${entry.id}.`);
     if (!['example', 'documented'].includes(entry.status))
       fail(`status de ${entry.id}.`);
   }

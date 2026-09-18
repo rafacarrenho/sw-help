@@ -18,6 +18,13 @@ Este é um projeto pessoal de Rafael Carrenho.
 - Site Astro estático, inteiramente frontend.
 - Prioridade atual: Siege Counter. Spd Tuning e Spd Tick ficam desabilitados.
 - Manter defesas, counters e monstros nos arquivos de `src/data/`.
+- Em defesas e counters de Siege, `team[0]` é sempre o líder e aparece à esquerda.
+  Não usar um campo separado para escolher outro líder.
+- Nos cards do catálogo, focar nos monstros e seus nomes, sem títulos ou descrições
+  da defesa. Exibir o elemento no badge, sem repetir o texto abaixo do nome.
+- Os badges de elemento ficam no canto superior direito do retrato, com um
+  círculo preto maior parcialmente recortado e símbolos coloridos de 16 px:
+  chama, gota, vento, sol e lua.
 - Identificar conteúdo demonstrativo; não inventar taxas de vitória ou validação.
 - Preservar a legibilidade: textos principais de 16 px, secundários de 14 px
   e etiquetas curtas de pelo menos 12 px, inclusive no celular.

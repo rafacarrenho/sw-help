@@ -5,7 +5,6 @@
     "tower": "open",
     "label": "Sustain & pressão",
     "description": "Uma composição com dano, recuperação e proteção.",
-    "leader": "mo-long",
     "status": "example"
   },
   {
@@ -14,7 +13,6 @@
     "tower": "open",
     "label": "Abertura agressiva",
     "description": "Controle e pressão desde o primeiro turno.",
-    "leader": "carcano",
     "status": "example"
   },
   {
@@ -23,16 +21,14 @@
     "tower": "4star",
     "label": "Pressão contínua",
     "description": "Uma defesa de torre 4★ com suporte e dano.",
-    "leader": "carcano",
     "status": "example"
   },
   {
     "id": "martina-shaina-triana",
-    "team": ["martina", "shaina", "triana"],
+    "team": ["shaina", "martina", "triana"],
     "tower": "4star",
     "label": "Ataques em conjunto",
     "description": "Uma composição de gêmeas com proteção.",
-    "leader": "shaina",
     "status": "example"
   },
   {
@@ -41,7 +37,6 @@
     "tower": "open",
     "label": "Resistência & sustain",
     "description": "Uma composição voltada a lutas prolongadas.",
-    "leader": "feng-yan",
     "status": "example"
   },
   {
@@ -50,7 +45,6 @@
     "tower": "4star",
     "label": "Dano & proteção",
     "description": "Escudo, suporte e ameaça de dano em área.",
-    "leader": "khmun",
     "status": "example"
   },
   {
@@ -59,7 +53,6 @@
     "tower": "4star",
     "label": "Controle & retaliação",
     "description": "Uma composição com controle e contra-ataques.",
-    "leader": "carcano",
     "status": "example"
   },
   {
@@ -68,7 +61,6 @@
     "tower": "open",
     "label": "Pressão & imunidade",
     "description": "Dano de alvo único com suporte defensivo.",
-    "leader": "mo-long",
     "status": "example"
   }
 ]
