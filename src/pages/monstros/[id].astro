@@ -34,8 +34,24 @@ const family = monsters
       a.element.localeCompare(b.element) ||
       (a.awakenLevel ?? 0) - (b.awakenLevel ?? 0),
   );
-const from = monster.awakensFrom ? monsterById.get(monster.awakensFrom) : null;
-const to = monster.awakensTo ? monsterById.get(monster.awakensTo) : null;
+const evolution = (() => {
+  let first = monster;
+  while (first.awakensFrom) {
+    const previous = monsterById.get(first.awakensFrom);
+    if (!previous) break;
+    first = previous;
+  }
+
+  const sequence = [first];
+  let next = first.awakensTo ? monsterById.get(first.awakensTo) : null;
+
+  while (next) {
+    sequence.push(next);
+    next = next.awakensTo ? monsterById.get(next.awakensTo) : null;
+  }
+
+  return sequence;
+})();
 const uses = defenses.filter(
   (d) =>
     d.team.includes(monster.id) ||
@@ -77,7 +93,7 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       <h1>{monster.name}</h1>
       <div class="monster-profile-tags">
         <span>{elementNames[monster.element]}</span>
-        <span>{formLabel(monster)}</span>
+        {monster.awakenLevel === 2 && <span>{formLabel(monster)}</span>}
         <span>
           {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
         </span>
@@ -114,12 +130,35 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
           Esta forma está marcada como não obtível na base SWARFARM.
         </p>
       )}
-      {(from || to) && (
-        <div class="monster-form-links">
-          {from && (
-            <a href={`/monstros/${from.id}/`}>← Forma anterior: {from.name}</a>
-          )}
-          {to && <a href={`/monstros/${to.id}/`}>Próxima forma: {to.name} →</a>}
+      {evolution.length > 1 && (
+        <div class="monster-evolution">
+          <h2>Evolução</h2>
+          <div class="monster-evolution-sequence">
+            {evolution.map((stage, index) => (
+              <>
+                {index > 0 && (
+                  <span class="monster-evolution-arrow" aria-hidden="true">
+                    →
+                  </span>
+                )}
+                <div class="monster-evolution-step">
+                  {stage.image ? (
+                    <img
+                      src={stage.image}
+                      alt={`${stage.name} (${formLabel(stage)})`}
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="monster-evolution-fallback">
+                      {stage.name.slice(0, 2)}
+                    </span>
+                  )}
+                </div>
+              </>
+            ))}
+          </div>
         </div>
       )}
     </div>

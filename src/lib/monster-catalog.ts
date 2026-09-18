@@ -42,11 +42,7 @@ export function isFinalMonster(
   return monster.obtainable === true && !monster.awakensTo;
 }
 export function formLabel(monster: Pick<Monster, 'awakenLevel'>): string {
-  return monster.awakenLevel === 2
-    ? 'Segundo despertar'
-    : monster.awakenLevel === 1
-      ? 'Despertado'
-      : 'Forma base';
+  return monster.awakenLevel === 2 ? 'Segundo despertar' : '';
 }
 export function leaderText(skill: Monster['leaderSkill']): string {
   if (!skill) return 'Sem habilidade de líder';

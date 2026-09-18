@@ -12,7 +12,7 @@ export const counters = counterData as Counter[];
 validateCatalog(allMonsters, defenses, counters);
 
 export const monsterById = new Map(
-  monsters.map((monster) => [monster.id, monster]),
+  allMonsters.map((monster) => [monster.id, monster]),
 );
 export const getCounters = (id: string) =>
   counters.filter((counter) => counter.defenseId === id);

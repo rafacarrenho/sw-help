@@ -8,6 +8,7 @@ import {
   readMonsterFilters,
   leaderText,
 } from '../src/lib/monster-catalog.ts';
+import { monsterById } from '../src/data/catalog.ts';
 import type { Monster, Defense, Counter } from '../src/lib/types.ts';
 
 const read = (name: string) =>
@@ -93,6 +94,18 @@ test('catálogo público mantém só a última forma obtível de cada família',
     readMonsterFilters(new URLSearchParams('form=1&availability=all'))
       .availability,
     'obtainable',
+  );
+});
+
+test('mapeamento completo inclui a cadeia de evolução do monstro', () => {
+  assert.ok(monsterById.has('angelmon-fire-7'));
+  assert.equal(
+    monsterById.get('angelmon-fire-7')?.awakensTo,
+    'red-angelmon-fire-8',
+  );
+  assert.equal(
+    monsterById.get('red-angelmon-fire-8')?.awakensFrom,
+    'angelmon-fire-7',
   );
 });
 test('rejeita IDs externos duplicados, formas quebradas e bônus inválidos', () => {

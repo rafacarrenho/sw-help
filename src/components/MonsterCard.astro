@@ -25,9 +25,11 @@ const { monster } = Astro.props;
     >
       {'★'.repeat(monster.naturalStars)}
     </span>
-    <span class="form-tag" data-form>
-      {formLabel(monster)}
-    </span>
+    {monster.awakenLevel === 2 && (
+      <span class="form-tag" data-form>
+        {formLabel(monster)}
+      </span>
+    )}
   </div>
   <MonsterPortrait id={monster.id} />
   <span class="bestiary-family" data-family>

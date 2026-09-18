@@ -215,6 +215,54 @@ a.monster:hover .monster-name {
   color: #d4d8df;
   font-size: 14px;
 }
+.monster-evolution {
+  margin: 20px 0 24px;
+}
+.monster-evolution h2 {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.monster-evolution-sequence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+.monster-evolution-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: #1a1c22;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.monster-evolution-step img,
+.monster-evolution-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.03);
+}
+.monster-evolution-fallback {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 700;
+}
+.monster-evolution-arrow {
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+}
 .monster-leader-panel {
   display: flex;
   gap: 16px;
