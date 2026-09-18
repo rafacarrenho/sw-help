@@ -1,0 +1,36 @@
+---
+import MonsterPortrait from './Monster.astro';
+import type { Monster } from '../lib/types';
+import { formLabel, leaderText } from '../lib/monster-catalog';
+interface Props {
+  monster: Monster;
+}
+const { monster } = Astro.props;
+---
+
+<a
+  class="bestiary-card"
+  href={`/monstros/${monster.id}/`}
+  data-monster-card
+  aria-label={`Ver ${monster.name}, ${formLabel(monster)}`}
+>
+  <div class="bestiary-card-top">
+    <span
+      class="natural-stars"
+      data-stars
+      aria-label={`${monster.naturalStars} estrelas naturais`}
+    >
+      {'★'.repeat(monster.naturalStars)}
+    </span>
+    <span class="form-tag" data-form>
+      {formLabel(monster)}
+    </span>
+  </div>
+  <MonsterPortrait id={monster.id} />
+  <span class="bestiary-family" data-family>
+    {monster.family}
+  </span>
+  <span class="bestiary-leader" data-leader>
+    {leaderText(monster.leaderSkill)}
+  </span>
+</a>

@@ -1,0 +1,360 @@
+.monster--pure {
+  --element: #c7e8db;
+}
+a.monster {
+  display: block;
+}
+a.monster:hover .monster-name {
+  color: var(--gold);
+}
+.bestiary-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  padding: 18px 0;
+  margin-bottom: 26px;
+  border-block: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
+.bestiary-summary strong {
+  color: var(--gold);
+  font-size: 20px;
+  margin-right: 5px;
+}
+.bestiary-summary span:last-child {
+  margin-left: auto;
+}
+.bestiary-filters {
+  margin-bottom: 22px;
+}
+.bestiary-selects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+.bestiary-selects label {
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.bestiary-selects select {
+  width: 100%;
+  min-height: 46px;
+  padding: 9px 30px 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: #eeeef0;
+  font: inherit;
+  font-size: 16px;
+}
+.bestiary-selects select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.bestiary-results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.bestiary-results-bar p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  scroll-margin-top: 20px;
+}
+.bestiary-clear {
+  background: transparent;
+  color: var(--gold);
+  min-height: 44px;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.bestiary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+.bestiary-grid[aria-busy='true'] {
+  opacity: 0.55;
+}
+.bestiary-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  text-align: center;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.bestiary-card:hover {
+  border-color: #82704f;
+  background: #202228;
+}
+.bestiary-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.natural-stars {
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.form-tag {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: right;
+}
+.bestiary-card .monster-portrait {
+  width: 84px;
+}
+.bestiary-card .monster-name {
+  font-size: 18px;
+}
+.bestiary-family {
+  display: block;
+  color: var(--muted);
+  font-size: 14px;
+  margin: 5px 0 16px;
+  overflow-wrap: anywhere;
+}
+.bestiary-leader {
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.55;
+  color: #d2d6de;
+}
+.bestiary-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 30px 0;
+}
+.bestiary-pagination > span {
+  color: var(--muted);
+  font-size: 14px;
+}
+.catalog-note a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.monster-profile {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 36px;
+  padding: 32px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.monster-profile-portrait {
+  text-align: center;
+  padding-top: 8px;
+}
+.monster-profile-portrait .monster-portrait {
+  max-width: 150px;
+}
+.monster-profile-portrait .monster-name {
+  display: none;
+}
+.monster-profile-portrait > span {
+  display: block;
+  color: var(--muted);
+  font-size: 14px;
+}
+.monster-profile-portrait > .natural-stars {
+  font-size: 22px;
+  color: var(--gold);
+  margin: 10px 0 0;
+}
+.monster-profile h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.2;
+  margin: 12px 0 20px;
+  overflow-wrap: anywhere;
+}
+.monster-profile-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.monster-profile-tags span {
+  padding: 4px 12px;
+  border: 1px solid #41434a;
+  border-radius: 6px;
+  color: #d4d8df;
+  font-size: 14px;
+}
+.monster-leader-panel {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 20px;
+  background: #25231f;
+  border: 1px solid #504330;
+  border-radius: 10px;
+}
+.leader-emblem {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  color: #201c16;
+  background: var(--gold);
+  border-radius: 7px;
+  font-size: 20px;
+  font-weight: 800;
+}
+.monster-leader-panel h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+.monster-leader-panel p {
+  font-size: 18px;
+  color: #f3d6aa;
+  margin: 0;
+}
+.monster-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0 0;
+}
+.monster-facts dt {
+  color: var(--muted);
+  font-size: 14px;
+}
+.monster-facts dd {
+  margin: 5px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+.monster-facts small {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.monster-availability {
+  font-size: 14px;
+  margin: 20px 0 0;
+  color: var(--muted);
+}
+.monster-form-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 24px;
+  color: var(--gold);
+}
+.monster-form-links a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.monster-related {
+  margin-top: 36px;
+}
+.monster-uses {
+  display: grid;
+  gap: 10px;
+}
+.monster-uses a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.monster-uses a:hover {
+  border-color: var(--gold);
+}
+@media (max-width: 1100px) {
+  .bestiary-selects {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .bestiary-selects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bestiary-summary span:last-child {
+    margin-left: 0;
+  }
+  .bestiary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .bestiary-card {
+    padding: 12px;
+  }
+  .bestiary-card-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .form-tag {
+    text-align: center;
+  }
+  .bestiary-card .monster-name {
+    font-size: 16px;
+  }
+  .monster-profile {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+  }
+  .monster-profile-portrait .monster-portrait {
+    width: 120px;
+  }
+  .monster-profile-content > .eyebrow {
+    display: block;
+    text-align: center;
+  }
+  .monster-profile h1 {
+    text-align: center;
+  }
+  .monster-profile-tags {
+    justify-content: center;
+  }
+  .monster-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .monster-leader-panel {
+    padding: 14px;
+    gap: 12px;
+  }
+  .monster-leader-panel p {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bestiary-card {
+    transition: none;
+  }
+}

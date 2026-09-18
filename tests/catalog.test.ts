@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { validateCatalog } from '../src/lib/validate.ts';
 import { matchesSearch } from '../src/lib/search.ts';
+import { filterMonsters, readMonsterFilters, leaderText } from '../src/lib/monster-catalog.ts';
 import type { Monster, Defense, Counter } from '../src/lib/types.ts';
 
 const read = (name: string) =>
@@ -12,6 +13,43 @@ const read = (name: string) =>
 const monsters: Monster[] = read('monsters');
 const defenses: Defense[] = read('defenses');
 const counters: Counter[] = read('counters');
+
+test('importação completa mantém IDs do Siege, formas e líderes da fonte', () => {
+  assert.equal(monsters.length, read('monsters-meta').count);
+  assert.ok(monsters.length > 1900);
+  const nora = monsters.find(m => m.id === 'nora')!;
+  assert.equal(nora.swarfarmId, 1877);
+  assert.equal(nora.family, 'Totemist');
+  assert.ok(monsters.some(m => m.awakenLevel === 2));
+  assert.ok(monsters.some(m => m.obtainable === false));
+  for (const monster of monsters) {
+    assert.ok(monster.swarfarmId);
+    assert.ok(monster.family);
+    assert.ok(monster.image || read('monsters-meta').missingPortraits.includes(monster.imageSource));
+  }
+});
+test('busca de monstros combina família, elemento, estrelas, forma e líder', () => {
+  const find = (query: string) => filterMonsters(monsters, readMonsterFilters(new URLSearchParams(query)));
+  const totemists = find('q=tótemist&element=fire&stars=5&form=1');
+  assert.ok(totemists.some(m => m.id === 'nora'));
+  assert.ok(totemists.every(m => m.element === 'fire' && m.awakenLevel === 1));
+  const leaders = find('leader=Attack+Speed&sort=speed');
+  assert.ok(leaders.length > 0);
+  assert.ok(leaders.every(m => m.leaderSkill?.attribute === 'Attack Speed'));
+  assert.ok(leaders.every((m, i) => i === 0 || leaders[i - 1].speed! >= m.speed!));
+  assert.ok(find('leader=none').every(m => !m.leaderSkill));
+  assert.equal(find('availability=all').length, monsters.length);
+  assert.ok(find('').every(m => m.obtainable));
+  assert.equal(find('q=naoexiste123456').length, 0);
+  assert.equal(leaderText({ attribute: 'Attack Speed', amount: 33, area: 'Arena', element: null }), 'SPD +33% · Arena');
+  assert.equal(leaderText({ attribute: 'HP', amount: 50, area: 'Element', element: 'water' }), 'HP +50% · Aliados de Água');
+  assert.equal(readMonsterFilters(new URLSearchParams('element=invalid&form=999')).element, '');
+});
+test('rejeita IDs externos duplicados, formas quebradas e bônus inválidos', () => {
+  assert.throws(() => validateCatalog([...monsters, { ...monsters[0], id: 'duplicate-source' }], [], []), /SWARFARM duplicados/);
+  assert.throws(() => validateCatalog([{ ...monsters[0], awakensTo: 'missing-form' }], [], []), /forma inexistente/);
+  assert.throws(() => validateCatalog([{ ...monsters[0], awakensFrom: null, awakensTo: null, leaderSkill: { attribute: 'HP', amount: -5, area: 'General', element: null } }], [], []), /habilidade de líder/);
+});
 
 test('catálogo completo é válido e os retratos locais existem', () => {
   assert.doesNotThrow(() => validateCatalog(monsters, defenses, counters));

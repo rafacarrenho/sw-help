@@ -2,12 +2,13 @@
 import Monster from './Monster.astro';
 interface Props {
   team: string[];
+  linked?: boolean;
 }
-const { team } = Astro.props;
+const { team, linked = false } = Astro.props;
 ---
 
 <div class="monster-team">
   {team.map((id, index) => (
-    <Monster id={id} leader={index === 0} />
+    <Monster id={id} leader={index === 0} linked={linked} />
   ))}
 </div>

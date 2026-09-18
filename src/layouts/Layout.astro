@@ -2,15 +2,18 @@
 import Icon from '../components/Icon.astro';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
+import '../styles/monsters.css';
 interface Props {
   title?: string;
   description?: string;
   detail?: boolean;
+  section?: 'siege' | 'monsters';
 }
 const {
   title = 'Siege Counter',
   description = 'Encontre composições para enfrentar as defesas de Siege no Summoners War.',
   detail = false,
+  section = 'siege',
 } = Astro.props;
 ---
 
@@ -41,13 +44,22 @@ const {
       <div class="nav-group-label">SEU ARSENAL</div>
       <nav aria-label="Ferramentas">
         <a
-          class="nav-item active"
+          class:list={['nav-item', { active: section === 'siege' }]}
           href="/"
-          aria-current={detail ? undefined : 'page'}
+          aria-current={section === 'siege' && !detail ? 'page' : undefined}
         >
           <Icon name="swords" />
           <span>Siege Counter</span>
-          <span class="active-dot"></span>
+          {section === 'siege' && <span class="active-dot"></span>}
+        </a>
+        <a
+          class:list={['nav-item', { active: section === 'monsters' }]}
+          href="/monstros/"
+          aria-current={section === 'monsters' && !detail ? 'page' : undefined}
+        >
+          <Icon name="book" />
+          <span>Catálogo de Monstros</span>
+          {section === 'monsters' && <span class="active-dot"></span>}
         </a>
         <button class="nav-item" disabled>
           <Icon name="speed" />
@@ -81,11 +93,15 @@ const {
         <div class="breadcrumb">
           <span>Ferramentas</span>
           <Icon name="chevron" size={13} />
-          <a href="/">Siege Counter</a>
+          <a href={section === 'monsters' ? '/monstros/' : '/'}>
+            {section === 'monsters' ? 'Monstros' : 'Siege Counter'}
+          </a>
           {detail && (
             <>
               <Icon name="chevron" size={13} />
-              <span class="breadcrumb-detail">Defesa</span>
+              <span class="breadcrumb-detail">
+                {section === 'monsters' ? 'Monstro' : 'Defesa'}
+              </span>
             </>
           )}
         </div>

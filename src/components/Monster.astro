@@ -4,12 +4,18 @@ import ElementIcon from './ElementIcon.astro';
 interface Props {
   id: string;
   leader?: boolean;
+  linked?: boolean;
 }
-const { id, leader = false } = Astro.props;
+const { id, leader = false, linked = false } = Astro.props;
 const monster = monsterById.get(id)!;
+const Tag = linked ? 'a' : 'div';
 ---
 
-<div class={`monster monster--${monster.element}`}>
+<Tag
+  class={`monster monster--${monster.element}`}
+  href={linked ? `/monstros/${id}/` : undefined}
+  aria-label={linked ? `Ver ${monster.name} no catálogo` : undefined}
+>
   <div class="monster-portrait">
     <span class="monster-fallback" aria-hidden="true">
       {monster.name.slice(0, 2)}
@@ -36,4 +42,4 @@ const monster = monsterById.get(id)!;
     </span>
   </div>
   <span class="monster-name">{monster.name}</span>
-</div>
+</Tag>

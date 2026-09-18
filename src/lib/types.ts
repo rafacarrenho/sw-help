@@ -1,4 +1,4 @@
-export type Element = 'fire' | 'water' | 'wind' | 'light' | 'dark';
+export type Element = 'fire' | 'water' | 'wind' | 'light' | 'dark' | 'pure';
 export type Tower = '4star' | 'open';
 export interface Monster {
   id: string;
@@ -9,6 +9,22 @@ export interface Monster {
   image?: string;
   source?: string;
   imageSource?: string;
+  swarfarmId?: number;
+  com2usId?: number;
+  familyId?: number;
+  family?: string;
+  archetype?: string;
+  awakenLevel?: number;
+  obtainable?: boolean;
+  speed?: number;
+  awakensFrom?: string | null;
+  awakensTo?: string | null;
+  leaderSkill?: {
+    attribute: string;
+    amount: number;
+    area: string;
+    element: Element | null;
+  } | null;
 }
 export interface Defense {
   id: string;

@@ -1,0 +1,190 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MonsterPortrait from '../../components/Monster.astro';
+import MonsterCard from '../../components/MonsterCard.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  monsters,
+  monsterById,
+  defenses,
+  counters,
+  teamName,
+  elementNames,
+} from '../../data/catalog';
+import metadata from '../../data/monsters-meta.json';
+import {
+  formLabel,
+  leaderText,
+  archetypeLabels,
+} from '../../lib/monster-catalog';
+export function getStaticPaths() {
+  return monsters.map((monster) => ({
+    params: { id: monster.id },
+    props: { monster },
+  }));
+}
+const { monster } = Astro.props;
+const family = monsters
+  .filter((m) => m.familyId === monster.familyId && m.id !== monster.id)
+  .sort(
+    (a, b) =>
+      a.element.localeCompare(b.element) ||
+      (a.awakenLevel ?? 0) - (b.awakenLevel ?? 0),
+  );
+const from = monster.awakensFrom ? monsterById.get(monster.awakensFrom) : null;
+const to = monster.awakensTo ? monsterById.get(monster.awakensTo) : null;
+const uses = defenses.filter(
+  (d) =>
+    d.team.includes(monster.id) ||
+    counters.some((c) => c.defenseId === d.id && c.team.includes(monster.id)),
+);
+const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
+  timeZone: 'UTC',
+});
+---
+
+<Layout
+  title={`${monster.name} · ${elementNames[monster.element]}`}
+  section="monsters"
+  detail
+  description={`${monster.name}, ${elementNames[monster.element]}, ${formLabel(monster)}: habilidade de líder, família e informações em Summoners War.`}
+>
+  <div class="detail-toolbar">
+    <a class="back-link" href="/monstros/" data-back-monsters>
+      <span>←</span> Todos os monstros
+    </a>
+  </div>
+  <section class="monster-profile">
+    <div class="monster-profile-portrait">
+      <MonsterPortrait id={monster.id} />
+      {!monster.image && <span>Retrato indisponível na fonte</span>}
+      <span
+        class="natural-stars"
+        aria-label={`${monster.naturalStars} estrelas naturais`}
+      >
+        {'★'.repeat(monster.naturalStars)}
+      </span>
+      <span>Estrelas naturais</span>
+    </div>
+    <div class="monster-profile-content">
+      <span class="eyebrow">{monster.family}</span>
+      <h1>{monster.name}</h1>
+      <div class="monster-profile-tags">
+        <span>{elementNames[monster.element]}</span>
+        <span>{formLabel(monster)}</span>
+        <span>
+          {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
+        </span>
+      </div>
+      <div class="monster-leader-panel">
+        <span class="leader-emblem" aria-hidden="true">
+          L
+        </span>
+        <div>
+          <h2>Habilidade de líder</h2>
+          <p>{leaderText(monster.leaderSkill)}</p>
+        </div>
+      </div>
+      <dl class="monster-facts">
+        <div>
+          <dt>Velocidade base</dt>
+          <dd>
+            {monster.speed ?? '—'} <small>SPD</small>
+          </dd>
+        </div>
+        <div>
+          <dt>Raridade natural</dt>
+          <dd>{monster.naturalStars}★</dd>
+        </div>
+        <div>
+          <dt>Tipo</dt>
+          <dd>
+            {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
+          </dd>
+        </div>
+      </dl>
+      {monster.obtainable === false && (
+        <p class="monster-availability">
+          Esta forma está marcada como não obtível na base SWARFARM.
+        </p>
+      )}
+      {(from || to) && (
+        <div class="monster-form-links">
+          {from && (
+            <a href={`/monstros/${from.id}/`}>← Forma anterior: {from.name}</a>
+          )}
+          {to && <a href={`/monstros/${to.id}/`}>Próxima forma: {to.name} →</a>}
+        </div>
+      )}
+    </div>
+  </section>
+  {uses.length > 0 && (
+    <section class="monster-related" aria-labelledby="siege-uses-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="siege-uses-title">No Siege Counter</h2>
+          <p>Defesas e estratégias do site que usam este monstro.</p>
+        </div>
+        <Icon name="swords" />
+      </div>
+      <div class="monster-uses">
+        {uses.map((defense) => (
+          <a href={`/siege/${defense.id}/`}>
+            <span>{teamName(defense.team)}</span>
+            <Icon name="arrow" size={18} />
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+  {family.length > 0 && (
+    <section class="monster-related" aria-labelledby="family-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="family-title">Na mesma família</h2>
+          <p>Outros elementos e formas para explorar.</p>
+        </div>
+        <span class="count-badge">{family.length}</span>
+      </div>
+      <div class="bestiary-grid">
+        {family.map((relative) => (
+          <MonsterCard monster={relative} />
+        ))}
+      </div>
+    </section>
+  )}
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      Dados do{' '}
+      <a href={monster.source} target="_blank" rel="noreferrer">
+        SWARFARM ↗
+      </a>
+      , importados em {updated}. Velocidade sem runas, torres ou bônus de líder.
+      Retratos e personagens pertencem à Com2uS.
+    </p>
+  </aside>
+  <script>
+    import {
+      readMonsterFilters,
+      catalogPageUrl,
+    } from '../../lib/monster-catalog';
+    const params = new URLSearchParams(location.search);
+    const back = new URLSearchParams();
+    for (const [key, value] of Object.entries(readMonsterFilters(params)))
+      if (
+        value &&
+        !(key === 'sort' && value === 'name') &&
+        !(key === 'availability' && value === 'obtainable')
+      )
+        back.set(key, value);
+    const page = Math.max(1, Math.trunc(Number(params.get('page'))) || 1);
+    const link = document.querySelector<HTMLAnchorElement>(
+      '[data-back-monsters]',
+    )!;
+    if (back.size) {
+      if (page > 1) back.set('page', String(page));
+      link.href = `/monstros/?${back}`;
+    } else link.href = catalogPageUrl(page);
+  </script>
+</Layout>

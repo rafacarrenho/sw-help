@@ -1,0 +1,24 @@
+---
+import MonsterCatalog from '../../../components/MonsterCatalog.astro';
+import { monsters } from '../../../data/catalog';
+import {
+  PAGE_SIZE,
+  filterMonsters,
+  readMonsterFilters,
+} from '../../../lib/monster-catalog';
+export function getStaticPaths() {
+  return Array.from(
+    {
+      length:
+        Math.ceil(
+          filterMonsters(monsters, readMonsterFilters(new URLSearchParams()))
+            .length / PAGE_SIZE,
+        ) - 1,
+    },
+    (_, i) => ({ params: { page: String(i + 2) }, props: { page: i + 2 } }),
+  );
+}
+const { page } = Astro.props;
+---
+
+<MonsterCatalog page={page} />

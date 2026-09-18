@@ -1,0 +1,216 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import ElementIcon from './ElementIcon.astro';
+import type { Element } from '../lib/types';
+import MonsterCard from './MonsterCard.astro';
+import { monsters } from '../data/catalog';
+import metadata from '../data/monsters-meta.json';
+import {
+  PAGE_SIZE,
+  elementLabels,
+  attributeLabels,
+  filterMonsters,
+  readMonsterFilters,
+  catalogPageUrl,
+} from '../lib/monster-catalog';
+interface Props {
+  page?: number;
+}
+const { page = 1 } = Astro.props;
+const sorted = filterMonsters(
+  monsters,
+  readMonsterFilters(new URLSearchParams()),
+);
+const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+const entries = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
+  timeZone: 'UTC',
+});
+---
+
+<Layout
+  title="Catálogo de Monstros"
+  section="monsters"
+  description="Explore monstros de Summoners War por nome, família, elemento e habilidade de líder."
+>
+  <section class="page-intro">
+    <div>
+      <span class="eyebrow">
+        <span></span> CONHEÇA SEUS ALIADOS
+      </span>
+      <h1>
+        Catálogo de <span>Monstros</span>
+      </h1>
+      <p>
+        Encontre seu próximo líder. Explore famílias, elementos e formas de cada
+        monstro.
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="book" size={60} />
+    </div>
+  </section>
+  <div class="bestiary-summary">
+    <span>
+      <strong>{monsters.length.toLocaleString('pt-BR')}</strong> monstros e
+      formas
+    </span>
+    <span>Base, despertar e segundo despertar</span>
+    <span>Atualizado em {updated}</span>
+  </div>
+  <section aria-label="Explorar monstros" data-monster-catalog data-page={page}>
+    <form
+      class="bestiary-filters"
+      role="search"
+      action="/monstros/"
+      data-monster-filters
+    >
+      <label class="search-box">
+        <Icon name="search" size={20} />
+        <span class="sr-only">Buscar por nome ou família</span>
+        <input
+          type="search"
+          name="q"
+          placeholder="Buscar por nome ou família... ex.: Nora, Dragon"
+          maxlength="200"
+          autocomplete="off"
+        />
+      </label>
+      <div class="bestiary-selects">
+        <label>
+          Elemento
+          <select name="element">
+            <option value="">Todos</option>
+            {Object.entries(elementLabels).map(([value, name]) => (
+              <option value={value}>{name}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Estrelas naturais
+          <select name="stars">
+            <option value="">Todas</option>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <option value={n}>{n}★ naturais</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Forma
+          <select name="form">
+            <option value="">Todas</option>
+            <option value="0">Forma base</option>
+            <option value="1">Despertado</option>
+            <option value="2">Segundo despertar</option>
+          </select>
+        </label>
+        <label>
+          Habilidade de líder
+          <select name="leader">
+            <option value="">Todas</option>
+            <option value="any">Com habilidade de líder</option>
+            <option value="none">Sem habilidade de líder</option>
+            {Object.entries(attributeLabels).map(([value, name]) => (
+              <option value={value}>{name}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Disponibilidade
+          <select name="availability">
+            <option value="obtainable">Obtíveis</option>
+            <option value="all">Todos os registros</option>
+            <option value="unobtainable">Não obtíveis / NPCs</option>
+          </select>
+        </label>
+        <label>
+          Ordenar por
+          <select name="sort">
+            <option value="name">Nome (A–Z)</option>
+            <option value="stars">Mais estrelas</option>
+            <option value="speed">Maior SPD base</option>
+          </select>
+        </label>
+      </div>
+      <div class="bestiary-results-bar">
+        <p data-monster-count role="status" aria-live="polite" tabindex="-1">
+          {sorted.length.toLocaleString('pt-BR')} resultados · página {page} de{' '}
+          {totalPages}
+        </p>
+        <button type="button" class="bestiary-clear" data-reset-monsters>
+          Limpar filtros
+        </button>
+      </div>
+    </form>
+    <noscript>
+      <p class="notice">
+        Use as páginas abaixo para explorar todos os monstros. Ative JavaScript
+        para buscar e filtrar.
+      </p>
+    </noscript>
+    <div class="notice" data-monster-error hidden role="alert">
+      Não foi possível carregar a busca.{' '}
+      <button type="button" class="bestiary-clear" data-retry-monsters>
+        Tentar novamente
+      </button>
+    </div>
+    <div class="bestiary-grid" data-monster-grid>
+      {entries.map((monster) => (
+        <MonsterCard monster={monster} />
+      ))}
+    </div>
+    {Object.keys(elementLabels).map((element) => (
+      <template data-element-icon={element}>
+        <ElementIcon element={element as Element} />
+      </template>
+    ))}
+    <div class="empty-state" data-monster-empty hidden>
+      <Icon name="search" size={30} />
+      <h2>Nenhum monstro encontrado</h2>
+      <p>Tente outro nome ou remova alguns filtros.</p>
+      <button type="button" class="button" data-reset-monsters>
+        Limpar filtros
+      </button>
+    </div>
+    <nav
+      class="bestiary-pagination"
+      aria-label="Páginas de monstros"
+      data-monster-pagination
+    >
+      <a
+        class="button button-secondary"
+        href={catalogPageUrl(page - 1)}
+        data-page-prev
+        hidden={page === 1}
+      >
+        ← Anterior
+      </a>
+      <span data-page-label>
+        Página {page} de {totalPages}
+      </span>
+      <a
+        class="button button-secondary"
+        href={catalogPageUrl(page + 1)}
+        data-page-next
+        hidden={page === totalPages}
+      >
+        Próxima →
+      </a>
+    </nav>
+  </section>
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      Inclui formas e materiais registrados no{' '}
+      <a href="https://swarfarm.com/" target="_blank" rel="noreferrer">
+        SWARFARM ↗
+      </a>
+      . Selecione “Todos os registros” para incluir NPCs e formas não obtíveis.
+      Estrelas indicam a raridade natural.
+    </p>
+  </aside>
+  <script>
+    import '../scripts/monsters';
+  </script>
+</Layout>

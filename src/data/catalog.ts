@@ -3,6 +3,7 @@ import defenseData from './defenses.json';
 import counterData from './counters.json';
 import type { Monster, Defense, Counter } from '../lib/types';
 import { validateCatalog } from '../lib/validate';
+import { elementLabels } from '../lib/monster-catalog';
 
 export const monsters = monsterData as Monster[];
 export const defenses = defenseData as Defense[];
@@ -23,10 +24,4 @@ export const searchText = (defense: Defense) =>
       return [monster.name, ...monster.aliases].join(' ');
     })
     .join(' ');
-export const elementNames = {
-  fire: 'Fogo',
-  water: 'Água',
-  wind: 'Vento',
-  light: 'Luz',
-  dark: 'Trevas',
-};
+export const elementNames = elementLabels;

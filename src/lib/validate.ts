@@ -20,10 +20,14 @@ export function validateCatalog(
   }
   const monsterMap = new Map(monsters.map((monster) => [monster.id, monster]));
   const defenseMap = new Map(defenses.map((defense) => [defense.id, defense]));
+  const sourceIds = monsters.flatMap(monster => monster.swarfarmId === undefined ? [] : [monster.swarfarmId]);
+  if (new Set(sourceIds).size !== sourceIds.length) fail('IDs SWARFARM duplicados.');
   for (const monster of monsters) {
     if (
       !monster.name?.trim() ||
-      !['fire', 'water', 'wind', 'light', 'dark'].includes(monster.element)
+      !['fire', 'water', 'wind', 'light', 'dark', 'pure'].includes(
+        monster.element,
+      )
     )
       fail(`monstro ${monster.id}.`);
     if (
@@ -39,6 +43,12 @@ export function validateCatalog(
       fail(`aliases de ${monster.id}.`);
     if (monster.image && !monster.image.startsWith('/monsters/'))
       fail(`retrato deve ser local: ${monster.id}.`);
+    if (monster.swarfarmId !== undefined) {
+      if (!Number.isInteger(monster.swarfarmId) || monster.swarfarmId <= 0 || !monster.family?.trim() || !Number.isInteger(monster.familyId)) fail(`origem ou família de ${monster.id}.`);
+      if (![0, 1, 2].includes(monster.awakenLevel!) || typeof monster.obtainable !== 'boolean' || !Number.isFinite(monster.speed) || monster.speed! < 0) fail(`forma ou atributos de ${monster.id}.`);
+      for (const relative of [monster.awakensFrom, monster.awakensTo]) if (relative && !monsterMap.has(relative)) fail(`forma inexistente em ${monster.id}.`);
+      if (monster.leaderSkill && (!monster.leaderSkill.attribute?.trim() || !monster.leaderSkill.area?.trim() || !Number.isFinite(monster.leaderSkill.amount) || monster.leaderSkill.amount <= 0 || (monster.leaderSkill.element && !['fire', 'water', 'wind', 'light', 'dark'].includes(monster.leaderSkill.element)))) fail(`habilidade de líder de ${monster.id}.`);
+    }
   }
   for (const entry of [...defenses, ...counters]) {
     if (

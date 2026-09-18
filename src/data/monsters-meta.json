@@ -1,0 +1,10 @@
+{
+  "source": "https://swarfarm.com/api/v2/monsters/",
+  "importedAt": "2026-09-18T16:38:03.963Z",
+  "count": 3089,
+  "portraits": 2173,
+  "missingPortraits": [
+    "https://swarfarm.com/static/herders/images/monsters/unit_icon_0008_5_3.png",
+    "https://swarfarm.com/static/herders/images/monsters/unit_icon_0196_2_4.png"
+  ]
+}
