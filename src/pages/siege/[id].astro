@@ -9,6 +9,9 @@ import {
   teamName,
   monsterById,
 } from '../../data/catalog';
+
+export const prerender = true;
+
 export const getStaticPaths = (() =>
   defenses.map((defense) => ({
     params: { id: defense.id },

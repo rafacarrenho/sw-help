@@ -17,6 +17,9 @@ import {
   leaderText,
   archetypeLabels,
 } from '../../lib/monster-catalog';
+
+export const prerender = true;
+
 export function getStaticPaths() {
   return monsters.map((monster) => ({
     params: { id: monster.id },
