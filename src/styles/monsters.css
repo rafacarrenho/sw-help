@@ -172,6 +172,9 @@ a.monster:hover .monster-name {
   border: 1px solid var(--border);
   border-radius: 14px;
 }
+.monster-profile-content {
+  min-width: 0;
+}
 .monster-profile-portrait {
   text-align: center;
   padding-top: 8px;
@@ -382,8 +385,12 @@ a.monster:hover .monster-name {
   }
   .monster-profile {
     grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 22px;
+    gap: 20px;
+    padding: 20px 18px;
+  }
+  .monster-profile-portrait {
+    display: grid;
+    justify-items: center;
   }
   .monster-profile-portrait .monster-portrait {
     width: 120px;
@@ -394,19 +401,70 @@ a.monster:hover .monster-name {
   }
   .monster-profile h1 {
     text-align: center;
+    margin-bottom: 16px;
   }
   .monster-profile-tags {
     justify-content: center;
   }
+  .monster-evolution {
+    margin: 18px 0 20px;
+  }
+  .monster-evolution h2 {
+    text-align: center;
+  }
+  .monster-evolution-sequence {
+    justify-content: center;
+    gap: 8px 10px;
+  }
+  .monster-evolution-step {
+    width: 56px;
+    height: 56px;
+  }
   .monster-facts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
   .monster-leader-panel {
     padding: 14px;
     gap: 12px;
+    align-items: flex-start;
   }
   .monster-leader-panel p {
     font-size: 16px;
+  }
+}
+@media (max-width: 420px) {
+  .bestiary-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .monster-profile {
+    padding: 18px 14px;
+  }
+  .monster-profile-tags {
+    gap: 6px;
+  }
+  .monster-profile-tags span {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .monster-evolution-step {
+    width: 48px;
+    height: 48px;
+  }
+  .monster-evolution-arrow {
+    font-size: 18px;
+  }
+  .monster-facts {
+    grid-template-columns: 1fr;
+  }
+  .monster-leader-panel {
+    flex-direction: column;
+  }
+  .leader-emblem {
+    width: 34px;
+    height: 34px;
+    flex-basis: auto;
   }
 }
 @media (prefers-reduced-motion: reduce) {

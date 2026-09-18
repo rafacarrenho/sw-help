@@ -1,9 +1,9 @@
-import monsterData from './monsters.json';
-import defenseData from './defenses.json';
-import counterData from './counters.json';
-import type { Monster, Defense, Counter } from '../lib/types';
-import { validateCatalog } from '../lib/validate';
-import { elementLabels, isFinalMonster } from '../lib/monster-catalog';
+import monsterData from './monsters.json' with { type: 'json' };
+import defenseData from './defenses.json' with { type: 'json' };
+import counterData from './counters.json' with { type: 'json' };
+import type { Monster, Defense, Counter } from '../lib/types.ts';
+import { validateCatalog } from '../lib/validate.ts';
+import { elementLabels, isFinalMonster } from '../lib/monster-catalog.ts';
 
 export const allMonsters = monsterData as Monster[];
 export const monsters = allMonsters.filter(isFinalMonster);
