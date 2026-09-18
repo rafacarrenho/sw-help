@@ -17,18 +17,18 @@ const count = getCounters(defense.id).length;
   data-search={searchText(defense)}
   data-tower={defense.tower}
 >
-  <div class="card-top">
-    <span class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}>
-      <Icon name="tower" size={13} />
-      {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
-    </span>
-    <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
-  </div>
   <a
     class="defense-link"
     href={`/siege/${defense.id}/`}
     aria-label={`Ver counters de ${teamName(defense.team)}`}
   >
+    <div class="card-top">
+      <span class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}>
+        <Icon name="tower" size={13} />
+        {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
+      </span>
+      <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
+    </div>
     <Team team={defense.team} />
     <div class="card-bottom">
       <span>

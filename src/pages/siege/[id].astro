@@ -3,12 +3,14 @@ import type { GetStaticPaths } from 'astro';
 import Layout from '../../layouts/Layout.astro';
 import Team from '../../components/Team.astro';
 import Icon from '../../components/Icon.astro';
+import ElementIcon from '../../components/ElementIcon.astro';
 import {
   defenses,
   getCounters,
   teamName,
   monsterById,
 } from '../../data/catalog';
+import { leaderText } from '../../lib/monster-catalog';
 
 export const prerender = true;
 
@@ -20,6 +22,7 @@ export const getStaticPaths = (() =>
 const { defense } = Astro.props;
 const counters = getCounters(defense.id);
 const name = teamName(defense.team);
+const leader = monsterById.get(defense.team[0])!;
 ---
 
 <Layout
@@ -40,9 +43,23 @@ const name = teamName(defense.team);
   <section class="defense-overview">
     <div>
       <span class="eyebrow">DOSSIÊ DA DEFESA</span>
-      <h1>{defense.label}</h1>
-      <p class="defense-names">{name}</p>
-      <p>{defense.description}</p>
+      <h1>{name}</h1>
+      <div class="defense-meta">
+        <div class="meta-block">
+          <span class="meta-label">Elementos</span>
+          <div class="meta-chips">
+            {defense.team.map((id) => (
+              <span class={`meta-chip meta-chip--${monsterById.get(id)!.element}`}>
+                <ElementIcon element={monsterById.get(id)!.element} />
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Habilidade do líder</span>
+          <p>{leaderText(leader.leaderSkill)}</p>
+        </div>
+      </div>
       <div class="detail-badges">
         <span
           class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}
@@ -91,9 +108,7 @@ const name = teamName(defense.team);
               <table class="counter-meta-table">
                 <thead>
                   <tr>
-                    <th scope="col" class="monster-col-header">
-                      Monstro
-                    </th>
+                    <th scope="col" class="monster-col-header" aria-label="Monstro"></th>
                     <th scope="col" class="sequence-col-header">
                       Seq.
                     </th>
@@ -115,7 +130,26 @@ const name = teamName(defense.team);
                       : [];
                     return (
                       <tr>
-                        <th scope="row">{monster.name}</th>
+                        <td class="monster-cell">
+                          <div class="monster-inline">
+                            <div class="monster-inline-portrait">
+                              {monster.image ? (
+                                <img
+                                  src={monster.image}
+                                  alt=""
+                                  width="36"
+                                  height="36"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <span class="monster-inline-fallback">
+                                  {monster.name.slice(0, 2)}
+                                </span>
+                              )}
+                            </div>
+                            <span class="monster-inline-name">{monster.name}</span>
+                          </div>
+                        </td>
                         <td class="sequence-cell">{index + 1}</td>
                         <td class="rune-cell">
                           {runeSets.length > 0 ? (

@@ -621,8 +621,9 @@ h1 > span:not(.beta-badge) {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 0 17px;
+  padding: 0 17px 0;
   outline-offset: -3px !important;
+  color: inherit;
 }
 .monster-team {
   width: 100%;
@@ -908,9 +909,66 @@ footer {
   font-size: var(--text-base);
   margin-bottom: 12px;
 }
-.defense-overview .defense-names {
-  color: #dbd9d4;
-  font-size: var(--text-base);
+.defense-meta {
+  display: grid;
+  gap: 16px;
+  margin-top: 14px;
+}
+.meta-block {
+  display: grid;
+  gap: 8px;
+}
+.meta-label {
+  font-size: var(--text-xs);
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: #9ea5b1;
+}
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.meta-chip {
+  --element-color: #dfe5ee;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: var(--element-color);
+  color: #111417;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
+.meta-chip--fire {
+  --element-color: #ff7867;
+}
+.meta-chip--water {
+  --element-color: #57caff;
+}
+.meta-chip--wind {
+  --element-color: #ffda58;
+}
+.meta-chip--light {
+  --element-color: #fff5d8;
+}
+.meta-chip--dark {
+  --element-color: #d38bff;
+}
+.meta-chip--pure {
+  --element-color: #f4f0e6;
+}
+.meta-chip svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+.meta-block p {
+  margin: 0;
+  color: #d7dbdf;
+  line-height: 1.7;
 }
 .detail-badges {
   display: flex;
@@ -1021,7 +1079,47 @@ footer {
   color: #d9dde6;
 }
 .counter-meta-table .monster-col-header {
-  min-width: 120px;
+  width: 8px;
+  padding: 0;
+}
+.counter-meta-table .monster-cell {
+  min-width: 150px;
+}
+.monster-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.monster-inline-portrait {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid #7a6958;
+  background: linear-gradient(140deg, #48413b, #222831);
+  flex-shrink: 0;
+}
+.monster-inline-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.monster-inline-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--gold);
+}
+.monster-inline-name {
+  font-weight: 600;
+  color: #f1d2a1;
+  line-height: 1.3;
 }
 .counter-meta-table .sequence-col-header,
 .counter-meta-table .sequence-cell {
