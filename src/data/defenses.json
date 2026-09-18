@@ -1,66 +1,50 @@
 [
   {
-    "id": "mo-long-nora-triana",
-    "team": ["mo-long", "nora", "triana"],
-    "tower": "open",
-    "label": "Sustain & pressão",
-    "description": "Uma composição com dano, recuperação e proteção.",
-    "status": "example"
-  },
-  {
-    "id": "carcano-clara-savannah",
-    "team": ["carcano", "clara", "savannah"],
-    "tower": "open",
-    "label": "Abertura agressiva",
-    "description": "Controle e pressão desde o primeiro turno.",
-    "status": "example"
-  },
-  {
-    "id": "carcano-vigor-triana",
-    "team": ["carcano", "vigor", "triana"],
+    "id": "morris-eshir-orion",
+    "team": ["morris-wind-1020", "eshir-light-1326", "orion-water-589"],
     "tower": "4star",
-    "label": "Pressão contínua",
-    "description": "Uma defesa de torre 4★ com suporte e dano.",
+    "label": "Pressão & controle",
+    "description": "Composição com dano de alvo único, controle e sustain para manter a pressão.",
     "status": "example"
   },
   {
-    "id": "martina-shaina-triana",
-    "team": ["shaina", "martina", "triana"],
+    "id": "morris-trevor-figaro",
+    "team": ["morris-wind-1020", "trevor-fire-894", "figaro-light-663"],
     "tower": "4star",
-    "label": "Ataques em conjunto",
-    "description": "Uma composição de gêmeas com proteção.",
+    "label": "Burst versátil",
+    "description": "Defesa com dano focado e boa capacidade de pressionar em sequência.",
     "status": "example"
   },
   {
-    "id": "feng-yan-perna-woosa",
-    "team": ["feng-yan", "perna", "woosa"],
-    "tower": "open",
-    "label": "Resistência & sustain",
-    "description": "Uma composição voltada a lutas prolongadas.",
-    "status": "example"
-  },
-  {
-    "id": "khmun-vigor-skogul",
-    "team": ["khmun", "vigor", "skogul"],
+    "id": "morris-orion-trevor",
+    "team": ["morris-wind-1020", "orion-water-589", "trevor-fire-894"],
     "tower": "4star",
-    "label": "Dano & proteção",
-    "description": "Escudo, suporte e ameaça de dano em área.",
+    "label": "Controle & pressão",
+    "description": "Composição equilibrada com suporte, controle e bom potencial de dano em sequência.",
     "status": "example"
   },
   {
-    "id": "carcano-clara-kinki",
-    "team": ["carcano", "clara", "kinki"],
+    "id": "solveig-vigor-cichlid",
+    "team": ["solveig-fire-2193", "vigor", "cichlid-wind-837"],
     "tower": "4star",
-    "label": "Controle & retaliação",
-    "description": "Uma composição com controle e contra-ataques.",
+    "label": "Sustain e pressão",
+    "description": "Composição com suporte, dano contínuo e certa resistência para sustentar a defesa.",
     "status": "example"
   },
   {
-    "id": "mo-long-perna-woosa",
-    "team": ["mo-long", "perna", "woosa"],
-    "tower": "open",
-    "label": "Pressão & imunidade",
-    "description": "Dano de alvo único com suporte defensivo.",
+    "id": "solveig-cichlid-molly",
+    "team": ["solveig-fire-2193", "cichlid-wind-837", "molly-light-838"],
+    "tower": "4star",
+    "label": "Pressão em cadeia",
+    "description": "Defesa com pressão consistente e boa continuidade de dano em sequência.",
+    "status": "example"
+  },
+  {
+    "id": "solveig-iris-hraesvelg",
+    "team": ["solveig-fire-2193", "iris-light-858", "hraesvelg-wind-520"],
+    "tower": "4star",
+    "label": "Pressão & controle",
+    "description": "Defesa com dano contínuo, suporte e boa capacidade de pressionar a linha adversária.",
     "status": "example"
   }
 ]
