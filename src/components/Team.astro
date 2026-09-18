@@ -1,0 +1,14 @@
+---
+import Monster from './Monster.astro';
+interface Props {
+  team: string[];
+  leader?: string | null;
+}
+const { team, leader } = Astro.props;
+---
+
+<div class="monster-team">
+  {team.map((id) => (
+    <Monster id={id} leader={id === leader} />
+  ))}
+</div>

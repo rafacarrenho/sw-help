@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout title="Página não encontrada">
+  <div class="empty-state not-found">
+    <span class="eyebrow">404 · FORA DO MAPA</span>
+    <h1>Esta defesa não está por aqui.</h1>
+    <p>O endereço pode ter mudado. Explore as composições do catálogo.</p>
+    <a class="button" href="/">
+      Voltar ao Siege Counter <Icon name="arrow" size={16} />
+    </a>
+  </div>
+</Layout>

@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import DefenseCard from '../components/DefenseCard.astro';
+import { defenses, counters, monsters } from '../data/catalog';
+---
+
+<Layout>
+  <section class="page-intro">
+    <div>
+      <span class="eyebrow">
+        <span></span> PLANEJE. ADAPTE. CONQUISTE.
+      </span>
+      <h1>
+        Siege <span>Counter</span>
+        <span class="beta-badge">BETA</span>
+      </h1>
+      <p>
+        Uma boa ofensiva começa antes da batalha.
+        <br class="mobile-break" /> Encontre o time para enfrentar cada defesa.
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="swords" size={66} />
+    </div>
+  </section>
+  <div class="stats-grid" aria-label="Resumo do catálogo">
+    <div class="stat">
+      <span class="stat-icon amber">
+        <Icon name="shield" size={21} />
+      </span>
+      <div>
+        <strong>{defenses.length.toString().padStart(2, '0')}</strong>
+        <span>Defesas no catálogo</span>
+      </div>
+      <span class="stat-detail">COMPOSIÇÕES</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon green">
+        <Icon name="swords" size={21} />
+      </span>
+      <div>
+        <strong>{counters.length.toString().padStart(2, '0')}</strong>
+        <span>Counters de exemplo</span>
+      </div>
+      <span class="stat-detail">ESTRATÉGIAS</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon blue">
+        <Icon name="book" size={21} />
+      </span>
+      <div>
+        <strong>{monsters.length}</strong>
+        <span>Monstros cadastrados</span>
+      </div>
+      <span class="stat-detail">BESTIÁRIO</span>
+    </div>
+  </div>
+  <section class="catalog" aria-labelledby="catalog-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="catalog-title">Encontre uma defesa</h2>
+        <p>Busque pelos monstros do time adversário.</p>
+      </div>
+      <span class="section-icon">
+        <Icon name="grid" size={18} />
+      </span>
+    </div>
+    <form class="search-form" role="search" action="/" data-search-form>
+      <label class="search-box">
+        <Icon name="search" size={20} />
+        <span class="sr-only">Buscar monstros da defesa</span>
+        <input
+          type="search"
+          name="q"
+          id="monster-search"
+          placeholder="Buscar monstros... ex.: Carcano, Clara"
+          autocomplete="off"
+          maxlength="200"
+        />
+        <span class="search-hint">nomes em qualquer ordem</span>
+      </label>
+      <div class="filter-row">
+        <fieldset>
+          <legend class="sr-only">Tipo de torre</legend>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="all" checked />
+            <span>Todas as defesas</span>
+          </label>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="4star" />
+            <span>
+              <Icon name="tower" size={14} /> Torre 4★
+            </span>
+          </label>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="open" />
+            <span>
+              <Icon name="tower" size={14} /> Torre livre
+            </span>
+          </label>
+        </fieldset>
+        <span
+          class="result-count"
+          data-result-count
+          role="status"
+          aria-live="polite"
+        >
+          {defenses.length} defesas encontradas
+        </span>
+      </div>
+    </form>
+    <noscript>
+      <p class="notice">
+        A busca precisa de JavaScript. Todas as defesas e seus detalhes estão
+        disponíveis abaixo.
+      </p>
+    </noscript>
+    <div class="defense-grid">
+      {defenses.map((defense, index) => (
+        <DefenseCard defense={defense} index={index} />
+      ))}
+    </div>
+    <div class="empty-state" data-empty-state hidden>
+      <span class="empty-icon">
+        <Icon name="search" size={30} />
+      </span>
+      <h3>Nenhuma defesa encontrada</h3>
+      <p>Tente outro monstro ou amplie o tipo de torre.</p>
+      <button class="button" type="button" data-clear-filters>
+        Limpar filtros <Icon name="arrow" size={16} />
+      </button>
+    </div>
+  </section>
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      <strong>Um ponto de partida para sua estratégia.</strong> Este catálogo
+      contém exemplos demonstrativos, ainda sem validação competitiva. Runas,
+      artefatos e a ordem dos turnos fazem diferença.
+    </p>
+    <span class="example-tag">CATÁLOGO DE EXEMPLO</span>
+  </aside>
+  <script>
+    import '../scripts/catalog';
+  </script>
+</Layout>

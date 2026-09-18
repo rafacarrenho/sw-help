@@ -1,0 +1,198 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import Team from '../../components/Team.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  defenses,
+  getCounters,
+  teamName,
+  monsterById,
+} from '../../data/catalog';
+export const getStaticPaths = (() =>
+  defenses.map((defense) => ({
+    params: { id: defense.id },
+    props: { defense },
+  }))) satisfies GetStaticPaths;
+const { defense } = Astro.props;
+const counters = getCounters(defense.id);
+const name = teamName(defense.team);
+---
+
+<Layout
+  title={name}
+  description={`Composição e counters cadastrados para ${name}.`}
+  detail
+>
+  <div class="detail-toolbar">
+    <a href="/" class="back-link" data-back-link>
+      <span>←</span> Todas as defesas
+    </a>
+    <button type="button" class="button button-secondary" data-share hidden>
+      <Icon name="link" size={16} />
+      <span>Copiar link</span>
+    </button>
+    <span class="sr-only" data-share-status role="status"></span>
+  </div>
+  <section class="defense-overview">
+    <div>
+      <span class="eyebrow">DOSSIÊ DA DEFESA</span>
+      <h1>{defense.label}</h1>
+      <p class="defense-names">{name}</p>
+      <p>{defense.description}</p>
+      <div class="detail-badges">
+        <span
+          class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}
+        >
+          <Icon name="tower" size={14} />
+          {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
+        </span>
+        <span class="example-tag">
+          {defense.status === 'example'
+            ? 'COMPOSIÇÃO DE EXEMPLO'
+            : 'COMPOSIÇÃO DOCUMENTADA'}
+        </span>
+      </div>
+    </div>
+    <div class="defense-team-panel">
+      <span class="panel-label">TIME ADVERSÁRIO</span>
+      <Team team={defense.team} leader={defense.leader} />
+      <span class="leader-caption">L indica o líder da composição</span>
+    </div>
+  </section>
+  <section class="counter-section" aria-labelledby="counter-heading">
+    <div class="section-heading">
+      <div>
+        <h2 id="counter-heading">
+          Possíveis respostas <span class="count-badge">{counters.length}</span>
+        </h2>
+        <p>Explore a composição e entenda a proposta de cada time.</p>
+      </div>
+      <Icon name="swords" size={22} />
+    </div>
+    {counters.length === 0 ? (
+      <div class="empty-state">
+        <span class="empty-icon">
+          <Icon name="book" size={30} />
+        </span>
+        <h3>Esta defesa ainda não tem counters</h3>
+        <p>As estratégias desta composição serão adicionadas ao catálogo.</p>
+        <a class="button" href="/" data-back-link>
+          Explorar outras defesas <Icon name="arrow" size={16} />
+        </a>
+      </div>
+    ) : (
+      counters.map((counter, index) => (
+        <article class="counter-card">
+          <div class="counter-composition">
+            <div class="counter-label">
+              <span>OFENSIVA {String(index + 1).padStart(2, '0')}</span>
+              <span class="example-tag">
+                {counter.status === 'example' ? 'EXEMPLO' : 'COM FONTE'}
+              </span>
+            </div>
+            <Team team={counter.team} leader={counter.leader} />
+            <div class="rune-list">
+              <h4>Runas sugeridas no exemplo</h4>
+              {counter.runes.map((rune) => (
+                <div>
+                  <span>{monsterById.get(rune.monsterId)!.name}</span>
+                  <strong>{rune.sets}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div class="counter-strategy">
+            <h3>{counter.title}</h3>
+            <p>{counter.strategy}</p>
+            {counter.turnOrder.length > 0 && (
+              <div class="turn-order">
+                <span>ORDEM INTERNA SUGERIDA</span>
+                <div>
+                  {counter.turnOrder.map((id, i) => (
+                    <>
+                      <strong>{monsterById.get(id)!.name}</strong>
+                      {i < counter.turnOrder.length - 1 && (
+                        <Icon name="arrow" size={14} />
+                      )}
+                    </>
+                  ))}
+                </div>
+                <small>
+                  Não calcula ticks nem garante agir antes do adversário.
+                </small>
+              </div>
+            )}
+            <h4>Plano de batalha</h4>
+            <ol class="battle-steps">
+              {counter.steps.map((step) => (
+                <li>{step}</li>
+              ))}
+            </ol>
+            <div class="caution">
+              <Icon name="info" size={17} />
+              <p>{counter.caution}</p>
+            </div>
+            {counter.status === 'example' && (
+              <p class="example-disclaimer">
+                Demonstração de cadastro. Este matchup ainda não foi validado.
+              </p>
+            )}
+            {counter.sources.length > 0 && (
+              <div class="source-list">
+                <h4>Fontes</h4>
+                {counter.sources.map((source) => (
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.title} ↗
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    )}
+  </section>
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      <strong>Runas também vencem batalhas.</strong> Avalie velocidade,
+      artefatos e qualidade das runas antes de escolher uma ofensiva. Os
+      exemplos não garantem vitória.
+    </p>
+  </aside>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const backParams = new URLSearchParams();
+    if (params.get('q')) backParams.set('q', params.get('q')!.slice(0, 200));
+    if (['4star', 'open'].includes(params.get('tower') ?? ''))
+      backParams.set('tower', params.get('tower')!);
+    document
+      .querySelectorAll<HTMLAnchorElement>('[data-back-link]')
+      .forEach((link) => {
+        link.search = backParams.toString();
+      });
+    const share = document.querySelector<HTMLButtonElement>('[data-share]')!;
+    if (navigator.clipboard?.writeText) {
+      share.hidden = false;
+      share.addEventListener('click', async () => {
+        const status = document.querySelector<HTMLElement>(
+          '[data-share-status]',
+        )!;
+        try {
+          await navigator.clipboard.writeText(
+            `${location.origin}${location.pathname}`,
+          );
+          share.querySelector('span')!.textContent = 'Link copiado';
+          status.textContent = 'Link da defesa copiado.';
+          setTimeout(() => {
+            share.querySelector('span')!.textContent = 'Copiar link';
+          }, 2200);
+        } catch {
+          status.textContent =
+            'Não foi possível copiar. Copie o endereço na barra do navegador.';
+        }
+      });
+    }
+  </script>
+</Layout>

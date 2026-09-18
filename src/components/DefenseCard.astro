@@ -1,0 +1,45 @@
+---
+import type { Defense } from '../lib/types';
+import { getCounters, searchText, teamName } from '../data/catalog';
+import Team from './Team.astro';
+import Icon from './Icon.astro';
+interface Props {
+  defense: Defense;
+  index: number;
+}
+const { defense, index } = Astro.props;
+const count = getCounters(defense.id).length;
+---
+
+<article
+  class="defense-card"
+  data-defense-card
+  data-search={searchText(defense)}
+  data-tower={defense.tower}
+>
+  <div class="card-top">
+    <span class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}>
+      <Icon name="tower" size={13} />
+      {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
+    </span>
+    <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
+  </div>
+  <a
+    class="defense-link"
+    href={`/siege/${defense.id}/`}
+    aria-label={`Ver counters de ${teamName(defense.team)}`}
+  >
+    <Team team={defense.team} leader={defense.leader} />
+    <h2>{defense.label}</h2>
+    <p class="card-description">{defense.description}</p>
+    <div class="card-bottom">
+      <span>
+        <Icon name="swords" size={15} />
+        <strong>{count}</strong> {count === 1 ? 'counter' : 'counters'}
+      </span>
+      <span class="card-cta">
+        Ver defesa <Icon name="arrow" size={16} />
+      </span>
+    </div>
+  </a>
+</article>

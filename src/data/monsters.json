@@ -1,0 +1,252 @@
+[
+  {
+    "id": "mo-long",
+    "name": "Mo Long",
+    "element": "water",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/mo-long.png",
+    "source": "https://swarfarm.com/api/v2/monsters/998/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0041_0_4.png"
+  },
+  {
+    "id": "nora",
+    "name": "Nora",
+    "element": "fire",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/nora.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1877/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0078_1_2.png"
+  },
+  {
+    "id": "triana",
+    "name": "Triana",
+    "element": "wind",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/triana.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1030/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0043_2_2.png"
+  },
+  {
+    "id": "carcano",
+    "name": "Carcano",
+    "element": "fire",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/carcano.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1259/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0048_1_1.png"
+  },
+  {
+    "id": "clara",
+    "name": "Clara",
+    "element": "fire",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/clara.png",
+    "source": "https://swarfarm.com/api/v2/monsters/250/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0014_1_4.png"
+  },
+  {
+    "id": "savannah",
+    "name": "Savannah",
+    "element": "wind",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/savannah.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1341/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0054_2_0.png"
+  },
+  {
+    "id": "kinki",
+    "name": "Kinki",
+    "element": "light",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/kinki.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1815/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0073_1_4.png"
+  },
+  {
+    "id": "martina",
+    "name": "Martina",
+    "element": "dark",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/martina.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1188/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0045_4_3.png"
+  },
+  {
+    "id": "shaina",
+    "name": "Shaina",
+    "element": "fire",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/shaina.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1175/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0045_1_1.png"
+  },
+  {
+    "id": "feng-yan",
+    "name": "Feng Yan",
+    "element": "wind",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/feng-yan.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1000/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0041_2_4.png"
+  },
+  {
+    "id": "perna",
+    "name": "Perna",
+    "element": "fire",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/perna.png",
+    "source": "https://swarfarm.com/api/v2/monsters/288/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0017_1_3.png"
+  },
+  {
+    "id": "woosa",
+    "name": "Woosa",
+    "element": "water",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/woosa.png",
+    "source": "https://swarfarm.com/api/v2/monsters/649/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0031_0_1.png"
+  },
+  {
+    "id": "lulu",
+    "name": "Lulu",
+    "element": "water",
+    "naturalStars": 2,
+    "aliases": ["Lulu and Friends"],
+    "image": "/monsters/lulu.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1756/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0070_3_0.png"
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "element": "wind",
+    "naturalStars": 3,
+    "aliases": [],
+    "image": "/monsters/copper.png",
+    "source": "https://swarfarm.com/api/v2/monsters/2247/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0125_3_3.png"
+  },
+  {
+    "id": "bulldozer",
+    "name": "Bulldozer",
+    "element": "fire",
+    "naturalStars": 3,
+    "aliases": [],
+    "image": "/monsters/bulldozer.png",
+    "source": "https://swarfarm.com/api/v2/monsters/2251/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0126_3_2.png"
+  },
+  {
+    "id": "imesety",
+    "name": "Imesety",
+    "element": "wind",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/imesety.png",
+    "source": "https://swarfarm.com/api/v2/monsters/932/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0039_2_0.png"
+  },
+  {
+    "id": "galleon",
+    "name": "Galleon",
+    "element": "water",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/galleon.png",
+    "source": "https://swarfarm.com/api/v2/monsters/825/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0034_0_0.png"
+  },
+  {
+    "id": "tiana",
+    "name": "Tiana",
+    "element": "wind",
+    "naturalStars": 5,
+    "aliases": [],
+    "image": "/monsters/tiana.png",
+    "source": "https://swarfarm.com/api/v2/monsters/583/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0033_2_3.png"
+  },
+  {
+    "id": "kaki",
+    "name": "Kaki",
+    "element": "fire",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/kaki.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1813/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0073_1_2.png"
+  },
+  {
+    "id": "khmun",
+    "name": "Khmun",
+    "element": "fire",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/khmun.png",
+    "source": "https://swarfarm.com/api/v2/monsters/924/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0038_1_1.png"
+  },
+  {
+    "id": "skogul",
+    "name": "Skogul",
+    "element": "wind",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/skogul.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1236/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0047_2_0.png"
+  },
+  {
+    "id": "vigor",
+    "name": "Vigor",
+    "element": "water",
+    "naturalStars": 3,
+    "aliases": [],
+    "image": "/monsters/vigor.png",
+    "source": "https://swarfarm.com/api/v2/monsters/1323/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0053_0_1.png"
+  },
+  {
+    "id": "tractor",
+    "name": "Tractor",
+    "element": "water",
+    "naturalStars": 3,
+    "aliases": [],
+    "image": "/monsters/tractor.png",
+    "source": "https://swarfarm.com/api/v2/monsters/2250/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0126_3_1.png"
+  },
+  {
+    "id": "windy",
+    "name": "Windy",
+    "element": "wind",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/windy.png",
+    "source": "https://swarfarm.com/api/v2/monsters/960/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0040_2_1.png"
+  },
+  {
+    "id": "lushen",
+    "name": "Lushen",
+    "element": "wind",
+    "naturalStars": 4,
+    "aliases": [],
+    "image": "/monsters/lushen.png",
+    "source": "https://swarfarm.com/api/v2/monsters/526/",
+    "imageSource": "https://swarfarm.com/static/herders/images/monsters/unit_icon_0011_2_2.png"
+  }
+]

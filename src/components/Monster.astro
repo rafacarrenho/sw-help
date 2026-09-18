@@ -1,0 +1,35 @@
+---
+import { monsterById, elementNames } from '../data/catalog';
+import Icon from './Icon.astro';
+interface Props {
+  id: string;
+  leader?: boolean;
+}
+const { id, leader = false } = Astro.props;
+const monster = monsterById.get(id)!;
+---
+
+<div class={`monster monster--${monster.element}`}>
+  <div class="monster-portrait">
+    <span class="monster-fallback" aria-hidden="true">
+      {monster.name.slice(0, 2)}
+    </span>
+    {monster.image && (
+      <img src={monster.image} alt="" width="100" height="100" loading="lazy" />
+    )}
+    {leader && (
+      <span
+        class="leader-marker"
+        title="Líder da composição"
+        aria-label="Líder"
+      >
+        L
+      </span>
+    )}
+    <span class="element-marker" title={elementNames[monster.element]}>
+      <Icon name={monster.element} size={12} />
+    </span>
+  </div>
+  <span class="monster-name">{monster.name}</span>
+  <span class="monster-element">{elementNames[monster.element]}</span>
+</div>

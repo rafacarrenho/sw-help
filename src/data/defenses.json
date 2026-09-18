@@ -1,0 +1,74 @@
+[
+  {
+    "id": "mo-long-nora-triana",
+    "team": ["mo-long", "nora", "triana"],
+    "tower": "open",
+    "label": "Sustain & pressão",
+    "description": "Uma composição com dano, recuperação e proteção.",
+    "leader": "mo-long",
+    "status": "example"
+  },
+  {
+    "id": "carcano-clara-savannah",
+    "team": ["carcano", "clara", "savannah"],
+    "tower": "open",
+    "label": "Abertura agressiva",
+    "description": "Controle e pressão desde o primeiro turno.",
+    "leader": "carcano",
+    "status": "example"
+  },
+  {
+    "id": "carcano-vigor-triana",
+    "team": ["carcano", "vigor", "triana"],
+    "tower": "4star",
+    "label": "Pressão contínua",
+    "description": "Uma defesa de torre 4★ com suporte e dano.",
+    "leader": "carcano",
+    "status": "example"
+  },
+  {
+    "id": "martina-shaina-triana",
+    "team": ["martina", "shaina", "triana"],
+    "tower": "4star",
+    "label": "Ataques em conjunto",
+    "description": "Uma composição de gêmeas com proteção.",
+    "leader": "shaina",
+    "status": "example"
+  },
+  {
+    "id": "feng-yan-perna-woosa",
+    "team": ["feng-yan", "perna", "woosa"],
+    "tower": "open",
+    "label": "Resistência & sustain",
+    "description": "Uma composição voltada a lutas prolongadas.",
+    "leader": "feng-yan",
+    "status": "example"
+  },
+  {
+    "id": "khmun-vigor-skogul",
+    "team": ["khmun", "vigor", "skogul"],
+    "tower": "4star",
+    "label": "Dano & proteção",
+    "description": "Escudo, suporte e ameaça de dano em área.",
+    "leader": "khmun",
+    "status": "example"
+  },
+  {
+    "id": "carcano-clara-kinki",
+    "team": ["carcano", "clara", "kinki"],
+    "tower": "4star",
+    "label": "Controle & retaliação",
+    "description": "Uma composição com controle e contra-ataques.",
+    "leader": "carcano",
+    "status": "example"
+  },
+  {
+    "id": "mo-long-perna-woosa",
+    "team": ["mo-long", "perna", "woosa"],
+    "tower": "open",
+    "label": "Pressão & imunidade",
+    "description": "Dano de alvo único com suporte defensivo.",
+    "leader": "mo-long",
+    "status": "example"
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "sustain-demo",
+    "defenseId": "mo-long-nora-triana",
+    "team": ["feng-yan", "lulu", "woosa"],
+    "leader": "feng-yan",
+    "title": "Sustain para uma luta longa",
+    "strategy": "Exemplo de composição defensiva para estudar uma abordagem de luta longa. A interação com esta defesa ainda precisa ser validada.",
+    "steps": [
+      "Preserve as habilidades de proteção para os turnos de maior ameaça.",
+      "Defina a prioridade de alvo depois de avaliar runas e velocidade da defesa."
+    ],
+    "turnOrder": ["feng-yan", "lulu", "woosa"],
+    "runes": [
+      {
+        "monsterId": "feng-yan",
+        "sets": "Violent / Will"
+      },
+      {
+        "monsterId": "lulu",
+        "sets": "Violent / Will"
+      },
+      {
+        "monsterId": "woosa",
+        "sets": "Swift / Will"
+      }
+    ],
+    "caution": "Não há velocidade mínima validada. Resistência, artefatos e procs podem alterar completamente o resultado.",
+    "status": "example",
+    "sources": []
+  },
+  {
+    "id": "copper-demo",
+    "defenseId": "mo-long-nora-triana",
+    "team": ["copper", "bulldozer", "imesety"],
+    "leader": "imesety",
+    "title": "Burst baseado em defesa",
+    "strategy": "Exemplo para registrar uma estratégia de dano baseado em DEF. Não representa um counter comprovado desta composição.",
+    "steps": [
+      "Planeje o primeiro alvo e a sequência de buffs.",
+      "Confira a defesa dos alvos antes de depender de ignorar DEF."
+    ],
+    "turnOrder": ["imesety", "copper", "bulldozer"],
+    "runes": [
+      {
+        "monsterId": "copper",
+        "sets": "Rage / Will"
+      },
+      {
+        "monsterId": "bulldozer",
+        "sets": "Rage / Will"
+      },
+      {
+        "monsterId": "imesety",
+        "sets": "Swift / Will"
+      }
+    ],
+    "caution": "A proteção de Triana exige planejamento. Não use esta combinação sem validar a interação.",
+    "status": "example",
+    "sources": []
+  },
+  {
+    "id": "cleave-demo",
+    "defenseId": "carcano-clara-savannah",
+    "team": ["galleon", "tiana", "kaki"],
+    "leader": "galleon",
+    "title": "Abertura com dano em área",
+    "strategy": "Modelo de uma sequência de preparação e dano em área, sujeito à disputa de velocidade e à resistência.",
+    "steps": [
+      "Tiana prepara a abertura; Galleon aplica os efeitos de suporte.",
+      "Kaki finaliza a sequência com dano em área."
+    ],
+    "turnOrder": ["tiana", "galleon", "kaki"],
+    "runes": [
+      {
+        "monsterId": "galleon",
+        "sets": "Swift / Will"
+      },
+      {
+        "monsterId": "tiana",
+        "sets": "Swift / Will"
+      },
+      {
+        "monsterId": "kaki",
+        "sets": "Fatal / Will"
+      }
+    ],
+    "caution": "A ordem interna não garante agir antes da defesa. O speed tuning ainda precisa ser calculado.",
+    "status": "example",
+    "sources": []
+  },
+  {
+    "id": "tractor-demo",
+    "defenseId": "carcano-vigor-triana",
+    "team": ["tractor", "lulu", "windy"],
+    "leader": null,
+    "title": "Composição de resistência",
+    "strategy": "Exemplo para organizar uma abordagem com suporte e monstros resistentes. Matchup ainda não validado.",
+    "steps": [
+      "Observe a distribuição de dano e preserve a recuperação.",
+      "Adapte a prioridade de alvo à situação da batalha."
+    ],
+    "turnOrder": [],
+    "runes": [
+      {
+        "monsterId": "tractor",
+        "sets": "Vampire / Will"
+      },
+      {
+        "monsterId": "lulu",
+        "sets": "Violent / Will"
+      },
+      {
+        "monsterId": "windy",
+        "sets": "Destroy / Will"
+      }
+    ],
+    "caution": "Qualidade de runas, Destroy e procs influenciam lutas longas.",
+    "status": "example",
+    "sources": []
+  },
+  {
+    "id": "burst-demo",
+    "defenseId": "khmun-vigor-skogul",
+    "team": ["copper", "bulldozer", "imesety"],
+    "leader": "imesety",
+    "title": "Preparação e dano concentrado",
+    "strategy": "Exemplo de cadastro de um time de dano concentrado; exige validação contra a defesa indicada.",
+    "steps": [
+      "Registre o alvo inicial após testar a composição.",
+      "Ajuste Imesety para preparar o atacante escolhido."
+    ],
+    "turnOrder": ["imesety", "copper", "bulldozer"],
+    "runes": [
+      {
+        "monsterId": "copper",
+        "sets": "Rage / Will"
+      },
+      {
+        "monsterId": "bulldozer",
+        "sets": "Rage / Will"
+      },
+      {
+        "monsterId": "imesety",
+        "sets": "Swift / Will"
+      }
+    ],
+    "caution": "Não há limiares de DEF, dano ou velocidade comprovados neste exemplo.",
+    "status": "example",
+    "sources": []
+  }
+]
