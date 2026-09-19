@@ -85,7 +85,10 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
   const availability = hasLegacyFormOverride ? 'obtainable' : rawAvailability;
   return {
     q: (params.get('q') ?? '').slice(0, 200),
-    element: allowed('element', catalogElementOptions.map(([element]) => element)),
+    element: allowed(
+      'element',
+      catalogElementOptions.map(([element]) => element),
+    ),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
     sort: allowed('sort', ['name', 'stars', 'speed'], 'name'),

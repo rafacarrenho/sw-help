@@ -1042,7 +1042,7 @@ footer {
 }
 .counter-table-wrap {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: visible;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -1050,7 +1050,8 @@ footer {
 }
 .counter-meta-table {
   width: 100%;
-  min-width: 480px;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: collapse;
   background: #171b20;
   font-size: var(--text-sm);
@@ -1085,11 +1086,22 @@ footer {
   color: #d9dde6;
 }
 .counter-meta-table .monster-col-header {
-  width: 8px;
+  width: 38%;
   padding: 0;
 }
 .counter-meta-table .monster-cell {
-  min-width: 150px;
+  min-width: 0;
+}
+.counter-meta-table .sequence-col-header,
+.counter-meta-table .sequence-cell {
+  width: 12%;
+  text-align: center;
+}
+.counter-meta-table .rune-cell {
+  width: 30%;
+}
+.counter-meta-table td:last-child {
+  width: 20%;
 }
 .monster-inline {
   display: flex;
@@ -1127,13 +1139,8 @@ footer {
   color: #f1d2a1;
   line-height: 1.3;
 }
-.counter-meta-table .sequence-col-header,
-.counter-meta-table .sequence-cell {
-  width: 64px;
-  text-align: center;
-}
 .counter-meta-table .rune-cell {
-  min-width: 110px;
+  min-width: 0;
 }
 .counter-meta-table .rune-cell div {
   line-height: 1.5;
@@ -1527,6 +1534,7 @@ footer {
   }
   .counter-table-wrap {
     margin-top: 10px;
+    overflow-x: auto;
   }
   .counter-meta-table {
     min-width: 420px;
