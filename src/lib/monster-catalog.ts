@@ -65,7 +65,6 @@ export interface MonsterFilters {
   q: string;
   element: string;
   stars: string;
-  form: string;
   leader: string;
   sort: string;
   availability: string;
@@ -73,14 +72,21 @@ export interface MonsterFilters {
 export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
   const allowed = (key: string, values: string[], fallback = '') =>
     values.includes(params.get(key) ?? '') ? params.get(key)! : fallback;
+  const rawAvailability = allowed(
+    'availability',
+    ['all', 'obtainable'],
+    'obtainable',
+  );
+  const hasLegacyFormOverride =
+    params.get('form') !== null && rawAvailability === 'all';
+  const availability = hasLegacyFormOverride ? 'obtainable' : rawAvailability;
   return {
     q: (params.get('q') ?? '').slice(0, 200),
     element: allowed('element', Object.keys(elementLabels)),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
-    form: '',
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
     sort: allowed('sort', ['name', 'stars', 'speed'], 'name'),
-    availability: 'obtainable',
+    availability,
   };
 }
 export function filterMonsters(
@@ -99,7 +105,8 @@ export function filterMonsters(
             ? !!monster.leaderSkill
             : filters.leader === 'none'
               ? !monster.leaderSkill
-              : monster.leaderSkill?.attribute === filters.leader)),
+              : monster.leaderSkill?.attribute === filters.leader)) &&
+        (filters.availability === 'all' || monster.obtainable === true),
     )
     .sort((a, b) => {
       const primary =

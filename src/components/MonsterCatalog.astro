@@ -192,6 +192,9 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       . Estrelas indicam a raridade natural.
     </p>
   </aside>
+  <script
+    set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsters)};`}
+  ></script>
   <script>
     import '../scripts/monsters';
   </script>

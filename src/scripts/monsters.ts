@@ -28,7 +28,15 @@ let version = 0;
 let currentPage = Number(root.dataset.page);
 let debounce: ReturnType<typeof setTimeout>;
 
+type MonsterCatalogWindow = Window & {
+  __MONSTER_INDEX__?: Monster[];
+};
+
 function loadIndex() {
+  const embedded = (window as MonsterCatalogWindow).__MONSTER_INDEX__;
+  if (embedded) {
+    return Promise.resolve(embedded);
+  }
   return (indexPromise ??= fetch('/monstros/index.json')
     .then((response) => {
       if (!response.ok) throw new Error('Índice indisponível');
@@ -104,8 +112,25 @@ function renderCard(monster: Monster) {
       .content.cloneNode(true),
   );
   card.querySelector('[data-family]')!.textContent = monster.family ?? '';
-  card.querySelector('[data-form]')!.textContent = formLabel(monster);
-  const stars = card.querySelector('[data-stars]')!;
+  const formTag = card.querySelector<HTMLElement>('[data-form]');
+  if (monster.awakenLevel === 2) {
+    if (!formTag) {
+      const tag = document.createElement('span');
+      tag.className = 'form-tag';
+      tag.setAttribute('data-form', 'true');
+      const top = card.querySelector<HTMLElement>('.bestiary-card-top');
+      if (top) top.appendChild(tag);
+      tag.textContent = formLabel(monster);
+    } else {
+      formTag.textContent = formLabel(monster);
+    }
+  } else if (formTag) {
+    formTag.remove();
+  }
+  const stars = card.querySelector<HTMLElement>('[data-stars]')!;
+  stars.className = `natural-stars${
+    monster.awakenLevel === 2 ? ' natural-stars--second-awaken' : ''
+  }`;
   stars.textContent = '★'.repeat(monster.naturalStars);
   stars.setAttribute('aria-label', `${monster.naturalStars} estrelas naturais`);
   card.querySelector('[data-leader]')!.textContent = leaderText(
@@ -166,10 +191,15 @@ function restore() {
   clearTimeout(debounce);
   const params = new URLSearchParams(location.search);
   const filters = readMonsterFilters(params);
-  for (const [key, value] of Object.entries(filters))
-    (
-      form.elements.namedItem(key) as HTMLInputElement | HTMLSelectElement
-    ).value = value;
+  for (const [key, value] of Object.entries(filters)) {
+    const field = form.elements.namedItem(key);
+    if (
+      field instanceof HTMLInputElement ||
+      field instanceof HTMLSelectElement
+    ) {
+      field.value = value;
+    }
+  }
   const page = Number(
     params.get('page') ??
       location.pathname.match(/\/pagina\/(\d+)\//)?.[1] ??

@@ -86,15 +86,11 @@ test('catálogo público mantém só a última forma obtível de cada família',
   assert.ok(!visible.some((m) => m.id === 'angelmon-fire-7'));
   assert.ok(visible.every((m) => m.obtainable));
   assert.ok(visible.every((m) => !m.awakensTo));
-  assert.equal(
-    readMonsterFilters(new URLSearchParams('form=1&availability=all')).form,
-    '',
+  const legacyFilters = readMonsterFilters(
+    new URLSearchParams('form=1&availability=all'),
   );
-  assert.equal(
-    readMonsterFilters(new URLSearchParams('form=1&availability=all'))
-      .availability,
-    'obtainable',
-  );
+  assert.equal('form' in legacyFilters, false);
+  assert.equal(legacyFilters.availability, 'obtainable');
 });
 
 test('mapeamento completo inclui a cadeia de evolução do monstro', () => {
