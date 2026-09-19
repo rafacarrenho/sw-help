@@ -76,6 +76,10 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
     readMonsterFilters(new URLSearchParams('element=invalid&form=999')).element,
     '',
   );
+  assert.equal(
+    readMonsterFilters(new URLSearchParams('element=pure')).element,
+    '',
+  );
 });
 test('catálogo público mantém só a última forma obtível de cada família', () => {
   const visible = filterMonsters(

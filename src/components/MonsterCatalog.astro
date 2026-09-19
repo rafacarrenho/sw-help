@@ -13,6 +13,7 @@ import {
   filterMonsters,
   readMonsterFilters,
   catalogPageUrl,
+  catalogElementOptions,
 } from '../lib/monster-catalog';
 interface Props {
   page?: number;
@@ -82,7 +83,7 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
           Elemento
           <select name="element">
             <option value="">Todos</option>
-            {Object.entries(elementLabels).map(([value, name]) => (
+            {catalogElementOptions.map(([value, name]) => (
               <option value={value}>{name}</option>
             ))}
           </select>

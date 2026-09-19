@@ -128,9 +128,10 @@ function renderCard(monster: Monster) {
     formTag.remove();
   }
   const stars = card.querySelector<HTMLElement>('[data-stars]')!;
-  stars.className = `natural-stars${
-    monster.awakenLevel === 2 ? ' natural-stars--second-awaken' : ''
-  }`;
+  stars.className = 'natural-stars';
+  if (monster.awakenLevel === 1) stars.classList.add('natural-stars--awakened');
+  if (monster.awakenLevel === 2)
+    stars.classList.add('natural-stars--second-awaken');
   stars.textContent = '★'.repeat(monster.naturalStars);
   stars.setAttribute('aria-label', `${monster.naturalStars} estrelas naturais`);
   card.querySelector('[data-leader]')!.textContent = leaderText(

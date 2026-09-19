@@ -110,10 +110,13 @@ a.monster:hover .monster-name {
   margin-bottom: 18px;
 }
 .natural-stars {
-  color: var(--gold);
+  color: #e9eaee;
   font-size: 14px;
   letter-spacing: 1px;
   white-space: nowrap;
+}
+.natural-stars--awakened {
+  color: var(--gold);
 }
 .natural-stars--second-awaken {
   color: #fc1002;
@@ -139,11 +142,16 @@ a.monster:hover .monster-name {
   overflow-wrap: anywhere;
 }
 .bestiary-leader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 78px;
   margin-top: auto;
   padding-top: 13px;
   border-top: 1px solid var(--border);
   font-size: 14px;
   line-height: 1.55;
+  text-align: center;
   color: #d2d6de;
 }
 .bestiary-pagination {

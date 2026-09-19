@@ -18,7 +18,10 @@ const { monster } = Astro.props;
     <span
       class:list={[
         'natural-stars',
-        { 'natural-stars--second-awaken': monster.awakenLevel === 2 },
+        {
+          'natural-stars--awakened': monster.awakenLevel === 1,
+          'natural-stars--second-awaken': monster.awakenLevel === 2,
+        },
       ]}
       data-stars
       aria-label={`${monster.naturalStars} estrelas naturais`}

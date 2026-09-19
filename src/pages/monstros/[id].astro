@@ -80,7 +80,10 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       <span
         class:list={[
           'natural-stars',
-          { 'natural-stars--second-awaken': monster.awakenLevel === 2 },
+          {
+            'natural-stars--awakened': monster.awakenLevel === 1,
+            'natural-stars--second-awaken': monster.awakenLevel === 2,
+          },
         ]}
         aria-label={`${monster.naturalStars} estrelas naturais`}
       >
