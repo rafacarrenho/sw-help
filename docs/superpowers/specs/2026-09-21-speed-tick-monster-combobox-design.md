@@ -83,9 +83,12 @@ leader filters.
   `textContent`.
 - The existing tower and speed leader controls, table columns, and calculations
   keep their current behavior.
-- The current responsive filter layout remains: monster and tower controls
-  share the first row on mobile, while the speed leader control occupies the
-  next row.
+- On mobile, the monster control occupies the complete first row. Tower SPD and
+  speed leader share the second row in two equal-width columns. Desktop keeps
+  the existing three-column layout.
+- Only Tick 5 and Tick 6 rows receive the special visual highlight. Tick 4
+  remains a normal table row in both the initial server-rendered table and
+  client-side recalculations.
 
 ## Validation
 
@@ -96,5 +99,7 @@ leader filters.
   results, keyboard selection, pointer selection, no-results state, clearing a
   selection, the stable portrait frame, tower changes, speed leader filtering,
   image fallback, and mobile overflow.
+- End-to-end coverage also verifies the mobile filter grid and that only Tick 5
+  and Tick 6 have the special row class before and after recalculation.
 - Run formatting, `pnpm test`, `pnpm build`, and the Speed Tick end-to-end tests.
 - Inspect desktop and mobile screenshots after the automated checks.
