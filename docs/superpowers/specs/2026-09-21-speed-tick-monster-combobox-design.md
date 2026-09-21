@@ -21,11 +21,17 @@ leader filters.
 ## Search and results
 
 - The monster field is an editable search input with combobox semantics.
-- Opening or focusing an empty field displays `Digite para buscar` instead of a
-  full unfiltered monster list.
-- Searching begins with the first typed character and matches monster names
-  without distinguishing uppercase, lowercase, or accents.
-- At most eight matches are displayed at once.
+- Opening or focusing an empty field displays the complete monster catalog,
+  sorted alphabetically by name.
+- Searching filters that catalog in the frontend from the first typed
+  character and matches monster names without distinguishing uppercase,
+  lowercase, or accents.
+- The popup viewport displays exactly six fixed-height monster rows. Additional
+  results remain available through vertical scrolling.
+- The list is virtualized: only the visible rows and a small overscan buffer are
+  mounted in the DOM. A spacer preserves the full scroll range, so displaying
+  the complete catalog does not create thousands of option elements or image
+  requests at once.
 - Every result contains the monster portrait and name. An image fallback is
   shown if the portrait cannot load.
 - A query without matches displays `Nenhum monstro encontrado`.
@@ -54,7 +60,8 @@ leader filters.
   `aria-activedescendant`.
 - The popup uses listbox and option semantics.
 - `ArrowDown` and `ArrowUp` navigate results, `Enter` confirms the active
-  result, and `Escape` closes the popup.
+  result, and `Escape` closes the popup. Keyboard navigation scrolls and mounts
+  virtualized options as necessary.
 - Pointer selection works without the input blur discarding the chosen result.
 - Clicking outside the component closes the popup without creating a
   selection.
@@ -67,6 +74,7 @@ leader filters.
   base speed, and portrait URLs.
 - Search normalization and result rendering run entirely in the frontend;
   there are no network requests.
+- Scroll-driven virtual rendering is batched with `requestAnimationFrame`.
 - Result elements are created with DOM APIs and monster names are assigned with
   `textContent`.
 - The existing tower and speed leader controls, table columns, and calculations
@@ -79,8 +87,10 @@ leader filters.
 
 - Unit tests continue to cover the Tick calculations and speed leader values.
 - End-to-end coverage verifies the base-100 initial state, empty-search hint,
-  accent-insensitive matching, portrait results, keyboard selection, pointer
-  selection, no-results state, clearing a selection, the stable portrait frame,
-  tower changes, speed leader filtering, image fallback, and mobile overflow.
+- End-to-end coverage verifies the base-100 initial state, the full catalog on
+  empty focus, the six-row viewport, virtualized scrolling, accent-insensitive
+  matching, portrait results, keyboard selection, pointer selection, no-results
+  state, clearing a selection, the stable portrait frame, tower changes, speed
+  leader filtering, image fallback, and mobile overflow.
 - Run formatting, `pnpm test`, `pnpm build`, and the Speed Tick end-to-end tests.
 - Inspect desktop and mobile screenshots after the automated checks.
