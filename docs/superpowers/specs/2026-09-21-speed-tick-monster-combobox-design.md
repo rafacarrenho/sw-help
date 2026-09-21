@@ -24,16 +24,18 @@ leader filters.
 - Opening or focusing an empty field displays the complete monster catalog,
   sorted alphabetically by name.
 - Searching filters that catalog in the frontend from the first typed
-  character and matches monster names without distinguishing uppercase,
-  lowercase, or accents.
+  character and matches both the awakened name and the original unawakened
+  name without distinguishing uppercase, lowercase, or accents.
 - The popup viewport displays exactly six fixed-height monster rows. Additional
   results remain available through vertical scrolling.
 - The list is virtualized: only the visible rows and a small overscan buffer are
   mounted in the DOM. A spacer preserves the full scroll range, so displaying
   the complete catalog does not create thousands of option elements or image
   requests at once.
-- Every result contains the monster portrait and name. An image fallback is
-  shown if the portrait cannot load.
+- Every result contains the monster portrait and primary name. Awakened forms
+  also display the original unawakened name underneath in compact secondary
+  text; forms without an earlier awakening do not repeat their own name. An
+  image fallback is shown if the portrait cannot load.
 - A query without matches displays `Nenhum monstro encontrado`.
 - The detached portrait previously displayed beside the native select is
   removed.
@@ -71,7 +73,9 @@ leader filters.
 ## Implementation boundaries
 
 - The existing serialized monster catalog remains the source for IDs, names,
-  base speed, and portrait URLs.
+  base speed, portrait URLs, and awakening relationships. The unawakened name
+  is resolved by following `awakensFrom` to the root form, which also supports
+  second-awakened monsters.
 - Search normalization and result rendering run entirely in the frontend;
   there are no network requests.
 - Scroll-driven virtual rendering is batched with `requestAnimationFrame`.
@@ -86,11 +90,11 @@ leader filters.
 ## Validation
 
 - Unit tests continue to cover the Tick calculations and speed leader values.
-- End-to-end coverage verifies the base-100 initial state, empty-search hint,
 - End-to-end coverage verifies the base-100 initial state, the full catalog on
   empty focus, the six-row viewport, virtualized scrolling, accent-insensitive
-  matching, portrait results, keyboard selection, pointer selection, no-results
-  state, clearing a selection, the stable portrait frame, tower changes, speed
-  leader filtering, image fallback, and mobile overflow.
+  matching by awakened and unawakened names, compact secondary names, portrait
+  results, keyboard selection, pointer selection, no-results state, clearing a
+  selection, the stable portrait frame, tower changes, speed leader filtering,
+  image fallback, and mobile overflow.
 - Run formatting, `pnpm test`, `pnpm build`, and the Speed Tick end-to-end tests.
 - Inspect desktop and mobile screenshots after the automated checks.
