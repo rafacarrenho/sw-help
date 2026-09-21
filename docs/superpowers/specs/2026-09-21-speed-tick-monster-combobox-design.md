@@ -11,8 +11,9 @@ leader filters.
 
 - No monster is selected when the page loads.
 - The search field is empty and uses `Buscar monstro` as its placeholder.
-- The selected-monster summary reads `Nenhum monstro selecionado` and does not
-  display a portrait.
+- The selected-monster summary reads `Nenhum monstro selecionado` and keeps a
+  64×64 portrait frame visible with a neutral `?` placeholder. This frame has
+  the same dimensions as a selected monster portrait to prevent layout shift.
 - Tick calculations use 100 as the base monster speed until a result is
   explicitly selected.
 - Tower SPD and speed leader filters remain fully functional in this state.
@@ -39,7 +40,8 @@ leader filters.
   recalculates the table with that monster's base speed.
 - Editing or clearing the input after a selection immediately clears the
   confirmed selection. The summary returns to `Nenhum monstro selecionado`,
-  the portrait is hidden, and calculations return to base speed 100.
+  the neutral portrait placeholder returns, and calculations return to base
+  speed 100.
 - Text that merely matches a monster name is not considered selected until the
   user confirms a result.
 - Changing tower SPD or speed leader continues to preserve the current monster
@@ -78,7 +80,7 @@ leader filters.
 - Unit tests continue to cover the Tick calculations and speed leader values.
 - End-to-end coverage verifies the base-100 initial state, empty-search hint,
   accent-insensitive matching, portrait results, keyboard selection, pointer
-  selection, no-results state, clearing a selection, tower changes, speed
-  leader filtering, image fallback, and mobile overflow.
+  selection, no-results state, clearing a selection, the stable portrait frame,
+  tower changes, speed leader filtering, image fallback, and mobile overflow.
 - Run formatting, `pnpm test`, `pnpm build`, and the Speed Tick end-to-end tests.
 - Inspect desktop and mobile screenshots after the automated checks.
