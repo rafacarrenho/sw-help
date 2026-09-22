@@ -307,7 +307,7 @@ a.monster:hover .monster-name {
 }
 .monster-facts {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin: 24px 0 0;
 }
@@ -343,6 +343,160 @@ a.monster:hover .monster-name {
 }
 .monster-related {
   margin-top: 36px;
+}
+.monster-skill-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+.monster-skill-card {
+  min-width: 0;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.monster-skill-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.monster-skill-heading > div {
+  min-width: 0;
+}
+.monster-skill-slot {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  min-height: 38px;
+  color: #201c16;
+  background: var(--gold);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 800;
+}
+.monster-skill-card h3 {
+  margin: 0;
+  color: #f2f3f5;
+  font-size: 20px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.monster-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.monster-skill-tags span,
+.farmable-tag {
+  padding: 3px 7px;
+  color: #d5d9e0;
+  background: #262930;
+  border: 1px solid #41454e;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.monster-skill-description {
+  margin: 18px 0 0;
+  color: #dfe2e7;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.monster-skill-effects {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 0;
+  list-style: none;
+}
+.monster-skill-effects li {
+  padding: 12px;
+  background: #17191e;
+  border: 1px solid #30333a;
+  border-radius: 8px;
+}
+.monster-skill-effects strong {
+  font-size: 14px;
+}
+.monster-skill-effects > li > span {
+  margin-left: 8px;
+  color: var(--gold);
+  font-size: 12px;
+}
+.monster-skill-effects p,
+.monster-skill-effects small {
+  display: block;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.monster-skill-scaling {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.monster-skill-scaling code {
+  color: #f0d2a2;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.monster-skill-progress {
+  margin-top: 16px;
+  color: #d9dde4;
+  font-size: 14px;
+}
+.monster-skill-progress summary {
+  width: fit-content;
+  min-height: 44px;
+  padding: 11px 0;
+  color: var(--gold);
+  cursor: pointer;
+}
+.monster-skill-progress ol {
+  display: grid;
+  gap: 5px;
+  margin: 4px 0 0;
+  padding-left: 24px;
+  color: var(--muted);
+}
+.monster-source-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.monster-source-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.monster-source-list strong {
+  font-size: 16px;
+}
+.monster-source-list p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.farmable-tag {
+  flex: 0 0 auto;
+  color: #bde6c9;
+  background: #17271d;
+  border-color: #315c3d;
 }
 .monster-uses {
   display: grid;
@@ -432,6 +586,21 @@ a.monster:hover .monster-name {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
+  .monster-skill-list,
+  .monster-source-list {
+    grid-template-columns: 1fr;
+  }
+  .monster-skills .section-heading,
+  .monster-sources .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .monster-skills .count-badge,
+  .monster-sources .count-badge {
+    flex: 0 0 auto;
+    margin-left: 0;
+  }
   .monster-leader-panel {
     padding: 14px;
     gap: 12px;
@@ -462,9 +631,6 @@ a.monster:hover .monster-name {
   }
   .monster-evolution-arrow {
     font-size: 18px;
-  }
-  .monster-facts {
-    grid-template-columns: 1fr;
   }
   .monster-leader-panel {
     flex-direction: column;

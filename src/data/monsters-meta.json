@@ -1,7 +1,9 @@
 {
   "source": "https://swarfarm.com/api/v2/monsters/",
-  "importedAt": "2026-09-18T16:38:03.963Z",
+  "skillSource": "https://swarfarm.com/api/v2/skills/",
+  "importedAt": "2026-09-22T12:09:59.877Z",
   "count": 3089,
+  "skills": 4913,
   "portraits": 2173,
   "missingPortraits": [
     "https://swarfarm.com/static/herders/images/monsters/unit_icon_0008_5_3.png",

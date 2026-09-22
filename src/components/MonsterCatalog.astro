@@ -14,13 +14,15 @@ import {
   readMonsterFilters,
   catalogPageUrl,
   catalogElementOptions,
+  toMonsterSummary,
 } from '../lib/monster-catalog';
 interface Props {
   page?: number;
 }
 const { page = 1 } = Astro.props;
+const monsterIndex = monsters.map(toMonsterSummary);
 const sorted = filterMonsters(
-  monsters,
+  monsterIndex,
   readMonsterFilters(new URLSearchParams()),
 );
 const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
@@ -194,7 +196,7 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
     </p>
   </aside>
   <script
-    set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsters)};`}
+    set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsterIndex)};`}
   ></script>
   <script>
     import '../scripts/monsters';

@@ -1,9 +1,10 @@
-import type { Monster, Defense, Counter } from './types.ts';
+import type { Monster, MonsterSkill, Defense, Counter } from './types.ts';
 
 export function validateCatalog(
   monsters: Monster[],
   defenses: Defense[],
   counters: Counter[],
+  skills?: MonsterSkill[],
 ): void {
   const fail = (message: string): never => {
     throw new Error(`Catálogo inválido: ${message}`);
@@ -20,6 +21,30 @@ export function validateCatalog(
   }
   const monsterMap = new Map(monsters.map((monster) => [monster.id, monster]));
   const defenseMap = new Map(defenses.map((defense) => [defense.id, defense]));
+  const skillMap = skills
+    ? new Map(skills.map((skill) => [skill.id, skill]))
+    : undefined;
+  if (skills && skillMap!.size !== skills.length)
+    fail('IDs duplicados em habilidades.');
+  for (const skill of skills ?? []) {
+    if (
+      !Number.isInteger(skill.id) ||
+      skill.id <= 0 ||
+      !skill.name?.trim() ||
+      !Number.isInteger(skill.slot) ||
+      skill.slot < 0 ||
+      (skill.cooltime !== null &&
+        (!Number.isInteger(skill.cooltime) || skill.cooltime < 0)) ||
+      !Number.isInteger(skill.hits) ||
+      !Number.isInteger(skill.maxLevel) ||
+      skill.maxLevel < 1 ||
+      !Array.isArray(skill.levelProgress) ||
+      !Array.isArray(skill.effects) ||
+      !Array.isArray(skill.scalesWith) ||
+      !/^https:\/\//.test(skill.source)
+    )
+      fail(`habilidade ${skill.id}.`);
+  }
   const sourceIds = monsters.flatMap((monster) =>
     monster.swarfarmId === undefined ? [] : [monster.swarfarmId],
   );
@@ -61,6 +86,35 @@ export function validateCatalog(
         monster.speed! < 0
       )
         fail(`forma ou atributos de ${monster.id}.`);
+      if (
+        monster.maxLevelStats &&
+        Object.values(monster.maxLevelStats).some(
+          (value) => !Number.isFinite(value) || value < 0,
+        )
+      )
+        fail(`atributos de nível máximo de ${monster.id}.`);
+      if (
+        !Array.isArray(monster.skillIds) ||
+        new Set(monster.skillIds).size !== monster.skillIds.length ||
+        monster.skillIds.some(
+          (id) => !Number.isInteger(id) || (skillMap && !skillMap.has(id)),
+        ) ||
+        !Number.isInteger(monster.skillUpsToMax) ||
+        monster.skillUpsToMax! < 0
+      )
+        fail(`habilidades de ${monster.id}.`);
+      if (
+        !Array.isArray(monster.sources) ||
+        monster.sources.some(
+          (source) =>
+            !Number.isInteger(source.id) ||
+            source.id <= 0 ||
+            !source.name?.trim() ||
+            typeof source.description !== 'string' ||
+            typeof source.farmable !== 'boolean',
+        )
+      )
+        fail(`fontes de obtenção de ${monster.id}.`);
       for (const relative of [monster.awakensFrom, monster.awakensTo])
         if (relative && !monsterMap.has(relative))
           fail(`forma inexistente em ${monster.id}.`);

@@ -2,6 +2,51 @@ import type { Monster } from './types.ts';
 import { matchesSearch } from './search.ts';
 
 export const PAGE_SIZE = 48;
+export type MonsterSummary = Pick<
+  Monster,
+  | 'id'
+  | 'name'
+  | 'element'
+  | 'naturalStars'
+  | 'aliases'
+  | 'image'
+  | 'family'
+  | 'awakenLevel'
+  | 'speed'
+  | 'leaderSkill'
+  | 'obtainable'
+  | 'awakensTo'
+>;
+export function toMonsterSummary(monster: Monster): MonsterSummary {
+  const {
+    id,
+    name,
+    element,
+    naturalStars,
+    aliases,
+    image,
+    family,
+    awakenLevel,
+    speed,
+    leaderSkill,
+    obtainable,
+    awakensTo,
+  } = monster;
+  return {
+    id,
+    name,
+    element,
+    naturalStars,
+    aliases,
+    image,
+    family,
+    awakenLevel,
+    speed,
+    leaderSkill,
+    obtainable,
+    awakensTo,
+  };
+}
 export const elementLabels: Record<string, string> = {
   fire: 'Fogo',
   water: 'Água',
@@ -95,10 +140,10 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
     availability,
   };
 }
-export function filterMonsters(
-  monsters: Monster[],
+export function filterMonsters<T extends MonsterSummary>(
+  monsters: T[],
   filters: MonsterFilters,
-): Monster[] {
+): T[] {
   return monsters
     .filter(
       (monster) =>

@@ -1,9 +1,9 @@
 ---
 import MonsterPortrait from './Monster.astro';
-import type { Monster } from '../lib/types';
+import type { MonsterSummary } from '../lib/monster-catalog';
 import { formLabel, leaderText } from '../lib/monster-catalog';
 interface Props {
-  monster: Monster;
+  monster: MonsterSummary;
 }
 const { monster } = Astro.props;
 ---

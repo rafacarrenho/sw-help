@@ -7,6 +7,7 @@ import {
   filterMonsters,
   readMonsterFilters,
   leaderText,
+  toMonsterSummary,
 } from '../src/lib/monster-catalog.ts';
 import {
   DEFAULT_SPEED_TICK_LEADER_VALUE,
@@ -21,13 +22,19 @@ import {
   writeSpeedTickQueryState,
 } from '../src/lib/speed-tick.ts';
 import { monsterById } from '../src/data/catalog.ts';
-import type { Monster, Defense, Counter } from '../src/lib/types.ts';
+import type {
+  Monster,
+  MonsterSkill,
+  Defense,
+  Counter,
+} from '../src/lib/types.ts';
 
 const read = (name: string) =>
   JSON.parse(
     readFileSync(new URL(`../src/data/${name}.json`, import.meta.url), 'utf8'),
   );
 const monsters: Monster[] = read('monsters');
+const skills: MonsterSkill[] = read('skills');
 const defenses: Defense[] = read('defenses');
 const counters: Counter[] = read('counters');
 
@@ -200,6 +207,29 @@ test('importação completa mantém IDs do Siege, formas e líderes da fonte', (
     );
   }
 });
+test('catálogo preserva atributos, habilidades e origens sem pesar o índice', () => {
+  const carcano = monsters.find((monster) => monster.id === 'carcano')!;
+  assert.deepEqual(carcano.maxLevelStats, {
+    hp: 9225,
+    attack: 758,
+    defense: 604,
+    critRate: 15,
+    critDamage: 50,
+    resistance: 15,
+    accuracy: 0,
+  });
+  assert.deepEqual(carcano.skillIds, [2098, 2103, 2108]);
+  assert.equal(carcano.skillUpsToMax, 9);
+  assert.ok(carcano.sources?.some((source) => source.name === 'Fire Scroll'));
+  assert.ok(
+    carcano.skillIds?.every((id) => skills.some((skill) => skill.id === id)),
+  );
+
+  const summary = toMonsterSummary(carcano);
+  assert.equal('maxLevelStats' in summary, false);
+  assert.equal('skillIds' in summary, false);
+  assert.equal('sources' in summary, false);
+});
 test('busca de monstros combina família, elemento, estrelas, forma e líder', () => {
   const find = (query: string) =>
     filterMonsters(monsters, readMonsterFilters(new URLSearchParams(query)));
@@ -279,12 +309,18 @@ test('rejeita IDs externos duplicados, formas quebradas e bônus inválidos', ()
         [...monsters, { ...monsters[0], id: 'duplicate-source' }],
         [],
         [],
+        skills,
       ),
     /SWARFARM duplicados/,
   );
   assert.throws(
     () =>
-      validateCatalog([{ ...monsters[0], awakensTo: 'missing-form' }], [], []),
+      validateCatalog(
+        [{ ...monsters[0], awakensTo: 'missing-form' }],
+        [],
+        [],
+        skills,
+      ),
     /forma inexistente/,
   );
   assert.throws(
@@ -305,13 +341,16 @@ test('rejeita IDs externos duplicados, formas quebradas e bônus inválidos', ()
         ],
         [],
         [],
+        skills,
       ),
     /habilidade de líder/,
   );
 });
 
 test('catálogo completo é válido e os retratos locais existem', () => {
-  assert.doesNotThrow(() => validateCatalog(monsters, defenses, counters));
+  assert.doesNotThrow(() =>
+    validateCatalog(monsters, defenses, counters, skills),
+  );
   for (const monster of monsters) {
     if (monster.image)
       assert.ok(
@@ -346,7 +385,13 @@ test('busca combina nomes em qualquer ordem, vírgulas, espaços, caixa e acento
 });
 test('impede equipes incompletas e referências quebradas', () => {
   assert.throws(
-    () => validateCatalog(monsters, [{ ...defenses[0], team: ['nora'] }], []),
+    () =>
+      validateCatalog(
+        monsters,
+        [{ ...defenses[0], team: ['nora'] }],
+        [],
+        skills,
+      ),
     /três monstros/,
   );
   assert.throws(
@@ -355,20 +400,24 @@ test('impede equipes incompletas e referências quebradas', () => {
         monsters,
         [{ ...defenses[0], team: ['nora', 'triana', 'ausente'] }],
         [],
+        skills,
       ),
     /inexistente/,
   );
   assert.throws(
     () =>
-      validateCatalog(monsters, defenses, [
-        { ...counters[0], defenseId: 'ausente' },
-      ]),
+      validateCatalog(
+        monsters,
+        defenses,
+        [{ ...counters[0], defenseId: 'ausente' }],
+        skills,
+      ),
     /defesa inexistente/,
   );
 });
 test('impede IDs duplicados e monstros 5★ em torres 4★, inclusive no ataque', () => {
   assert.throws(
-    () => validateCatalog(monsters, [defenses[0], defenses[0]], []),
+    () => validateCatalog(monsters, [defenses[0], defenses[0]], [], skills),
     /IDs duplicados/,
   );
   assert.throws(
@@ -383,44 +432,61 @@ test('impede IDs duplicados e monstros 5★ em torres 4★, inclusive no ataque'
           },
         ],
         [],
+        skills,
       ),
     /5★ em torre 4★/,
   );
   assert.throws(
     () =>
-      validateCatalog(monsters, defenses, [
-        {
-          ...counters[0],
-          defenseId: defenses[0].id,
-          team: ['nora', counters[0].team[1], counters[0].team[2]],
-        },
-      ]),
+      validateCatalog(
+        monsters,
+        defenses,
+        [
+          {
+            ...counters[0],
+            defenseId: defenses[0].id,
+            team: ['nora', counters[0].team[1], counters[0].team[2]],
+          },
+        ],
+        skills,
+      ),
     /ataque 5★/,
   );
 });
 test('exige fonte em counter documentado e ordem de turno pertencente ao time', () => {
   assert.throws(
     () =>
-      validateCatalog(monsters, defenses, [
-        { ...counters[0], status: 'documented' },
-      ]),
+      validateCatalog(
+        monsters,
+        defenses,
+        [{ ...counters[0], status: 'documented' }],
+        skills,
+      ),
     /sem fonte/,
   );
   assert.throws(
     () =>
-      validateCatalog(monsters, defenses, [
-        { ...counters[0], turnOrder: ['carcano'] },
-      ]),
+      validateCatalog(
+        monsters,
+        defenses,
+        [{ ...counters[0], turnOrder: ['carcano'] }],
+        skills,
+      ),
     /ordem de turnos/,
   );
   assert.throws(
     () =>
-      validateCatalog(monsters, defenses, [
-        {
-          ...counters[0],
-          sources: [{ title: 'Inválida', url: 'javascript:alert(1)' }],
-        },
-      ]),
+      validateCatalog(
+        monsters,
+        defenses,
+        [
+          {
+            ...counters[0],
+            sources: [{ title: 'Inválida', url: 'javascript:alert(1)' }],
+          },
+        ],
+        skills,
+      ),
     /fontes/,
   );
 });

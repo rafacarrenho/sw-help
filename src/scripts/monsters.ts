@@ -1,4 +1,4 @@
-import type { Monster } from '../lib/types';
+import type { MonsterSummary } from '../lib/monster-catalog';
 import {
   PAGE_SIZE,
   catalogPageUrl,
@@ -23,13 +23,13 @@ const next = root.querySelector<HTMLAnchorElement>('[data-page-next]')!;
 const template = grid
   .querySelector<HTMLElement>('[data-monster-card]')!
   .cloneNode(true) as HTMLElement;
-let indexPromise: Promise<Monster[]> | undefined;
+let indexPromise: Promise<MonsterSummary[]> | undefined;
 let version = 0;
 let currentPage = Number(root.dataset.page);
 let debounce: ReturnType<typeof setTimeout>;
 
 type MonsterCatalogWindow = Window & {
-  __MONSTER_INDEX__?: Monster[];
+  __MONSTER_INDEX__?: MonsterSummary[];
 };
 
 function loadIndex() {
@@ -40,7 +40,7 @@ function loadIndex() {
   return (indexPromise ??= fetch('/monstros/index.json')
     .then((response) => {
       if (!response.ok) throw new Error('Índice indisponível');
-      return response.json() as Promise<Monster[]>;
+      return response.json() as Promise<MonsterSummary[]>;
     })
     .catch((error) => {
       indexPromise = undefined;
@@ -81,7 +81,7 @@ function setDetailLinks() {
   ))
     link.search = params.toString();
 }
-function renderCard(monster: Monster) {
+function renderCard(monster: MonsterSummary) {
   const card = template.cloneNode(true) as HTMLAnchorElement;
   card.href = `/monstros/${monster.id}/`;
   card.setAttribute('aria-label', `Ver ${monster.name}, ${formLabel(monster)}`);

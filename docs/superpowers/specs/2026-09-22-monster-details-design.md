@@ -33,10 +33,11 @@ de validar a resposta completa, normaliza os monstros, seleciona apenas as
 habilidades efetivamente referenciadas e grava ambos os arquivos por troca
 atômica. Retratos continuam locais como hoje.
 
-`src/data/catalog.ts` exporta `skillById` junto de `monsterById`. A ficha
-individual resolve os IDs do monstro durante a geração estática. A listagem usa
-uma função comum de projeção para expor apenas os campos necessários a cards,
-busca, filtros e ordenação.
+Um módulo dedicado exporta `skillById` somente para as fichas pré-renderizadas,
+sem levar o arquivo de habilidades para as rotas que usam o catálogo geral. A
+ficha individual resolve os IDs do monstro durante a geração estática. A
+listagem usa uma função comum de projeção para expor apenas os campos
+necessários a cards, busca, filtros e ordenação.
 
 ## Interface
 

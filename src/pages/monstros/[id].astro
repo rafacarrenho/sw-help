@@ -11,6 +11,7 @@ import {
   teamName,
   elementNames,
 } from '../../data/catalog';
+import { skillById } from '../../data/skill-catalog';
 import metadata from '../../data/monsters-meta.json';
 import {
   formLabel,
@@ -27,6 +28,24 @@ export function getStaticPaths() {
   }));
 }
 const { monster } = Astro.props;
+const monsterSkills = (monster.skillIds ?? [])
+  .flatMap((id) => {
+    const skill = skillById.get(id);
+    return skill ? [skill] : [];
+  })
+  .sort((a, b) => a.slot - b.slot || a.id - b.id);
+const stats = monster.maxLevelStats
+  ? [
+      ['HP máximo', monster.maxLevelStats.hp.toLocaleString('pt-BR')],
+      ['ATQ máximo', monster.maxLevelStats.attack.toLocaleString('pt-BR')],
+      ['DEF máxima', monster.maxLevelStats.defense.toLocaleString('pt-BR')],
+      ['SPD base', String(monster.speed ?? '—')],
+      ['Taxa crítica', `${monster.maxLevelStats.critRate}%`],
+      ['Dano crítico', `${monster.maxLevelStats.critDamage}%`],
+      ['Resistência', `${monster.maxLevelStats.resistance}%`],
+      ['Precisão', `${monster.maxLevelStats.accuracy}%`],
+    ]
+  : [];
 const family = monsters
   .filter((m) => m.familyId === monster.familyId && m.id !== monster.id)
   .sort(
@@ -110,24 +129,16 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
           <p>{leaderText(monster.leaderSkill)}</p>
         </div>
       </div>
-      <dl class="monster-facts">
-        <div>
-          <dt>Velocidade base</dt>
-          <dd>
-            {monster.speed ?? '—'} <small>SPD</small>
-          </dd>
-        </div>
-        <div>
-          <dt>Raridade natural</dt>
-          <dd>{monster.naturalStars}★</dd>
-        </div>
-        <div>
-          <dt>Tipo</dt>
-          <dd>
-            {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
-          </dd>
-        </div>
-      </dl>
+      {stats.length > 0 && (
+        <dl class="monster-facts" aria-label="Atributos do monstro">
+          {stats.map(([label, value]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {monster.obtainable === false && (
         <p class="monster-availability">
           Esta forma está marcada como não obtível na base SWARFARM.
@@ -166,6 +177,113 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       )}
     </div>
   </section>
+  {monsterSkills.length > 0 && (
+    <section
+      class="monster-related monster-skills"
+      aria-labelledby="skills-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2 id="skills-title">Habilidades</h2>
+          <p>Descrições originais fornecidas pelo SWARFARM.</p>
+        </div>
+        {typeof monster.skillUpsToMax === 'number' && (
+          <span class="count-badge">
+            {monster.skillUpsToMax} melhorias até o máximo
+          </span>
+        )}
+      </div>
+      <div class="monster-skill-list">
+        {monsterSkills.map((skill) => (
+          <article class="monster-skill-card">
+            <div class="monster-skill-heading">
+              <span class="monster-skill-slot">S{skill.slot}</span>
+              <div>
+                <h3>{skill.name}</h3>
+                <div class="monster-skill-tags">
+                  {skill.passive && <span>Passiva</span>}
+                  {skill.aoe && <span>Área</span>}
+                  {skill.random && <span>Alvo aleatório</span>}
+                  {skill.cooltime !== null && (
+                    <span>Recarga: {skill.cooltime} turnos</span>
+                  )}
+                  {skill.hits > 0 && (
+                    <span>
+                      {skill.hits} {skill.hits === 1 ? 'golpe' : 'golpes'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            {skill.description && (
+              <p class="monster-skill-description">{skill.description}</p>
+            )}
+            {skill.effects.length > 0 && (
+              <ul class="monster-skill-effects">
+                {skill.effects.map((effect) => (
+                  <li>
+                    <strong>{effect.name}</strong>
+                    {effect.chance > 0 && (
+                      <span>{effect.chance}% de chance</span>
+                    )}
+                    {effect.description && <p>{effect.description}</p>}
+                    {effect.note && <small>{effect.note}</small>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(skill.multiplierFormula || skill.scalesWith.length > 0) && (
+              <div class="monster-skill-scaling">
+                {skill.multiplierFormula && (
+                  <span>
+                    Multiplicador: <code>{skill.multiplierFormula}</code>
+                  </span>
+                )}
+                {skill.scalesWith.length > 0 && (
+                  <span>Escala com: {skill.scalesWith.join(', ')}</span>
+                )}
+              </div>
+            )}
+            {skill.levelProgress.length > 0 && (
+              <details class="monster-skill-progress">
+                <summary>Progressão das melhorias</summary>
+                <ol>
+                  {skill.levelProgress.map((progress) => (
+                    <li>{progress}</li>
+                  ))}
+                </ol>
+              </details>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+  {(monster.sources?.length ?? 0) > 0 && (
+    <section
+      class="monster-related monster-sources"
+      aria-labelledby="sources-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2 id="sources-title">Como obter</h2>
+          <p>Origens registradas para esta forma do monstro.</p>
+        </div>
+        <span class="count-badge">{monster.sources!.length}</span>
+      </div>
+      <ul class="monster-source-list">
+        {monster.sources!.map((source) => (
+          <li>
+            <div>
+              <strong>{source.name}</strong>
+              {source.description && <p>{source.description}</p>}
+            </div>
+            {source.farmable && <span class="farmable-tag">Farmável</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
   {uses.length > 0 && (
     <section class="monster-related" aria-labelledby="siege-uses-title">
       <div class="section-heading">
