@@ -55,6 +55,9 @@ O boost de ATB será um campo simples no mesmo padrão da SPD de runas: texto do
 label e input numérico ocupando a largura disponível. A unidade `%` ficará no
 label e não exigirá um wrapper interno ao input.
 
+O campo "Efeito de aumento de SPD" seguirá o mesmo padrão: unidade no label,
+input direto e nenhum fundo, borda ou wrapper de sufixo.
+
 ## Escopo técnico
 
 - Simplificar o estado do slot removendo `boostEnabled`.
@@ -67,6 +70,7 @@ label e não exigirá um wrapper interno ao input.
   nomes das habilidades.
 - Ajustar estilos somente onde necessário para o novo bloco de boost.
 - Remover wrappers de apresentação dos checkboxes e do boost de ATB.
+- Remover wrappers de apresentação do efeito de aumento de SPD.
 - Remover o tratamento visual de caixa do resumo do monstro.
 
 ## Validação
