@@ -64,6 +64,10 @@ label e não exigirá um wrapper interno ao input.
 O campo "Efeito de aumento de SPD" seguirá o mesmo padrão: unidade no label,
 input direto e nenhum fundo, borda ou wrapper de sufixo.
 
+Os controles principais aparecerão nesta ordem: SPD das runas, liderança de
+SPD, boost de ATB, buff de SPD e Swift. Controles que não se aplicam ao monstro
+continuarão ocultos sem alterar a ordem dos demais.
+
 ## Escopo técnico
 
 - Simplificar o estado do slot removendo `boostEnabled`.
