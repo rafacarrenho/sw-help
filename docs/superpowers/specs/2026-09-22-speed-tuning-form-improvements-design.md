@@ -53,6 +53,10 @@ campo de formulário. No desktop e no mobile, a SPD base permanecerá na mesma
 linha do nome, alinhada à direita; nomes longos serão truncados para preservar
 essa composição.
 
+As setas de sequência pertencerão ao card completo, não ao cabeçalho. No layout
+empilhado, cada seta ficará centralizada no espaço abaixo do card e apontará
+para o próximo monstro.
+
 O boost de ATB será um campo simples no mesmo padrão da SPD de runas: texto do
 label e input numérico ocupando a largura disponível. A unidade `%` ficará no
 label e não exigirá um wrapper interno ao input.
