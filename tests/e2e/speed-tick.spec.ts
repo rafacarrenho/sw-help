@@ -204,6 +204,8 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
   await expect(noraOption.locator('img')).toBeVisible();
   await noraOption.click();
   await expect(monsterSearch).toHaveValue('Nora');
+  await expect(monsterSearch).not.toBeFocused();
+  await expect(monsterListbox).toBeHidden();
   await expect(page.locator('#speed-tick-monster-name')).toHaveText('Nora');
   await expect(page.locator('#speed-tick-base-speed')).toHaveText('99');
   await expect(page.locator('#speed-tick-selected-image')).toBeVisible();
@@ -233,6 +235,8 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
   );
   await monsterSearch.press('Enter');
   await expect(monsterSearch).toHaveValue('Mo Long');
+  await expect(monsterSearch).not.toBeFocused();
+  await expect(monsterListbox).toBeHidden();
   await expect(page.locator('#speed-tick-monster-name')).toHaveText('Mo Long');
   await expect(page.locator('#speed-tick-base-speed')).toHaveText('96');
 
@@ -265,6 +269,32 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
     ),
   ).toBeTruthy();
   expect(errors).toEqual([]);
+});
+
+test('reposiciona a busca ao focar somente no mobile', async ({ page }) => {
+  await page.goto('/spd-tick/');
+
+  const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
+  const monsterField = page.locator('.speed-select--monster');
+  const initialScrollY = await page.evaluate(() => window.scrollY);
+  const isMobile = (page.viewportSize()?.width ?? 0) <= 820;
+
+  await monsterSearch.focus();
+
+  if (isMobile) {
+    const expectedTop = (page.viewportSize()?.width ?? 0) <= 760 ? 80 : 16;
+    await expect
+      .poll(() =>
+        monsterField.evaluate((element) => element.getBoundingClientRect().top),
+      )
+      .toBeCloseTo(expectedTop, 0);
+    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(
+      initialScrollY,
+    );
+    return;
+  }
+
+  expect(await page.evaluate(() => window.scrollY)).toBe(initialScrollY);
 });
 
 test('replica os valores de Anne e aplica a correção Swift', async ({

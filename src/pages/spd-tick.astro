@@ -262,6 +262,9 @@ const resultText = (value: number | null) => {
       dataNode?.textContent ?? '{"monsters":[],"leaderPercentages":[]}',
     );
     const comboboxRoot = document.getElementById('speed-tick-monster-combobox');
+    const monsterSelect = comboboxRoot?.closest<HTMLElement>(
+      '.speed-select--monster',
+    );
     const monsterSearch = document.getElementById(
       'speed-tick-monster-search',
     ) as HTMLInputElement | null;
@@ -307,6 +310,10 @@ const resultText = (value: number | null) => {
       speedTickData.monsters.map((monster) => [monster.id, monster]),
     );
     const monsterQueryIds = new Set(monsterByQueryId.keys());
+    const mobileSearchMedia = window.matchMedia('(max-width: 820px)');
+    const reducedMotionMedia = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    );
 
     let selectedMonster: MonsterSummary | null = null;
     let visibleMonsters: MonsterSummary[] = [];
@@ -418,6 +425,21 @@ const resultText = (value: number | null) => {
       if (monsterSearch) monsterSearch.value = monster.name;
       closeOptions();
       render();
+      monsterSearch?.blur();
+    };
+
+    const positionMobileSearch = () => {
+      if (!mobileSearchMedia.matches || !monsterSelect) return;
+
+      requestAnimationFrame(() => {
+        if (document.activeElement !== monsterSearch) return;
+
+        monsterSelect.scrollIntoView({
+          behavior: reducedMotionMedia.matches ? 'auto' : 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+      });
     };
 
     const createMonsterOption = (monster: MonsterSummary, index: number) => {
@@ -694,7 +716,10 @@ const resultText = (value: number | null) => {
         renderVirtualOptions();
       });
     });
-    monsterSearch?.addEventListener('focus', renderOptions);
+    monsterSearch?.addEventListener('focus', () => {
+      renderOptions();
+      positionMobileSearch();
+    });
     monsterSearch?.addEventListener('input', () => {
       selectedMonster = null;
       render();

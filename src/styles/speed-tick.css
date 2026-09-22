@@ -421,6 +421,7 @@
 
   .speed-select--monster {
     grid-column: 1 / -1;
+    scroll-margin-top: 16px;
   }
 
   .speed-toggle--swift {
@@ -443,5 +444,11 @@
   .speed-tick-table th,
   .speed-tick-table td {
     padding-inline: 14px;
+  }
+}
+
+@media (max-width: 760px) {
+  .speed-select--monster {
+    scroll-margin-top: 80px;
   }
 }
