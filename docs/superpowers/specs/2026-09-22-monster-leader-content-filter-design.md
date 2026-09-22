@@ -21,7 +21,7 @@ O seletor reutilizará o layout responsivo dos filtros atuais. A opção “Todo
 
 ## Regras de filtragem
 
-Os contextos individuais correspondem aos valores de origem do catálogo: `General`, `Arena`, `Dungeon`, `Guild` e `Element`. O rótulo “Global” representa `General`.
+Os contextos individuais correspondem aos valores de origem do catálogo: `General`, `Arena`, `Dungeon`, `Guild` e `Element`. O rótulo “Global” representa `General`. Quando a liderança possui um elemento preenchido, seu contexto efetivo é “Por elemento” mesmo que a fonte também informe `General`.
 
 As opções customizadas representam a soma dos contextos:
 

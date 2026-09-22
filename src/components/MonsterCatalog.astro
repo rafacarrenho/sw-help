@@ -14,6 +14,7 @@ import {
   readMonsterFilters,
   catalogPageUrl,
   catalogElementOptions,
+  leaderScopeOptions,
   toMonsterSummary,
 } from '../lib/monster-catalog';
 interface Props {
@@ -106,6 +107,15 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
             <option value="none">Sem habilidade de líder</option>
             {Object.entries(attributeLabels).map(([value, name]) => (
               <option value={value}>{name}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Conteúdo da habilidade de líder
+          <select name="leaderScope">
+            <option value="">Todos</option>
+            {leaderScopeOptions.map(({ value, label }) => (
+              <option value={value}>{label}</option>
             ))}
           </select>
         </label>

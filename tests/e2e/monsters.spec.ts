@@ -54,7 +54,7 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
     firstName!,
   );
   await page
-    .getByRole('combobox', { name: 'Habilidade de líder' })
+    .getByRole('combobox', { name: 'Habilidade de líder', exact: true })
     .selectOption('Attack Speed');
   const leader = page
     .locator('[data-monster-card]')
@@ -78,6 +78,44 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
     .click();
   await expect(page.locator('[data-monster-card]')).toHaveCount(48);
   await expect(page.getByRole('searchbox')).toBeFocused();
+});
+
+test('filtra pelo conteúdo da habilidade de líder e preserva a seleção', async ({
+  page,
+}) => {
+  await page.goto('/monstros/');
+  expect(
+    await page
+      .locator('.bestiary-selects select')
+      .evaluateAll((selects) =>
+        selects.map((select) => select.getAttribute('name')),
+      ),
+  ).toEqual(['element', 'stars', 'leader', 'leaderScope', 'sort']);
+
+  const scope = page.getByRole('combobox', {
+    name: 'Conteúdo da habilidade de líder',
+  });
+  await scope.selectOption('global-arena');
+  await expect(page).toHaveURL(/leaderScope=global-arena/);
+  await expect(page.locator('[data-monster-card]')).toHaveCount(48);
+  await expect
+    .poll(async () =>
+      page
+        .locator('[data-catalog-leader-context]')
+        .allTextContents()
+        .then((contexts) =>
+          contexts.every((context) =>
+            ['Todos os conteúdos', 'Arena'].includes(context.trim()),
+          ),
+        ),
+    )
+    .toBe(true);
+
+  await page.locator('[data-monster-card]').first().click();
+  await page.getByRole('link', { name: 'Todos os monstros' }).click();
+  await expect(scope).toHaveValue('global-arena');
+  await page.reload();
+  await expect(scope).toHaveValue('global-arena');
 });
 
 test('ordena por HP, ATQ e DEF e preserva a escolha na URL', async ({

@@ -98,7 +98,14 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
     (() => {
       const current = new URLSearchParams(location.search);
       const back = new URLSearchParams();
-      for (const key of ['q', 'element', 'stars', 'leader', 'sort']) {
+      for (const key of [
+        'q',
+        'element',
+        'stars',
+        'leader',
+        'leaderScope',
+        'sort',
+      ]) {
         const value = current.get(key);
         if (value && !(key === 'sort' && value === 'name')) {
           back.set(key, value);

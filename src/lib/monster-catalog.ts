@@ -102,6 +102,30 @@ export const areaLabels: Record<string, string> = {
   'Guild Battle': 'Conteúdo de guilda',
   Element: 'Por elemento',
 };
+export const leaderScopeOptions = [
+  { value: 'global', label: 'Global', areas: ['General'] },
+  { value: 'arena', label: 'Arena', areas: ['Arena'] },
+  { value: 'dungeon', label: 'Masmorras', areas: ['Dungeon'] },
+  { value: 'guild', label: 'Guild', areas: ['Guild', 'Guild Battle'] },
+  { value: 'element', label: 'Por elemento', areas: ['Element'] },
+  {
+    value: 'global-arena',
+    label: 'Global + Arena',
+    areas: ['General', 'Arena'],
+  },
+  {
+    value: 'global-guild',
+    label: 'Global + Guild',
+    areas: ['General', 'Guild', 'Guild Battle'],
+  },
+] as const;
+const leaderAreasByScope: ReadonlyMap<string, readonly string[]> = new Map(
+  leaderScopeOptions.map(({ value, areas }) => [value, areas] as const),
+);
+function leaderArea(skill: Monster['leaderSkill']): string | null {
+  if (!skill) return null;
+  return skill.element ? 'Element' : skill.area;
+}
 export const archetypeLabels: Record<string, string> = {
   Attack: 'Ataque',
   Defense: 'Defesa',
@@ -149,6 +173,7 @@ export interface MonsterFilters {
   element: string;
   stars: string;
   leader: string;
+  leaderScope: string;
   sort: string;
   availability: string;
 }
@@ -177,6 +202,10 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
     ),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
+    leaderScope: allowed(
+      'leaderScope',
+      leaderScopeOptions.map(({ value }) => value),
+    ),
     sort: allowed(
       'sort',
       ['name', 'stars', 'speed', 'hp', 'attack', 'defense'],
@@ -189,6 +218,7 @@ export function filterMonsters<T extends MonsterSummary>(
   monsters: T[],
   filters: MonsterFilters,
 ): T[] {
+  const leaderAreas = leaderAreasByScope.get(filters.leaderScope);
   return monsters
     .filter(
       (monster) =>
@@ -202,6 +232,9 @@ export function filterMonsters<T extends MonsterSummary>(
             : filters.leader === 'none'
               ? !monster.leaderSkill
               : monster.leaderSkill?.attribute === filters.leader)) &&
+        (!leaderAreas ||
+          (!!monster.leaderSkill &&
+            leaderAreas.includes(leaderArea(monster.leaderSkill) ?? ''))) &&
         (filters.availability === 'all' || monster.obtainable === true),
     )
     .sort((a, b) => {

@@ -253,6 +253,45 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
     leaders.every((m, i) => i === 0 || leaders[i - 1].speed! >= m.speed!),
   );
   assert.ok(find('leader=none').every((m) => !m.leaderSkill));
+  const globalArena = find('leaderScope=global-arena');
+  assert.ok(globalArena.length > 0);
+  assert.ok(
+    globalArena.every(
+      (m) =>
+        !m.leaderSkill?.element &&
+        ['General', 'Arena'].includes(m.leaderSkill?.area ?? ''),
+    ),
+  );
+  assert.deepEqual(
+    new Set(globalArena.map((m) => m.leaderSkill?.area)),
+    new Set(['General', 'Arena']),
+  );
+  const globalGuild = find('leaderScope=global-guild');
+  assert.ok(
+    globalGuild.every(
+      (m) =>
+        !m.leaderSkill?.element &&
+        ['General', 'Guild', 'Guild Battle'].includes(
+          m.leaderSkill?.area ?? '',
+        ),
+    ),
+  );
+  assert.deepEqual(
+    new Set(globalGuild.map((m) => m.leaderSkill?.area)),
+    new Set(['General', 'Guild']),
+  );
+  const arenaSpeedLeaders = find('leader=Attack+Speed&leaderScope=arena');
+  assert.ok(arenaSpeedLeaders.length > 0);
+  assert.ok(
+    arenaSpeedLeaders.every(
+      (m) =>
+        m.leaderSkill?.attribute === 'Attack Speed' &&
+        m.leaderSkill.area === 'Arena',
+    ),
+  );
+  const elementLeaders = find('leaderScope=element');
+  assert.ok(elementLeaders.length > 0);
+  assert.ok(elementLeaders.every((m) => m.leaderSkill?.element));
   assert.equal(find('availability=all').length, find('').length);
   assert.ok(find('').every((m) => m.obtainable));
   assert.equal(find('q=naoexiste123456').length, 0);
@@ -280,6 +319,10 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
   );
   assert.equal(
     readMonsterFilters(new URLSearchParams('element=pure')).element,
+    '',
+  );
+  assert.equal(
+    readMonsterFilters(new URLSearchParams('leaderScope=invalid')).leaderScope,
     '',
   );
 });
