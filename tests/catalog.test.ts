@@ -9,12 +9,16 @@ import {
   leaderText,
 } from '../src/lib/monster-catalog.ts';
 import {
+  DEFAULT_SPEED_TICK_LEADER_VALUE,
+  DEFAULT_SPEED_TICK_TOWER_PERCENT,
   SPEED_TICK_BREAKPOINTS,
   additionalSpeedPercentOptions,
   getLeaderOptions,
   getPossibleSpeedLeaders,
+  readSpeedTickQueryState,
   requiredAdditionalSpeed,
   requiredAdditionalSpeedPercent,
+  writeSpeedTickQueryState,
 } from '../src/lib/speed-tick.ts';
 import { monsterById } from '../src/data/catalog.ts';
 import type { Monster, Defense, Counter } from '../src/lib/types.ts';
@@ -137,6 +141,45 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
       minimumSpeed: 239,
     }),
     null,
+  );
+});
+
+test('query params do Speed Tick preservam e restauram filtros válidos', () => {
+  const validation = {
+    monsterIds: new Set(['anne-fire-181', 'nora']),
+    leaderPercentages: [0, 10, 24, 33],
+  };
+  const defaults = readSpeedTickQueryState(new URLSearchParams(), validation);
+  assert.deepEqual(defaults, {
+    monsterId: null,
+    towerPercent: DEFAULT_SPEED_TICK_TOWER_PERCENT,
+    leaderValue: DEFAULT_SPEED_TICK_LEADER_VALUE,
+    usesSwift: false,
+  });
+
+  const completeParams = new URLSearchParams(
+    'monster=anne-fire-181&tower=0&leader=24&swift=1&utm_source=share',
+  );
+  const completeState = readSpeedTickQueryState(completeParams, validation);
+  assert.deepEqual(completeState, {
+    monsterId: 'anne-fire-181',
+    towerPercent: 0,
+    leaderValue: '24',
+    usesSwift: true,
+  });
+  assert.equal(
+    writeSpeedTickQueryState(completeParams, completeState).toString(),
+    completeParams.toString(),
+  );
+
+  const invalidParams = new URLSearchParams(
+    'monster=missing&tower=99&leader=999&swift=true&utm_source=share',
+  );
+  const invalidState = readSpeedTickQueryState(invalidParams, validation);
+  assert.deepEqual(invalidState, defaults);
+  assert.equal(
+    writeSpeedTickQueryState(invalidParams, invalidState).toString(),
+    'utm_source=share',
   );
 });
 

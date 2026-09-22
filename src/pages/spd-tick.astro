@@ -2,13 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import { monsterById, monsters } from '../data/catalog';
 import {
+  DEFAULT_SPEED_TICK_TOWER_PERCENT,
   getPossibleSpeedLeaders,
   requiredAdditionalSpeed,
   SPEED_TICK_BREAKPOINTS,
 } from '../lib/speed-tick.ts';
 
 const defaultBaseSpeed = 100;
-const defaultTowerPercent = 15;
+const defaultTowerPercent = DEFAULT_SPEED_TICK_TOWER_PERCENT;
 const defaultUsesSwift = false;
 const getUnawakenedName = (monster: (typeof monsters)[number]) => {
   let currentMonster = monster;
@@ -234,8 +235,12 @@ const resultText = (value: number | null) => {
   ></script>
   <script>
     import {
+      DEFAULT_SPEED_TICK_LEADER_VALUE,
+      DEFAULT_SPEED_TICK_TOWER_PERCENT,
+      readSpeedTickQueryState,
       requiredAdditionalSpeed,
       SPEED_TICK_BREAKPOINTS,
+      writeSpeedTickQueryState,
     } from '../lib/speed-tick.ts';
     import { matchesSearch } from '../lib/search.ts';
 
@@ -298,6 +303,10 @@ const resultText = (value: number | null) => {
         sensitivity: 'base',
       }),
     );
+    const monsterByQueryId = new Map(
+      speedTickData.monsters.map((monster) => [monster.id, monster]),
+    );
+    const monsterQueryIds = new Set(monsterByQueryId.keys());
 
     let selectedMonster: MonsterSummary | null = null;
     let visibleMonsters: MonsterSummary[] = [];
@@ -564,7 +573,33 @@ const resultText = (value: number | null) => {
       renderVirtualOptions();
     };
 
-    const render = () => {
+    const syncQueryState = () => {
+      if (!bonusPercentSelect || !leaderSelect || !swiftToggle) return;
+
+      const params = writeSpeedTickQueryState(
+        new URLSearchParams(window.location.search),
+        {
+          monsterId: selectedMonster?.id ?? null,
+          towerPercent: Number(
+            (bonusPercentSelect as HTMLSelectElement).value ||
+              DEFAULT_SPEED_TICK_TOWER_PERCENT,
+          ),
+          leaderValue:
+            (leaderSelect as HTMLSelectElement).value ||
+            DEFAULT_SPEED_TICK_LEADER_VALUE,
+          usesSwift: swiftToggle.checked,
+        },
+      );
+      const search = params.size > 0 ? `?${params.toString()}` : '';
+
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${search}${window.location.hash}`,
+      );
+    };
+
+    const render = (updateUrl = true) => {
       if (!bonusPercentSelect || !leaderSelect || !swiftToggle || !tableBody) {
         return;
       }
@@ -618,6 +653,37 @@ const resultText = (value: number | null) => {
           </tr>
         `;
       }).join('');
+
+      if (updateUrl) syncQueryState();
+    };
+
+    const restoreQueryState = () => {
+      if (
+        !monsterSearch ||
+        !bonusPercentSelect ||
+        !leaderSelect ||
+        !swiftToggle
+      )
+        return;
+
+      const state = readSpeedTickQueryState(
+        new URLSearchParams(window.location.search),
+        {
+          monsterIds: monsterQueryIds,
+          leaderPercentages: speedTickData.leaderPercentages,
+        },
+      );
+      selectedMonster = state.monsterId
+        ? (monsterByQueryId.get(state.monsterId) ?? null)
+        : null;
+      monsterSearch.value = selectedMonster?.name ?? '';
+      (bonusPercentSelect as HTMLSelectElement).value = String(
+        state.towerPercent,
+      );
+      (leaderSelect as HTMLSelectElement).value = state.leaderValue;
+      swiftToggle.checked = state.usesSwift;
+      closeOptions();
+      render();
     };
 
     monsterOptions?.addEventListener('scroll', () => {
@@ -669,9 +735,11 @@ const resultText = (value: number | null) => {
     document.addEventListener('pointerdown', (event) => {
       if (!comboboxRoot?.contains(event.target as Node)) closeOptions();
     });
-    bonusPercentSelect?.addEventListener('change', render);
-    leaderSelect?.addEventListener('change', render);
-    swiftToggle?.addEventListener('change', render);
-    render();
+    bonusPercentSelect?.addEventListener('change', () => render());
+    leaderSelect?.addEventListener('change', () => render());
+    swiftToggle?.addEventListener('change', () => render());
+    window.addEventListener('popstate', restoreQueryState);
+    window.addEventListener('pageshow', restoreQueryState);
+    restoreQueryState();
   </script>
 </Layout>

@@ -277,6 +277,13 @@ test('replica os valores de Anne e aplica a correção Swift', async ({
   await page.locator('#speed-tick-monster-option-anne-fire-181').click();
   await page.getByLabel('Torre SPD').selectOption('15');
   await page.getByLabel('Líder SPD').selectOption('0');
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        Object.fromEntries(new URLSearchParams(window.location.search)),
+      ),
+    )
+    .toEqual({ monster: 'anne-fire-181', leader: '0' });
 
   const visibleResults = page.locator(
     '#speed-tick-table-body [data-leader-percent="0"]',
@@ -297,6 +304,13 @@ test('replica os valores de Anne e aplica a correção Swift', async ({
 
   await page.getByRole('checkbox', { name: 'Usa Swift' }).check();
   await expect(page.locator('#speed-tick-monster-name')).toHaveText('Anne');
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        Object.fromEntries(new URLSearchParams(window.location.search)),
+      ),
+    )
+    .toEqual({ monster: 'anne-fire-181', leader: '0', swift: '1' });
   await expect(visibleResults).toHaveText([
     '360 SPD',
     '241 SPD',
@@ -308,6 +322,73 @@ test('replica os valores de Anne e aplica a correção Swift', async ({
     '26 SPD',
     '13 SPD',
   ]);
+});
+
+test('restaura e normaliza resultados compartilhados pela URL', async ({
+  page,
+}) => {
+  await page.goto(
+    '/spd-tick/?utm_source=share&monster=anne-fire-181&tower=0&leader=24&swift=1#resultado',
+  );
+
+  const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
+  const tickFive = page.locator(
+    '#speed-tick-table-body tr:nth-child(3) [data-leader-percent="24"]',
+  );
+  await expect(monsterSearch).toHaveValue('Anne');
+  await expect(page.locator('#speed-tick-monster-name')).toHaveText('Anne');
+  await expect(page.getByLabel('Torre SPD')).toHaveValue('0');
+  await expect(page.getByLabel('Líder SPD')).toHaveValue('24');
+  await expect(page.getByRole('checkbox', { name: 'Usa Swift' })).toBeChecked();
+  await expect(tickFive).toHaveText('160 SPD');
+  await expect(page).toHaveURL(/utm_source=share/);
+  await expect(page).toHaveURL(/#resultado$/);
+
+  await page.getByRole('checkbox', { name: 'Usa Swift' }).uncheck();
+  await expect
+    .poll(() =>
+      page.evaluate(() => new URLSearchParams(location.search).has('swift')),
+    )
+    .toBeFalsy();
+  await expect(tickFive).toHaveText('159 SPD');
+
+  await monsterSearch.fill('');
+  await expect(page.locator('#speed-tick-base-speed')).toHaveText('100');
+  await expect
+    .poll(() =>
+      page.evaluate(() => ({
+        monster: new URLSearchParams(location.search).get('monster'),
+        campaign: new URLSearchParams(location.search).get('utm_source'),
+        hash: location.hash,
+      })),
+    )
+    .toEqual({ monster: null, campaign: 'share', hash: '#resultado' });
+
+  await page.goto(
+    '/spd-tick/?monster=missing&tower=99&leader=999&swift=true&utm_source=share',
+  );
+  await expect(monsterSearch).toHaveValue('');
+  await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
+  await expect(page.getByLabel('Líder SPD')).toHaveValue('all');
+  await expect(
+    page.getByRole('checkbox', { name: 'Usa Swift' }),
+  ).not.toBeChecked();
+  await expect
+    .poll(() => page.evaluate(() => location.search))
+    .toBe('?utm_source=share');
+
+  await page.evaluate(() => {
+    history.pushState(
+      null,
+      '',
+      '/spd-tick/?monster=nora&tower=10&leader=0&swift=1',
+    );
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(monsterSearch).toHaveValue('Nora');
+  await expect(page.getByLabel('Torre SPD')).toHaveValue('10');
+  await expect(page.getByLabel('Líder SPD')).toHaveValue('0');
+  await expect(page.getByRole('checkbox', { name: 'Usa Swift' })).toBeChecked();
 });
 
 test('exibe fallback quando a foto do resultado não carrega', async ({

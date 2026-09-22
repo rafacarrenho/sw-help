@@ -12,6 +12,75 @@ export interface SpeedLeaderOption {
 }
 
 export const SWIFT_SPEED_PERCENT = 25;
+export const DEFAULT_SPEED_TICK_TOWER_PERCENT = 15;
+export const DEFAULT_SPEED_TICK_LEADER_VALUE = 'all';
+
+export interface SpeedTickQueryState {
+  monsterId: string | null;
+  towerPercent: number;
+  leaderValue: string;
+  usesSwift: boolean;
+}
+
+export function readSpeedTickQueryState(
+  params: URLSearchParams,
+  {
+    monsterIds,
+    leaderPercentages,
+  }: {
+    monsterIds: ReadonlySet<string>;
+    leaderPercentages: readonly number[];
+  },
+): SpeedTickQueryState {
+  const monsterParam = params.get('monster');
+  const towerParam = params.get('tower');
+  const parsedTower = towerParam === null ? NaN : Number(towerParam);
+  const leaderParam = params.get('leader');
+  const parsedLeader = leaderParam === null ? NaN : Number(leaderParam);
+
+  return {
+    monsterId:
+      monsterParam && monsterIds.has(monsterParam) ? monsterParam : null,
+    towerPercent:
+      Number.isInteger(parsedTower) && parsedTower >= 0 && parsedTower <= 15
+        ? parsedTower
+        : DEFAULT_SPEED_TICK_TOWER_PERCENT,
+    leaderValue:
+      leaderParam !== null &&
+      Number.isFinite(parsedLeader) &&
+      leaderPercentages.includes(parsedLeader)
+        ? String(parsedLeader)
+        : DEFAULT_SPEED_TICK_LEADER_VALUE,
+    usesSwift: params.get('swift') === '1',
+  };
+}
+
+export function writeSpeedTickQueryState(
+  params: URLSearchParams,
+  state: SpeedTickQueryState,
+): URLSearchParams {
+  const nextParams = new URLSearchParams(params);
+
+  if (state.monsterId) nextParams.set('monster', state.monsterId);
+  else nextParams.delete('monster');
+
+  if (state.towerPercent !== DEFAULT_SPEED_TICK_TOWER_PERCENT) {
+    nextParams.set('tower', String(state.towerPercent));
+  } else {
+    nextParams.delete('tower');
+  }
+
+  if (state.leaderValue !== DEFAULT_SPEED_TICK_LEADER_VALUE) {
+    nextParams.set('leader', state.leaderValue);
+  } else {
+    nextParams.delete('leader');
+  }
+
+  if (state.usesSwift) nextParams.set('swift', '1');
+  else nextParams.delete('swift');
+
+  return nextParams;
+}
 
 export const SPEED_TICK_BREAKPOINTS: SpeedTickBreakpoint[] = [
   { tick: 3, minimumSpeed: 477 },
