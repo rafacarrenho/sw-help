@@ -56,3 +56,19 @@ current stacked mobile navigation with an accessible off-canvas menu.
 - Add mobile coverage for open/close, backdrop, Escape, scroll lock, and focus
   restoration.
 - Run `pnpm test`, `pnpm build`, and `pnpm test:e2e` after the build.
+
+## Control and tooltip refinement
+
+- In the expanded desktop sidebar, the collapse control belongs to the same
+  header row as the brand and aligns to its right edge.
+- In the compact desktop sidebar, the control moves below the centered brand
+  symbol and shares the same horizontal center as every navigation icon.
+- Compact navigation items expose a styled tooltip to the right on both hover
+  and keyboard focus. A single tooltip layer is positioned outside the sidebar
+  so it is not clipped by scrolling, and its text is associated with the active
+  item through `aria-describedby`.
+- The mobile header uses a balanced three-column layout: menu trigger on the
+  left, brand centered, and an equal spacer on the right. This matches the
+  left-hand origin of the drawer.
+- Mobile keeps a visible close control inside the drawer and returns focus to
+  the left-hand trigger when closing.
