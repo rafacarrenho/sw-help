@@ -49,7 +49,7 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
         leaderPercent: 15,
         activeAdditionalPercent: 0,
         targetTick: 5,
-      }) - 65.79710144927535,
+      }) - 75.66666666666666,
     ) < 1e-9,
   );
   assert.deepEqual(
@@ -104,7 +104,30 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
       activeAdditionalPercent: 15,
       minimumSpeed: 239,
     }),
-    87,
+    91,
+  );
+  assert.deepEqual(
+    SPEED_TICK_BREAKPOINTS.map(({ minimumSpeed }) =>
+      requiredAdditionalSpeed({
+        baseSpeed: 102,
+        leaderPercent: 0,
+        activeAdditionalPercent: 15,
+        minimumSpeed,
+      }),
+    ),
+    [359, 240, 168, 121, 87, 61, 41, 25, 12],
+  );
+  assert.deepEqual(
+    SPEED_TICK_BREAKPOINTS.map(({ minimumSpeed }) =>
+      requiredAdditionalSpeed({
+        baseSpeed: 102,
+        leaderPercent: 0,
+        activeAdditionalPercent: 15,
+        minimumSpeed,
+        usesSwift: true,
+      }),
+    ),
+    [360, 241, 169, 122, 88, 62, 42, 26, 13],
   );
   assert.equal(
     requiredAdditionalSpeed({

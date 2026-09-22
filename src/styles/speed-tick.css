@@ -45,7 +45,7 @@
 
 .speed-tick-form {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(140px, 1fr));
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(120px, 1fr));
   gap: 16px;
   align-items: end;
   margin-top: 20px;
@@ -420,6 +420,10 @@
   }
 
   .speed-select--monster {
+    grid-column: 1 / -1;
+  }
+
+  .speed-toggle--swift {
     grid-column: 1 / -1;
   }
 

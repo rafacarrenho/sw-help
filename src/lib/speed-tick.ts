@@ -11,6 +11,8 @@ export interface SpeedLeaderOption {
   value: number;
 }
 
+export const SWIFT_SPEED_PERCENT = 25;
+
 export const SPEED_TICK_BREAKPOINTS: SpeedTickBreakpoint[] = [
   { tick: 3, minimumSpeed: 477 },
   { tick: 4, minimumSpeed: 358 },
@@ -38,25 +40,27 @@ export function requiredAdditionalSpeedPercent({
   leaderPercent,
   activeAdditionalPercent,
   targetTick,
+  usesSwift = false,
 }: {
   baseSpeed: number;
   leaderPercent: number;
   activeAdditionalPercent: number;
   targetTick: number;
+  usesSwift?: boolean;
 }): number {
   const target = getTickBreakpoint(targetTick);
   if (!target) {
     throw new Error(`Tick ${targetTick} não existe no breakpoint padrão.`);
   }
 
-  const baseMultiplier = 1 + leaderPercent / 100;
-  const currentMultiplier = 1 + activeAdditionalPercent / 100;
+  const currentMultiplier =
+    1 +
+    (Math.max(0, leaderPercent) +
+      Math.max(0, activeAdditionalPercent) +
+      (usesSwift ? SWIFT_SPEED_PERCENT : 0)) /
+      100;
   const requiredPercent =
-    Math.max(
-      0,
-      target.minimumSpeed / (baseSpeed * baseMultiplier * currentMultiplier) -
-        1,
-    ) * 100;
+    Math.max(0, target.minimumSpeed / baseSpeed - currentMultiplier) * 100;
 
   return requiredPercent;
 }
@@ -66,11 +70,13 @@ export function requiredAdditionalSpeed({
   leaderPercent,
   activeAdditionalPercent,
   minimumSpeed,
+  usesSwift = false,
 }: {
   baseSpeed: number;
   leaderPercent: number;
   activeAdditionalPercent: number;
   minimumSpeed: number;
+  usesSwift?: boolean;
 }): number | null {
   if (
     !Number.isFinite(baseSpeed) ||
@@ -83,15 +89,19 @@ export function requiredAdditionalSpeed({
     return null;
   }
 
-  const leaderFactor = 1 + Math.max(0, leaderPercent) / 100;
-  const additionalFactor = 1 + Math.max(0, activeAdditionalPercent) / 100;
-  const currentSpeed = baseSpeed * leaderFactor * additionalFactor;
-  const difference = Math.max(0, minimumSpeed - currentSpeed);
-  const rounded = Math.round(difference);
+  const towerLeaderBonus =
+    (baseSpeed *
+      (Math.max(0, leaderPercent) + Math.max(0, activeAdditionalPercent))) /
+    100;
+  const exactSwiftBonus = (baseSpeed * SWIFT_SPEED_PERCENT) / 100;
+  const swiftDisplayPenalty = usesSwift
+    ? Math.ceil(exactSwiftBonus) - exactSwiftBonus
+    : 0;
+  const combatSpeedWithoutGreenBonus = Math.ceil(
+    baseSpeed + towerLeaderBonus - swiftDisplayPenalty,
+  );
 
-  return Math.abs(difference - rounded) < 1e-9
-    ? rounded
-    : Math.ceil(difference);
+  return Math.max(0, minimumSpeed - combatSpeedWithoutGreenBonus);
 }
 
 export function getLeaderOptions(

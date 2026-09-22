@@ -36,6 +36,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
   ).toHaveCount(leaderPercentages.length);
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
+  const swiftToggle = page.getByRole('checkbox', { name: 'Usa Swift' });
   const monsterListbox = page.getByRole('listbox', {
     name: 'Monstros encontrados',
   });
@@ -55,6 +56,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
     };
   });
   await expect(monsterSearch).toHaveValue('');
+  await expect(swiftToggle).not.toBeChecked();
   await expect(page.locator('#speed-tick-monster-name')).toHaveText(
     'Nenhum monstro selecionado',
   );
@@ -80,7 +82,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
       const columns = getComputedStyle(form).gridTemplateColumns.split(' ');
       return columns.filter(Boolean).length;
     }),
-  ).toBe(isMobile ? 2 : 3);
+  ).toBe(isMobile ? 2 : 4);
 
   if (isMobile) {
     const positions = await page.evaluate(() => {
@@ -95,13 +97,20 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
         .querySelector('#speed-tick-leader')!
         .closest('.speed-select')!
         .getBoundingClientRect();
+      const swift = document
+        .querySelector('.speed-toggle--swift')!
+        .getBoundingClientRect();
 
       return {
         monsterBottom: monster.bottom,
+        monsterWidth: monster.width,
         towerTop: tower.top,
+        towerBottom: tower.bottom,
         towerWidth: tower.width,
         leaderTop: leader.top,
         leaderWidth: leader.width,
+        swiftTop: swift.top,
+        swiftWidth: swift.width,
       };
     });
 
@@ -110,6 +119,10 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
     expect(Math.abs(positions.towerWidth - positions.leaderWidth)).toBeLessThan(
       1,
     );
+    expect(positions.towerBottom).toBeLessThanOrEqual(positions.swiftTop);
+    expect(
+      Math.abs(positions.monsterWidth - positions.swiftWidth),
+    ).toBeLessThan(1);
   }
 
   const leaderSelect = page.locator('#speed-tick-leader');
@@ -252,6 +265,49 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
     ),
   ).toBeTruthy();
   expect(errors).toEqual([]);
+});
+
+test('replica os valores de Anne e aplica a correção Swift', async ({
+  page,
+}) => {
+  await page.goto('/spd-tick/');
+
+  const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
+  await monsterSearch.fill('anne');
+  await page.locator('#speed-tick-monster-option-anne-fire-181').click();
+  await page.getByLabel('Torre SPD').selectOption('15');
+  await page.getByLabel('Líder SPD').selectOption('0');
+
+  const visibleResults = page.locator(
+    '#speed-tick-table-body [data-leader-percent="0"]',
+  );
+  await expect(page.locator('#speed-tick-monster-name')).toHaveText('Anne');
+  await expect(page.locator('#speed-tick-base-speed')).toHaveText('102');
+  await expect(visibleResults).toHaveText([
+    '359 SPD',
+    '240 SPD',
+    '168 SPD',
+    '121 SPD',
+    '87 SPD',
+    '61 SPD',
+    '41 SPD',
+    '25 SPD',
+    '12 SPD',
+  ]);
+
+  await page.getByRole('checkbox', { name: 'Usa Swift' }).check();
+  await expect(page.locator('#speed-tick-monster-name')).toHaveText('Anne');
+  await expect(visibleResults).toHaveText([
+    '360 SPD',
+    '241 SPD',
+    '169 SPD',
+    '122 SPD',
+    '88 SPD',
+    '62 SPD',
+    '42 SPD',
+    '26 SPD',
+    '13 SPD',
+  ]);
 });
 
 test('exibe fallback quando a foto do resultado não carrega', async ({

@@ -9,6 +9,7 @@ import {
 
 const defaultBaseSpeed = 100;
 const defaultTowerPercent = 15;
+const defaultUsesSwift = false;
 const getUnawakenedName = (monster: (typeof monsters)[number]) => {
   let currentMonster = monster;
   const visitedIds = new Set<string>([monster.id]);
@@ -70,8 +71,8 @@ const resultText = (value: number | null) => {
       <div>
         <h2 id="tool-title">Calculadora por monstro</h2>
         <p>
-          Selecione o monstro e compare a SPD adicional necessária para cada
-          Tick em todas as lideranças disponíveis.
+          Selecione o monstro e compare a SPD bônus (+verde) necessária para
+          cada Tick em todas as lideranças disponíveis.
         </p>
       </div>
     </div>
@@ -127,6 +128,11 @@ const resultText = (value: number | null) => {
           ))}
         </select>
       </label>
+
+      <label class="speed-toggle speed-toggle--swift">
+        <input id="speed-tick-swift" type="checkbox" />
+        <span>Usa Swift</span>
+      </label>
     </div>
 
     <div class="speed-tick-results">
@@ -174,7 +180,7 @@ const resultText = (value: number | null) => {
         tabindex="0"
       >
         <table class="speed-tick-table">
-          <caption>SPD adicional necessária por liderança</caption>
+          <caption>SPD bônus necessária (+verde) por liderança</caption>
           <thead>
             <tr>
               <th class="speed-tick-sticky-column" scope="col">
@@ -204,6 +210,7 @@ const resultText = (value: number | null) => {
                     leaderPercent: option.value,
                     activeAdditionalPercent: defaultTowerPercent,
                     minimumSpeed: breakpoint.minimumSpeed,
+                    usesSwift: defaultUsesSwift,
                   });
 
                   return (
@@ -260,6 +267,9 @@ const resultText = (value: number | null) => {
       'speed-tick-bonus-percent',
     );
     const leaderSelect = document.getElementById('speed-tick-leader');
+    const swiftToggle = document.getElementById(
+      'speed-tick-swift',
+    ) as HTMLInputElement | null;
     const baseSpeedNode = document.getElementById('speed-tick-base-speed');
     const monsterNameNode = document.getElementById('speed-tick-monster-name');
     const selectedPortrait = document.getElementById(
@@ -555,7 +565,7 @@ const resultText = (value: number | null) => {
     };
 
     const render = () => {
-      if (!bonusPercentSelect || !leaderSelect || !tableBody) {
+      if (!bonusPercentSelect || !leaderSelect || !swiftToggle || !tableBody) {
         return;
       }
 
@@ -591,6 +601,7 @@ const resultText = (value: number | null) => {
               leaderPercent,
               activeAdditionalPercent: towerPercent,
               minimumSpeed: breakpoint.minimumSpeed,
+              usesSwift: swiftToggle.checked,
             });
 
             return `<td data-leader-percent="${leaderPercent}">${formatResult(value)}</td>`;
@@ -660,6 +671,7 @@ const resultText = (value: number | null) => {
     });
     bonusPercentSelect?.addEventListener('change', render);
     leaderSelect?.addEventListener('change', render);
+    swiftToggle?.addEventListener('change', render);
     render();
   </script>
 </Layout>
