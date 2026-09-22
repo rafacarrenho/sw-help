@@ -1,0 +1,1095 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { monsterById, monsters } from '../data/catalog.ts';
+import { skillById } from '../data/skill-catalog.ts';
+import { elementLabels } from '../lib/monster-catalog.ts';
+import {
+  getSiegeSpeedLeader,
+  getSpeedTuningCapabilities,
+} from '../lib/speed-tuning.ts';
+
+const getUnawakenedName = (monster: (typeof monsters)[number]) => {
+  let currentMonster = monster;
+  const visitedIds = new Set<string>([monster.id]);
+
+  while (currentMonster.awakensFrom) {
+    const previousForm = monsterById.get(currentMonster.awakensFrom);
+    if (!previousForm || visitedIds.has(previousForm.id)) break;
+    visitedIds.add(previousForm.id);
+    currentMonster = previousForm;
+  }
+
+  return currentMonster.id === monster.id ? null : currentMonster.name;
+};
+
+const monsterData = monsters
+  .filter((monster) => (monster.speed ?? 0) > 0)
+  .map((monster) => ({
+    id: monster.id,
+    name: monster.name,
+    unawakenedName: getUnawakenedName(monster),
+    aliases: monster.aliases,
+    element: monster.element,
+    elementLabel: elementLabels[monster.element] ?? monster.element,
+    speed: monster.speed ?? 0,
+    image: monster.image ?? null,
+    leader: getSiegeSpeedLeader(monster),
+    capabilities: getSpeedTuningCapabilities(monster, skillById),
+  }));
+
+const serializedData = JSON.stringify({ monsters: monsterData }).replaceAll(
+  '<',
+  '\\u003c',
+);
+
+const slots = [
+  { number: 1, label: 'Primeiro turno' },
+  { number: 2, label: 'Segundo turno' },
+  { number: 3, label: 'Terceiro turno' },
+];
+---
+
+<Layout
+  title="Spd Tuning"
+  description="Calcule a velocidade necessária para ajustar a ordem de turno do seu time de Siege e GvG."
+  section="speed-tuning"
+>
+  <section class="page-intro speed-tuning-intro">
+    <div>
+      <span class="eyebrow">
+        <span></span> ORDEM DE ATAQUE EM SIEGE
+      </span>
+      <h1>
+        Spd <span>Tuning</span>
+      </h1>
+      <p>
+        Monte seu time na ordem de ataque e descubra a SPD mínima
+        <br class="mobile-break" /> para ninguém ser cortado entre os turnos.
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="speed" size={66} />
+    </div>
+  </section>
+
+  <section class="speed-tuning-tool" aria-labelledby="speed-tuning-title">
+    <div class="section-heading speed-tuning-heading">
+      <div>
+        <h2 id="speed-tuning-title">Ajuste o time</h2>
+        <p>
+          A ordem é da esquerda para a direita — ou de cima para baixo no
+          celular.
+        </p>
+      </div>
+      <div class="speed-tuning-actions">
+        <label class="speed-tuning-tower">
+          <span>Torre SPD</span>
+          <select id="speed-tuning-tower">
+            {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+              (percent) => (
+                <option value={percent} selected={percent === 15}>
+                  {percent}%
+                </option>
+              ),
+            )}
+          </select>
+        </label>
+        <button
+          id="speed-tuning-reset"
+          class="button button-secondary speed-tuning-reset"
+          type="button"
+        >
+          Limpar time
+        </button>
+      </div>
+    </div>
+
+    <div class="speed-tuning-flow" aria-label="Ordem de ataque do time">
+      {slots.map((slot, index) => (
+        <article
+          class="speed-tuning-slot"
+          data-tuning-slot={index}
+          aria-labelledby={`speed-tuning-slot-${slot.number}-title`}
+        >
+          <header class="speed-tuning-slot-header">
+            <span class="speed-tuning-step" aria-hidden="true">
+              {slot.number.toString().padStart(2, '0')}
+            </span>
+            <div>
+              <h3 id={`speed-tuning-slot-${slot.number}-title`}>
+                Monstro {slot.number}
+              </h3>
+              <span>{slot.label}</span>
+            </div>
+            {index < slots.length - 1 && (
+              <span class="speed-tuning-arrow" aria-hidden="true">
+                <Icon name="chevron" size={18} />
+              </span>
+            )}
+          </header>
+
+          <div class="speed-tuning-search-root" data-tuning-search-root>
+            <label for={`speed-tuning-search-${index}`}>Monstro</label>
+            <div class="speed-tuning-combobox">
+              <input
+                id={`speed-tuning-search-${index}`}
+                data-tuning-search
+                type="search"
+                role="combobox"
+                aria-label={`Monstro ${slot.number}`}
+                aria-autocomplete="list"
+                aria-controls={`speed-tuning-options-${index}`}
+                aria-expanded="false"
+                autocomplete="off"
+                placeholder="Buscar monstro"
+              />
+              <div
+                id={`speed-tuning-options-${index}`}
+                class="speed-tuning-options"
+                data-tuning-options
+                role="listbox"
+                aria-label={`Monstros para o slot ${slot.number}`}
+                hidden
+              />
+            </div>
+          </div>
+
+          <div class="speed-tuning-monster-summary" data-tuning-summary>
+            <span class="speed-tuning-portrait is-empty" data-tuning-portrait>
+              <span data-tuning-placeholder>?</span>
+              <span class="speed-tuning-fallback" data-tuning-fallback hidden />
+              <img data-tuning-image alt="" width="64" height="64" hidden />
+            </span>
+            <div class="speed-tuning-monster-copy">
+              <strong data-tuning-name>Nenhum monstro</strong>
+              <span data-tuning-element>Selecione no campo acima</span>
+            </div>
+            <div class="speed-tuning-base">
+              <span>SPD base</span>
+              <strong data-tuning-base>—</strong>
+            </div>
+          </div>
+
+          <div class="speed-tuning-fields">
+            {index === 0 && (
+              <label class="speed-tuning-field speed-tuning-field--runes">
+                <span>SPD das runas (+verde)</span>
+                <input
+                  data-tuning-rune-speed
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  max="999"
+                  value="0"
+                  disabled
+                />
+              </label>
+            )}
+
+            <label class="speed-tuning-check">
+              <input data-tuning-swift type="checkbox" disabled />
+              <span>Usa Swift</span>
+            </label>
+
+            <div class="speed-tuning-effect" data-tuning-leader hidden>
+              <label class="speed-tuning-check speed-tuning-check--leader">
+                <input data-tuning-leader-toggle type="checkbox" />
+                <span data-tuning-leader-label>Usar liderança de SPD</span>
+              </label>
+            </div>
+
+            {index < 2 && (
+              <>
+                <div class="speed-tuning-effect" data-tuning-boost hidden>
+                  <div class="speed-tuning-effect-heading">
+                    <label class="speed-tuning-check">
+                      <input data-tuning-boost-toggle type="checkbox" />
+                      <span>Usar boost de ATB</span>
+                    </label>
+                    <small data-tuning-boost-skill />
+                  </div>
+                  <label class="speed-tuning-field speed-tuning-field--compact">
+                    <span>Boost</span>
+                    <span class="speed-tuning-number-suffix">
+                      <input
+                        data-tuning-boost-percent
+                        type="number"
+                        inputmode="decimal"
+                        min="0"
+                        max="100"
+                        value="0"
+                      />
+                      <span>%</span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="speed-tuning-effect" data-tuning-speed-buff hidden>
+                  <div class="speed-tuning-effect-heading">
+                    <label class="speed-tuning-check">
+                      <input data-tuning-speed-buff-toggle type="checkbox" />
+                      <span>Usar buff de SPD</span>
+                    </label>
+                    <small data-tuning-speed-buff-skill />
+                  </div>
+                </div>
+
+                <label
+                  class="speed-tuning-field"
+                  data-tuning-effect-target
+                  hidden
+                >
+                  <span>Alvo do efeito</span>
+                  <select data-tuning-target />
+                </label>
+              </>
+            )}
+
+            {index > 0 && (
+              <label
+                class="speed-tuning-field speed-tuning-artifact"
+                data-tuning-artifact
+                hidden
+              >
+                <span>Efeito de aumento de SPD</span>
+                <span class="speed-tuning-number-suffix">
+                  <input
+                    data-tuning-artifact-percent
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                  <span>%</span>
+                </span>
+              </label>
+            )}
+          </div>
+
+          <div
+            class="speed-tuning-result is-empty"
+            data-tuning-result
+            role="status"
+            aria-live="polite"
+          >
+            <span data-tuning-result-label>
+              {index === 0 ? 'SPD de combate' : 'SPD mínima (+verde)'}
+            </span>
+            <strong data-tuning-result-value>—</strong>
+            <small data-tuning-result-detail>
+              {index === 0
+                ? 'Informe a SPD das runas'
+                : `Selecione o Monstro ${slot.number}`}
+            </small>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <aside class="speed-tuning-note">
+      <Icon name="info" size={19} />
+      <p>
+        A SPD mínima considera a torre, a liderança ativa, Swift, boosts de ATB
+        e buffs de SPD selecionados. Use a SPD verde exibida nos detalhes do
+        monstro no jogo.
+      </p>
+    </aside>
+  </section>
+
+  <script
+    id="speed-tuning-data"
+    type="application/json"
+    set:html={serializedData}
+  ></script>
+  <script>
+    import { matchesSearch } from '../lib/search.ts';
+    import {
+      applicableLeaderPercent,
+      combatSpeed,
+      DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+      minimumRuneSpeedForCombat,
+      tuneFollower,
+      type FollowerTuningResult,
+      type SpeedTuningEffect,
+      type SpeedTuningLeader,
+    } from '../lib/speed-tuning.ts';
+    import type { Element as MonsterElement } from '../lib/types.ts';
+
+    type MonsterOption = {
+      id: string;
+      name: string;
+      unawakenedName: string | null;
+      aliases: string[];
+      element: MonsterElement;
+      elementLabel: string;
+      speed: number;
+      image: string | null;
+      leader: SpeedTuningLeader | null;
+      capabilities: {
+        atbBoost: SpeedTuningEffect | null;
+        speedBuff: SpeedTuningEffect | null;
+      };
+    };
+
+    type SlotState = {
+      monster: MonsterOption | null;
+      usesSwift: boolean;
+      leaderActive: boolean;
+      runeSpeed: number;
+      boostEnabled: boolean;
+      boostPercent: number;
+      speedBuffEnabled: boolean;
+      targetIndex: number;
+      artifactPercent: number;
+    };
+
+    type SlotElements = {
+      root: HTMLElement;
+      search: HTMLInputElement;
+      options: HTMLElement;
+      portrait: HTMLElement;
+      placeholder: HTMLElement;
+      image: HTMLImageElement;
+      fallback: HTMLElement;
+      name: HTMLElement;
+      element: HTMLElement;
+      base: HTMLElement;
+      runeSpeed: HTMLInputElement | null;
+      swift: HTMLInputElement;
+      leader: HTMLElement;
+      leaderToggle: HTMLInputElement;
+      leaderLabel: HTMLElement;
+      boost: HTMLElement | null;
+      boostToggle: HTMLInputElement | null;
+      boostPercent: HTMLInputElement | null;
+      boostSkill: HTMLElement | null;
+      speedBuff: HTMLElement | null;
+      speedBuffToggle: HTMLInputElement | null;
+      speedBuffSkill: HTMLElement | null;
+      effectTarget: HTMLElement | null;
+      target: HTMLSelectElement | null;
+      artifact: HTMLElement | null;
+      artifactPercent: HTMLInputElement | null;
+      result: HTMLElement;
+      resultValue: HTMLElement;
+      resultDetail: HTMLElement;
+    };
+
+    const dataNode = document.getElementById('speed-tuning-data');
+    const data = JSON.parse(dataNode?.textContent ?? '{"monsters":[]}') as {
+      monsters: MonsterOption[];
+    };
+    const sortedMonsters = [...data.monsters].sort((first, second) =>
+      first.name.localeCompare(second.name, 'pt-BR', { sensitivity: 'base' }),
+    );
+    const towerSelect = document.getElementById(
+      'speed-tuning-tower',
+    ) as HTMLSelectElement | null;
+    const resetButton = document.getElementById('speed-tuning-reset');
+    const slotRoots = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-tuning-slot]'),
+    );
+    const states: SlotState[] = Array.from({ length: 3 }, (_, index) => ({
+      monster: null,
+      usesSwift: false,
+      leaderActive: false,
+      runeSpeed: 0,
+      boostEnabled: false,
+      boostPercent: 0,
+      speedBuffEnabled: false,
+      targetIndex: Math.min(index + 1, 2),
+      artifactPercent: 0,
+    }));
+
+    const query = <T extends globalThis.Element>(
+      root: ParentNode,
+      selector: string,
+    ) => root.querySelector<T>(selector);
+
+    const elements: SlotElements[] = slotRoots.map((root) => ({
+      root,
+      search: query<HTMLInputElement>(root, '[data-tuning-search]')!,
+      options: query<HTMLElement>(root, '[data-tuning-options]')!,
+      portrait: query<HTMLElement>(root, '[data-tuning-portrait]')!,
+      placeholder: query<HTMLElement>(root, '[data-tuning-placeholder]')!,
+      image: query<HTMLImageElement>(root, '[data-tuning-image]')!,
+      fallback: query<HTMLElement>(root, '[data-tuning-fallback]')!,
+      name: query<HTMLElement>(root, '[data-tuning-name]')!,
+      element: query<HTMLElement>(root, '[data-tuning-element]')!,
+      base: query<HTMLElement>(root, '[data-tuning-base]')!,
+      runeSpeed: query<HTMLInputElement>(root, '[data-tuning-rune-speed]'),
+      swift: query<HTMLInputElement>(root, '[data-tuning-swift]')!,
+      leader: query<HTMLElement>(root, '[data-tuning-leader]')!,
+      leaderToggle: query<HTMLInputElement>(
+        root,
+        '[data-tuning-leader-toggle]',
+      )!,
+      leaderLabel: query<HTMLElement>(root, '[data-tuning-leader-label]')!,
+      boost: query<HTMLElement>(root, '[data-tuning-boost]'),
+      boostToggle: query<HTMLInputElement>(root, '[data-tuning-boost-toggle]'),
+      boostPercent: query<HTMLInputElement>(
+        root,
+        '[data-tuning-boost-percent]',
+      ),
+      boostSkill: query<HTMLElement>(root, '[data-tuning-boost-skill]'),
+      speedBuff: query<HTMLElement>(root, '[data-tuning-speed-buff]'),
+      speedBuffToggle: query<HTMLInputElement>(
+        root,
+        '[data-tuning-speed-buff-toggle]',
+      ),
+      speedBuffSkill: query<HTMLElement>(
+        root,
+        '[data-tuning-speed-buff-skill]',
+      ),
+      effectTarget: query<HTMLElement>(root, '[data-tuning-effect-target]'),
+      target: query<HTMLSelectElement>(root, '[data-tuning-target]'),
+      artifact: query<HTMLElement>(root, '[data-tuning-artifact]'),
+      artifactPercent: query<HTMLInputElement>(
+        root,
+        '[data-tuning-artifact-percent]',
+      ),
+      result: query<HTMLElement>(root, '[data-tuning-result]')!,
+      resultValue: query<HTMLElement>(root, '[data-tuning-result-value]')!,
+      resultDetail: query<HTMLElement>(root, '[data-tuning-result-detail]')!,
+    }));
+
+    const clampNumber = (value: number, minimum: number, maximum: number) =>
+      Math.min(maximum, Math.max(minimum, Number.isFinite(value) ? value : 0));
+
+    const closeOptions = (slotIndex: number) => {
+      const slotElements = elements[slotIndex];
+      if (!slotElements) return;
+      slotElements.options.hidden = true;
+      slotElements.search.setAttribute('aria-expanded', 'false');
+      slotElements.search.removeAttribute('aria-activedescendant');
+    };
+
+    const closeAllOptions = (exceptIndex = -1) => {
+      elements.forEach((_, index) => {
+        if (index !== exceptIndex) closeOptions(index);
+      });
+    };
+
+    const createOptionPortrait = (monster: MonsterOption) => {
+      const portrait = document.createElement('span');
+      portrait.className = 'speed-tuning-option-portrait';
+      portrait.setAttribute('aria-hidden', 'true');
+      const fallback = document.createElement('span');
+      fallback.textContent = monster.name.slice(0, 2);
+      portrait.append(fallback);
+
+      if (monster.image) {
+        const image = document.createElement('img');
+        image.src = monster.image;
+        image.alt = '';
+        image.width = 40;
+        image.height = 40;
+        image.loading = 'lazy';
+        fallback.hidden = true;
+        image.addEventListener('error', () => {
+          image.hidden = true;
+          fallback.hidden = false;
+        });
+        portrait.append(image);
+      }
+
+      return portrait;
+    };
+
+    const clearSlot = (slotIndex: number, keepSearchValue = false) => {
+      const state = states[slotIndex];
+      const slotElements = elements[slotIndex];
+      if (!state || !slotElements) return;
+      state.monster = null;
+      state.usesSwift = false;
+      state.leaderActive = false;
+      state.runeSpeed = 0;
+      state.boostEnabled = false;
+      state.boostPercent = 0;
+      state.speedBuffEnabled = false;
+      state.targetIndex = Math.min(slotIndex + 1, 2);
+      state.artifactPercent = 0;
+      if (!keepSearchValue) slotElements.search.value = '';
+    };
+
+    const selectMonster = (slotIndex: number, monster: MonsterOption) => {
+      const state = states[slotIndex];
+      const slotElements = elements[slotIndex];
+      if (!state || !slotElements) return;
+
+      clearSlot(slotIndex);
+      state.monster = monster;
+      state.boostEnabled = Boolean(monster.capabilities.atbBoost);
+      state.boostPercent = monster.capabilities.atbBoost?.percent ?? 0;
+      state.speedBuffEnabled = Boolean(monster.capabilities.speedBuff);
+      slotElements.search.value = monster.name;
+      closeOptions(slotIndex);
+      slotElements.search.blur();
+      render();
+    };
+
+    const renderOptions = (slotIndex: number) => {
+      const slotElements = elements[slotIndex];
+      if (!slotElements) return;
+      const searchValue = slotElements.search.value.trim();
+      const visible = (
+        searchValue
+          ? sortedMonsters.filter((monster) =>
+              matchesSearch(
+                [
+                  monster.name,
+                  monster.unawakenedName,
+                  ...monster.aliases,
+                  monster.elementLabel,
+                ]
+                  .filter(Boolean)
+                  .join(' '),
+                searchValue,
+              ),
+            )
+          : sortedMonsters
+      ).slice(0, 50);
+
+      slotElements.options.replaceChildren();
+      if (visible.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'speed-tuning-options-empty';
+        empty.textContent = 'Nenhum monstro encontrado';
+        slotElements.options.append(empty);
+      } else {
+        const fragment = document.createDocumentFragment();
+        visible.forEach((monster, optionIndex) => {
+          const option = document.createElement('div');
+          option.id = `speed-tuning-option-${slotIndex}-${monster.id}`;
+          option.className = 'speed-tuning-option';
+          option.setAttribute('role', 'option');
+          option.setAttribute('aria-selected', 'false');
+          option.dataset.optionIndex = String(optionIndex);
+          option.dataset.monsterId = monster.id;
+
+          const copy = document.createElement('span');
+          copy.className = 'speed-tuning-option-copy';
+          const name = document.createElement('strong');
+          name.textContent = monster.name;
+          const detail = document.createElement('small');
+          detail.textContent = monster.unawakenedName
+            ? `${monster.unawakenedName} · ${monster.elementLabel} · ${monster.speed} SPD`
+            : `${monster.elementLabel} · ${monster.speed} SPD`;
+          copy.append(name, detail);
+          option.append(createOptionPortrait(monster), copy);
+          option.addEventListener('pointerdown', (event) =>
+            event.preventDefault(),
+          );
+          option.addEventListener('click', () =>
+            selectMonster(slotIndex, monster),
+          );
+          fragment.append(option);
+        });
+        slotElements.options.append(fragment);
+      }
+
+      slotElements.options.hidden = false;
+      slotElements.search.setAttribute('aria-expanded', 'true');
+    };
+
+    const setActiveOption = (slotIndex: number, direction: 1 | -1) => {
+      const slotElements = elements[slotIndex];
+      if (!slotElements) return;
+      const options = Array.from(
+        slotElements.options.querySelectorAll<HTMLElement>('[role="option"]'),
+      );
+      if (options.length === 0) return;
+      const currentIndex = options.findIndex(
+        (option) => option.getAttribute('aria-selected') === 'true',
+      );
+      const nextIndex =
+        currentIndex < 0
+          ? direction === 1
+            ? 0
+            : options.length - 1
+          : (currentIndex + direction + options.length) % options.length;
+
+      options.forEach((option, index) =>
+        option.setAttribute('aria-selected', String(index === nextIndex)),
+      );
+      const activeOption = options[nextIndex];
+      if (!activeOption) return;
+      slotElements.search.setAttribute(
+        'aria-activedescendant',
+        activeOption.id,
+      );
+      activeOption.scrollIntoView({ block: 'nearest' });
+    };
+
+    const activeLeader = () =>
+      states.find((state) => state.leaderActive && state.monster?.leader)
+        ?.monster?.leader ?? null;
+
+    const leaderForSlot = (slotIndex: number) => {
+      const monster = states[slotIndex]?.monster;
+      return monster
+        ? applicableLeaderPercent(activeLeader(), monster.element)
+        : 0;
+    };
+
+    const effectApplies = (
+      providerIndex: number,
+      targetIndex: number,
+      effect: SpeedTuningEffect | null,
+    ) =>
+      Boolean(
+        effect &&
+        (effect.scope === 'team' ||
+          states[providerIndex]?.targetIndex === targetIndex),
+      );
+
+    const accumulatedBoost = (targetIndex: number) => {
+      let total = 0;
+      for (
+        let providerIndex = 0;
+        providerIndex < targetIndex;
+        providerIndex += 1
+      ) {
+        const provider = states[providerIndex];
+        if (
+          !provider?.monster ||
+          !provider.boostEnabled ||
+          !effectApplies(
+            providerIndex,
+            targetIndex,
+            provider.monster.capabilities.atbBoost,
+          )
+        ) {
+          continue;
+        }
+        total += clampNumber(provider.boostPercent, 0, 100);
+      }
+      return total;
+    };
+
+    const speedBuffStart = (targetIndex: number) => {
+      for (
+        let providerIndex = 0;
+        providerIndex < targetIndex;
+        providerIndex += 1
+      ) {
+        const provider = states[providerIndex];
+        if (
+          provider?.monster &&
+          provider.speedBuffEnabled &&
+          effectApplies(
+            providerIndex,
+            targetIndex,
+            provider.monster.capabilities.speedBuff,
+          )
+        ) {
+          return providerIndex + 1;
+        }
+      }
+      return null;
+    };
+
+    const leaderLabel = (leader: SpeedTuningLeader, monster: MonsterOption) => {
+      const scope =
+        leader.area === 'Guild'
+          ? 'Guild'
+          : leader.area === 'Element'
+            ? monster.elementLabel
+            : 'Geral';
+      return `Usar líder SPD +${leader.amount}% · ${scope}`;
+    };
+
+    const renderMonster = (slotIndex: number) => {
+      const state = states[slotIndex];
+      const slotElements = elements[slotIndex];
+      if (!state || !slotElements) return;
+      const monster = state.monster;
+      const enabled = Boolean(monster);
+
+      slotElements.swift.disabled = !enabled;
+      slotElements.swift.checked = state.usesSwift;
+      if (slotElements.runeSpeed) {
+        slotElements.runeSpeed.disabled = !enabled;
+        slotElements.runeSpeed.value = String(state.runeSpeed);
+      }
+
+      if (!monster) {
+        slotElements.portrait.classList.add('is-empty');
+        slotElements.placeholder.hidden = false;
+        slotElements.image.hidden = true;
+        slotElements.image.removeAttribute('src');
+        slotElements.fallback.hidden = true;
+        slotElements.name.textContent = 'Nenhum monstro';
+        slotElements.element.textContent = 'Selecione no campo acima';
+        slotElements.base.textContent = '—';
+        slotElements.leader.hidden = true;
+        if (slotElements.boost) slotElements.boost.hidden = true;
+        if (slotElements.speedBuff) slotElements.speedBuff.hidden = true;
+        if (slotElements.effectTarget) slotElements.effectTarget.hidden = true;
+        return;
+      }
+
+      slotElements.portrait.classList.remove('is-empty');
+      slotElements.placeholder.hidden = true;
+      slotElements.fallback.textContent = monster.name.slice(0, 2);
+      slotElements.name.textContent = monster.name;
+      slotElements.element.textContent = monster.elementLabel;
+      slotElements.base.textContent = String(monster.speed);
+
+      if (monster.image) {
+        slotElements.image.src = monster.image;
+        slotElements.image.hidden = false;
+        slotElements.fallback.hidden = true;
+      } else {
+        slotElements.image.removeAttribute('src');
+        slotElements.image.hidden = true;
+        slotElements.fallback.hidden = false;
+      }
+
+      slotElements.leader.hidden = !monster.leader;
+      slotElements.leaderToggle.checked = state.leaderActive;
+      if (monster.leader) {
+        slotElements.leaderLabel.textContent = leaderLabel(
+          monster.leader,
+          monster,
+        );
+      }
+
+      const boost = monster.capabilities.atbBoost;
+      if (slotElements.boost && slotElements.boostToggle) {
+        slotElements.boost.hidden = !boost;
+        slotElements.boostToggle.checked = state.boostEnabled;
+      }
+      if (slotElements.boostPercent) {
+        slotElements.boostPercent.value = String(state.boostPercent);
+        slotElements.boostPercent.disabled = !state.boostEnabled;
+      }
+      if (slotElements.boostSkill) {
+        slotElements.boostSkill.textContent = boost?.skillName ?? '';
+      }
+
+      const speedBuff = monster.capabilities.speedBuff;
+      if (slotElements.speedBuff && slotElements.speedBuffToggle) {
+        slotElements.speedBuff.hidden = !speedBuff;
+        slotElements.speedBuffToggle.checked = state.speedBuffEnabled;
+      }
+      if (slotElements.speedBuffSkill) {
+        slotElements.speedBuffSkill.textContent = speedBuff?.skillName ?? '';
+      }
+
+      const needsTarget = Boolean(
+        (boost?.scope === 'single' && state.boostEnabled) ||
+        (speedBuff?.scope === 'single' && state.speedBuffEnabled),
+      );
+      if (slotElements.effectTarget && slotElements.target) {
+        slotElements.effectTarget.hidden = !needsTarget;
+        const options = [];
+        for (
+          let targetIndex = slotIndex + 1;
+          targetIndex < 3;
+          targetIndex += 1
+        ) {
+          options.push(
+            new Option(`Monstro ${targetIndex + 1}`, String(targetIndex)),
+          );
+        }
+        slotElements.target.replaceChildren(...options);
+        if (
+          !options.some((option) => Number(option.value) === state.targetIndex)
+        ) {
+          state.targetIndex = Math.min(slotIndex + 1, 2);
+        }
+        slotElements.target.value = String(state.targetIndex);
+      }
+    };
+
+    const setEmptyResult = (slotIndex: number, detail: string, value = '—') => {
+      const slotElements = elements[slotIndex];
+      if (!slotElements) return;
+      slotElements.result.classList.add('is-empty');
+      slotElements.resultValue.textContent = value;
+      slotElements.resultDetail.textContent = detail;
+    };
+
+    const setResult = (slotIndex: number, value: string, detail: string) => {
+      const slotElements = elements[slotIndex];
+      if (!slotElements) return;
+      slotElements.result.classList.remove('is-empty');
+      slotElements.resultValue.textContent = value;
+      slotElements.resultDetail.textContent = detail;
+    };
+
+    const tuneSlot = (
+      slotIndex: number,
+      anchorCombatSpeed: number,
+    ): FollowerTuningResult | null => {
+      const state = states[slotIndex];
+      const monster = state?.monster;
+      if (!state || !monster) return null;
+
+      return tuneFollower({
+        anchorCombatSpeed,
+        iteration: slotIndex,
+        accumulatedAtbBoost: accumulatedBoost(slotIndex),
+        speedBuffStartIteration: speedBuffStart(slotIndex),
+        artifactSpeedIncrease: state.artifactPercent,
+        baseSpeed: monster.speed,
+        towerPercent: Number(towerSelect?.value ?? 15),
+        leaderPercent: leaderForSlot(slotIndex),
+        usesSwift: state.usesSwift,
+      });
+    };
+
+    const renderResults = () => {
+      const anchor = states[0];
+      const anchorMonster = anchor?.monster;
+      if (!anchor || !anchorMonster) {
+        setEmptyResult(0, 'Selecione o Monstro 1');
+        setEmptyResult(1, 'Selecione primeiro o Monstro 1');
+        setEmptyResult(2, 'Selecione primeiro o Monstro 1');
+        return;
+      }
+
+      const anchorCombatSpeed = combatSpeed({
+        baseSpeed: anchorMonster.speed,
+        runeSpeed: anchor.runeSpeed,
+        towerPercent: Number(
+          towerSelect?.value ?? DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+        ),
+        leaderPercent: leaderForSlot(0),
+        usesSwift: anchor.usesSwift,
+      });
+      if (anchorCombatSpeed === null) {
+        setEmptyResult(0, 'Revise a SPD informada');
+        return;
+      }
+      setResult(
+        0,
+        `${anchorCombatSpeed} SPD`,
+        `Base ${anchorMonster.speed} + ${anchor.runeSpeed} verde`,
+      );
+
+      let secondResult = tuneSlot(1, anchorCombatSpeed);
+      const thirdResult = states[1]?.monster
+        ? tuneSlot(2, anchorCombatSpeed)
+        : null;
+
+      if (!states[1]?.monster) {
+        setEmptyResult(1, 'Selecione o Monstro 2');
+        setEmptyResult(2, 'Selecione primeiro o Monstro 2');
+        return;
+      }
+
+      if (
+        secondResult &&
+        thirdResult &&
+        secondResult.combatSpeed < thirdResult.combatSpeed
+      ) {
+        const second = states[1];
+        const secondMonster = second?.monster;
+        if (second && secondMonster) {
+          const raisedRuneSpeed = minimumRuneSpeedForCombat(
+            thirdResult.combatSpeed,
+            {
+              baseSpeed: secondMonster.speed,
+              towerPercent: Number(towerSelect?.value ?? 15),
+              leaderPercent: leaderForSlot(1),
+              usesSwift: second.usesSwift,
+            },
+          );
+          if (raisedRuneSpeed !== null) {
+            secondResult = {
+              runeSpeed: raisedRuneSpeed,
+              combatSpeed:
+                combatSpeed({
+                  baseSpeed: secondMonster.speed,
+                  runeSpeed: raisedRuneSpeed,
+                  towerPercent: Number(towerSelect?.value ?? 15),
+                  leaderPercent: leaderForSlot(1),
+                  usesSwift: second.usesSwift,
+                }) ?? thirdResult.combatSpeed,
+              minimumCombatSpeed: thirdResult.combatSpeed,
+            };
+          }
+        }
+      }
+
+      if (secondResult) {
+        setResult(
+          1,
+          `+${secondResult.runeSpeed} SPD`,
+          `${secondResult.combatSpeed} SPD de combate`,
+        );
+      } else {
+        setEmptyResult(1, 'Não foi possível calcular');
+      }
+
+      if (!states[2]?.monster) {
+        setEmptyResult(2, 'Selecione o Monstro 3');
+      } else if (thirdResult) {
+        setResult(
+          2,
+          `+${thirdResult.runeSpeed} SPD`,
+          `${thirdResult.combatSpeed} SPD de combate`,
+        );
+      } else {
+        setEmptyResult(2, 'Não foi possível calcular');
+      }
+    };
+
+    const render = () => {
+      elements.forEach((_, slotIndex) => renderMonster(slotIndex));
+      elements.forEach((slotElements, slotIndex) => {
+        if (!slotElements.artifact) return;
+        const receivesSpeedBuff = speedBuffStart(slotIndex) !== null;
+        slotElements.artifact.hidden = !receivesSpeedBuff;
+        if (slotElements.artifactPercent) {
+          slotElements.artifactPercent.value = String(
+            states[slotIndex]?.artifactPercent ?? 0,
+          );
+        }
+      });
+      renderResults();
+    };
+
+    elements.forEach((slotElements, slotIndex) => {
+      slotElements.image.addEventListener('error', () => {
+        slotElements.image.hidden = true;
+        slotElements.fallback.hidden = false;
+      });
+      slotElements.search.addEventListener('focus', () => {
+        closeAllOptions(slotIndex);
+        renderOptions(slotIndex);
+      });
+      slotElements.search.addEventListener('input', () => {
+        const state = states[slotIndex];
+        if (
+          state?.monster &&
+          slotElements.search.value.trim() !== state.monster.name
+        ) {
+          clearSlot(slotIndex, true);
+          render();
+        }
+        renderOptions(slotIndex);
+      });
+      slotElements.search.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (slotElements.options.hidden) renderOptions(slotIndex);
+          setActiveOption(slotIndex, event.key === 'ArrowDown' ? 1 : -1);
+          return;
+        }
+        if (event.key === 'Enter') {
+          const active = slotElements.options.querySelector<HTMLElement>(
+            '[role="option"][aria-selected="true"]',
+          );
+          if (active) {
+            event.preventDefault();
+            active.click();
+          }
+          return;
+        }
+        if (event.key === 'Escape') {
+          closeOptions(slotIndex);
+        }
+      });
+
+      slotElements.swift.addEventListener('change', () => {
+        const state = states[slotIndex];
+        if (!state) return;
+        state.usesSwift = slotElements.swift.checked;
+        render();
+      });
+      slotElements.runeSpeed?.addEventListener('input', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.runeSpeed) return;
+        state.runeSpeed = clampNumber(
+          Number(slotElements.runeSpeed.value),
+          0,
+          999,
+        );
+        renderResults();
+      });
+      slotElements.leaderToggle.addEventListener('change', () => {
+        if (slotElements.leaderToggle.checked) {
+          states.forEach((state, index) => {
+            state.leaderActive = index === slotIndex;
+          });
+        } else if (states[slotIndex]) {
+          states[slotIndex].leaderActive = false;
+        }
+        render();
+      });
+      slotElements.boostToggle?.addEventListener('change', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.boostToggle) return;
+        state.boostEnabled = slotElements.boostToggle.checked;
+        render();
+      });
+      slotElements.boostPercent?.addEventListener('input', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.boostPercent) return;
+        state.boostPercent = clampNumber(
+          Number(slotElements.boostPercent.value),
+          0,
+          100,
+        );
+        renderResults();
+      });
+      slotElements.speedBuffToggle?.addEventListener('change', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.speedBuffToggle) return;
+        state.speedBuffEnabled = slotElements.speedBuffToggle.checked;
+        render();
+      });
+      slotElements.target?.addEventListener('change', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.target) return;
+        state.targetIndex = Number(slotElements.target.value);
+        render();
+      });
+      slotElements.artifactPercent?.addEventListener('input', () => {
+        const state = states[slotIndex];
+        if (!state || !slotElements.artifactPercent) return;
+        state.artifactPercent = clampNumber(
+          Number(slotElements.artifactPercent.value),
+          0,
+          100,
+        );
+        renderResults();
+      });
+
+      [
+        slotElements.runeSpeed,
+        slotElements.boostPercent,
+        slotElements.artifactPercent,
+      ].forEach((input) => {
+        input?.addEventListener('blur', () => render());
+      });
+    });
+
+    towerSelect?.addEventListener('change', render);
+    resetButton?.addEventListener('click', () => {
+      states.forEach((_, index) => clearSlot(index));
+      if (towerSelect) {
+        towerSelect.value = String(DEFAULT_SPEED_TUNING_TOWER_PERCENT);
+      }
+      closeAllOptions();
+      render();
+      elements[0]?.search.focus();
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (
+        !(event.target as globalThis.Element).closest(
+          '[data-tuning-search-root]',
+        )
+      ) {
+        closeAllOptions();
+      }
+    });
+
+    render();
+  </script>
+</Layout>

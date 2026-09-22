@@ -4,11 +4,12 @@ import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
 import '../styles/monsters.css';
 import '../styles/speed-tick.css';
+import '../styles/speed-tuning.css';
 interface Props {
   title?: string;
   description?: string;
   detail?: boolean;
-  section?: 'siege' | 'monsters' | 'speed-tick';
+  section?: 'siege' | 'monsters' | 'speed-tick' | 'speed-tuning';
 }
 const {
   title = 'Siege Counter',
@@ -118,16 +119,17 @@ const {
           <span>Catálogo de Monstros</span>
           {section === 'monsters' && <span class="active-dot"></span>}
         </a>
-        <button
-          class="nav-item"
-          aria-label="Spd Tuning · Em breve"
-          data-nav-label="Spd Tuning · Em breve"
-          disabled
+        <a
+          class:list={['nav-item', { active: section === 'speed-tuning' }]}
+          href="/spd-tuning/"
+          aria-label="Spd Tuning"
+          data-nav-label="Spd Tuning"
+          aria-current={section === 'speed-tuning' ? 'page' : undefined}
         >
           <Icon name="speed" />
           <span>Spd Tuning</span>
-          <small>Em breve</small>
-        </button>
+          {section === 'speed-tuning' && <span class="active-dot"></span>}
+        </a>
         <a
           class:list={['nav-item', { active: section === 'speed-tick' }]}
           href="/spd-tick/"
@@ -176,8 +178,24 @@ const {
         <div class="breadcrumb">
           <span>Ferramentas</span>
           <Icon name="chevron" size={13} />
-          <a href={section === 'monsters' ? '/monstros/' : '/'}>
-            {section === 'monsters' ? 'Monstros' : 'Siege Counter'}
+          <a
+            href={
+              section === 'monsters'
+                ? '/monstros/'
+                : section === 'speed-tick'
+                  ? '/spd-tick/'
+                  : section === 'speed-tuning'
+                    ? '/spd-tuning/'
+                    : '/'
+            }
+          >
+            {section === 'monsters'
+              ? 'Monstros'
+              : section === 'speed-tick'
+                ? 'Spd Tick'
+                : section === 'speed-tuning'
+                  ? 'Spd Tuning'
+                  : 'Siege Counter'}
           </a>
           {detail && (
             <>

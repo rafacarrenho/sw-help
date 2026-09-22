@@ -24,7 +24,16 @@ import {
   requiredAdditionalSpeedPercent,
   writeSpeedTickQueryState,
 } from '../src/lib/speed-tick.ts';
+import {
+  applicableLeaderPercent,
+  combatSpeed,
+  getSiegeSpeedLeader,
+  getSpeedTuningCapabilities,
+  minimumRuneSpeedForCombat,
+  tuneFollower,
+} from '../src/lib/speed-tuning.ts';
 import { monsterById } from '../src/data/catalog.ts';
+import { skillById } from '../src/data/skill-catalog.ts';
 import type {
   Monster,
   MonsterSkill,
@@ -151,6 +160,203 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
       minimumSpeed: 239,
     }),
     null,
+  );
+});
+
+test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('bernard-wind-368')!, skillById),
+    {
+      atbBoost: {
+        percent: 30,
+        scope: 'team',
+        skillId: 418,
+        skillName: 'Tailwind',
+      },
+      speedBuff: {
+        scope: 'team',
+        skillId: 418,
+        skillName: 'Tailwind',
+      },
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('konamiya-water-56')!, skillById)
+      .atbBoost,
+    {
+      percent: 100,
+      scope: 'single',
+      skillId: 81,
+      skillName: 'Resurge',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('dova-light-981')!, skillById),
+    {
+      atbBoost: {
+        percent: 100,
+        scope: 'single',
+        skillId: 1429,
+        skillName: "Rabbit's Agility",
+      },
+      speedBuff: {
+        scope: 'single',
+        skillId: 1429,
+        skillName: "Rabbit's Agility",
+      },
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(
+      monsterById.get('belladeon-light-1299')!,
+      skillById,
+    ).atbBoost,
+    {
+      percent: 30,
+      scope: 'team',
+      skillId: 2221,
+      skillName: 'Mobilize',
+    },
+  );
+
+  const generalLeader = getSiegeSpeedLeader({
+    leaderSkill: {
+      attribute: 'Attack Speed',
+      amount: 19,
+      area: 'General',
+      element: null,
+    },
+  });
+  assert.equal(applicableLeaderPercent(generalLeader, 'wind'), 19);
+  const elementalLeader = getSiegeSpeedLeader({
+    leaderSkill: {
+      attribute: 'Attack Speed',
+      amount: 30,
+      area: 'Element',
+      element: 'fire',
+    },
+  });
+  assert.equal(applicableLeaderPercent(elementalLeader, 'fire'), 30);
+  assert.equal(applicableLeaderPercent(elementalLeader, 'water'), 0);
+  assert.equal(
+    getSiegeSpeedLeader({
+      leaderSkill: {
+        attribute: 'Attack Speed',
+        amount: 33,
+        area: 'Arena',
+        element: null,
+      },
+    }),
+    null,
+  );
+});
+
+test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
+  assert.equal(
+    combatSpeed({
+      baseSpeed: 102,
+      runeSpeed: 168,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    286,
+  );
+  assert.equal(
+    combatSpeed({
+      baseSpeed: 102,
+      runeSpeed: 169,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: true,
+    }),
+    286,
+  );
+  assert.equal(
+    minimumRuneSpeedForCombat(286, {
+      baseSpeed: 102,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: true,
+    }),
+    169,
+  );
+
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 1,
+      accumulatedAtbBoost: 0,
+      speedBuffStartIteration: null,
+      artifactSpeedIncrease: 0,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 186, combatSpeed: 301, minimumCombatSpeed: 301 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 1,
+      accumulatedAtbBoost: 30,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 0,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 103, combatSpeed: 218, minimumCombatSpeed: 218 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 2,
+      accumulatedAtbBoost: 30,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 20,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 102, combatSpeed: 217, minimumCombatSpeed: 217 },
+  );
+
+  const kabillaCombatSpeed = combatSpeed({
+    baseSpeed: 120,
+    runeSpeed: 230,
+    towerPercent: 15,
+    leaderPercent: 19,
+    usesSwift: true,
+  });
+  assert.equal(kabillaCombatSpeed, 391);
+  const talisman = tuneFollower({
+    anchorCombatSpeed: kabillaCombatSpeed!,
+    iteration: 2,
+    accumulatedAtbBoost: 30,
+    speedBuffStartIteration: null,
+    artifactSpeedIncrease: 0,
+    baseSpeed: 103,
+    towerPercent: 15,
+    leaderPercent: 19,
+    usesSwift: true,
+  });
+  assert.deepEqual(talisman, {
+    runeSpeed: 182,
+    combatSpeed: 320,
+    minimumCombatSpeed: 320,
+  });
+  assert.equal(
+    minimumRuneSpeedForCombat(talisman!.combatSpeed, {
+      baseSpeed: 106,
+      towerPercent: 15,
+      leaderPercent: 19,
+      usesSwift: true,
+    }),
+    178,
   );
 });
 

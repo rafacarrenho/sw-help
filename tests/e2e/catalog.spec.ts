@@ -7,7 +7,10 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
   if (await mobileMenu.isVisible()) await mobileMenu.click();
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(6);
-  await expect(page.getByRole('button', { name: 'Spd Tuning' })).toBeDisabled();
+  await expect(page.getByRole('link', { name: 'Spd Tuning' })).toHaveAttribute(
+    'href',
+    '/spd-tuning/',
+  );
   await expect(page.getByRole('link', { name: 'Spd Tick' })).toHaveAttribute(
     'href',
     '/spd-tick/',

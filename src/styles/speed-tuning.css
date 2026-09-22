@@ -1,0 +1,571 @@
+.speed-tuning-tool {
+  margin-top: 28px;
+}
+
+.speed-tuning-heading {
+  align-items: end;
+}
+
+.speed-tuning-actions {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+}
+
+.speed-tuning-tower {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-tower select,
+.speed-tuning-field input,
+.speed-tuning-field select,
+.speed-tuning-combobox input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #14171b;
+  color: #f0f1f4;
+  font: inherit;
+}
+
+.speed-tuning-tower select {
+  width: 104px;
+}
+
+.speed-tuning-tower select:focus-visible,
+.speed-tuning-field input:focus-visible,
+.speed-tuning-field select:focus-visible,
+.speed-tuning-combobox input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.speed-tuning-reset {
+  min-height: 44px;
+}
+
+.speed-tuning-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.speed-tuning-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 590px;
+  overflow: visible;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(155deg, #1a1e23 0%, #15181c 68%);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+}
+
+.speed-tuning-slot-header {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 74px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.speed-tuning-step {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(233, 186, 119, 0.4);
+  border-radius: 50%;
+  background: rgba(233, 186, 119, 0.08);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.speed-tuning-slot-header h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.speed-tuning-slot-header div > span {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-arrow {
+  position: absolute;
+  z-index: 2;
+  right: -25px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: #15181c;
+  color: var(--gold);
+}
+
+.speed-tuning-search-root {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  gap: 7px;
+  padding: 16px 16px 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-combobox {
+  position: relative;
+}
+
+.speed-tuning-combobox input {
+  font-size: var(--text-base);
+}
+
+.speed-tuning-options {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 7px);
+  left: 0;
+  width: 100%;
+  max-height: 312px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  border: 1px solid #5d5851;
+  border-radius: 10px;
+  background: #20242a;
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.46);
+}
+
+.speed-tuning-option {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 54px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  color: #eff0f3;
+  cursor: pointer;
+}
+
+.speed-tuning-option:hover,
+.speed-tuning-option[aria-selected='true'] {
+  background: rgba(233, 186, 119, 0.14);
+  color: var(--gold);
+}
+
+.speed-tuning-option-portrait,
+.speed-tuning-portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid #766f66;
+  background: linear-gradient(140deg, #4b443d, #222831);
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.speed-tuning-option-portrait {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.speed-tuning-option-portrait img,
+.speed-tuning-portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.speed-tuning-option-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.speed-tuning-option-copy strong,
+.speed-tuning-option-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.speed-tuning-option-copy strong {
+  font-size: var(--text-base);
+  line-height: 1.25;
+}
+
+.speed-tuning-option-copy small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.speed-tuning-options-empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-monster-summary {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+  min-height: 82px;
+  margin: 14px 16px 0;
+  padding: 11px;
+  border: 1px solid #292d33;
+  border-radius: 11px;
+  background: rgba(8, 10, 12, 0.26);
+}
+
+.speed-tuning-portrait {
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+}
+
+.speed-tuning-portrait.is-empty {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02);
+  color: #777b82;
+  font-size: 24px;
+}
+
+.speed-tuning-fallback {
+  font-size: 13px;
+}
+
+.speed-tuning-monster-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.speed-tuning-monster-copy strong {
+  overflow: hidden;
+  font-size: var(--text-base);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.speed-tuning-monster-copy span,
+.speed-tuning-base span {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-base {
+  display: grid;
+  justify-items: end;
+  line-height: 1.3;
+}
+
+.speed-tuning-base strong {
+  color: var(--gold);
+  font-size: 20px;
+}
+
+.speed-tuning-fields {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px 16px;
+}
+
+.speed-tuning-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-field--compact {
+  grid-template-columns: minmax(0, 1fr) 92px;
+  align-items: center;
+}
+
+.speed-tuning-field input:disabled,
+.speed-tuning-field select:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+}
+
+.speed-tuning-check {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #171a1f;
+  color: #e4e6ea;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.speed-tuning-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold);
+}
+
+.speed-tuning-check:has(input:checked) {
+  border-color: rgba(233, 186, 119, 0.58);
+  background: rgba(233, 186, 119, 0.08);
+}
+
+.speed-tuning-check:has(input:disabled) {
+  opacity: 0.54;
+  cursor: not-allowed;
+}
+
+.speed-tuning-check--leader:has(input:checked) {
+  border-color: rgba(141, 174, 207, 0.7);
+  background: rgba(141, 174, 207, 0.1);
+}
+
+.speed-tuning-effect {
+  display: grid;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid #2d3239;
+  border-radius: 10px;
+  background: rgba(12, 14, 17, 0.35);
+}
+
+.speed-tuning-effect .speed-tuning-check {
+  min-height: 38px;
+  padding: 7px 9px;
+}
+
+.speed-tuning-effect-heading {
+  display: grid;
+  gap: 3px;
+}
+
+.speed-tuning-effect-heading small {
+  overflow: hidden;
+  padding: 0 9px;
+  color: #8f949e;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.speed-tuning-number-suffix {
+  position: relative;
+  display: block;
+}
+
+.speed-tuning-number-suffix input {
+  padding-right: 30px;
+}
+
+.speed-tuning-number-suffix > span {
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  color: var(--muted);
+  transform: translateY(-50%);
+}
+
+.speed-tuning-artifact {
+  padding: 10px;
+  border: 1px solid rgba(145, 200, 167, 0.34);
+  border-radius: 9px;
+  background: rgba(145, 200, 167, 0.05);
+}
+
+.speed-tuning-result {
+  display: grid;
+  gap: 2px;
+  min-height: 108px;
+  margin: auto 16px 16px;
+  padding: 14px;
+  border: 1px solid rgba(233, 186, 119, 0.46);
+  border-radius: 11px;
+  background: linear-gradient(
+    135deg,
+    rgba(233, 186, 119, 0.12),
+    rgba(233, 186, 119, 0.035)
+  );
+}
+
+.speed-tuning-result > span {
+  color: #c9b08a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.speed-tuning-result strong {
+  color: #f5d29d;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.speed-tuning-result small {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-result.is-empty {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.speed-tuning-result.is-empty > span,
+.speed-tuning-result.is-empty strong {
+  color: #898e97;
+}
+
+.speed-tuning-note {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid #292d33;
+  border-radius: 10px;
+  background: #15181c;
+  color: var(--muted);
+}
+
+.speed-tuning-note svg {
+  margin-top: 3px;
+  color: var(--blue);
+}
+
+.speed-tuning-note p {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 1120px) {
+  .speed-tuning-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .speed-tuning-slot {
+    min-height: auto;
+  }
+
+  .speed-tuning-arrow {
+    right: 18px;
+    bottom: -25px;
+    transform: rotate(90deg);
+  }
+
+  .speed-tuning-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .speed-tuning-fields > * {
+    align-self: start;
+  }
+
+  .speed-tuning-result {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .speed-tuning-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .speed-tuning-actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .speed-tuning-tower {
+    flex: 1;
+  }
+
+  .speed-tuning-tower select {
+    width: 112px;
+  }
+
+  .speed-tuning-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .speed-tuning-monster-summary {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .speed-tuning-base {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    grid-column: 2;
+    grid-row: 2;
+    justify-items: start;
+    margin-top: 0;
+  }
+
+  .speed-tuning-base span {
+    margin-right: 6px;
+  }
+
+  .speed-tuning-base span,
+  .speed-tuning-base strong {
+    display: inline;
+    font-size: var(--text-sm);
+  }
+}
+
+@media (max-width: 460px) {
+  .speed-tuning-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .speed-tuning-tower select,
+  .speed-tuning-reset {
+    width: 100%;
+  }
+
+  .speed-tuning-slot-header,
+  .speed-tuning-search-root,
+  .speed-tuning-fields {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .speed-tuning-monster-summary,
+  .speed-tuning-result {
+    margin-right: 13px;
+    margin-left: 13px;
+  }
+}
