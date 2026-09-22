@@ -3,11 +3,12 @@ import Icon from '../components/Icon.astro';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
 import '../styles/monsters.css';
+import '../styles/speed-tick.css';
 interface Props {
   title?: string;
   description?: string;
   detail?: boolean;
-  section?: 'siege' | 'monsters';
+  section?: 'siege' | 'monsters' | 'speed-tick';
 }
 const {
   title = 'Siege Counter',
@@ -66,11 +67,15 @@ const {
           <span>Spd Tuning</span>
           <small>Em breve</small>
         </button>
-        <button class="nav-item" disabled>
+        <a
+          class:list={['nav-item', { active: section === 'speed-tick' }]}
+          href="/spd-tick/"
+          aria-current={section === 'speed-tick' ? 'page' : undefined}
+        >
           <Icon name="clock" />
           <span>Spd Tick</span>
-          <small>Em breve</small>
-        </button>
+          {section === 'speed-tick' && <span class="active-dot"></span>}
+        </a>
       </nav>
       <div class="sidebar-bottom">
         <div class="sidebar-note">

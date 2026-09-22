@@ -8,6 +8,14 @@ import {
   readMonsterFilters,
   leaderText,
 } from '../src/lib/monster-catalog.ts';
+import {
+  SPEED_TICK_BREAKPOINTS,
+  additionalSpeedPercentOptions,
+  getLeaderOptions,
+  getPossibleSpeedLeaders,
+  requiredAdditionalSpeed,
+  requiredAdditionalSpeedPercent,
+} from '../src/lib/speed-tick.ts';
 import { monsterById } from '../src/data/catalog.ts';
 import type { Monster, Defense, Counter } from '../src/lib/types.ts';
 
@@ -18,6 +26,96 @@ const read = (name: string) =>
 const monsters: Monster[] = read('monsters');
 const defenses: Defense[] = read('defenses');
 const counters: Counter[] = read('counters');
+
+test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
+  assert.deepEqual(
+    SPEED_TICK_BREAKPOINTS.filter((tick) => [4, 5, 6].includes(tick.tick)).map(
+      (tick) => [tick.tick, tick.minimumSpeed],
+    ),
+    [
+      [4, 358],
+      [5, 286],
+      [6, 239],
+    ],
+  );
+  assert.deepEqual(
+    additionalSpeedPercentOptions,
+    [5, 10, 15, 20, 25, 30, 50, 100],
+  );
+  assert.ok(
+    Math.abs(
+      requiredAdditionalSpeedPercent({
+        baseSpeed: 150,
+        leaderPercent: 15,
+        activeAdditionalPercent: 0,
+        targetTick: 5,
+      }) - 65.79710144927535,
+    ) < 1e-9,
+  );
+  assert.deepEqual(
+    getLeaderOptions({
+      leaderSkill: {
+        attribute: 'Attack Speed',
+        amount: 15,
+        area: 'Arena',
+        element: null,
+      },
+    } as any),
+    [
+      { label: 'Sem líder', value: 0 },
+      { label: 'SPD +15% · Arena', value: 15 },
+    ],
+  );
+  assert.deepEqual(
+    getPossibleSpeedLeaders(monsters).map((leader) => leader.value),
+    [0, 10, 15, 16, 17, 19, 20, 21, 23, 24, 28, 30, 33],
+  );
+  assert.deepEqual(
+    getPossibleSpeedLeaders(monsters).map((leader) => leader.label),
+    [
+      '0%',
+      '10%',
+      '15%',
+      '16%',
+      '17%',
+      '19%',
+      '20%',
+      '21%',
+      '23%',
+      '24%',
+      '28%',
+      '30%',
+      '33%',
+    ],
+  );
+  assert.equal(
+    requiredAdditionalSpeed({
+      baseSpeed: 100,
+      leaderPercent: 0,
+      activeAdditionalPercent: 15,
+      minimumSpeed: 239,
+    }),
+    124,
+  );
+  assert.equal(
+    requiredAdditionalSpeed({
+      baseSpeed: 100,
+      leaderPercent: 33,
+      activeAdditionalPercent: 15,
+      minimumSpeed: 239,
+    }),
+    87,
+  );
+  assert.equal(
+    requiredAdditionalSpeed({
+      baseSpeed: 0,
+      leaderPercent: 33,
+      activeAdditionalPercent: 15,
+      minimumSpeed: 239,
+    }),
+    null,
+  );
+});
 
 test('importação completa mantém IDs do Siege, formas e líderes da fonte', () => {
   assert.equal(monsters.length, read('monsters-meta').count);

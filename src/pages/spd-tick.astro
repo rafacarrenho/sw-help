@@ -1,0 +1,665 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { monsterById, monsters } from '../data/catalog';
+import {
+  getPossibleSpeedLeaders,
+  requiredAdditionalSpeed,
+  SPEED_TICK_BREAKPOINTS,
+} from '../lib/speed-tick.ts';
+
+const defaultBaseSpeed = 100;
+const defaultTowerPercent = 15;
+const getUnawakenedName = (monster: (typeof monsters)[number]) => {
+  let currentMonster = monster;
+  const visitedIds = new Set<string>([monster.id]);
+
+  while (currentMonster.awakensFrom) {
+    const previousForm = monsterById.get(currentMonster.awakensFrom);
+    if (!previousForm || visitedIds.has(previousForm.id)) break;
+    visitedIds.add(previousForm.id);
+    currentMonster = previousForm;
+  }
+
+  return currentMonster.id === monster.id ? null : currentMonster.name;
+};
+const monsterData = monsters.map((monster) => ({
+  id: monster.id,
+  name: monster.name,
+  unawakenedName: getUnawakenedName(monster),
+  speed: monster.speed ?? 0,
+  image: monster.image ?? null,
+}));
+const leaderOptions = getPossibleSpeedLeaders(monsters);
+const serializedData = JSON.stringify({
+  monsters: monsterData,
+  leaderPercentages: leaderOptions.map((option) => option.value),
+}).replaceAll('<', '\\u003c');
+
+const resultText = (value: number | null) => {
+  if (value === null) return 'Indisponível';
+  return value > 0 ? `${value} SPD` : 'Já atinge';
+};
+---
+
+<Layout
+  title="Spd Tick"
+  description="Calculadora de breakpoints de velocidade em Summoners War."
+  section="speed-tick"
+>
+  <section class="page-intro">
+    <div>
+      <span class="eyebrow">
+        <span></span> VELOCIDADE EM TICK
+      </span>
+      <h1>
+        Spd <span>Tick</span>
+      </h1>
+      <p>
+        Entenda os breakpoints de velocidade que importam para atingir
+        <br class="mobile-break" /> Tick 4, Tick 5 e Tick 6 com mais
+        previsibilidade.
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <span class="speed-tick-icon">SPD</span>
+    </div>
+  </section>
+
+  <section class="speed-tick-tool" aria-labelledby="tool-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="tool-title">Calculadora por monstro</h2>
+        <p>
+          Selecione o monstro e compare a SPD adicional necessária para cada
+          Tick em todas as lideranças disponíveis.
+        </p>
+      </div>
+    </div>
+
+    <div class="speed-tick-form">
+      <div class="speed-select speed-select--monster">
+        <label for="speed-tick-monster-search">Monstro</label>
+        <div id="speed-tick-monster-combobox" class="speed-monster-combobox">
+          <input
+            id="speed-tick-monster-search"
+            type="search"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-controls="speed-tick-monster-options"
+            aria-expanded="false"
+            autocomplete="off"
+            placeholder="Buscar monstro"
+          />
+          <div
+            id="speed-tick-monster-options"
+            class="speed-monster-options"
+            role="listbox"
+            aria-label="Monstros encontrados"
+            hidden
+          ></div>
+        </div>
+      </div>
+
+      <label class="speed-select">
+        <span>Torre SPD</span>
+        <select id="speed-tick-bonus-percent">
+          {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+            (percent) => (
+              <option
+                value={percent}
+                selected={percent === defaultTowerPercent}
+              >
+                {percent}%
+              </option>
+            ),
+          )}
+        </select>
+      </label>
+
+      <label class="speed-select speed-select--leader">
+        <span>Líder SPD</span>
+        <select id="speed-tick-leader">
+          <option value="all" selected>
+            Todos
+          </option>
+          {leaderOptions.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+
+    <div class="speed-tick-results">
+      <div class="speed-tick-header">
+        <div class="speed-tick-selected">
+          <span
+            id="speed-tick-selected-portrait"
+            class="speed-monster-portrait speed-monster-portrait--selected is-empty"
+            aria-hidden="true"
+          >
+            <span
+              id="speed-tick-selected-placeholder"
+              class="speed-monster-placeholder"
+            >
+              ?
+            </span>
+            <span
+              id="speed-tick-selected-fallback"
+              class="speed-monster-fallback"
+              hidden
+            ></span>
+            <img
+              id="speed-tick-selected-image"
+              alt=""
+              width="64"
+              height="64"
+              hidden
+            />
+          </span>
+          <div>
+            <span class="speed-tick-pill">Monstro selecionado</span>
+            <h3 id="speed-tick-monster-name">Nenhum monstro selecionado</h3>
+          </div>
+        </div>
+        <div class="speed-tick-meta">
+          <span>SPD base</span>
+          <strong id="speed-tick-base-speed">{defaultBaseSpeed}</strong>
+        </div>
+      </div>
+
+      <div
+        class="speed-tick-table-scroll"
+        role="region"
+        aria-label="SPD adicional por liderança de velocidade"
+        tabindex="0"
+      >
+        <table class="speed-tick-table">
+          <caption>SPD adicional necessária por liderança</caption>
+          <thead>
+            <tr>
+              <th class="speed-tick-sticky-column" scope="col">
+                Tick
+              </th>
+              {leaderOptions.map((option) => (
+                <th scope="col" data-leader-percent={option.value}>
+                  {option.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody id="speed-tick-table-body">
+            {SPEED_TICK_BREAKPOINTS.map((breakpoint) => (
+              <tr
+                class:list={{
+                  'row-highlight': [5, 6].includes(breakpoint.tick),
+                }}
+              >
+                <th class="speed-tick-sticky-column" scope="row">
+                  Tick {breakpoint.tick}
+                  <small>{breakpoint.minimumSpeed} SPD</small>
+                </th>
+                {leaderOptions.map((option) => {
+                  const value = requiredAdditionalSpeed({
+                    baseSpeed: defaultBaseSpeed,
+                    leaderPercent: option.value,
+                    activeAdditionalPercent: defaultTowerPercent,
+                    minimumSpeed: breakpoint.minimumSpeed,
+                  });
+
+                  return (
+                    <td data-leader-percent={option.value}>
+                      {resultText(value)}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script
+    id="speed-tick-data"
+    type="application/json"
+    set:html={serializedData}
+  ></script>
+  <script>
+    import {
+      requiredAdditionalSpeed,
+      SPEED_TICK_BREAKPOINTS,
+    } from '../lib/speed-tick.ts';
+    import { matchesSearch } from '../lib/search.ts';
+
+    type MonsterSummary = {
+      id: string;
+      name: string;
+      unawakenedName: string | null;
+      speed: number;
+      image: string | null;
+    };
+
+    type SpeedTickData = {
+      monsters: MonsterSummary[];
+      leaderPercentages: number[];
+    };
+
+    const dataNode = document.getElementById('speed-tick-data');
+    const speedTickData: SpeedTickData = JSON.parse(
+      dataNode?.textContent ?? '{"monsters":[],"leaderPercentages":[]}',
+    );
+    const comboboxRoot = document.getElementById('speed-tick-monster-combobox');
+    const monsterSearch = document.getElementById(
+      'speed-tick-monster-search',
+    ) as HTMLInputElement | null;
+    const monsterOptions = document.getElementById(
+      'speed-tick-monster-options',
+    );
+    const bonusPercentSelect = document.getElementById(
+      'speed-tick-bonus-percent',
+    );
+    const leaderSelect = document.getElementById('speed-tick-leader');
+    const baseSpeedNode = document.getElementById('speed-tick-base-speed');
+    const monsterNameNode = document.getElementById('speed-tick-monster-name');
+    const selectedPortrait = document.getElementById(
+      'speed-tick-selected-portrait',
+    );
+    const selectedPlaceholder = document.getElementById(
+      'speed-tick-selected-placeholder',
+    );
+    const selectedImage = document.getElementById(
+      'speed-tick-selected-image',
+    ) as HTMLImageElement | null;
+    const selectedFallback = document.getElementById(
+      'speed-tick-selected-fallback',
+    );
+    const leaderHeaders = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        '.speed-tick-table thead [data-leader-percent]',
+      ),
+    );
+    const tableBody = document.getElementById('speed-tick-table-body');
+    const defaultBaseSpeed = 100;
+    const optionHeight = 52;
+    const virtualOverscan = 2;
+    const sortedMonsters = [...speedTickData.monsters].sort((first, second) =>
+      first.name.localeCompare(second.name, 'pt-BR', {
+        sensitivity: 'base',
+      }),
+    );
+
+    let selectedMonster: MonsterSummary | null = null;
+    let visibleMonsters: MonsterSummary[] = [];
+    let activeOptionIndex = -1;
+    let optionsSpacer: HTMLElement | null = null;
+    let virtualRenderFrame: number | null = null;
+
+    const formatResult = (value: number | null) => {
+      if (value === null) return 'Indisponível';
+      return value > 0 ? `${value} SPD` : 'Já atinge';
+    };
+
+    const showFallback = (
+      image: HTMLImageElement | null,
+      fallback: HTMLElement | null,
+    ) => {
+      if (image) image.hidden = true;
+      if (fallback) fallback.hidden = false;
+    };
+
+    const updatePortrait = (monster: MonsterSummary) => {
+      if (selectedFallback) {
+        selectedFallback.textContent = monster.name.slice(0, 2);
+      }
+
+      if (!selectedImage || !monster.image) {
+        if (selectedImage) selectedImage.removeAttribute('src');
+        showFallback(selectedImage, selectedFallback);
+        return;
+      }
+
+      selectedImage.src = monster.image;
+      selectedImage.hidden = false;
+      if (selectedFallback) selectedFallback.hidden = true;
+    };
+
+    selectedImage?.addEventListener('error', () =>
+      showFallback(selectedImage, selectedFallback),
+    );
+
+    const closeOptions = () => {
+      if (!monsterSearch || !monsterOptions) return;
+
+      monsterOptions.hidden = true;
+      monsterSearch.setAttribute('aria-expanded', 'false');
+      monsterSearch.removeAttribute('aria-activedescendant');
+      activeOptionIndex = -1;
+      if (virtualRenderFrame !== null) {
+        cancelAnimationFrame(virtualRenderFrame);
+        virtualRenderFrame = null;
+      }
+    };
+
+    const createOptionPortrait = (monster: MonsterSummary) => {
+      const portrait = document.createElement('span');
+      portrait.className = 'speed-monster-option-portrait';
+      portrait.setAttribute('aria-hidden', 'true');
+
+      const fallback = document.createElement('span');
+      fallback.className = 'speed-monster-fallback';
+      fallback.textContent = monster.name.slice(0, 2);
+      portrait.append(fallback);
+
+      if (monster.image) {
+        const image = document.createElement('img');
+        image.src = monster.image;
+        image.alt = '';
+        image.width = 40;
+        image.height = 40;
+        image.loading = 'lazy';
+        fallback.hidden = true;
+        image.addEventListener('error', () => {
+          image.hidden = true;
+          fallback.hidden = false;
+        });
+        portrait.append(image);
+      }
+
+      return portrait;
+    };
+
+    const renderSelection = () => {
+      const baseSpeed = selectedMonster?.speed ?? defaultBaseSpeed;
+
+      if (baseSpeedNode) baseSpeedNode.textContent = String(baseSpeed);
+      if (monsterNameNode) {
+        monsterNameNode.textContent =
+          selectedMonster?.name ?? 'Nenhum monstro selecionado';
+      }
+
+      if (!selectedMonster) {
+        selectedPortrait?.classList.add('is-empty');
+        if (selectedPlaceholder) selectedPlaceholder.hidden = false;
+        if (selectedImage) {
+          selectedImage.hidden = true;
+          selectedImage.removeAttribute('src');
+        }
+        if (selectedFallback) selectedFallback.hidden = true;
+        return;
+      }
+
+      selectedPortrait?.classList.remove('is-empty');
+      if (selectedPlaceholder) selectedPlaceholder.hidden = true;
+      updatePortrait(selectedMonster);
+    };
+
+    const selectMonster = (monster: MonsterSummary) => {
+      selectedMonster = monster;
+      if (monsterSearch) monsterSearch.value = monster.name;
+      closeOptions();
+      render();
+    };
+
+    const createMonsterOption = (monster: MonsterSummary, index: number) => {
+      const option = document.createElement('div');
+      option.id = `speed-tick-monster-option-${monster.id}`;
+      option.className = 'speed-monster-option';
+      option.style.transform = `translateY(${index * optionHeight}px)`;
+      option.setAttribute('role', 'option');
+      option.setAttribute(
+        'aria-label',
+        monster.unawakenedName
+          ? `${monster.name}, sem despertar: ${monster.unawakenedName}`
+          : monster.name,
+      );
+      option.setAttribute('aria-selected', String(index === activeOptionIndex));
+      option.setAttribute('aria-posinset', String(index + 1));
+      option.setAttribute('aria-setsize', String(visibleMonsters.length));
+
+      const text = document.createElement('span');
+      text.className = 'speed-monster-option-text';
+      const name = document.createElement('span');
+      name.className = 'speed-monster-option-name';
+      name.textContent = monster.name;
+      text.append(name);
+
+      if (monster.unawakenedName) {
+        const unawakenedName = document.createElement('small');
+        unawakenedName.className = 'speed-monster-option-unawakened';
+        unawakenedName.textContent = monster.unawakenedName;
+        text.append(unawakenedName);
+      }
+
+      option.append(createOptionPortrait(monster), text);
+
+      option.addEventListener('pointermove', () =>
+        setActiveOption(index, false),
+      );
+      option.addEventListener('pointerdown', (event) => {
+        event.preventDefault();
+      });
+      option.addEventListener('click', () => {
+        selectMonster(monster);
+      });
+
+      return option;
+    };
+
+    const renderVirtualOptions = () => {
+      if (!monsterOptions || !optionsSpacer || visibleMonsters.length === 0) {
+        return;
+      }
+
+      const viewportHeight = Math.max(
+        optionHeight,
+        monsterOptions.clientHeight - 12,
+      );
+      const firstIndex = Math.max(
+        0,
+        Math.floor(monsterOptions.scrollTop / optionHeight) - virtualOverscan,
+      );
+      const lastIndex = Math.min(
+        visibleMonsters.length,
+        Math.ceil((monsterOptions.scrollTop + viewportHeight) / optionHeight) +
+          virtualOverscan,
+      );
+      const fragment = document.createDocumentFragment();
+
+      for (let index = firstIndex; index < lastIndex; index += 1) {
+        const monster = visibleMonsters[index];
+        if (monster) fragment.append(createMonsterOption(monster, index));
+      }
+
+      optionsSpacer.replaceChildren(fragment);
+    };
+
+    const setActiveOption = (index: number, ensureVisible = true) => {
+      if (!monsterSearch || !monsterOptions || visibleMonsters.length === 0) {
+        return;
+      }
+
+      activeOptionIndex =
+        (index + visibleMonsters.length) % visibleMonsters.length;
+
+      if (ensureVisible) {
+        const viewportHeight = Math.max(
+          optionHeight,
+          monsterOptions.clientHeight - 12,
+        );
+        const optionTop = activeOptionIndex * optionHeight;
+        const optionBottom = optionTop + optionHeight;
+
+        if (optionTop < monsterOptions.scrollTop) {
+          monsterOptions.scrollTop = optionTop;
+        } else if (optionBottom > monsterOptions.scrollTop + viewportHeight) {
+          monsterOptions.scrollTop = optionBottom - viewportHeight;
+        }
+
+        renderVirtualOptions();
+      } else {
+        monsterOptions
+          .querySelectorAll<HTMLElement>('[role="option"]')
+          .forEach((option) => {
+            option.setAttribute(
+              'aria-selected',
+              String(
+                option.id ===
+                  `speed-tick-monster-option-${visibleMonsters[activeOptionIndex]?.id}`,
+              ),
+            );
+          });
+      }
+
+      const activeMonster = visibleMonsters[activeOptionIndex];
+      if (!activeMonster) return;
+      monsterSearch.setAttribute(
+        'aria-activedescendant',
+        `speed-tick-monster-option-${activeMonster.id}`,
+      );
+    };
+
+    const renderOptions = () => {
+      if (!monsterSearch || !monsterOptions) return;
+
+      const query = monsterSearch.value.trim();
+      visibleMonsters = query
+        ? sortedMonsters.filter((monster) =>
+            matchesSearch(
+              [monster.name, monster.unawakenedName].filter(Boolean).join(' '),
+              query,
+            ),
+          )
+        : sortedMonsters;
+      activeOptionIndex = -1;
+      monsterSearch.removeAttribute('aria-activedescendant');
+      monsterOptions.replaceChildren();
+      monsterOptions.scrollTop = 0;
+      optionsSpacer = null;
+
+      if (visibleMonsters.length === 0) {
+        const emptyState = document.createElement('p');
+        emptyState.className = 'speed-monster-options-status';
+        emptyState.textContent = 'Nenhum monstro encontrado';
+        monsterOptions.append(emptyState);
+      } else {
+        optionsSpacer = document.createElement('div');
+        optionsSpacer.className = 'speed-monster-options-spacer';
+        optionsSpacer.style.height = `${visibleMonsters.length * optionHeight}px`;
+        monsterOptions.append(optionsSpacer);
+      }
+
+      monsterOptions.hidden = false;
+      monsterSearch.setAttribute('aria-expanded', 'true');
+      renderVirtualOptions();
+    };
+
+    const render = () => {
+      if (!bonusPercentSelect || !leaderSelect || !tableBody) {
+        return;
+      }
+
+      const towerPercent = Number(
+        (bonusPercentSelect as HTMLSelectElement).value || 0,
+      );
+      const leaderValue = (leaderSelect as HTMLSelectElement).value;
+      const selectedLeaderPercent = Number(leaderValue);
+      const hasValidLeader =
+        leaderValue !== 'all' &&
+        speedTickData.leaderPercentages.includes(selectedLeaderPercent);
+      const visibleLeaderPercentages = hasValidLeader
+        ? [selectedLeaderPercent]
+        : speedTickData.leaderPercentages;
+
+      if (leaderValue !== 'all' && !hasValidLeader) {
+        (leaderSelect as HTMLSelectElement).value = 'all';
+      }
+
+      leaderHeaders.forEach((header) => {
+        const percent = Number(header.dataset.leaderPercent);
+        header.hidden = !visibleLeaderPercentages.includes(percent);
+      });
+
+      renderSelection();
+      const baseSpeed = selectedMonster?.speed ?? defaultBaseSpeed;
+
+      tableBody.innerHTML = SPEED_TICK_BREAKPOINTS.map((breakpoint) => {
+        const cells = visibleLeaderPercentages
+          .map((leaderPercent) => {
+            const value = requiredAdditionalSpeed({
+              baseSpeed,
+              leaderPercent,
+              activeAdditionalPercent: towerPercent,
+              minimumSpeed: breakpoint.minimumSpeed,
+            });
+
+            return `<td data-leader-percent="${leaderPercent}">${formatResult(value)}</td>`;
+          })
+          .join('');
+
+        return `
+          <tr class="${[5, 6].includes(breakpoint.tick) ? 'row-highlight' : ''}">
+            <th class="speed-tick-sticky-column" scope="row">
+              Tick ${breakpoint.tick}
+              <small>${breakpoint.minimumSpeed} SPD</small>
+            </th>
+            ${cells}
+          </tr>
+        `;
+      }).join('');
+    };
+
+    monsterOptions?.addEventListener('scroll', () => {
+      if (!optionsSpacer || virtualRenderFrame !== null) return;
+
+      virtualRenderFrame = requestAnimationFrame(() => {
+        virtualRenderFrame = null;
+        renderVirtualOptions();
+      });
+    });
+    monsterSearch?.addEventListener('focus', renderOptions);
+    monsterSearch?.addEventListener('input', () => {
+      selectedMonster = null;
+      render();
+      renderOptions();
+    });
+    monsterSearch?.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeOptions();
+        return;
+      }
+
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        if (monsterOptions?.hidden) renderOptions();
+        if (visibleMonsters.length === 0) return;
+        event.preventDefault();
+        setActiveOption(
+          event.key === 'ArrowDown'
+            ? activeOptionIndex + 1
+            : activeOptionIndex < 0
+              ? visibleMonsters.length - 1
+              : activeOptionIndex - 1,
+        );
+        return;
+      }
+
+      if (event.key === 'Enter' && activeOptionIndex >= 0) {
+        const monster = visibleMonsters[activeOptionIndex];
+        if (!monster) return;
+        event.preventDefault();
+        selectMonster(monster);
+      }
+    });
+    monsterSearch?.addEventListener('blur', () => {
+      queueMicrotask(() => {
+        if (!comboboxRoot?.contains(document.activeElement)) closeOptions();
+      });
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (!comboboxRoot?.contains(event.target as Node)) closeOptions();
+    });
+    bonusPercentSelect?.addEventListener('change', render);
+    leaderSelect?.addEventListener('change', render);
+    render();
+  </script>
+</Layout>

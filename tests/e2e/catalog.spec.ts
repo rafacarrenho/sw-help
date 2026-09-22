@@ -6,7 +6,10 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   await page.goto('/');
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(8);
   await expect(page.getByRole('button', { name: 'Spd Tuning' })).toBeDisabled();
-  await expect(page.getByRole('button', { name: 'Spd Tick' })).toBeDisabled();
+  await expect(page.getByRole('link', { name: 'Spd Tick' })).toHaveAttribute(
+    'href',
+    '/spd-tick/',
+  );
   await page.getByRole('searchbox').fill('CLÁRA, carcano');
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(2);
   await page.getByLabel('Torre 4★', { exact: true }).check();

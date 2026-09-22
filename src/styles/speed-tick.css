@@ -1,0 +1,443 @@
+.speed-tick-overview,
+.speed-tick-tool {
+  margin-top: 28px;
+}
+
+.speed-tick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.speed-tick-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 126px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #191d22, #151a1e);
+}
+
+.speed-tick-card--highlight {
+  border-color: rgba(233, 186, 119, 0.7);
+  background: linear-gradient(135deg, #201d1a, #171b1e);
+}
+
+.speed-tick-label {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.speed-tick-card strong {
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.speed-tick-card small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.speed-tick-form {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(140px, 1fr));
+  gap: 16px;
+  align-items: end;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #171a1e;
+}
+
+.speed-tick-form-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.speed-select,
+.speed-toggle {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.speed-select select,
+.speed-monster-combobox input {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: #edf0f5;
+  font: inherit;
+}
+
+.speed-select select:focus-visible,
+.speed-monster-combobox input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.speed-monster-combobox {
+  position: relative;
+}
+
+.speed-monster-options {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  max-height: 326px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 6px;
+  border: 1px solid #665e55;
+  border-radius: 10px;
+  background: #20242a;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  contain: layout paint;
+}
+
+.speed-monster-options[hidden],
+.speed-monster-portrait[hidden] {
+  display: none;
+}
+
+.speed-monster-options-status {
+  margin: 0;
+  padding: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.speed-monster-options-spacer {
+  position: relative;
+  width: 100%;
+}
+
+.speed-monster-option {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  height: 52px;
+  min-height: 52px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: #edf0f5;
+  cursor: pointer;
+}
+
+.speed-monster-option:hover,
+.speed-monster-option[aria-selected='true'] {
+  background: rgba(233, 186, 119, 0.14);
+  color: var(--gold);
+}
+
+.speed-monster-option-text {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  min-width: 0;
+}
+
+.speed-monster-option-name {
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.speed-monster-option-unawakened {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.speed-monster-portrait,
+.speed-monster-option-portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid #81776a;
+  border-radius: 9px;
+  background: linear-gradient(140deg, #48413b, #222831);
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.speed-monster-option-portrait {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.speed-monster-portrait--selected {
+  width: 64px;
+  height: 64px;
+  border-radius: 11px;
+}
+
+.speed-monster-portrait--selected.is-empty {
+  border-style: dashed;
+  border-color: #625d56;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.speed-monster-placeholder {
+  color: #817b73;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.speed-monster-portrait img,
+.speed-monster-option-portrait img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.speed-monster-fallback {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.speed-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding-inline: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.speed-toggle input {
+  accent-color: var(--gold);
+  width: 18px;
+  height: 18px;
+}
+
+.speed-tick-results {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #171b20, #12161a);
+  overflow: hidden;
+}
+
+.speed-tick-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.speed-tick-pill {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.speed-tick-header h3 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.2;
+}
+
+.speed-tick-selected {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.speed-tick-meta {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.speed-tick-meta strong {
+  font-size: 28px;
+  line-height: 1;
+  color: #edf0f5;
+}
+
+.speed-tick-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.speed-tick-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.speed-tick-table-scroll:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+.speed-tick-table caption {
+  padding: 12px 20px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  caption-side: top;
+}
+
+.speed-tick-table th,
+.speed-tick-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.speed-tick-table thead th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.speed-tick-table tbody th {
+  min-width: 116px;
+  color: #edf0f5;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.speed-tick-table tbody th small {
+  display: block;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.speed-tick-table td {
+  min-width: 104px;
+  font-size: 16px;
+}
+
+.speed-tick-sticky-column {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #171b20;
+  box-shadow: 1px 0 0 var(--border);
+}
+
+.speed-tick-table thead .speed-tick-sticky-column {
+  z-index: 2;
+  background: #191d22;
+}
+
+.speed-tick-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.speed-tick-table .row-highlight {
+  background: rgba(233, 186, 119, 0.06);
+}
+
+.speed-tick-table .row-highlight .speed-tick-sticky-column {
+  background: #211f1d;
+}
+
+.speed-tick-icon {
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  border: 1px solid rgba(233, 186, 119, 0.35);
+  border-radius: 24px;
+  background: rgba(233, 186, 119, 0.09);
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 461px) and (max-width: 760px) {
+  .speed-tick-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 820px) {
+  .speed-tick-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .speed-select--monster {
+    grid-column: 1 / -1;
+  }
+
+  .speed-tick-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .speed-tick-selected {
+    min-height: 85px;
+  }
+
+  .speed-tick-meta {
+    justify-items: start;
+  }
+
+  .speed-tick-table th,
+  .speed-tick-table td {
+    padding-inline: 14px;
+  }
+}
