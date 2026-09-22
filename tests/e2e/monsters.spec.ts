@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test('menu, filtros combinados e retorno da ficha preservam a busca', async ({ page }) => {
   await page.goto('/');
+  const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
   await page.getByRole('link', { name: 'Catálogo de Monstros' }).click();
   await expect(page.getByRole('heading', { name: 'Catálogo de Monstros' })).toBeVisible();
   await expect(page.locator('[data-monster-card]')).toHaveCount(48);

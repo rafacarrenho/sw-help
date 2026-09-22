@@ -7,7 +7,7 @@ current stacked mobile navigation with an accessible off-canvas menu.
 
 ## Desktop behavior
 
-- The sidebar starts expanded on every page load at 264 px wide.
+- The sidebar starts expanded at 264 px when the user has not chosen a state.
 - A control inside the sidebar toggles between the expanded state and a compact
   80 px state.
 - The compact state keeps the brand symbol and navigation icons visible while
@@ -15,12 +15,17 @@ current stacked mobile navigation with an accessible off-canvas menu.
 - Active, disabled, hover, focus, and tooltip/accessible-label behavior remain
   understandable when only icons are visible.
 - The workspace margin follows the sidebar width with the same short motion.
-- The state is intentionally not persisted between page loads.
+- The desktop preference is persisted in `localStorage`, so full-page navigation
+  and later visits preserve the expanded or compact state.
+- A small script in the document head restores the compact class before paint,
+  avoiding an expanded-to-compact layout flash. Storage access is guarded so
+  privacy restrictions fall back safely to the expanded state.
 
 ## Mobile behavior
 
 - At 760 px and below, the sidebar starts closed and no longer occupies page
   space.
+- Mobile ignores the persisted desktop preference and always starts closed.
 - A sticky mobile header contains a compact brand and a menu button.
 - Opening the menu slides an up-to-320 px drawer from the left above the page
   and adds a dark backdrop over the remaining content.

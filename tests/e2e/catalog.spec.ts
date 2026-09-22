@@ -4,12 +4,16 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   page,
 }) => {
   await page.goto('/');
+  const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(8);
   await expect(page.getByRole('button', { name: 'Spd Tuning' })).toBeDisabled();
   await expect(page.getByRole('link', { name: 'Spd Tick' })).toHaveAttribute(
     'href',
     '/spd-tick/',
   );
+  const mobileClose = page.locator('[data-mobile-menu-close]');
+  if (await mobileClose.isVisible()) await mobileClose.click();
   await page.getByRole('searchbox').fill('CLÁRA, carcano');
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(2);
   await page.getByLabel('Torre 4★', { exact: true }).check();

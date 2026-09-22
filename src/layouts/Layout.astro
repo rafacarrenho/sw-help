@@ -32,21 +32,65 @@ const {
     <a class="skip-link" href="#main">
       Pular para o conteúdo
     </a>
-    <aside class="sidebar">
-      <a href="/" class="brand" aria-label="SW Help, início">
+    <header class="mobile-header">
+      <button
+        class="mobile-menu-toggle"
+        type="button"
+        aria-label="Abrir menu"
+        aria-controls="app-sidebar"
+        aria-expanded="false"
+        data-mobile-menu-toggle
+      >
+        <Icon name="menu" size={22} />
+      </button>
+      <a href="/" class="mobile-brand" aria-label="SW Help, início">
         <span class="brand-symbol">
-          <Icon name="swords" size={23} />
+          <Icon name="swords" size={21} />
         </span>
         <span>
           SW<span class="brand-help">HELP</span>
-          <small>SUMMONERS WAR TOOLKIT</small>
         </span>
       </a>
+      <span class="mobile-header-spacer" aria-hidden="true"></span>
+    </header>
+    <aside class="sidebar" id="app-sidebar" data-sidebar>
+      <div class="sidebar-header">
+        <a href="/" class="brand" aria-label="SW Help, início">
+          <span class="brand-symbol">
+            <Icon name="swords" size={23} />
+          </span>
+          <span class="brand-copy">
+            SW<span class="brand-help">HELP</span>
+            <small>SUMMONERS WAR TOOLKIT</small>
+          </span>
+        </a>
+        <button
+          class="desktop-sidebar-toggle"
+          type="button"
+          aria-controls="app-sidebar"
+          aria-expanded="true"
+          aria-label="Recolher menu lateral"
+          title="Recolher menu lateral"
+          data-desktop-sidebar-toggle
+        >
+          <Icon name="chevron" size={16} />
+        </button>
+        <button
+          class="mobile-menu-close"
+          type="button"
+          aria-label="Fechar menu"
+          data-mobile-menu-close
+        >
+          <Icon name="close" size={22} />
+        </button>
+      </div>
       <div class="nav-group-label">SEU ARSENAL</div>
       <nav aria-label="Ferramentas">
         <a
           class:list={['nav-item', { active: section === 'siege' }]}
           href="/"
+          aria-label="Siege Counter"
+          data-nav-label="Siege Counter"
           aria-current={section === 'siege' && !detail ? 'page' : undefined}
         >
           <Icon name="swords" />
@@ -56,13 +100,20 @@ const {
         <a
           class:list={['nav-item', { active: section === 'monsters' }]}
           href="/monstros/"
+          aria-label="Catálogo de Monstros"
+          data-nav-label="Catálogo de Monstros"
           aria-current={section === 'monsters' && !detail ? 'page' : undefined}
         >
           <Icon name="book" />
           <span>Catálogo de Monstros</span>
           {section === 'monsters' && <span class="active-dot"></span>}
         </a>
-        <button class="nav-item" disabled>
+        <button
+          class="nav-item"
+          aria-label="Spd Tuning · Em breve"
+          data-nav-label="Spd Tuning · Em breve"
+          disabled
+        >
           <Icon name="speed" />
           <span>Spd Tuning</span>
           <small>Em breve</small>
@@ -70,6 +121,8 @@ const {
         <a
           class:list={['nav-item', { active: section === 'speed-tick' }]}
           href="/spd-tick/"
+          aria-label="Spd Tick"
+          data-nav-label="Spd Tick"
           aria-current={section === 'speed-tick' ? 'page' : undefined}
         >
           <Icon name="clock" />
@@ -93,6 +146,21 @@ const {
         </span>
       </div>
     </aside>
+    <button
+      class="sidebar-backdrop"
+      type="button"
+      aria-label="Fechar menu"
+      aria-hidden="true"
+      tabindex="-1"
+      data-sidebar-backdrop
+    ></button>
+    <div
+      class="nav-tooltip"
+      id="nav-tooltip"
+      role="tooltip"
+      aria-hidden="true"
+      data-nav-tooltip
+    ></div>
     <div class="workspace">
       <header class="topbar">
         <div class="breadcrumb">
@@ -125,7 +193,179 @@ const {
         <span>Projeto da comunidade. Sem vínculo com a Com2uS.</span>
       </footer>
     </div>
+    <noscript>
+      <style>
+        @media (max-width: 760px) {
+          .mobile-header,
+          .sidebar-backdrop,
+          .desktop-sidebar-toggle,
+          .mobile-menu-close {
+            display: none !important;
+          }
+          .sidebar {
+            position: relative !important;
+            width: auto !important;
+            height: auto !important;
+            transform: none !important;
+          }
+        }
+      </style>
+    </noscript>
     <script>
+      const sidebar = document.querySelector<HTMLElement>('[data-sidebar]');
+      const desktopToggle = document.querySelector<HTMLButtonElement>(
+        '[data-desktop-sidebar-toggle]',
+      );
+      const mobileToggle = document.querySelector<HTMLButtonElement>(
+        '[data-mobile-menu-toggle]',
+      );
+      const mobileClose = document.querySelector<HTMLButtonElement>(
+        '[data-mobile-menu-close]',
+      );
+      const backdrop = document.querySelector<HTMLButtonElement>(
+        '[data-sidebar-backdrop]',
+      );
+      const navTooltip =
+        document.querySelector<HTMLElement>('[data-nav-tooltip]');
+      const tooltipItems =
+        document.querySelectorAll<HTMLElement>('[data-nav-label]');
+      const mobileMedia = window.matchMedia('(max-width: 760px)');
+      let desktopCollapsed = false;
+      let mobileOpen = false;
+      let tooltipOwner: HTMLElement | null = null;
+
+      const hideNavTooltip = (owner?: HTMLElement) => {
+        if (!navTooltip || (owner && tooltipOwner !== owner)) return;
+        tooltipOwner?.removeAttribute('aria-describedby');
+        tooltipOwner = null;
+        navTooltip.classList.remove('is-visible');
+        navTooltip.setAttribute('aria-hidden', 'true');
+      };
+
+      const showNavTooltip = (item: HTMLElement) => {
+        if (
+          !navTooltip ||
+          !sidebar ||
+          mobileMedia.matches ||
+          !desktopCollapsed
+        ) {
+          return;
+        }
+
+        hideNavTooltip();
+        const itemRect = item.getBoundingClientRect();
+        const sidebarRect = sidebar.getBoundingClientRect();
+        navTooltip.textContent = item.dataset.navLabel || '';
+        navTooltip.style.left = `${sidebarRect.right + 12}px`;
+        navTooltip.style.top = `${itemRect.top + itemRect.height / 2}px`;
+        navTooltip.setAttribute('aria-hidden', 'false');
+        navTooltip.classList.add('is-visible');
+        item.setAttribute('aria-describedby', 'nav-tooltip');
+        tooltipOwner = item;
+      };
+
+      const syncNavigation = () => {
+        if (!sidebar || !desktopToggle || !mobileToggle) return;
+
+        if (mobileMedia.matches) {
+          document.body.classList.remove('nav-collapsed');
+          document.body.classList.toggle('mobile-nav-open', mobileOpen);
+          mobileToggle.inert = mobileOpen;
+          mobileToggle.setAttribute('aria-expanded', String(mobileOpen));
+          mobileToggle.setAttribute(
+            'aria-label',
+            mobileOpen ? 'Fechar menu' : 'Abrir menu',
+          );
+          sidebar.inert = !mobileOpen;
+          sidebar.setAttribute('aria-hidden', String(!mobileOpen));
+          sidebar.setAttribute('role', 'dialog');
+          sidebar.setAttribute('aria-modal', 'true');
+          return;
+        }
+
+        mobileOpen = false;
+        hideNavTooltip();
+        document.body.classList.remove('mobile-nav-open');
+        document.body.classList.toggle('nav-collapsed', desktopCollapsed);
+        mobileToggle.inert = false;
+        sidebar.inert = false;
+        sidebar.removeAttribute('aria-hidden');
+        sidebar.removeAttribute('role');
+        sidebar.removeAttribute('aria-modal');
+        desktopToggle.setAttribute('aria-expanded', String(!desktopCollapsed));
+        desktopToggle.setAttribute(
+          'aria-label',
+          desktopCollapsed ? 'Expandir menu lateral' : 'Recolher menu lateral',
+        );
+        desktopToggle.title = desktopCollapsed
+          ? 'Expandir menu lateral'
+          : 'Recolher menu lateral';
+      };
+
+      const openMobileNavigation = () => {
+        if (!mobileMedia.matches) return;
+        mobileOpen = true;
+        syncNavigation();
+        window.requestAnimationFrame(() => mobileClose?.focus());
+      };
+
+      const closeMobileNavigation = (restoreFocus = true) => {
+        if (!mobileOpen) return;
+        mobileOpen = false;
+        syncNavigation();
+        if (restoreFocus) mobileToggle?.focus();
+      };
+
+      desktopToggle?.addEventListener('click', () => {
+        desktopCollapsed = !desktopCollapsed;
+        syncNavigation();
+      });
+      mobileToggle?.addEventListener('click', openMobileNavigation);
+      mobileClose?.addEventListener('click', () => closeMobileNavigation());
+      backdrop?.addEventListener('click', () => closeMobileNavigation());
+      sidebar?.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+        link.addEventListener('click', () => closeMobileNavigation(false));
+      });
+      tooltipItems.forEach((item) => {
+        item.addEventListener('mouseenter', () => showNavTooltip(item));
+        item.addEventListener('mouseleave', () => hideNavTooltip(item));
+        item.addEventListener('focus', () => showNavTooltip(item));
+        item.addEventListener('blur', () => hideNavTooltip(item));
+      });
+      window.addEventListener('scroll', () => hideNavTooltip(), true);
+      window.addEventListener('resize', () => hideNavTooltip());
+      mobileMedia.addEventListener('change', () => {
+        mobileOpen = false;
+        syncNavigation();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (!mobileOpen || !sidebar) return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeMobileNavigation();
+          return;
+        }
+        if (event.key !== 'Tab') return;
+
+        const focusable = Array.from(
+          sidebar.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((element) => !element.hidden);
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+
+      syncNavigation();
+
       document
         .querySelectorAll<HTMLImageElement>('.monster-portrait img')
         .forEach((img) => {
