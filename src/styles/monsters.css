@@ -284,15 +284,11 @@ a.monster:hover .monster-name {
   border-radius: 10px;
 }
 .leader-emblem {
-  display: grid;
-  place-items: center;
-  flex: 0 0 36px;
-  height: 36px;
-  color: #201c16;
-  background: var(--gold);
-  border-radius: 7px;
-  font-size: 20px;
-  font-weight: 800;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.28));
 }
 .monster-leader-panel h2 {
   font-size: 14px;
@@ -347,6 +343,7 @@ a.monster:hover .monster-name {
 .monster-skill-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  align-items: start;
   gap: 16px;
 }
 .monster-skill-card {
@@ -448,22 +445,102 @@ a.monster:hover .monster-name {
 }
 .monster-skill-progress {
   margin-top: 16px;
+  overflow: hidden;
+  background: #17191e;
+  border: 1px solid #343841;
+  border-radius: 9px;
   color: #d9dde4;
   font-size: 14px;
 }
 .monster-skill-progress summary {
-  width: fit-content;
-  min-height: 44px;
-  padding: 11px 0;
-  color: var(--gold);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 9px 12px;
+  color: #e8e9ed;
   cursor: pointer;
+  list-style: none;
+  transition: background 0.15s;
+}
+.monster-skill-progress summary::-webkit-details-marker {
+  display: none;
+}
+.monster-skill-progress summary:hover {
+  background: #20232a;
+}
+.monster-skill-progress summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -3px;
+}
+.monster-skill-progress-disclosure {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  color: #201c16;
+  background: var(--gold);
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+.monster-skill-progress-disclosure::before {
+  content: '+';
+}
+.monster-skill-progress[open] .monster-skill-progress-disclosure::before {
+  content: '−';
+}
+.monster-skill-progress-label {
+  font-weight: 600;
+}
+.monster-skill-progress-count {
+  padding: 3px 7px;
+  color: var(--muted);
+  background: #252830;
+  border: 1px solid #3d424c;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 .monster-skill-progress ol {
   display: grid;
-  gap: 5px;
-  margin: 4px 0 0;
-  padding-left: 24px;
+  gap: 0;
+  margin: 0;
+  padding: 6px 12px 10px;
+  border-top: 1px solid #30343c;
   color: var(--muted);
+  list-style: none;
+}
+.monster-skill-progress li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 9px 2px;
+}
+.monster-skill-progress li + li {
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+.monster-skill-progress li > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: #f1d6a9;
+  background: #2a261f;
+  border: 1px solid #51442f;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.monster-skill-progress li p {
+  margin: 2px 0 0;
+  color: #c8ccd3;
+  font-size: 14px;
+  line-height: 1.45;
 }
 .monster-source-list {
   display: grid;
@@ -514,6 +591,11 @@ a.monster:hover .monster-name {
 }
 .monster-uses a:hover {
   border-color: var(--gold);
+}
+@media (min-width: 900px) {
+  .monster-skill-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 @media (max-width: 1100px) {
   .bestiary-selects {
@@ -636,8 +718,8 @@ a.monster:hover .monster-name {
     flex-direction: column;
   }
   .leader-emblem {
-    width: 34px;
-    height: 34px;
+    width: 46px;
+    height: 46px;
     flex-basis: auto;
   }
 }

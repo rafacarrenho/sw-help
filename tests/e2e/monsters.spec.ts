@@ -188,6 +188,23 @@ test('ficha exibe atributos, habilidades originais e formas de obtenção', asyn
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Como obter' })).toBeVisible();
   await expect(page.getByText('Fire Scroll', { exact: true })).toBeVisible();
+  await expect(page.locator('[data-leader-icon]')).toHaveAttribute(
+    'src',
+    '/leader-skills/attack-speed.png',
+  );
+  const progress = page.locator('.monster-skill-progress').first();
+  await expect(progress.getByText('Progressão das melhorias')).toBeVisible();
+  await progress.locator('summary').click();
+  await expect(progress).toHaveAttribute('open', '');
+  await expect(progress.locator('li').first()).toBeVisible();
+  const columns = await page
+    .locator('.monster-skill-list')
+    .evaluate((list) =>
+      getComputedStyle(list).gridTemplateColumns.split(' ').filter(Boolean),
+    );
+  expect(columns).toHaveLength(
+    (page.viewportSize()?.width ?? 0) >= 900 ? 2 : 1,
+  );
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

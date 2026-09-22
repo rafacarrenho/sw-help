@@ -81,6 +81,19 @@ export const attributeLabels: Record<string, string> = {
   Resistance: 'Resistência',
   Accuracy: 'Precisão',
 };
+const leaderSkillIcons: Record<string, string> = {
+  Accuracy: '/leader-skills/accuracy.png',
+  'Attack Power': '/leader-skills/attack-power.png',
+  'Attack Speed': '/leader-skills/attack-speed.png',
+  'Critical DMG': '/leader-skills/critical-damage.png',
+  'Critical Rate': '/leader-skills/critical-rate.png',
+  Defense: '/leader-skills/defense.png',
+  HP: '/leader-skills/hp.png',
+  Resistance: '/leader-skills/resistance.png',
+};
+export function leaderSkillIcon(skill: Monster['leaderSkill']): string | null {
+  return skill ? (leaderSkillIcons[skill.attribute] ?? null) : null;
+}
 export const areaLabels: Record<string, string> = {
   General: 'Todos os conteúdos',
   Arena: 'Arena',

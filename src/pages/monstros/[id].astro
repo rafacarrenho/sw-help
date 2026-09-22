@@ -16,6 +16,7 @@ import metadata from '../../data/monsters-meta.json';
 import {
   formLabel,
   leaderText,
+  leaderSkillIcon,
   archetypeLabels,
 } from '../../lib/monster-catalog';
 
@@ -28,6 +29,7 @@ export function getStaticPaths() {
   }));
 }
 const { monster } = Astro.props;
+const leaderIcon = leaderSkillIcon(monster.leaderSkill);
 const monsterSkills = (monster.skillIds ?? [])
   .flatMap((id) => {
     const skill = skillById.get(id);
@@ -142,9 +144,17 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
         </span>
       </div>
       <div class="monster-leader-panel">
-        <span class="leader-emblem" aria-hidden="true">
-          L
-        </span>
+        {leaderIcon && (
+          <img
+            class="leader-emblem"
+            src={leaderIcon}
+            alt=""
+            width="54"
+            height="54"
+            aria-hidden="true"
+            data-leader-icon
+          />
+        )}
         <div>
           <h2>Habilidade de líder</h2>
           <p>{leaderText(monster.leaderSkill)}</p>
@@ -267,10 +277,25 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
             )}
             {skill.levelProgress.length > 0 && (
               <details class="monster-skill-progress">
-                <summary>Progressão das melhorias</summary>
+                <summary>
+                  <span
+                    class="monster-skill-progress-disclosure"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="monster-skill-progress-label">
+                    Progressão das melhorias
+                  </span>
+                  <span class="monster-skill-progress-count">
+                    {skill.levelProgress.length}{' '}
+                    {skill.levelProgress.length === 1 ? 'etapa' : 'etapas'}
+                  </span>
+                </summary>
                 <ol>
-                  {skill.levelProgress.map((progress) => (
-                    <li>{progress}</li>
+                  {skill.levelProgress.map((progress, index) => (
+                    <li>
+                      <span aria-hidden="true">{index + 1}</span>
+                      <p>{progress}</p>
+                    </li>
                   ))}
                 </ol>
               </details>
@@ -348,6 +373,16 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
         SWARFARM ↗
       </a>
       , importados em {updated}. Velocidade sem runas, torres ou bônus de líder.
+      {leaderIcon && (
+        <>
+          {' '}
+          Ícone de liderança via{' '}
+          <a href="https://swarena.gg/" target="_blank" rel="noreferrer">
+            SWArena ↗
+          </a>
+          .
+        </>
+      )}{' '}
       Retratos e personagens pertencem à Com2uS.
     </p>
   </aside>

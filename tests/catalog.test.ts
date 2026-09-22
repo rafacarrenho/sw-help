@@ -7,6 +7,7 @@ import {
   filterMonsters,
   readMonsterFilters,
   leaderText,
+  leaderSkillIcon,
   toMonsterSummary,
 } from '../src/lib/monster-catalog.ts';
 import {
@@ -301,6 +302,31 @@ test('catálogo ordena os atributos máximos do maior para o menor', () => {
     readMonsterFilters(new URLSearchParams('sort=invalid')).sort,
     'name',
   );
+});
+test('mapeia todos os atributos de liderança para ícones locais', () => {
+  const icons = {
+    Accuracy: '/leader-skills/accuracy.png',
+    'Attack Power': '/leader-skills/attack-power.png',
+    'Attack Speed': '/leader-skills/attack-speed.png',
+    'Critical DMG': '/leader-skills/critical-damage.png',
+    'Critical Rate': '/leader-skills/critical-rate.png',
+    Defense: '/leader-skills/defense.png',
+    HP: '/leader-skills/hp.png',
+    Resistance: '/leader-skills/resistance.png',
+  };
+  for (const [attribute, path] of Object.entries(icons)) {
+    assert.equal(
+      leaderSkillIcon({
+        attribute,
+        amount: 1,
+        area: 'General',
+        element: null,
+      }),
+      path,
+    );
+    assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)));
+  }
+  assert.equal(leaderSkillIcon(null), null);
 });
 test('catálogo público mantém só a última forma obtível de cada família', () => {
   const visible = filterMonsters(
