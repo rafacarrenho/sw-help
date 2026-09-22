@@ -53,9 +53,9 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
   await catalogLink.hover();
   await expect(tooltip).toHaveText('Catálogo de Monstros');
   await expect(tooltip).toHaveClass(/is-visible/);
-  const tooltipBox = await tooltip.boundingBox();
-  expect(tooltipBox).not.toBeNull();
-  expect(tooltipBox!.x).toBeGreaterThanOrEqual(90);
+  await expect
+    .poll(async () => (await tooltip.boundingBox())?.x ?? 0)
+    .toBeGreaterThanOrEqual(90);
   await catalogLink.focus();
   await expect(catalogLink).toHaveAttribute('aria-describedby', 'nav-tooltip');
 

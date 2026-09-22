@@ -34,10 +34,60 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
     '30',
   );
   await expect(firstSlot.locator('[data-tuning-speed-buff]')).toBeVisible();
-  await expect(firstSlot.locator('[data-tuning-boost-toggle]')).toBeChecked();
+  await expect(firstSlot.locator('[data-tuning-boost-toggle]')).toHaveCount(0);
+  await expect(firstSlot.locator('[data-tuning-boost-skill]')).toHaveCount(0);
+  await expect(firstSlot.locator('[data-tuning-speed-buff-skill]')).toHaveCount(
+    0,
+  );
   await expect(
     firstSlot.locator('[data-tuning-speed-buff-toggle]'),
   ).toBeChecked();
+
+  const swiftControl = firstSlot.getByLabel('Usa Swift');
+  const speedBuffControl = firstSlot.locator('[data-tuning-speed-buff]');
+  for (const control of [swiftControl.locator('..'), speedBuffControl]) {
+    await expect(control).toHaveClass('speed-tuning-check');
+    expect(
+      await control.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          background: style.backgroundColor,
+          border: style.borderTopWidth,
+          parent: element.parentElement?.className,
+        };
+      }),
+    ).toEqual({
+      background: 'rgba(0, 0, 0, 0)',
+      border: '0px',
+      parent: 'speed-tuning-fields',
+    });
+  }
+
+  expect(
+    await firstSlot.locator('[data-tuning-summary]').evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        background: style.backgroundColor,
+        border: style.borderTopWidth,
+        padding: style.paddingTop,
+      };
+    }),
+  ).toEqual({
+    background: 'rgba(0, 0, 0, 0)',
+    border: '0px',
+    padding: '0px',
+  });
+
+  await expect(firstSlot.locator('[data-tuning-boost]')).toHaveClass(
+    'speed-tuning-field',
+  );
+  const runeInputWidth = await firstSlot
+    .locator('[data-tuning-rune-speed]')
+    .evaluate((element) => element.getBoundingClientRect().width);
+  const boostInputWidth = await firstSlot
+    .locator('[data-tuning-boost-percent]')
+    .evaluate((element) => element.getBoundingClientRect().width);
+  expect(Math.abs(runeInputWidth - boostInputWidth)).toBeLessThan(1);
 
   await firstSlot.locator('[data-tuning-rune-speed]').fill('200');
   await selectMonster(page, 1, 'lushen', 'lushen');
@@ -53,11 +103,30 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   );
   await expect(secondSlot.locator('[data-tuning-artifact]')).toBeVisible();
   await expect(thirdSlot.locator('[data-tuning-artifact]')).toBeVisible();
+  await expect(secondSlot.locator('[data-tuning-artifact]')).toHaveClass(
+    'speed-tuning-field',
+  );
+  expect(
+    await secondSlot.locator('[data-tuning-artifact]').evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        background: style.backgroundColor,
+        border: style.borderTopWidth,
+        directInput:
+          element.querySelector(':scope > [data-tuning-artifact-percent]') !==
+          null,
+      };
+    }),
+  ).toEqual({
+    background: 'rgba(0, 0, 0, 0)',
+    border: '0px',
+    directInput: true,
+  });
 
   const boostedSecondSpeed = await secondSlot
     .locator('[data-tuning-result-value]')
     .textContent();
-  await firstSlot.locator('[data-tuning-boost-toggle]').uncheck();
+  await firstSlot.locator('[data-tuning-boost-percent]').fill('0');
   await expect(secondSlot.locator('[data-tuning-result-value]')).not.toHaveText(
     boostedSecondSpeed ?? '',
   );
@@ -84,21 +153,38 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
   );
   await expect(firstSlot.locator('[data-tuning-effect-target]')).toBeVisible();
   await expect(firstSlot.locator('[data-tuning-target]')).toHaveValue('1');
+  await firstSlot.locator('[data-tuning-boost-percent]').fill('0');
+  await expect(firstSlot.locator('[data-tuning-effect-target]')).toBeVisible();
   await firstSlot.locator('[data-tuning-target]').selectOption('2');
   await expect(firstSlot.locator('[data-tuning-target]')).toHaveValue('2');
 
   await page.getByRole('button', { name: 'Limpar time' }).click();
   await selectMonster(page, 0, 'clara', 'clara');
+  const firstLeader = firstSlot.locator('[data-tuning-leader-toggle]');
+  await expect(firstLeader).toBeChecked();
+
   await selectMonster(page, 1, 'garo', 'garo-fire-246');
   const secondSlot = page.locator('[data-tuning-slot]').nth(1);
-  const firstLeader = firstSlot.locator('[data-tuning-leader-toggle]');
   const secondLeader = secondSlot.locator('[data-tuning-leader-toggle]');
+  await expect(secondLeader).toBeChecked();
+  await expect(secondLeader.locator('..')).toHaveClass('speed-tuning-check');
+  await expect(firstLeader).not.toBeChecked();
+
+  await selectMonster(page, 2, 'gemini', 'gemini-light-657');
+  const thirdSlot = page.locator('[data-tuning-slot]').nth(2);
+  const thirdLeader = thirdSlot.locator('[data-tuning-leader-toggle]');
+  await expect(secondLeader).toBeChecked();
+  await expect(thirdLeader).not.toBeChecked();
 
   await firstLeader.check();
   await expect(firstLeader).toBeChecked();
-  await secondLeader.check();
-  await expect(secondLeader).toBeChecked();
+  await expect(secondLeader).not.toBeChecked();
+
+  await selectMonster(page, 2, 'sylvia', 'sylvia-dark-882');
+  await expect(thirdLeader).toBeChecked();
   await expect(firstLeader).not.toBeChecked();
+  await thirdSlot.getByRole('combobox').fill('');
+  await expect(secondLeader).toBeChecked();
 
   await page.getByRole('button', { name: 'Limpar time' }).click();
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');

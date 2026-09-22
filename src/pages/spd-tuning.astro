@@ -192,48 +192,29 @@ const slots = [
               <span>Usa Swift</span>
             </label>
 
-            <div class="speed-tuning-effect" data-tuning-leader hidden>
-              <label class="speed-tuning-check speed-tuning-check--leader">
-                <input data-tuning-leader-toggle type="checkbox" />
-                <span data-tuning-leader-label>Usar liderança de SPD</span>
-              </label>
-            </div>
+            <label class="speed-tuning-check" data-tuning-leader hidden>
+              <input data-tuning-leader-toggle type="checkbox" />
+              <span data-tuning-leader-label>Usar liderança de SPD</span>
+            </label>
 
             {index < 2 && (
               <>
-                <div class="speed-tuning-effect" data-tuning-boost hidden>
-                  <div class="speed-tuning-effect-heading">
-                    <label class="speed-tuning-check">
-                      <input data-tuning-boost-toggle type="checkbox" />
-                      <span>Usar boost de ATB</span>
-                    </label>
-                    <small data-tuning-boost-skill />
-                  </div>
-                  <label class="speed-tuning-field speed-tuning-field--compact">
-                    <span>Boost</span>
-                    <span class="speed-tuning-number-suffix">
-                      <input
-                        data-tuning-boost-percent
-                        type="number"
-                        inputmode="decimal"
-                        min="0"
-                        max="100"
-                        value="0"
-                      />
-                      <span>%</span>
-                    </span>
-                  </label>
-                </div>
+                <label class="speed-tuning-field" data-tuning-boost hidden>
+                  <span>Boost de ATB (%)</span>
+                  <input
+                    data-tuning-boost-percent
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
 
-                <div class="speed-tuning-effect" data-tuning-speed-buff hidden>
-                  <div class="speed-tuning-effect-heading">
-                    <label class="speed-tuning-check">
-                      <input data-tuning-speed-buff-toggle type="checkbox" />
-                      <span>Usar buff de SPD</span>
-                    </label>
-                    <small data-tuning-speed-buff-skill />
-                  </div>
-                </div>
+                <label class="speed-tuning-check" data-tuning-speed-buff hidden>
+                  <input data-tuning-speed-buff-toggle type="checkbox" />
+                  <span>Usar buff de SPD</span>
+                </label>
 
                 <label
                   class="speed-tuning-field"
@@ -247,23 +228,16 @@ const slots = [
             )}
 
             {index > 0 && (
-              <label
-                class="speed-tuning-field speed-tuning-artifact"
-                data-tuning-artifact
-                hidden
-              >
-                <span>Efeito de aumento de SPD</span>
-                <span class="speed-tuning-number-suffix">
-                  <input
-                    data-tuning-artifact-percent
-                    type="number"
-                    inputmode="decimal"
-                    min="0"
-                    max="100"
-                    value="0"
-                  />
-                  <span>%</span>
-                </span>
+              <label class="speed-tuning-field" data-tuning-artifact hidden>
+                <span>Efeito de aumento de SPD (%)</span>
+                <input
+                  data-tuning-artifact-percent
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
               </label>
             )}
           </div>
@@ -338,7 +312,6 @@ const slots = [
       usesSwift: boolean;
       leaderActive: boolean;
       runeSpeed: number;
-      boostEnabled: boolean;
       boostPercent: number;
       speedBuffEnabled: boolean;
       targetIndex: number;
@@ -362,12 +335,9 @@ const slots = [
       leaderToggle: HTMLInputElement;
       leaderLabel: HTMLElement;
       boost: HTMLElement | null;
-      boostToggle: HTMLInputElement | null;
       boostPercent: HTMLInputElement | null;
-      boostSkill: HTMLElement | null;
       speedBuff: HTMLElement | null;
       speedBuffToggle: HTMLInputElement | null;
-      speedBuffSkill: HTMLElement | null;
       effectTarget: HTMLElement | null;
       target: HTMLSelectElement | null;
       artifact: HTMLElement | null;
@@ -396,7 +366,6 @@ const slots = [
       usesSwift: false,
       leaderActive: false,
       runeSpeed: 0,
-      boostEnabled: false,
       boostPercent: 0,
       speedBuffEnabled: false,
       targetIndex: Math.min(index + 1, 2),
@@ -428,20 +397,14 @@ const slots = [
       )!,
       leaderLabel: query<HTMLElement>(root, '[data-tuning-leader-label]')!,
       boost: query<HTMLElement>(root, '[data-tuning-boost]'),
-      boostToggle: query<HTMLInputElement>(root, '[data-tuning-boost-toggle]'),
       boostPercent: query<HTMLInputElement>(
         root,
         '[data-tuning-boost-percent]',
       ),
-      boostSkill: query<HTMLElement>(root, '[data-tuning-boost-skill]'),
       speedBuff: query<HTMLElement>(root, '[data-tuning-speed-buff]'),
       speedBuffToggle: query<HTMLInputElement>(
         root,
         '[data-tuning-speed-buff-toggle]',
-      ),
-      speedBuffSkill: query<HTMLElement>(
-        root,
-        '[data-tuning-speed-buff-skill]',
       ),
       effectTarget: query<HTMLElement>(root, '[data-tuning-effect-target]'),
       target: query<HTMLSelectElement>(root, '[data-tuning-target]'),
@@ -498,20 +461,46 @@ const slots = [
       return portrait;
     };
 
+    const activateBestAvailableLeader = (preferredIndex = -1) => {
+      const candidates = states
+        .map((state, index) => ({
+          index,
+          amount: state.monster?.leader?.amount ?? -1,
+        }))
+        .filter(({ amount }) => amount >= 0);
+      const highestAmount = Math.max(
+        -1,
+        ...candidates.map(({ amount }) => amount),
+      );
+      const preferred = candidates.find(
+        ({ index, amount }) =>
+          index === preferredIndex && amount === highestAmount,
+      );
+      const activeIndex =
+        preferred?.index ??
+        candidates.find(({ amount }) => amount === highestAmount)?.index ??
+        -1;
+
+      states.forEach((state, index) => {
+        state.leaderActive = index === activeIndex;
+      });
+    };
+
     const clearSlot = (slotIndex: number, keepSearchValue = false) => {
       const state = states[slotIndex];
       const slotElements = elements[slotIndex];
       if (!state || !slotElements) return;
+      const removedActiveLeader = state.leaderActive;
       state.monster = null;
       state.usesSwift = false;
       state.leaderActive = false;
       state.runeSpeed = 0;
-      state.boostEnabled = false;
       state.boostPercent = 0;
       state.speedBuffEnabled = false;
       state.targetIndex = Math.min(slotIndex + 1, 2);
       state.artifactPercent = 0;
       if (!keepSearchValue) slotElements.search.value = '';
+      if (removedActiveLeader) activateBestAvailableLeader();
     };
 
     const selectMonster = (slotIndex: number, monster: MonsterOption) => {
@@ -521,9 +510,9 @@ const slots = [
 
       clearSlot(slotIndex);
       state.monster = monster;
-      state.boostEnabled = Boolean(monster.capabilities.atbBoost);
       state.boostPercent = monster.capabilities.atbBoost?.percent ?? 0;
       state.speedBuffEnabled = Boolean(monster.capabilities.speedBuff);
+      if (monster.leader) activateBestAvailableLeader(slotIndex);
       slotElements.search.value = monster.name;
       closeOptions(slotIndex);
       slotElements.search.blur();
@@ -655,7 +644,7 @@ const slots = [
         const provider = states[providerIndex];
         if (
           !provider?.monster ||
-          !provider.boostEnabled ||
+          provider.boostPercent <= 0 ||
           !effectApplies(
             providerIndex,
             targetIndex,
@@ -758,16 +747,12 @@ const slots = [
       }
 
       const boost = monster.capabilities.atbBoost;
-      if (slotElements.boost && slotElements.boostToggle) {
+      if (slotElements.boost) {
         slotElements.boost.hidden = !boost;
-        slotElements.boostToggle.checked = state.boostEnabled;
       }
       if (slotElements.boostPercent) {
         slotElements.boostPercent.value = String(state.boostPercent);
-        slotElements.boostPercent.disabled = !state.boostEnabled;
-      }
-      if (slotElements.boostSkill) {
-        slotElements.boostSkill.textContent = boost?.skillName ?? '';
+        slotElements.boostPercent.disabled = !boost;
       }
 
       const speedBuff = monster.capabilities.speedBuff;
@@ -775,12 +760,9 @@ const slots = [
         slotElements.speedBuff.hidden = !speedBuff;
         slotElements.speedBuffToggle.checked = state.speedBuffEnabled;
       }
-      if (slotElements.speedBuffSkill) {
-        slotElements.speedBuffSkill.textContent = speedBuff?.skillName ?? '';
-      }
 
       const needsTarget = Boolean(
-        (boost?.scope === 'single' && state.boostEnabled) ||
+        boost?.scope === 'single' ||
         (speedBuff?.scope === 'single' && state.speedBuffEnabled),
       );
       if (slotElements.effectTarget && slotElements.target) {
@@ -1020,12 +1002,6 @@ const slots = [
         } else if (states[slotIndex]) {
           states[slotIndex].leaderActive = false;
         }
-        render();
-      });
-      slotElements.boostToggle?.addEventListener('change', () => {
-        const state = states[slotIndex];
-        if (!state || !slotElements.boostToggle) return;
-        state.boostEnabled = slotElements.boostToggle.checked;
         render();
       });
       slotElements.boostPercent?.addEventListener('input', () => {
