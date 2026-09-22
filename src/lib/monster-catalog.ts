@@ -2,7 +2,7 @@ import type { Monster } from './types.ts';
 import { matchesSearch } from './search.ts';
 
 export const PAGE_SIZE = 48;
-export type MonsterSummary = Pick<
+export interface MonsterSummary extends Pick<
   Monster,
   | 'id'
   | 'name'
@@ -16,7 +16,12 @@ export type MonsterSummary = Pick<
   | 'leaderSkill'
   | 'obtainable'
   | 'awakensTo'
->;
+> {
+  sortStats?: Pick<
+    NonNullable<Monster['maxLevelStats']>,
+    'hp' | 'attack' | 'defense'
+  >;
+}
 export function toMonsterSummary(monster: Monster): MonsterSummary {
   const {
     id,
@@ -31,6 +36,7 @@ export function toMonsterSummary(monster: Monster): MonsterSummary {
     leaderSkill,
     obtainable,
     awakensTo,
+    maxLevelStats,
   } = monster;
   return {
     id,
@@ -45,6 +51,13 @@ export function toMonsterSummary(monster: Monster): MonsterSummary {
     leaderSkill,
     obtainable,
     awakensTo,
+    sortStats: maxLevelStats
+      ? {
+          hp: maxLevelStats.hp,
+          attack: maxLevelStats.attack,
+          defense: maxLevelStats.defense,
+        }
+      : undefined,
   };
 }
 export const elementLabels: Record<string, string> = {
@@ -117,6 +130,12 @@ export interface MonsterFilters {
   sort: string;
   availability: string;
 }
+type SortStat = keyof NonNullable<MonsterSummary['sortStats']>;
+const sortStatByFilter: Partial<Record<string, SortStat>> = {
+  hp: 'hp',
+  attack: 'attack',
+  defense: 'defense',
+};
 export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
   const allowed = (key: string, values: string[], fallback = '') =>
     values.includes(params.get(key) ?? '') ? params.get(key)! : fallback;
@@ -136,7 +155,11 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
     ),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
-    sort: allowed('sort', ['name', 'stars', 'speed'], 'name'),
+    sort: allowed(
+      'sort',
+      ['name', 'stars', 'speed', 'hp', 'attack', 'defense'],
+      'name',
+    ),
     availability,
   };
 }
@@ -160,8 +183,10 @@ export function filterMonsters<T extends MonsterSummary>(
         (filters.availability === 'all' || monster.obtainable === true),
     )
     .sort((a, b) => {
-      const primary =
-        filters.sort === 'speed'
+      const stat = sortStatByFilter[filters.sort];
+      const primary = stat
+        ? (b.sortStats?.[stat] ?? 0) - (a.sortStats?.[stat] ?? 0)
+        : filters.sort === 'speed'
           ? (b.speed ?? 0) - (a.speed ?? 0)
           : filters.sort === 'stars'
             ? b.naturalStars - a.naturalStars

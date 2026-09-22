@@ -92,6 +92,27 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       <span>←</span> Todos os monstros
     </a>
   </div>
+  <script is:inline>
+    (() => {
+      const current = new URLSearchParams(location.search);
+      const back = new URLSearchParams();
+      for (const key of ['q', 'element', 'stars', 'leader', 'sort']) {
+        const value = current.get(key);
+        if (value && !(key === 'sort' && value === 'name')) {
+          back.set(key, value);
+        }
+      }
+      const page = Math.max(1, Math.trunc(Number(current.get('page'))) || 1);
+      const link = document.querySelector('[data-back-monsters]');
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (back.size) {
+        if (page > 1) back.set('page', String(page));
+        link.href = `/monstros/?${back}`;
+      } else if (page > 1) {
+        link.href = `/monstros/pagina/${page}/`;
+      }
+    })();
+  </script>
   <section class="monster-profile">
     <div class="monster-profile-portrait">
       <MonsterPortrait id={monster.id} />
@@ -330,27 +351,4 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       Retratos e personagens pertencem à Com2uS.
     </p>
   </aside>
-  <script>
-    import {
-      readMonsterFilters,
-      catalogPageUrl,
-    } from '../../lib/monster-catalog';
-    const params = new URLSearchParams(location.search);
-    const back = new URLSearchParams();
-    for (const [key, value] of Object.entries(readMonsterFilters(params)))
-      if (
-        value &&
-        key !== 'availability' &&
-        !(key === 'sort' && value === 'name')
-      )
-        back.set(key, value);
-    const page = Math.max(1, Math.trunc(Number(params.get('page'))) || 1);
-    const link = document.querySelector<HTMLAnchorElement>(
-      '[data-back-monsters]',
-    )!;
-    if (back.size) {
-      if (page > 1) back.set('page', String(page));
-      link.href = `/monstros/?${back}`;
-    } else link.href = catalogPageUrl(page);
-  </script>
 </Layout>

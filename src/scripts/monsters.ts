@@ -81,9 +81,10 @@ function setDetailLinks() {
   ))
     link.search = params.toString();
 }
-function renderCard(monster: MonsterSummary) {
+function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   const card = template.cloneNode(true) as HTMLAnchorElement;
   card.href = `/monstros/${monster.id}/`;
+  card.search = params.toString();
   card.setAttribute('aria-label', `Ver ${monster.name}, ${formLabel(monster)}`);
   card.querySelector('.monster')!.className =
     `monster monster--${monster.element}`;
@@ -155,10 +156,12 @@ async function update(
     const matches = filterMonsters(monsters, readMonsterFilters(params));
     const pages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE));
     currentPage = Math.min(Math.max(1, Math.trunc(page) || 1), pages);
+    const detailParams = new URLSearchParams(params);
+    if (currentPage > 1) detailParams.set('page', String(currentPage));
     grid.replaceChildren(
       ...matches
         .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-        .map(renderCard),
+        .map((monster) => renderCard(monster, detailParams)),
     );
     empty.hidden = matches.length > 0;
     pagination.hidden = matches.length === 0;
@@ -175,7 +178,6 @@ async function update(
         '',
         pageHref(currentPage, params),
       );
-    setDetailLinks();
     if (focus) {
       count.focus({ preventScroll: true });
       count.scrollIntoView({ block: 'start' });
@@ -248,4 +250,5 @@ for (const [link, delta] of [
   });
 window.addEventListener('popstate', restore);
 if (location.search) restore();
+else if (parameters().size) void update();
 else setDetailLinks();

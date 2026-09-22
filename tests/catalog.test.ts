@@ -226,6 +226,11 @@ test('catálogo preserva atributos, habilidades e origens sem pesar o índice', 
   );
 
   const summary = toMonsterSummary(carcano);
+  assert.deepEqual(summary.sortStats, {
+    hp: 9225,
+    attack: 758,
+    defense: 604,
+  });
   assert.equal('maxLevelStats' in summary, false);
   assert.equal('skillIds' in summary, false);
   assert.equal('sources' in summary, false);
@@ -273,6 +278,28 @@ test('busca de monstros combina família, elemento, estrelas, forma e líder', (
   assert.equal(
     readMonsterFilters(new URLSearchParams('element=pure')).element,
     '',
+  );
+});
+test('catálogo ordena os atributos máximos do maior para o menor', () => {
+  const summaries = monsters.map(toMonsterSummary);
+  for (const sort of ['hp', 'attack', 'defense'] as const) {
+    const ordered = filterMonsters(
+      summaries,
+      readMonsterFilters(new URLSearchParams(`sort=${sort}`)),
+    );
+    assert.ok(ordered.length > 0);
+    assert.ok(
+      ordered.every(
+        (monster, index) =>
+          index === 0 ||
+          (ordered[index - 1].sortStats?.[sort] ?? 0) >=
+            (monster.sortStats?.[sort] ?? 0),
+      ),
+    );
+  }
+  assert.equal(
+    readMonsterFilters(new URLSearchParams('sort=invalid')).sort,
+    'name',
   );
 });
 test('catálogo público mantém só a última forma obtível de cada família', () => {

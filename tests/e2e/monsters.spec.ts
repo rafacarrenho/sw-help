@@ -71,6 +71,40 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
   await expect(page.getByRole('searchbox')).toBeFocused();
 });
 
+test('ordena por HP, ATQ e DEF e preserva a escolha na URL', async ({
+  page,
+}) => {
+  await page.goto('/monstros/');
+  const sort = page.getByRole('combobox', { name: 'Ordenar por' });
+  for (const attribute of ['hp', 'attack', 'defense']) {
+    await sort.selectOption(attribute);
+    await expect(page).toHaveURL(new RegExp(`sort=${attribute}`));
+    const values = await page
+      .locator('[data-monster-card]')
+      .evaluateAll((cards, key) => {
+        const index = (
+          window as Window & {
+            __MONSTER_INDEX__?: Array<{
+              id: string;
+              sortStats?: Record<string, number>;
+            }>;
+          }
+        ).__MONSTER_INDEX__;
+        const byId = new Map(index?.map((monster) => [monster.id, monster]));
+        return cards.map((card) => {
+          const id = card.getAttribute('href')?.split('/').filter(Boolean)[1];
+          return id ? (byId.get(id)?.sortStats?.[String(key)] ?? 0) : 0;
+        });
+      }, attribute);
+    expect(values.length).toBe(48);
+    expect(
+      values.every((value, index) => index === 0 || values[index - 1] >= value),
+    ).toBe(true);
+  }
+  await page.reload();
+  await expect(sort).toHaveValue('defense');
+});
+
 test('todos os registros paginam com URL válida e busca se recupera de falha', async ({
   page,
 }) => {
