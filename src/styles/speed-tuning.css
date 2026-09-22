@@ -108,6 +108,7 @@
 .speed-tuning-arrow {
   position: absolute;
   z-index: 2;
+  top: 20px;
   right: -25px;
   display: grid;
   place-items: center;
@@ -393,6 +394,7 @@
 @media (max-width: 1120px) {
   .speed-tuning-flow {
     grid-template-columns: 1fr;
+    row-gap: 40px;
   }
 
   .speed-tuning-slot {
@@ -400,9 +402,11 @@
   }
 
   .speed-tuning-arrow {
-    right: 18px;
-    bottom: -25px;
-    transform: rotate(90deg);
+    top: auto;
+    right: auto;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
   }
 
   .speed-tuning-fields {
@@ -441,30 +445,6 @@
 
   .speed-tuning-fields {
     grid-template-columns: 1fr;
-  }
-
-  .speed-tuning-monster-summary {
-    grid-template-columns: 58px minmax(0, 1fr);
-  }
-
-  .speed-tuning-base {
-    display: flex;
-    gap: 6px;
-    align-items: baseline;
-    grid-column: 2;
-    grid-row: 2;
-    justify-items: start;
-    margin-top: 0;
-  }
-
-  .speed-tuning-base span {
-    margin-right: 6px;
-  }
-
-  .speed-tuning-base span,
-  .speed-tuning-base strong {
-    display: inline;
-    font-size: var(--text-sm);
   }
 }
 

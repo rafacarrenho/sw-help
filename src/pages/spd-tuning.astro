@@ -122,12 +122,13 @@ const slots = [
               </h3>
               <span>{slot.label}</span>
             </div>
-            {index < slots.length - 1 && (
-              <span class="speed-tuning-arrow" aria-hidden="true">
-                <Icon name="chevron" size={18} />
-              </span>
-            )}
           </header>
+
+          {index < slots.length - 1 && (
+            <span class="speed-tuning-arrow" aria-hidden="true">
+              <Icon name="chevron" size={18} />
+            </span>
+          )}
 
           <div class="speed-tuning-search-root" data-tuning-search-root>
             <label for={`speed-tuning-search-${index}`}>Monstro</label>

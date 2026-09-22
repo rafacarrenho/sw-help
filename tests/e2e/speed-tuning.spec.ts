@@ -227,18 +227,55 @@ test('empilha os slots no mobile sem criar rolagem horizontal', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile');
   await page.goto('/spd-tuning/');
+  await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
 
   const slots = page.locator('[data-tuning-slot]');
   const boxes = await slots.evaluateAll((nodes) =>
     nodes.map((node) => {
       const rect = node.getBoundingClientRect();
-      return { top: rect.top, left: rect.left, width: rect.width };
+      return {
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+      };
     }),
   );
   expect(boxes[1]!.top).toBeGreaterThan(boxes[0]!.top);
   expect(boxes[2]!.top).toBeGreaterThan(boxes[1]!.top);
   expect(Math.abs(boxes[0]!.left - boxes[1]!.left)).toBeLessThan(1);
   expect(Math.abs(boxes[0]!.width - boxes[1]!.width)).toBeLessThan(1);
+
+  const firstArrowBox = await slots
+    .nth(0)
+    .locator('.speed-tuning-arrow')
+    .boundingBox();
+  expect(firstArrowBox).not.toBeNull();
+  expect(firstArrowBox!.y).toBeGreaterThan(boxes[0]!.top + boxes[0]!.height);
+  expect(firstArrowBox!.y + firstArrowBox!.height).toBeLessThan(boxes[1]!.top);
+  expect(
+    Math.abs(
+      firstArrowBox!.x +
+        firstArrowBox!.width / 2 -
+        (boxes[0]!.left + boxes[0]!.width / 2),
+    ),
+  ).toBeLessThan(1);
+
+  const firstSummary = slots.nth(0).locator('[data-tuning-summary]');
+  const [monsterCopyBox, baseSpeedBox] = await Promise.all([
+    firstSummary.locator('.speed-tuning-monster-copy').boundingBox(),
+    firstSummary.locator('.speed-tuning-base').boundingBox(),
+  ]);
+  expect(monsterCopyBox).not.toBeNull();
+  expect(baseSpeedBox).not.toBeNull();
+  expect(
+    Math.abs(
+      monsterCopyBox!.y +
+        monsterCopyBox!.height / 2 -
+        (baseSpeedBox!.y + baseSpeedBox!.height / 2),
+    ),
+  ).toBeLessThan(1);
+  expect(baseSpeedBox!.x).toBeGreaterThan(monsterCopyBox!.x);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
