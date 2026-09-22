@@ -308,38 +308,38 @@ p {
   margin-left: var(--sidebar-width);
   transition: margin-left 180ms ease;
 }
-body.nav-collapsed {
+html.nav-collapsed {
   --sidebar-width: 80px;
 }
-body.nav-collapsed .sidebar {
+html.nav-collapsed .sidebar {
   padding-inline: 12px;
 }
-body.nav-collapsed .sidebar-header {
+html.nav-collapsed .sidebar-header {
   flex-direction: column;
   justify-content: flex-start;
   gap: 12px;
   margin-bottom: 10px;
 }
-body.nav-collapsed .brand {
+html.nav-collapsed .brand {
   padding: 0;
 }
-body.nav-collapsed .brand-copy,
-body.nav-collapsed .nav-group-label,
-body.nav-collapsed .nav-item > span,
-body.nav-collapsed .nav-item small,
-body.nav-collapsed .sidebar-bottom {
+html.nav-collapsed .brand-copy,
+html.nav-collapsed .nav-group-label,
+html.nav-collapsed .nav-item > span,
+html.nav-collapsed .nav-item small,
+html.nav-collapsed .sidebar-bottom {
   display: none;
 }
-body.nav-collapsed .desktop-sidebar-toggle svg {
+html.nav-collapsed .desktop-sidebar-toggle svg {
   transform: none;
 }
-body.nav-collapsed .desktop-sidebar-toggle {
+html.nav-collapsed .desktop-sidebar-toggle {
   margin-inline: auto;
 }
-body.nav-collapsed .sidebar nav {
+html.nav-collapsed .sidebar nav {
   gap: 8px;
 }
-body.nav-collapsed .nav-item {
+html.nav-collapsed .nav-item {
   position: relative;
   justify-content: center;
   min-height: 48px;

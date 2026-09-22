@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('desktop recolhe, expande e reinicia com o menu aberto', async ({
+test('desktop persiste a escolha entre páginas e recargas', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
@@ -26,7 +26,7 @@ test('desktop recolhe, expande e reinicia com o menu aberto', async ({
   ).toBeLessThanOrEqual(1);
 
   await toggle.click();
-  await expect(page.locator('body')).toHaveClass(/nav-collapsed/);
+  await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
   await expect(sidebar).toHaveCSS('width', '80px');
   await expect(workspace).toHaveCSS('margin-left', '80px');
   await expect(
@@ -59,9 +59,25 @@ test('desktop recolhe, expande e reinicia com o menu aberto', async ({
   await catalogLink.focus();
   await expect(catalogLink).toHaveAttribute('aria-describedby', 'nav-tooltip');
 
+  await catalogLink.click();
+  await expect(page).toHaveURL(/\/monstros\/$/);
+  await expect(sidebar).toHaveCSS('width', '80px');
+  await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
+  expect(
+    await page.evaluate(() =>
+      window.localStorage.getItem('sw-help:sidebar-collapsed'),
+    ),
+  ).toBe('true');
+
+  await page.getByRole('button', { name: 'Expandir menu lateral' }).click();
   await page.reload();
   await expect(sidebar).toHaveCSS('width', '264px');
-  await expect(page.locator('body')).not.toHaveClass(/nav-collapsed/);
+  await expect(page.locator('html')).not.toHaveClass(/nav-collapsed/);
+  expect(
+    await page.evaluate(() =>
+      window.localStorage.getItem('sw-help:sidebar-collapsed'),
+    ),
+  ).toBe('false');
 });
 
 test('mobile abre como drawer e fecha por Escape e backdrop', async ({
@@ -69,6 +85,9 @@ test('mobile abre como drawer e fecha por Escape e backdrop', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile');
 
+  await page.addInitScript(() => {
+    window.localStorage.setItem('sw-help:sidebar-collapsed', 'true');
+  });
   await page.goto('/');
   const sidebar = page.locator('[data-sidebar]');
   const openButton = page.getByRole('button', { name: 'Abrir menu' });

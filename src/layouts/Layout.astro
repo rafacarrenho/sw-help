@@ -27,6 +27,16 @@ const {
     <meta name="theme-color" content="#101215" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · SW Help</title>
+    <script is:inline>
+      try {
+        if (
+          window.matchMedia('(min-width: 761px)').matches &&
+          window.localStorage.getItem('sw-help:sidebar-collapsed') === 'true'
+        ) {
+          document.documentElement.classList.add('nav-collapsed');
+        }
+      } catch {}
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">
@@ -230,7 +240,23 @@ const {
       const tooltipItems =
         document.querySelectorAll<HTMLElement>('[data-nav-label]');
       const mobileMedia = window.matchMedia('(max-width: 760px)');
-      let desktopCollapsed = false;
+      const navigationStorageKey = 'sw-help:sidebar-collapsed';
+      const readDesktopPreference = () => {
+        try {
+          return window.localStorage.getItem(navigationStorageKey) === 'true';
+        } catch {
+          return false;
+        }
+      };
+      const storeDesktopPreference = () => {
+        try {
+          window.localStorage.setItem(
+            navigationStorageKey,
+            String(desktopCollapsed),
+          );
+        } catch {}
+      };
+      let desktopCollapsed = readDesktopPreference();
       let mobileOpen = false;
       let tooltipOwner: HTMLElement | null = null;
 
@@ -268,7 +294,7 @@ const {
         if (!sidebar || !desktopToggle || !mobileToggle) return;
 
         if (mobileMedia.matches) {
-          document.body.classList.remove('nav-collapsed');
+          document.documentElement.classList.remove('nav-collapsed');
           document.body.classList.toggle('mobile-nav-open', mobileOpen);
           mobileToggle.inert = mobileOpen;
           mobileToggle.setAttribute('aria-expanded', String(mobileOpen));
@@ -286,7 +312,10 @@ const {
         mobileOpen = false;
         hideNavTooltip();
         document.body.classList.remove('mobile-nav-open');
-        document.body.classList.toggle('nav-collapsed', desktopCollapsed);
+        document.documentElement.classList.toggle(
+          'nav-collapsed',
+          desktopCollapsed,
+        );
         mobileToggle.inert = false;
         sidebar.inert = false;
         sidebar.removeAttribute('aria-hidden');
@@ -318,6 +347,7 @@ const {
 
       desktopToggle?.addEventListener('click', () => {
         desktopCollapsed = !desktopCollapsed;
+        storeDesktopPreference();
         syncNavigation();
       });
       mobileToggle?.addEventListener('click', openMobileNavigation);
