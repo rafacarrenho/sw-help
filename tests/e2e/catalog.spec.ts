@@ -46,6 +46,20 @@ test('detalhes, recursos locais e layout funcionam sem erros', async ({
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/siege/morris-eshir-orion/');
   await expect(page.locator('.counter-card')).toHaveCount(4);
+  const defenseTeam = page.locator('.defense-team-panel .monster-team');
+  await expect(defenseTeam.locator('[data-team-leader-icon]')).toHaveAttribute(
+    'src',
+    '/leader-skills/attack-speed.png',
+  );
+  await expect(
+    defenseTeam.locator('.monster').nth(1).locator('[data-team-leader-icon]'),
+  ).toHaveCount(0);
+  const firstCounter = page.locator('.counter-card').first();
+  await expect(firstCounter.locator('[data-team-leader-icon]')).toHaveCount(1);
+  await expect(firstCounter.locator('[data-team-leader-icon]')).toHaveAttribute(
+    'alt',
+    'Líder da composição',
+  );
   await expect(
     page.getByText('Os exemplos não garantem vitória.', { exact: false }),
   ).toBeVisible();

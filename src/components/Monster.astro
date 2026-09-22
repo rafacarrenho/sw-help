@@ -1,6 +1,7 @@
 ---
 import { monsterById, elementNames } from '../data/catalog';
 import ElementIcon from './ElementIcon.astro';
+import { leaderSkillIcon, leaderText } from '../lib/monster-catalog';
 interface Props {
   id: string;
   leader?: boolean;
@@ -8,6 +9,7 @@ interface Props {
 }
 const { id, leader = false, linked = false } = Astro.props;
 const monster = monsterById.get(id)!;
+const leaderIcon = leader ? leaderSkillIcon(monster.leaderSkill) : null;
 const Tag = linked ? 'a' : 'div';
 ---
 
@@ -23,14 +25,16 @@ const Tag = linked ? 'a' : 'div';
     {monster.image && (
       <img src={monster.image} alt="" width="100" height="100" loading="lazy" />
     )}
-    {leader && (
-      <span
+    {leaderIcon && (
+      <img
         class="leader-marker"
-        title="Líder da composição"
-        aria-label="Líder"
-      >
-        L
-      </span>
+        src={leaderIcon}
+        alt="Líder da composição"
+        width="32"
+        height="32"
+        title={`Líder da composição · ${leaderText(monster.leaderSkill)}`}
+        data-team-leader-icon
+      />
     )}
     <span
       class="element-marker"
