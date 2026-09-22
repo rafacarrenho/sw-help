@@ -1,11 +1,18 @@
 ---
 import MonsterPortrait from './Monster.astro';
 import type { MonsterSummary } from '../lib/monster-catalog';
-import { formLabel, leaderText } from '../lib/monster-catalog';
+import {
+  formLabel,
+  leaderBonusText,
+  leaderScopeText,
+  leaderSkillIcon,
+} from '../lib/monster-catalog';
 interface Props {
   monster: MonsterSummary;
 }
 const { monster } = Astro.props;
+const leaderIcon = leaderSkillIcon(monster.leaderSkill);
+const leaderScope = leaderScopeText(monster.leaderSkill);
 ---
 
 <a
@@ -38,7 +45,28 @@ const { monster } = Astro.props;
   <span class="bestiary-family" data-family>
     {monster.family}
   </span>
-  <span class="bestiary-leader" data-leader>
-    {leaderText(monster.leaderSkill)}
+  <span
+    class="bestiary-leader"
+    data-leader
+    data-has-leader={monster.leaderSkill ? 'true' : 'false'}
+  >
+    <img
+      class="bestiary-leader-icon"
+      src={leaderIcon ?? undefined}
+      alt=""
+      width="40"
+      height="40"
+      loading="lazy"
+      hidden={!leaderIcon}
+      data-catalog-leader-icon
+    />
+    <span class="bestiary-leader-copy">
+      <strong data-catalog-leader-primary>
+        {leaderBonusText(monster.leaderSkill)}
+      </strong>
+      <small data-catalog-leader-context hidden={!leaderScope}>
+        {leaderScope}
+      </small>
+    </span>
   </span>
 </a>

@@ -6,7 +6,9 @@ import {
   filterMonsters,
   elementLabels,
   formLabel,
-  leaderText,
+  leaderBonusText,
+  leaderScopeText,
+  leaderSkillIcon,
 } from '../lib/monster-catalog';
 
 const root = document.querySelector<HTMLElement>('[data-monster-catalog]')!;
@@ -93,7 +95,7 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
     0,
     2,
   );
-  const img = card.querySelector<HTMLImageElement>('img')!;
+  const img = card.querySelector<HTMLImageElement>('.monster-portrait > img')!;
   img.hidden = !monster.image;
   if (monster.image) img.src = monster.image;
   img.addEventListener('error', () => {
@@ -135,9 +137,23 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
     stars.classList.add('natural-stars--second-awaken');
   stars.textContent = '★'.repeat(monster.naturalStars);
   stars.setAttribute('aria-label', `${monster.naturalStars} estrelas naturais`);
-  card.querySelector('[data-leader]')!.textContent = leaderText(
-    monster.leaderSkill,
-  );
+  const leader = card.querySelector<HTMLElement>('[data-leader]')!;
+  const leaderIcon = leader.querySelector<HTMLImageElement>(
+    '[data-catalog-leader-icon]',
+  )!;
+  const iconPath = leaderSkillIcon(monster.leaderSkill);
+  leader.dataset.hasLeader = monster.leaderSkill ? 'true' : 'false';
+  leaderIcon.hidden = !iconPath;
+  if (iconPath) leaderIcon.src = iconPath;
+  else leaderIcon.removeAttribute('src');
+  leader.querySelector('[data-catalog-leader-primary]')!.textContent =
+    leaderBonusText(monster.leaderSkill);
+  const leaderContext = leader.querySelector<HTMLElement>(
+    '[data-catalog-leader-context]',
+  )!;
+  const scope = leaderScopeText(monster.leaderSkill);
+  leaderContext.hidden = !scope;
+  leaderContext.textContent = scope ?? '';
   return card;
 }
 async function update(

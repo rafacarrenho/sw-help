@@ -145,14 +145,40 @@ a.monster:hover .monster-name {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 11px;
   height: 78px;
   margin-top: auto;
   padding-top: 13px;
   border-top: 1px solid var(--border);
-  font-size: 14px;
-  line-height: 1.55;
-  text-align: center;
   color: #d2d6de;
+}
+.bestiary-leader-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 6px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+}
+.bestiary-leader-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+.bestiary-leader-copy strong {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #eceef3;
+}
+.bestiary-leader-copy small {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.bestiary-leader[data-has-leader='false'] .bestiary-leader-copy {
+  text-align: center;
 }
 .bestiary-pagination {
   display: flex;

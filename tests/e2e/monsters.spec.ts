@@ -56,9 +56,18 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
   await page
     .getByRole('combobox', { name: 'Habilidade de líder' })
     .selectOption('Attack Speed');
-  await expect(page.locator('[data-monster-card]').first()).toContainText(
+  const leader = page
+    .locator('[data-monster-card]')
+    .first()
+    .locator('[data-leader]');
+  await expect(leader.locator('[data-catalog-leader-icon]')).toHaveAttribute(
+    'src',
+    '/leader-skills/attack-speed.png',
+  );
+  await expect(leader.locator('[data-catalog-leader-primary]')).toContainText(
     'SPD +',
   );
+  await expect(leader.locator('[data-catalog-leader-context]')).not.toBeEmpty();
   await page.getByRole('searchbox').fill('naoexiste123456');
   await expect(
     page.getByRole('heading', { name: 'Nenhum monstro encontrado' }),

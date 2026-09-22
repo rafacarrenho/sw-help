@@ -118,12 +118,21 @@ export function isFinalMonster(
 export function formLabel(monster: Pick<Monster, 'awakenLevel'>): string {
   return monster.awakenLevel === 2 ? 'Segundo despertar' : '';
 }
-export function leaderText(skill: Monster['leaderSkill']): string {
+export function leaderBonusText(skill: Monster['leaderSkill']): string {
   if (!skill) return 'Sem habilidade de líder';
-  const area = skill.element
+  return `${attributeLabels[skill.attribute] ?? skill.attribute} +${skill.amount}%`;
+}
+export function leaderScopeText(skill: Monster['leaderSkill']): string | null {
+  if (!skill) return null;
+  return skill.element
     ? `Aliados de ${elementLabels[skill.element]}`
     : (areaLabels[skill.area] ?? skill.area);
-  return `${attributeLabels[skill.attribute] ?? skill.attribute} +${skill.amount}% · ${area}`;
+}
+export function leaderText(skill: Monster['leaderSkill']): string {
+  const scope = leaderScopeText(skill);
+  return scope
+    ? `${leaderBonusText(skill)} · ${scope}`
+    : leaderBonusText(skill);
 }
 export function monsterSearchText(monster: Monster): string {
   return [

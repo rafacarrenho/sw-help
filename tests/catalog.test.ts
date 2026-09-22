@@ -6,6 +6,8 @@ import { matchesSearch } from '../src/lib/search.ts';
 import {
   filterMonsters,
   readMonsterFilters,
+  leaderBonusText,
+  leaderScopeText,
   leaderText,
   leaderSkillIcon,
   toMonsterSummary,
@@ -327,6 +329,19 @@ test('mapeia todos os atributos de liderança para ícones locais', () => {
     assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)));
   }
   assert.equal(leaderSkillIcon(null), null);
+});
+test('separa o bônus e o contexto da habilidade de líder', () => {
+  const skill = {
+    attribute: 'Attack Power',
+    amount: 44,
+    area: 'Arena',
+    element: null,
+  };
+  assert.equal(leaderBonusText(skill), 'ATQ +44%');
+  assert.equal(leaderScopeText(skill), 'Arena');
+  assert.equal(leaderText(skill), 'ATQ +44% · Arena');
+  assert.equal(leaderBonusText(null), 'Sem habilidade de líder');
+  assert.equal(leaderScopeText(null), null);
 });
 test('catálogo público mantém só a última forma obtível de cada família', () => {
   const visible = filterMonsters(
