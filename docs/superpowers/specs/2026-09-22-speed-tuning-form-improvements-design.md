@@ -49,7 +49,9 @@ checkbox.
 
 O resumo do monstro continuará agrupando retrato, nome, elemento e SPD base para
 fins de layout, mas não terá borda, fundo ou preenchimento que o faça parecer um
-campo de formulário.
+campo de formulário. No desktop e no mobile, a SPD base permanecerá na mesma
+linha do nome, alinhada à direita; nomes longos serão truncados para preservar
+essa composição.
 
 O boost de ATB será um campo simples no mesmo padrão da SPD de runas: texto do
 label e input numérico ocupando a largura disponível. A unidade `%` ficará no
