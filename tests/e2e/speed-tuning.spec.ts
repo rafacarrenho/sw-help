@@ -25,6 +25,11 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   ).toHaveAttribute('aria-current', 'page');
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
   await expect(page.locator('[data-tuning-slot]')).toHaveCount(3);
+  await expect(page.getByText('SPD das runas', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('SPD adicional mínima', { exact: true }),
+  ).toHaveCount(2);
+  await expect(page.getByText(/\+verde|SPD verde/i)).toHaveCount(0);
 
   await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
   const firstSlot = page.locator('[data-tuning-slot]').nth(0);
@@ -42,6 +47,21 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   await expect(
     firstSlot.locator('[data-tuning-speed-buff-toggle]'),
   ).toBeChecked();
+
+  expect(
+    await firstSlot.locator('.speed-tuning-fields').evaluate((element) =>
+      [...element.children]
+        .map((child) => {
+          if (child.querySelector('[data-tuning-rune-speed]')) return 'runes';
+          if (child.matches('[data-tuning-leader]')) return 'leader';
+          if (child.matches('[data-tuning-boost]')) return 'boost';
+          if (child.matches('[data-tuning-speed-buff]')) return 'speed-buff';
+          if (child.querySelector('[data-tuning-swift]')) return 'swift';
+          return null;
+        })
+        .filter(Boolean),
+    ),
+  ).toEqual(['runes', 'leader', 'boost', 'speed-buff', 'swift']);
 
   const swiftControl = firstSlot.getByLabel('Usa Swift');
   const speedBuffControl = firstSlot.locator('[data-tuning-speed-buff]');
@@ -106,6 +126,20 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   await expect(secondSlot.locator('[data-tuning-artifact]')).toHaveClass(
     'speed-tuning-field',
   );
+  expect(
+    await secondSlot.locator('.speed-tuning-fields').evaluate((element) =>
+      [...element.children]
+        .map((child) => {
+          if (child.matches('[data-tuning-leader]')) return 'leader';
+          if (child.matches('[data-tuning-boost]')) return 'boost';
+          if (child.matches('[data-tuning-speed-buff]')) return 'speed-buff';
+          if (child.matches('[data-tuning-artifact]')) return 'artifact';
+          if (child.querySelector('[data-tuning-swift]')) return 'swift';
+          return null;
+        })
+        .filter(Boolean),
+    ),
+  ).toEqual(['leader', 'boost', 'speed-buff', 'artifact', 'swift']);
   expect(
     await secondSlot.locator('[data-tuning-artifact]').evaluate((element) => {
       const style = getComputedStyle(element);

@@ -175,7 +175,7 @@ const slots = [
           <div class="speed-tuning-fields">
             {index === 0 && (
               <label class="speed-tuning-field speed-tuning-field--runes">
-                <span>SPD das runas (+verde)</span>
+                <span>SPD das runas</span>
                 <input
                   data-tuning-rune-speed
                   type="number"
@@ -187,11 +187,6 @@ const slots = [
                 />
               </label>
             )}
-
-            <label class="speed-tuning-check">
-              <input data-tuning-swift type="checkbox" disabled />
-              <span>Usa Swift</span>
-            </label>
 
             <label class="speed-tuning-check" data-tuning-leader hidden>
               <input data-tuning-leader-toggle type="checkbox" />
@@ -241,6 +236,11 @@ const slots = [
                 />
               </label>
             )}
+
+            <label class="speed-tuning-check">
+              <input data-tuning-swift type="checkbox" disabled />
+              <span>Usa Swift</span>
+            </label>
           </div>
 
           <div
@@ -250,7 +250,7 @@ const slots = [
             aria-live="polite"
           >
             <span data-tuning-result-label>
-              {index === 0 ? 'SPD de combate' : 'SPD mínima (+verde)'}
+              {index === 0 ? 'SPD de combate' : 'SPD adicional mínima'}
             </span>
             <strong data-tuning-result-value>—</strong>
             <small data-tuning-result-detail>
@@ -267,8 +267,8 @@ const slots = [
       <Icon name="info" size={19} />
       <p>
         A SPD mínima considera a torre, a liderança ativa, Swift, boosts de ATB
-        e buffs de SPD selecionados. Use a SPD verde exibida nos detalhes do
-        monstro no jogo.
+        e buffs de SPD selecionados. Use o valor adicional de SPD exibido nos
+        detalhes do monstro no jogo.
       </p>
     </aside>
   </section>
@@ -851,7 +851,7 @@ const slots = [
       setResult(
         0,
         `${anchorCombatSpeed} SPD`,
-        `Base ${anchorMonster.speed} + ${anchor.runeSpeed} verde`,
+        `Base ${anchorMonster.speed} + ${anchor.runeSpeed} de runas`,
       );
 
       let secondResult = tuneSlot(1, anchorCombatSpeed);
