@@ -69,6 +69,10 @@ SPD, boost de ATB, buff de SPD, efeito de aumento de SPD e Swift. O controle de
 Swift será sempre o último. Controles que não se aplicam ao monstro continuarão
 ocultos sem alterar a ordem dos demais.
 
+A interface usará "SPD das runas" para o valor informado e "SPD adicional
+mínima" para o resultado dos seguidores. A nomenclatura informal "+verde" ou
+"SPD verde" não será exibida.
+
 ## Escopo técnico
 
 - Simplificar o estado do slot removendo `boostEnabled`.
