@@ -809,10 +809,10 @@ h1 > span:not(.beta-badge) {
 }
 .monster-portrait .leader-marker {
   position: absolute;
-  top: -5px;
+  bottom: -5px;
   left: -5px;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: 0;
   border-radius: 6px;
   object-fit: contain;
