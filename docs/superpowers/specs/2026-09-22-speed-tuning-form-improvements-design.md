@@ -40,6 +40,21 @@ editável. Os nomes das habilidades deixarão de aparecer tanto no boost de ATB
 quanto no buff de SPD. A detecção das capacidades continuará baseada nos mesmos
 dados internos.
 
+## Simplificação visual dos controles
+
+Swift, liderança de SPD e buff de SPD usarão exatamente o mesmo controle:
+checkbox e texto em linha, sem borda, fundo, estado visual no contêiner ou
+contêiner intermediário. O estado marcado será indicado somente pelo próprio
+checkbox.
+
+O resumo do monstro continuará agrupando retrato, nome, elemento e SPD base para
+fins de layout, mas não terá borda, fundo ou preenchimento que o faça parecer um
+campo de formulário.
+
+O boost de ATB será um campo simples no mesmo padrão da SPD de runas: texto do
+label e input numérico ocupando a largura disponível. A unidade `%` ficará no
+label e não exigirá um wrapper interno ao input.
+
 ## Escopo técnico
 
 - Simplificar o estado do slot removendo `boostEnabled`.
@@ -51,6 +66,8 @@ dados internos.
 - Remover a marcação e as referências JavaScript usadas apenas para exibir os
   nomes das habilidades.
 - Ajustar estilos somente onde necessário para o novo bloco de boost.
+- Remover wrappers de apresentação dos checkboxes e do boost de ATB.
+- Remover o tratamento visual de caixa do resumo do monstro.
 
 ## Validação
 
@@ -61,4 +78,3 @@ dados internos.
   input e seletor de alvo visíveis.
 - Confirmar que os nomes das habilidades não são renderizados.
 - Executar `pnpm test`, `pnpm build` e `pnpm test:e2e`.
-
