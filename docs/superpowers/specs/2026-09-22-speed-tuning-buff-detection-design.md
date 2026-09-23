@@ -9,11 +9,12 @@ Corrigir a identificação de monstros que aplicam buff de SPD ao time, incluind
 Uma habilidade será reconhecida como buff de SPD do time quando:
 
 - possuir o efeito estruturado `Increase ATK SPD`; e
-- estiver marcada como `aoe: true` no catálogo de habilidades.
+- estiver marcada como `aoe: true` no catálogo de habilidades; e
+- a descrição confirmar que o efeito alcança todos os aliados.
 
-O indicador estruturado de área será verificado antes da análise textual existente. A análise da descrição continuará como fallback para habilidades de alvo único ou registros em que o campo de área não seja suficiente.
+O indicador estruturado de área será combinado ao contexto da descrição antes da análise textual existente. A análise da descrição continuará como fallback para habilidades de alvo único ou registros em que o campo de área não seja suficiente.
 
-Habilidades passivas, buffs próprios e outros efeitos com `aoe: false` não serão classificados como buff do time apenas por possuírem o efeito `Increase ATK SPD`.
+Habilidades passivas, buffs próprios e ataques em área que aumentem somente a velocidade do usuário não serão classificados como buff do time apenas por possuírem o efeito `Increase ATK SPD`.
 
 ## Ordem dos controles
 
@@ -38,5 +39,6 @@ A mudança não altera as fórmulas do Speed Tuning. Uma vez reconhecido, o buff
 - Confirmar que Adriana possui buff de SPD do time.
 - Confirmar que Chilling possui buff de SPD do time pela habilidade ativa em área.
 - Preservar a identificação de buffs individuais, como Dova.
+- Confirmar que ataques em área com buff próprio, como o de Clara, não sejam classificados como buff do time.
 - Confirmar que o seletor de alvo aparece imediatamente depois do boost de ATB.
 - Executar testes unitários, build e testes end-to-end do Speed Tuning.
