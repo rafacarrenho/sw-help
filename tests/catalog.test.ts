@@ -212,6 +212,32 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
   );
   assert.deepEqual(
     getSpeedTuningCapabilities(
+      monsterById.get('adriana-water-2021')!,
+      skillById,
+    ).speedBuff,
+    {
+      scope: 'team',
+      skillId: 3459,
+      skillName: 'Determination of Dessert Kingdom',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(
+      monsterById.get('chilling-water-958')!,
+      skillById,
+    ).speedBuff,
+    {
+      scope: 'team',
+      skillId: 1394,
+      skillName: 'Song of the Night Wind',
+    },
+  );
+  assert.equal(
+    getSpeedTuningCapabilities(monsterById.get('clara')!, skillById).speedBuff,
+    null,
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(
       monsterById.get('belladeon-light-1299')!,
       skillById,
     ).atbBoost,

@@ -203,6 +203,21 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
   );
   await expect(firstSlot.locator('[data-tuning-effect-target]')).toBeVisible();
   await expect(firstSlot.locator('[data-tuning-target]')).toHaveValue('1');
+  expect(
+    await firstSlot.locator('.speed-tuning-fields').evaluate((element) =>
+      [...element.children]
+        .map((child) => {
+          if (child.querySelector('[data-tuning-rune-speed]')) return 'runes';
+          if (child.matches('[data-tuning-leader]')) return 'leader';
+          if (child.matches('[data-tuning-boost]')) return 'boost';
+          if (child.matches('[data-tuning-effect-target]')) return 'target';
+          if (child.matches('[data-tuning-speed-buff]')) return 'speed-buff';
+          if (child.querySelector('[data-tuning-swift]')) return 'swift';
+          return null;
+        })
+        .filter(Boolean),
+    ),
+  ).toEqual(['runes', 'leader', 'boost', 'target', 'speed-buff', 'swift']);
   await firstSlot.locator('[data-tuning-boost-percent]').fill('0');
   await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
     '',
@@ -243,6 +258,28 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
   await expect(firstSlot.getByRole('combobox')).toHaveValue('');
   await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText('—');
+});
+
+test('reconhece buff de SPD em área da Adriana e do Chilling', async ({
+  page,
+}) => {
+  await page.goto('/spd-tuning/');
+  const firstSlot = page.locator('[data-tuning-slot]').nth(0);
+
+  await selectMonster(page, 0, 'adriana', 'adriana-water-2021');
+  await expect(firstSlot.locator('[data-tuning-speed-buff]')).toBeVisible();
+  await expect(
+    firstSlot.locator('[data-tuning-speed-buff-toggle]'),
+  ).toBeChecked();
+
+  await selectMonster(page, 0, 'chilling', 'chilling-water-958');
+  await expect(firstSlot.locator('[data-tuning-speed-buff]')).toBeVisible();
+  await expect(
+    firstSlot.locator('[data-tuning-speed-buff-toggle]'),
+  ).toBeChecked();
+
+  await selectMonster(page, 0, 'clara', 'clara');
+  await expect(firstSlot.locator('[data-tuning-speed-buff]')).toBeHidden();
 });
 
 test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({

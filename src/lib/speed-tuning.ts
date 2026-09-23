@@ -328,6 +328,8 @@ function inferSpeedBuffScope(
   skill: MonsterSkill,
 ): SpeedTuningTargetScope | null {
   const description = normalizedDescription(skill);
+  if (skill.aoe && /\ball (?:other )?allies\b/.test(description)) return 'team';
+
   const describesAllies = [
     /attack speed of all allies/,
     /all allies[^.]{0,100}attack speed/,
