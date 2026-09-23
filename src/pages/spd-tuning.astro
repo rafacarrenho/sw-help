@@ -193,6 +193,15 @@ const slots = [
               <span data-tuning-leader-label>Usar liderança de SPD</span>
             </label>
 
+            <label class="speed-tuning-field" data-tuning-initial-buffs hidden>
+              <span>Buffs iniciais</span>
+              <select data-tuning-initial-buffs-select>
+                <option value="0">0 buffs</option>
+                <option value="1">1 buff</option>
+                <option value="2">2 buffs</option>
+              </select>
+            </label>
+
             {index < 2 && (
               <>
                 <label class="speed-tuning-field" data-tuning-boost hidden>
@@ -296,6 +305,10 @@ const slots = [
     } from '../lib/speed-tuning.ts';
     import type { Element as MonsterElement } from '../lib/types.ts';
 
+    const CHILLING_ID = 'chilling-water-958';
+    const CHILLING_SPEED_PER_BUFF = 20;
+    const DEFAULT_CHILLING_INITIAL_BUFFS = 2;
+
     type MonsterOption = {
       id: string;
       name: string;
@@ -321,6 +334,7 @@ const slots = [
       speedBuffEnabled: boolean;
       targetIndex: number;
       artifactPercent: number;
+      initialBuffs: number;
     };
 
     type SlotElements = {
@@ -339,6 +353,8 @@ const slots = [
       leader: HTMLElement;
       leaderToggle: HTMLInputElement;
       leaderLabel: HTMLElement;
+      initialBuffs: HTMLElement;
+      initialBuffsSelect: HTMLSelectElement;
       boost: HTMLElement | null;
       boostPercent: HTMLInputElement | null;
       speedBuff: HTMLElement | null;
@@ -367,6 +383,8 @@ const slots = [
         monster.id,
         {
           defaultBoostPercent: monster.capabilities.atbBoost?.percent ?? null,
+          defaultInitialBuffs:
+            monster.id === CHILLING_ID ? DEFAULT_CHILLING_INITIAL_BUFFS : null,
           hasSpeedBuff: Boolean(monster.capabilities.speedBuff),
           hasTargetEffect:
             monster.capabilities.atbBoost?.scope === 'single' ||
@@ -391,6 +409,7 @@ const slots = [
       speedBuffEnabled: false,
       targetIndex: Math.min(index + 1, 2),
       artifactPercent: 0,
+      initialBuffs: 0,
     }));
 
     const query = <T extends globalThis.Element>(
@@ -417,6 +436,11 @@ const slots = [
         '[data-tuning-leader-toggle]',
       )!,
       leaderLabel: query<HTMLElement>(root, '[data-tuning-leader-label]')!,
+      initialBuffs: query<HTMLElement>(root, '[data-tuning-initial-buffs]')!,
+      initialBuffsSelect: query<HTMLSelectElement>(
+        root,
+        '[data-tuning-initial-buffs-select]',
+      )!,
       boost: query<HTMLElement>(root, '[data-tuning-boost]'),
       boostPercent: query<HTMLInputElement>(
         root,
@@ -442,6 +466,10 @@ const slots = [
     const clampNumber = (value: number, minimum: number, maximum: number) =>
       Math.min(maximum, Math.max(minimum, Number.isFinite(value) ? value : 0));
     const displayNumber = (value: number) => (value === 0 ? '' : String(value));
+    const passiveSpeedBonus = (state: SlotState) =>
+      state.monster?.id === CHILLING_ID
+        ? state.initialBuffs * CHILLING_SPEED_PER_BUFF
+        : 0;
 
     const closeOptions = (slotIndex: number) => {
       const slotElements = elements[slotIndex];
@@ -521,6 +549,7 @@ const slots = [
       state.speedBuffEnabled = false;
       state.targetIndex = Math.min(slotIndex + 1, 2);
       state.artifactPercent = 0;
+      state.initialBuffs = 0;
       if (!keepSearchValue) slotElements.search.value = '';
       if (removedActiveLeader) activateBestAvailableLeader();
     };
@@ -532,6 +561,8 @@ const slots = [
 
       clearSlot(slotIndex);
       state.monster = monster;
+      state.initialBuffs =
+        monster.id === CHILLING_ID ? DEFAULT_CHILLING_INITIAL_BUFFS : 0;
       state.boostPercent = monster.capabilities.atbBoost?.percent ?? 0;
       state.speedBuffEnabled = Boolean(monster.capabilities.speedBuff);
       if (monster.leader) activateBestAvailableLeader(slotIndex);
@@ -722,6 +753,7 @@ const slots = [
         speedBuffEnabled: state.speedBuffEnabled,
         targetIndex: state.targetIndex,
         artifactPercent: state.artifactPercent,
+        initialBuffs: state.initialBuffs,
       })),
     });
 
@@ -773,6 +805,7 @@ const slots = [
         slotElements.element.textContent = 'Selecione no campo acima';
         slotElements.base.textContent = '—';
         slotElements.leader.hidden = true;
+        slotElements.initialBuffs.hidden = true;
         if (slotElements.boost) slotElements.boost.hidden = true;
         if (slotElements.speedBuff) slotElements.speedBuff.hidden = true;
         if (slotElements.effectTarget) slotElements.effectTarget.hidden = true;
@@ -803,6 +836,15 @@ const slots = [
           monster.leader,
           monster,
         );
+      }
+
+      const usesChillingPassive = monster.id === CHILLING_ID;
+      slotElements.initialBuffs.hidden = !usesChillingPassive;
+      if (usesChillingPassive) {
+        state.initialBuffs = clampNumber(Math.round(state.initialBuffs), 0, 2);
+        slotElements.initialBuffsSelect.value = String(state.initialBuffs);
+      } else {
+        state.initialBuffs = 0;
       }
 
       const boost = monster.capabilities.atbBoost;
@@ -881,6 +923,7 @@ const slots = [
         towerPercent: Number(towerSelect?.value ?? 15),
         leaderPercent: leaderForSlot(slotIndex),
         usesSwift: state.usesSwift,
+        passiveSpeedBonus: passiveSpeedBonus(state),
       });
     };
 
@@ -902,6 +945,7 @@ const slots = [
         ),
         leaderPercent: leaderForSlot(0),
         usesSwift: anchor.usesSwift,
+        passiveSpeedBonus: passiveSpeedBonus(anchor),
       });
       if (anchorCombatSpeed === null) {
         setEmptyResult(0, 'Revise a SPD informada');
@@ -910,7 +954,11 @@ const slots = [
       setResult(
         0,
         `${anchorCombatSpeed} SPD`,
-        `Base ${anchorMonster.speed} + ${anchor.runeSpeed} de runas`,
+        `Base ${anchorMonster.speed} + ${anchor.runeSpeed} de runas${
+          passiveSpeedBonus(anchor) > 0
+            ? ` + ${passiveSpeedBonus(anchor)} da passiva`
+            : ''
+        }`,
       );
 
       let secondResult = tuneSlot(1, anchorCombatSpeed);
@@ -939,6 +987,7 @@ const slots = [
               towerPercent: Number(towerSelect?.value ?? 15),
               leaderPercent: leaderForSlot(1),
               usesSwift: second.usesSwift,
+              passiveSpeedBonus: passiveSpeedBonus(second),
             },
           );
           if (raisedRuneSpeed !== null) {
@@ -951,6 +1000,7 @@ const slots = [
                   towerPercent: Number(towerSelect?.value ?? 15),
                   leaderPercent: leaderForSlot(1),
                   usesSwift: second.usesSwift,
+                  passiveSpeedBonus: passiveSpeedBonus(second),
                 }) ?? thirdResult.combatSpeed,
               minimumCombatSpeed: thirdResult.combatSpeed,
             };
@@ -1027,6 +1077,8 @@ const slots = [
           restoredSlot.speedBuffEnabled;
         state.targetIndex = restoredSlot.targetIndex;
         state.artifactPercent = monster ? restoredSlot.artifactPercent : 0;
+        state.initialBuffs =
+          monster?.id === CHILLING_ID ? restoredSlot.initialBuffs : 0;
         slotElements.search.value = monster?.name ?? '';
         closeOptions(slotIndex);
       });
@@ -1100,6 +1152,16 @@ const slots = [
         } else if (states[slotIndex]) {
           states[slotIndex].leaderActive = false;
         }
+        render();
+      });
+      slotElements.initialBuffsSelect.addEventListener('change', () => {
+        const state = states[slotIndex];
+        if (!state || state.monster?.id !== CHILLING_ID) return;
+        state.initialBuffs = clampNumber(
+          Number(slotElements.initialBuffsSelect.value),
+          0,
+          2,
+        );
         render();
       });
       slotElements.boostPercent?.addEventListener('input', () => {

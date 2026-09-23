@@ -7,7 +7,7 @@ const selectMonster = async (
   monsterId: string,
 ) => {
   const slot = page.locator('[data-tuning-slot]').nth(slotIndex);
-  const combobox = slot.getByRole('combobox');
+  const combobox = slot.locator('[data-tuning-search]');
   await combobox.fill(search);
   await page.locator(`#speed-tuning-option-${slotIndex}-${monsterId}`).click();
 };
@@ -277,9 +277,74 @@ test('reconhece buff de SPD em área da Adriana e do Chilling', async ({
   await expect(
     firstSlot.locator('[data-tuning-speed-buff-toggle]'),
   ).toBeChecked();
+  await expect(firstSlot.locator('[data-tuning-initial-buffs]')).toBeVisible();
+  await expect(
+    firstSlot.locator('[data-tuning-initial-buffs-select]'),
+  ).toHaveValue('2');
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '157 SPD',
+  );
+  await expect(firstSlot.locator('[data-tuning-result-detail]')).toContainText(
+    '+ 40 da passiva',
+  );
+  expect(new URL(page.url()).searchParams.has('startBuffs1')).toBe(false);
+
+  expect(
+    await firstSlot.locator('.speed-tuning-fields').evaluate((element) =>
+      [...element.children]
+        .map((child) => {
+          if (child.querySelector('[data-tuning-rune-speed]')) return 'runes';
+          if (child.matches('[data-tuning-leader]')) return 'leader';
+          if (child.matches('[data-tuning-initial-buffs]')) return 'initial';
+          if (child.matches('[data-tuning-boost]')) return 'boost';
+          if (child.matches('[data-tuning-effect-target]')) return 'target';
+          if (child.matches('[data-tuning-speed-buff]')) return 'speed-buff';
+          if (child.querySelector('[data-tuning-swift]')) return 'swift';
+          return null;
+        })
+        .filter(Boolean),
+    ),
+  ).toEqual([
+    'runes',
+    'leader',
+    'initial',
+    'boost',
+    'target',
+    'speed-buff',
+    'swift',
+  ]);
+
+  await firstSlot
+    .locator('[data-tuning-initial-buffs-select]')
+    .selectOption('1');
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '137 SPD',
+  );
+  expect(new URL(page.url()).searchParams.get('startBuffs1')).toBe('1');
+
+  await page.reload();
+  await expect(firstSlot.locator('[data-tuning-search]')).toHaveValue(
+    'Chilling',
+  );
+  await expect(
+    firstSlot.locator('[data-tuning-initial-buffs-select]'),
+  ).toHaveValue('1');
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '137 SPD',
+  );
+
+  await firstSlot
+    .locator('[data-tuning-initial-buffs-select]')
+    .selectOption('0');
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '117 SPD',
+  );
+  expect(new URL(page.url()).searchParams.get('startBuffs1')).toBe('0');
 
   await selectMonster(page, 0, 'clara', 'clara');
+  await expect(firstSlot.locator('[data-tuning-initial-buffs]')).toBeHidden();
   await expect(firstSlot.locator('[data-tuning-speed-buff]')).toBeHidden();
+  expect(new URL(page.url()).searchParams.has('startBuffs1')).toBe(false);
 });
 
 test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({

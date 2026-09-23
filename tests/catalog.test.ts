@@ -311,6 +311,39 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
     }),
     169,
   );
+  assert.equal(
+    combatSpeed({
+      baseSpeed: 101,
+      runeSpeed: 0,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+      passiveSpeedBonus: 0,
+    }),
+    117,
+  );
+  assert.equal(
+    combatSpeed({
+      baseSpeed: 101,
+      runeSpeed: 0,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+      passiveSpeedBonus: 20,
+    }),
+    137,
+  );
+  assert.equal(
+    combatSpeed({
+      baseSpeed: 101,
+      runeSpeed: 0,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+      passiveSpeedBonus: 40,
+    }),
+    157,
+  );
 
   assert.deepEqual(
     tuneFollower({
@@ -325,6 +358,21 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
       usesSwift: false,
     }),
     { runeSpeed: 186, combatSpeed: 301, minimumCombatSpeed: 301 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 1,
+      accumulatedAtbBoost: 0,
+      speedBuffStartIteration: null,
+      artifactSpeedIncrease: 0,
+      baseSpeed: 101,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+      passiveSpeedBonus: 40,
+    }),
+    { runeSpeed: 144, combatSpeed: 301, minimumCombatSpeed: 301 },
   );
   assert.deepEqual(
     tuneFollower({
@@ -435,6 +483,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
       'kabilla-light-430',
       {
         defaultBoostPercent: 30,
+        defaultInitialBuffs: null,
         hasSpeedBuff: false,
         hasTargetEffect: false,
         leaderAmount: null,
@@ -444,6 +493,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
       'gemini-light-657',
       {
         defaultBoostPercent: null,
+        defaultInitialBuffs: null,
         hasSpeedBuff: false,
         hasTargetEffect: false,
         leaderAmount: 19,
@@ -453,6 +503,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
       'talisman-light-1680',
       {
         defaultBoostPercent: null,
+        defaultInitialBuffs: null,
         hasSpeedBuff: false,
         hasTargetEffect: false,
         leaderAmount: null,
@@ -476,6 +527,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
         speedBuffEnabled: false,
         targetIndex: 1,
         artifactPercent: 0,
+        initialBuffs: 0,
       },
       {
         monsterId: 'gemini-light-657',
@@ -485,6 +537,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
         speedBuffEnabled: false,
         targetIndex: 2,
         artifactPercent: 15,
+        initialBuffs: 0,
       },
       {
         monsterId: 'talisman-light-1680',
@@ -494,6 +547,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
         speedBuffEnabled: false,
         targetIndex: 2,
         artifactPercent: 0,
+        initialBuffs: 0,
       },
     ],
   });
@@ -511,6 +565,7 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
       'bernard',
       {
         defaultBoostPercent: 30,
+        defaultInitialBuffs: null,
         hasSpeedBuff: true,
         hasTargetEffect: false,
         leaderAmount: null,
@@ -520,6 +575,7 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
       'konamiya',
       {
         defaultBoostPercent: 100,
+        defaultInitialBuffs: null,
         hasSpeedBuff: false,
         hasTargetEffect: true,
         leaderAmount: null,
@@ -529,6 +585,7 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
       'clara',
       {
         defaultBoostPercent: 20,
+        defaultInitialBuffs: null,
         hasSpeedBuff: false,
         hasTargetEffect: false,
         leaderAmount: 19,
@@ -566,6 +623,70 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
       queryMonsters,
     ).toString(),
     'm1=bernard&m2=konamiya',
+  );
+});
+
+test('query params preservam os buffs iniciais exclusivos do Chilling', () => {
+  const queryMonsters = new Map<string, SpeedTuningQueryMonster>([
+    [
+      'chilling-water-958',
+      {
+        defaultBoostPercent: null,
+        defaultInitialBuffs: 2,
+        hasSpeedBuff: true,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'bernard-wind-1579',
+      {
+        defaultBoostPercent: 30,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: true,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+  ]);
+  const shared = new URLSearchParams(
+    'm1=chilling-water-958&startBuffs1=1&m2=bernard-wind-1579&startBuffs2=1',
+  );
+  const sharedState = readSpeedTuningQueryState(shared, queryMonsters);
+
+  assert.equal(sharedState.slots[0]?.initialBuffs, 1);
+  assert.equal(sharedState.slots[1]?.initialBuffs, 0);
+  assert.equal(
+    writeSpeedTuningQueryState(shared, sharedState, queryMonsters).toString(),
+    'm1=chilling-water-958&startBuffs1=1&m2=bernard-wind-1579',
+  );
+
+  const invalidState = readSpeedTuningQueryState(
+    new URLSearchParams('m1=chilling-water-958&startBuffs1=9'),
+    queryMonsters,
+  );
+  assert.equal(invalidState.slots[0]?.initialBuffs, 2);
+  assert.equal(
+    writeSpeedTuningQueryState(
+      new URLSearchParams('m1=chilling-water-958&startBuffs1=9'),
+      invalidState,
+      queryMonsters,
+    ).toString(),
+    'm1=chilling-water-958',
+  );
+
+  const zeroState = readSpeedTuningQueryState(
+    new URLSearchParams('m3=chilling-water-958&startBuffs3=0'),
+    queryMonsters,
+  );
+  assert.equal(zeroState.slots[2]?.initialBuffs, 0);
+  assert.equal(
+    writeSpeedTuningQueryState(
+      new URLSearchParams('m3=chilling-water-958&startBuffs3=0'),
+      zeroState,
+      queryMonsters,
+    ).toString(),
+    'm3=chilling-water-958&startBuffs3=0',
   );
 });
 

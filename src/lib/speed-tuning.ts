@@ -32,6 +32,7 @@ export interface CombatSpeedInput {
   towerPercent: number;
   leaderPercent: number;
   usesSwift: boolean;
+  passiveSpeedBonus?: number;
 }
 
 export interface FollowerTuningInput {
@@ -44,6 +45,7 @@ export interface FollowerTuningInput {
   towerPercent: number;
   leaderPercent: number;
   usesSwift: boolean;
+  passiveSpeedBonus?: number;
 }
 
 export interface FollowerTuningResult {
@@ -54,6 +56,7 @@ export interface FollowerTuningResult {
 
 export interface SpeedTuningQueryMonster {
   defaultBoostPercent: number | null;
+  defaultInitialBuffs: number | null;
   hasSpeedBuff: boolean;
   hasTargetEffect: boolean;
   leaderAmount: number | null;
@@ -67,6 +70,7 @@ export interface SpeedTuningQuerySlotState {
   speedBuffEnabled: boolean;
   targetIndex: number;
   artifactPercent: number;
+  initialBuffs: number;
 }
 
 export interface SpeedTuningQueryState {
@@ -87,6 +91,7 @@ const speedTuningQueryKeys = [
     `buff${index + 1}`,
     `target${index + 1}`,
     `artifact${index + 1}`,
+    `startBuffs${index + 1}`,
   ]).flat(),
 ];
 
@@ -135,6 +140,7 @@ export function readSpeedTuningQueryState(
           speedBuffEnabled: false,
           targetIndex: targetFallback,
           artifactPercent: 0,
+          initialBuffs: 0,
         };
       }
 
@@ -145,6 +151,16 @@ export function readSpeedTuningQueryState(
         targetParam <= SPEED_TUNING_SLOT_COUNT
           ? targetParam - 1
           : targetFallback;
+      const initialBuffsParam = params.get(`startBuffs${slotNumber}`);
+      const parsedInitialBuffs =
+        initialBuffsParam === null ? NaN : Number(initialBuffsParam);
+      const initialBuffs =
+        monster.defaultInitialBuffs !== null &&
+        Number.isInteger(parsedInitialBuffs) &&
+        parsedInitialBuffs >= 0 &&
+        parsedInitialBuffs <= 2
+          ? parsedInitialBuffs
+          : (monster.defaultInitialBuffs ?? 0);
 
       return {
         monsterId: monsterParam,
@@ -172,6 +188,7 @@ export function readSpeedTuningQueryState(
           slotIndex > 0
             ? queryNumber(params.get(`artifact${slotNumber}`), 0, 0, 100)
             : 0,
+        initialBuffs,
       };
     },
   );
@@ -232,6 +249,18 @@ export function writeSpeedTuningQueryState(
       nextParams.set('r1', String(clamp(slot.runeSpeed, 0, 999)));
     }
     if (slot.usesSwift) nextParams.set(`swift${slotNumber}`, '1');
+
+    if (monster.defaultInitialBuffs !== null) {
+      const normalizedInitialBuffs = Number.isInteger(slot.initialBuffs)
+        ? clamp(slot.initialBuffs, 0, 2)
+        : monster.defaultInitialBuffs;
+      if (normalizedInitialBuffs !== monster.defaultInitialBuffs) {
+        nextParams.set(
+          `startBuffs${slotNumber}`,
+          String(normalizedInitialBuffs),
+        );
+      }
+    }
 
     if (
       slotIndex < 2 &&
@@ -457,13 +486,15 @@ export function combatSpeed({
   towerPercent,
   leaderPercent,
   usesSwift,
+  passiveSpeedBonus = 0,
 }: CombatSpeedInput): number | null {
   if (
     !Number.isFinite(baseSpeed) ||
     baseSpeed <= 0 ||
     !Number.isFinite(runeSpeed) ||
     !Number.isFinite(towerPercent) ||
-    !Number.isFinite(leaderPercent)
+    !Number.isFinite(leaderPercent) ||
+    !Number.isFinite(passiveSpeedBonus)
   ) {
     return null;
   }
@@ -471,6 +502,7 @@ export function combatSpeed({
   const normalizedRuneSpeed = Math.max(0, runeSpeed);
   const normalizedTower = clamp(towerPercent, 0, 15);
   const normalizedLeader = Math.max(0, leaderPercent);
+  const normalizedPassiveSpeedBonus = Math.max(0, passiveSpeedBonus);
   const exactSwiftBonus = (baseSpeed * 25) / 100;
   const swiftDisplayPenalty = usesSwift
     ? Math.ceil(exactSwiftBonus) - exactSwiftBonus
@@ -480,7 +512,8 @@ export function combatSpeed({
     baseSpeed +
       (baseSpeed * (normalizedTower + normalizedLeader)) / 100 +
       normalizedRuneSpeed -
-      swiftDisplayPenalty,
+      swiftDisplayPenalty +
+      normalizedPassiveSpeedBonus,
   );
 }
 
@@ -523,6 +556,7 @@ export function tuneFollower({
   towerPercent,
   leaderPercent,
   usesSwift,
+  passiveSpeedBonus = 0,
 }: FollowerTuningInput): FollowerTuningResult | null {
   if (
     !Number.isFinite(anchorCombatSpeed) ||
@@ -530,7 +564,8 @@ export function tuneFollower({
     !Number.isInteger(iteration) ||
     iteration < 1 ||
     !Number.isFinite(accumulatedAtbBoost) ||
-    !Number.isFinite(artifactSpeedIncrease)
+    !Number.isFinite(artifactSpeedIncrease) ||
+    !Number.isFinite(passiveSpeedBonus)
   ) {
     return null;
   }
@@ -569,6 +604,7 @@ export function tuneFollower({
     towerPercent,
     leaderPercent,
     usesSwift,
+    passiveSpeedBonus,
   });
   if (runeSpeed === null) return null;
 
@@ -578,6 +614,7 @@ export function tuneFollower({
     towerPercent,
     leaderPercent,
     usesSwift,
+    passiveSpeedBonus,
   });
   if (tunedCombatSpeed === null) return null;
 
