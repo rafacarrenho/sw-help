@@ -52,8 +52,241 @@ export interface FollowerTuningResult {
   minimumCombatSpeed: number;
 }
 
+export interface SpeedTuningQueryMonster {
+  defaultBoostPercent: number | null;
+  hasSpeedBuff: boolean;
+  hasTargetEffect: boolean;
+  leaderAmount: number | null;
+}
+
+export interface SpeedTuningQuerySlotState {
+  monsterId: string | null;
+  runeSpeed: number;
+  usesSwift: boolean;
+  boostPercent: number;
+  speedBuffEnabled: boolean;
+  targetIndex: number;
+  artifactPercent: number;
+}
+
+export interface SpeedTuningQueryState {
+  towerPercent: number;
+  activeLeaderIndex: number | null;
+  slots: SpeedTuningQuerySlotState[];
+}
+
+const SPEED_TUNING_SLOT_COUNT = 3;
+const speedTuningQueryKeys = [
+  'tower',
+  'leader',
+  ...Array.from({ length: SPEED_TUNING_SLOT_COUNT }, (_, index) => [
+    `m${index + 1}`,
+    `r${index + 1}`,
+    `swift${index + 1}`,
+    `boost${index + 1}`,
+    `buff${index + 1}`,
+    `target${index + 1}`,
+    `artifact${index + 1}`,
+  ]).flat(),
+];
+
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(maximum, Math.max(minimum, value));
+
+const queryNumber = (
+  value: string | null,
+  fallback: number,
+  minimum: number,
+  maximum: number,
+) => {
+  if (value === null || value.trim() === '') return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? clamp(parsed, minimum, maximum) : fallback;
+};
+
+const defaultTargetIndex = (slotIndex: number) =>
+  Math.min(slotIndex + 1, SPEED_TUNING_SLOT_COUNT - 1);
+
+export function readSpeedTuningQueryState(
+  params: URLSearchParams,
+  monsters: ReadonlyMap<string, SpeedTuningQueryMonster>,
+): SpeedTuningQueryState {
+  const towerParam = params.get('tower');
+  const parsedTower = towerParam === null ? NaN : Number(towerParam);
+  const towerPercent =
+    Number.isInteger(parsedTower) && parsedTower >= 0 && parsedTower <= 15
+      ? parsedTower
+      : DEFAULT_SPEED_TUNING_TOWER_PERCENT;
+
+  const slots = Array.from(
+    { length: SPEED_TUNING_SLOT_COUNT },
+    (_, slotIndex): SpeedTuningQuerySlotState => {
+      const slotNumber = slotIndex + 1;
+      const monsterParam = params.get(`m${slotNumber}`);
+      const monster = monsterParam ? monsters.get(monsterParam) : null;
+      const targetFallback = defaultTargetIndex(slotIndex);
+
+      if (!monster || !monsterParam) {
+        return {
+          monsterId: null,
+          runeSpeed: 0,
+          usesSwift: false,
+          boostPercent: 0,
+          speedBuffEnabled: false,
+          targetIndex: targetFallback,
+          artifactPercent: 0,
+        };
+      }
+
+      const targetParam = Number(params.get(`target${slotNumber}`));
+      const targetIndex =
+        Number.isInteger(targetParam) &&
+        targetParam > slotNumber &&
+        targetParam <= SPEED_TUNING_SLOT_COUNT
+          ? targetParam - 1
+          : targetFallback;
+
+      return {
+        monsterId: monsterParam,
+        runeSpeed:
+          slotIndex === 0 ? queryNumber(params.get('r1'), 0, 0, 999) : 0,
+        usesSwift: params.get(`swift${slotNumber}`) === '1',
+        boostPercent:
+          monster.defaultBoostPercent === null || slotIndex > 1
+            ? 0
+            : queryNumber(
+                params.get(`boost${slotNumber}`),
+                monster.defaultBoostPercent,
+                0,
+                100,
+              ),
+        speedBuffEnabled:
+          monster.hasSpeedBuff &&
+          slotIndex < 2 &&
+          params.get(`buff${slotNumber}`) !== '0',
+        targetIndex:
+          monster.hasTargetEffect && slotIndex < 2
+            ? targetIndex
+            : targetFallback,
+        artifactPercent:
+          slotIndex > 0
+            ? queryNumber(params.get(`artifact${slotNumber}`), 0, 0, 100)
+            : 0,
+      };
+    },
+  );
+
+  const leaderCandidates = slots
+    .map((slot, index) => ({
+      index,
+      amount:
+        slot.monsterId === null
+          ? null
+          : (monsters.get(slot.monsterId)?.leaderAmount ?? null),
+    }))
+    .filter(
+      (candidate): candidate is { index: number; amount: number } =>
+        candidate.amount !== null,
+    );
+  const leaderParam = params.get('leader');
+  const requestedLeaderIndex = Number(leaderParam) - 1;
+  let activeLeaderIndex: number | null = null;
+
+  if (leaderCandidates.length > 0 && leaderParam !== '0') {
+    const requestedLeader = leaderCandidates.find(
+      ({ index }) => index === requestedLeaderIndex,
+    );
+    activeLeaderIndex =
+      requestedLeader?.index ??
+      leaderCandidates.reduce((best, candidate) =>
+        candidate.amount > best.amount ? candidate : best,
+      ).index;
+  }
+
+  return { towerPercent, activeLeaderIndex, slots };
+}
+
+export function writeSpeedTuningQueryState(
+  params: URLSearchParams,
+  state: SpeedTuningQueryState,
+  monsters: ReadonlyMap<string, SpeedTuningQueryMonster>,
+): URLSearchParams {
+  const nextParams = new URLSearchParams(params);
+  speedTuningQueryKeys.forEach((key) => nextParams.delete(key));
+
+  if (state.towerPercent !== DEFAULT_SPEED_TUNING_TOWER_PERCENT) {
+    nextParams.set(
+      'tower',
+      String(clamp(Math.round(state.towerPercent), 0, 15)),
+    );
+  }
+
+  state.slots.slice(0, SPEED_TUNING_SLOT_COUNT).forEach((slot, slotIndex) => {
+    if (!slot.monsterId) return;
+    const monster = monsters.get(slot.monsterId);
+    if (!monster) return;
+    const slotNumber = slotIndex + 1;
+    nextParams.set(`m${slotNumber}`, slot.monsterId);
+
+    if (slotIndex === 0 && slot.runeSpeed > 0) {
+      nextParams.set('r1', String(clamp(slot.runeSpeed, 0, 999)));
+    }
+    if (slot.usesSwift) nextParams.set(`swift${slotNumber}`, '1');
+
+    if (
+      slotIndex < 2 &&
+      monster.defaultBoostPercent !== null &&
+      slot.boostPercent !== monster.defaultBoostPercent
+    ) {
+      nextParams.set(
+        `boost${slotNumber}`,
+        String(clamp(slot.boostPercent, 0, 100)),
+      );
+    }
+    if (slotIndex < 2 && monster.hasSpeedBuff && !slot.speedBuffEnabled) {
+      nextParams.set(`buff${slotNumber}`, '0');
+    }
+
+    const targetFallback = defaultTargetIndex(slotIndex);
+    if (
+      slotIndex < 2 &&
+      monster.hasTargetEffect &&
+      slot.targetIndex !== targetFallback &&
+      slot.targetIndex > slotIndex &&
+      slot.targetIndex < SPEED_TUNING_SLOT_COUNT
+    ) {
+      nextParams.set(`target${slotNumber}`, String(slot.targetIndex + 1));
+    }
+
+    if (slotIndex > 0 && slot.artifactPercent > 0) {
+      nextParams.set(
+        `artifact${slotNumber}`,
+        String(clamp(slot.artifactPercent, 0, 100)),
+      );
+    }
+  });
+
+  const hasLeader = state.slots.some((slot) => {
+    if (!slot.monsterId) return false;
+    return (monsters.get(slot.monsterId)?.leaderAmount ?? null) !== null;
+  });
+  if (hasLeader) {
+    const activeSlot =
+      state.activeLeaderIndex === null
+        ? null
+        : state.slots[state.activeLeaderIndex];
+    const activeHasLeader = Boolean(
+      activeSlot?.monsterId &&
+      (monsters.get(activeSlot.monsterId)?.leaderAmount ?? null) !== null,
+    );
+    nextParams.set(
+      'leader',
+      activeHasLeader ? String(state.activeLeaderIndex! + 1) : '0',
+    );
+  }
+
+  return nextParams;
+}
 
 const normalizedDescription = (skill: MonsterSkill) =>
   skill.description.toLocaleLowerCase('en-US').replaceAll('’', "'");

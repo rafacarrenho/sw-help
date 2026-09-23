@@ -27,10 +27,14 @@ import {
 import {
   applicableLeaderPercent,
   combatSpeed,
+  DEFAULT_SPEED_TUNING_TOWER_PERCENT,
   getSiegeSpeedLeader,
   getSpeedTuningCapabilities,
   minimumRuneSpeedForCombat,
+  readSpeedTuningQueryState,
   tuneFollower,
+  writeSpeedTuningQueryState,
+  type SpeedTuningQueryMonster,
 } from '../src/lib/speed-tuning.ts';
 import { monsterById } from '../src/data/catalog.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
@@ -396,6 +400,146 @@ test('query params do Speed Tick preservam e restauram filtros válidos', () => 
   assert.equal(
     writeSpeedTickQueryState(invalidParams, invalidState).toString(),
     'utm_source=share',
+  );
+});
+
+test('query params do Speed Tuning preservam e restauram todo o time', () => {
+  const queryMonsters = new Map<string, SpeedTuningQueryMonster>([
+    [
+      'kabilla-light-430',
+      {
+        defaultBoostPercent: 30,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'gemini-light-657',
+      {
+        defaultBoostPercent: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: 19,
+      },
+    ],
+    [
+      'talisman-light-1680',
+      {
+        defaultBoostPercent: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+  ]);
+  const params = new URLSearchParams(
+    'utm_source=share&tower=0&m1=kabilla-light-430&r1=230&swift1=1&boost1=0&m2=gemini-light-657&leader=2&artifact2=15&m3=talisman-light-1680&swift3=1',
+  );
+  const state = readSpeedTuningQueryState(params, queryMonsters);
+
+  assert.deepEqual(state, {
+    towerPercent: 0,
+    activeLeaderIndex: 1,
+    slots: [
+      {
+        monsterId: 'kabilla-light-430',
+        runeSpeed: 230,
+        usesSwift: true,
+        boostPercent: 0,
+        speedBuffEnabled: false,
+        targetIndex: 1,
+        artifactPercent: 0,
+      },
+      {
+        monsterId: 'gemini-light-657',
+        runeSpeed: 0,
+        usesSwift: false,
+        boostPercent: 0,
+        speedBuffEnabled: false,
+        targetIndex: 2,
+        artifactPercent: 15,
+      },
+      {
+        monsterId: 'talisman-light-1680',
+        runeSpeed: 0,
+        usesSwift: true,
+        boostPercent: 0,
+        speedBuffEnabled: false,
+        targetIndex: 2,
+        artifactPercent: 0,
+      },
+    ],
+  });
+  assert.deepEqual(
+    Object.fromEntries(
+      writeSpeedTuningQueryState(params, state, queryMonsters),
+    ),
+    Object.fromEntries(params),
+  );
+});
+
+test('query params do Speed Tuning normalizam valores inválidos e padrões', () => {
+  const queryMonsters = new Map<string, SpeedTuningQueryMonster>([
+    [
+      'bernard',
+      {
+        defaultBoostPercent: 30,
+        hasSpeedBuff: true,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'konamiya',
+      {
+        defaultBoostPercent: 100,
+        hasSpeedBuff: false,
+        hasTargetEffect: true,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'clara',
+      {
+        defaultBoostPercent: 20,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: 19,
+      },
+    ],
+  ]);
+  const invalid = new URLSearchParams(
+    'utm_source=share&tower=99&m1=missing&r1=9999&swift1=true&boost1=12&m2=konamiya&target2=1&artifact2=999&m3=clara&leader=2&buff3=0',
+  );
+  const state = readSpeedTuningQueryState(invalid, queryMonsters);
+
+  assert.equal(state.towerPercent, DEFAULT_SPEED_TUNING_TOWER_PERCENT);
+  assert.equal(state.slots[0]?.monsterId, null);
+  assert.equal(state.slots[1]?.targetIndex, 2);
+  assert.equal(state.slots[1]?.artifactPercent, 100);
+  assert.equal(state.activeLeaderIndex, 2);
+  assert.equal(
+    writeSpeedTuningQueryState(invalid, state, queryMonsters).toString(),
+    'utm_source=share&m2=konamiya&artifact2=100&m3=clara&leader=3',
+  );
+
+  const defaults = readSpeedTuningQueryState(
+    new URLSearchParams('m1=bernard&m2=konamiya&target1=3'),
+    queryMonsters,
+  );
+  assert.equal(defaults.slots[0]?.boostPercent, 30);
+  assert.equal(defaults.slots[0]?.speedBuffEnabled, true);
+  assert.equal(defaults.slots[0]?.targetIndex, 1);
+  assert.equal(defaults.slots[1]?.boostPercent, 100);
+  assert.equal(defaults.slots[1]?.targetIndex, 2);
+  assert.equal(
+    writeSpeedTuningQueryState(
+      new URLSearchParams('m1=bernard&m2=konamiya&target1=3'),
+      defaults,
+      queryMonsters,
+    ).toString(),
+    'm1=bernard&m2=konamiya',
   );
 });
 

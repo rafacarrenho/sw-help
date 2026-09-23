@@ -182,7 +182,7 @@ const slots = [
                   inputmode="numeric"
                   min="0"
                   max="999"
-                  value="0"
+                  value=""
                   disabled
                 />
               </label>
@@ -203,7 +203,7 @@ const slots = [
                     inputmode="decimal"
                     min="0"
                     max="100"
-                    value="0"
+                    value=""
                   />
                 </label>
 
@@ -232,7 +232,7 @@ const slots = [
                   inputmode="decimal"
                   min="0"
                   max="100"
-                  value="0"
+                  value=""
                 />
               </label>
             )}
@@ -285,10 +285,14 @@ const slots = [
       combatSpeed,
       DEFAULT_SPEED_TUNING_TOWER_PERCENT,
       minimumRuneSpeedForCombat,
+      readSpeedTuningQueryState,
       tuneFollower,
+      writeSpeedTuningQueryState,
       type FollowerTuningResult,
       type SpeedTuningEffect,
       type SpeedTuningLeader,
+      type SpeedTuningQueryMonster,
+      type SpeedTuningQueryState,
     } from '../lib/speed-tuning.ts';
     import type { Element as MonsterElement } from '../lib/types.ts';
 
@@ -354,6 +358,22 @@ const slots = [
     };
     const sortedMonsters = [...data.monsters].sort((first, second) =>
       first.name.localeCompare(second.name, 'pt-BR', { sensitivity: 'base' }),
+    );
+    const monsterByQueryId = new Map(
+      sortedMonsters.map((monster) => [monster.id, monster]),
+    );
+    const queryMonsters = new Map<string, SpeedTuningQueryMonster>(
+      sortedMonsters.map((monster) => [
+        monster.id,
+        {
+          defaultBoostPercent: monster.capabilities.atbBoost?.percent ?? null,
+          hasSpeedBuff: Boolean(monster.capabilities.speedBuff),
+          hasTargetEffect:
+            monster.capabilities.atbBoost?.scope === 'single' ||
+            monster.capabilities.speedBuff?.scope === 'single',
+          leaderAmount: monster.leader?.amount ?? null,
+        },
+      ]),
     );
     const towerSelect = document.getElementById(
       'speed-tuning-tower',
@@ -421,6 +441,7 @@ const slots = [
 
     const clampNumber = (value: number, minimum: number, maximum: number) =>
       Math.min(maximum, Math.max(minimum, Number.isFinite(value) ? value : 0));
+    const displayNumber = (value: number) => (value === 0 ? '' : String(value));
 
     const closeOptions = (slotIndex: number) => {
       const slotElements = elements[slotIndex];
@@ -681,6 +702,43 @@ const slots = [
       return null;
     };
 
+    const currentQueryState = (): SpeedTuningQueryState => ({
+      towerPercent: clampNumber(
+        Number(towerSelect?.value ?? DEFAULT_SPEED_TUNING_TOWER_PERCENT),
+        0,
+        15,
+      ),
+      activeLeaderIndex: (() => {
+        const activeIndex = states.findIndex(
+          (state) => state.leaderActive && Boolean(state.monster?.leader),
+        );
+        return activeIndex >= 0 ? activeIndex : null;
+      })(),
+      slots: states.map((state) => ({
+        monsterId: state.monster?.id ?? null,
+        runeSpeed: state.runeSpeed,
+        usesSwift: state.usesSwift,
+        boostPercent: state.boostPercent,
+        speedBuffEnabled: state.speedBuffEnabled,
+        targetIndex: state.targetIndex,
+        artifactPercent: state.artifactPercent,
+      })),
+    });
+
+    const syncQueryState = () => {
+      const params = writeSpeedTuningQueryState(
+        new URLSearchParams(window.location.search),
+        currentQueryState(),
+        queryMonsters,
+      );
+      const search = params.size > 0 ? `?${params.toString()}` : '';
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${search}${window.location.hash}`,
+      );
+    };
+
     const leaderLabel = (leader: SpeedTuningLeader, monster: MonsterOption) => {
       const scope =
         leader.area === 'Guild'
@@ -702,7 +760,7 @@ const slots = [
       slotElements.swift.checked = state.usesSwift;
       if (slotElements.runeSpeed) {
         slotElements.runeSpeed.disabled = !enabled;
-        slotElements.runeSpeed.value = String(state.runeSpeed);
+        slotElements.runeSpeed.value = displayNumber(state.runeSpeed);
       }
 
       if (!monster) {
@@ -752,7 +810,7 @@ const slots = [
         slotElements.boost.hidden = !boost;
       }
       if (slotElements.boostPercent) {
-        slotElements.boostPercent.value = String(state.boostPercent);
+        slotElements.boostPercent.value = displayNumber(state.boostPercent);
         slotElements.boostPercent.disabled = !boost;
       }
 
@@ -768,6 +826,7 @@ const slots = [
       );
       if (slotElements.effectTarget && slotElements.target) {
         slotElements.effectTarget.hidden = !needsTarget;
+        if (!needsTarget) state.targetIndex = Math.min(slotIndex + 1, 2);
         const options = [];
         for (
           let targetIndex = slotIndex + 1;
@@ -928,13 +987,51 @@ const slots = [
         if (!slotElements.artifact) return;
         const receivesSpeedBuff = speedBuffStart(slotIndex) !== null;
         slotElements.artifact.hidden = !receivesSpeedBuff;
+        const state = states[slotIndex];
+        if (state && !receivesSpeedBuff) state.artifactPercent = 0;
         if (slotElements.artifactPercent) {
-          slotElements.artifactPercent.value = String(
-            states[slotIndex]?.artifactPercent ?? 0,
+          slotElements.artifactPercent.value = displayNumber(
+            state?.artifactPercent ?? 0,
           );
         }
       });
       renderResults();
+      syncQueryState();
+    };
+
+    const restoreQueryState = () => {
+      const restored = readSpeedTuningQueryState(
+        new URLSearchParams(window.location.search),
+        queryMonsters,
+      );
+
+      if (towerSelect) towerSelect.value = String(restored.towerPercent);
+      restored.slots.forEach((restoredSlot, slotIndex) => {
+        const state = states[slotIndex];
+        const slotElements = elements[slotIndex];
+        if (!state || !slotElements) return;
+        const monster = restoredSlot.monsterId
+          ? (monsterByQueryId.get(restoredSlot.monsterId) ?? null)
+          : null;
+
+        state.monster = monster;
+        state.runeSpeed = monster ? restoredSlot.runeSpeed : 0;
+        state.usesSwift = Boolean(monster) && restoredSlot.usesSwift;
+        state.leaderActive =
+          Boolean(monster?.leader) && restored.activeLeaderIndex === slotIndex;
+        state.boostPercent = monster?.capabilities.atbBoost
+          ? restoredSlot.boostPercent
+          : 0;
+        state.speedBuffEnabled =
+          Boolean(monster?.capabilities.speedBuff) &&
+          restoredSlot.speedBuffEnabled;
+        state.targetIndex = restoredSlot.targetIndex;
+        state.artifactPercent = monster ? restoredSlot.artifactPercent : 0;
+        slotElements.search.value = monster?.name ?? '';
+        closeOptions(slotIndex);
+      });
+
+      render();
     };
 
     elements.forEach((slotElements, slotIndex) => {
@@ -993,7 +1090,7 @@ const slots = [
           0,
           999,
         );
-        renderResults();
+        render();
       });
       slotElements.leaderToggle.addEventListener('change', () => {
         if (slotElements.leaderToggle.checked) {
@@ -1013,7 +1110,7 @@ const slots = [
           0,
           100,
         );
-        renderResults();
+        render();
       });
       slotElements.speedBuffToggle?.addEventListener('change', () => {
         const state = states[slotIndex];
@@ -1035,7 +1132,7 @@ const slots = [
           0,
           100,
         );
-        renderResults();
+        render();
       });
 
       [
@@ -1067,6 +1164,7 @@ const slots = [
       }
     });
 
-    render();
+    window.addEventListener('popstate', restoreQueryState);
+    restoreQueryState();
   </script>
 </Layout>

@@ -26,6 +26,7 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
   await expect(page.locator('[data-tuning-slot]')).toHaveCount(3);
   await expect(page.getByText('SPD das runas', { exact: true })).toBeVisible();
+  await expect(page.locator('[data-tuning-rune-speed]')).toHaveValue('');
   await expect(
     page.getByText('SPD adicional mínima', { exact: true }),
   ).toHaveCount(2);
@@ -161,6 +162,9 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
     .locator('[data-tuning-result-value]')
     .textContent();
   await firstSlot.locator('[data-tuning-boost-percent]').fill('0');
+  await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
+    '',
+  );
   await expect(secondSlot.locator('[data-tuning-result-value]')).not.toHaveText(
     boostedSecondSpeed ?? '',
   );
@@ -173,6 +177,18 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
     /SPD$/,
   );
+  const sharedState = new URL(page.url()).searchParams;
+  expect(Object.fromEntries(sharedState)).toMatchObject({
+    m1: 'bernard-wind-1579',
+    r1: '200',
+    boost1: '0',
+    buff1: '0',
+    swift1: '1',
+    m2: 'lushen',
+    m3: 'kahli-fire-1818',
+  });
+  expect(sharedState.has('artifact2')).toBe(false);
+  expect(sharedState.has('artifact3')).toBe(false);
   expect(errors).toEqual([]);
 });
 
@@ -188,6 +204,9 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
   await expect(firstSlot.locator('[data-tuning-effect-target]')).toBeVisible();
   await expect(firstSlot.locator('[data-tuning-target]')).toHaveValue('1');
   await firstSlot.locator('[data-tuning-boost-percent]').fill('0');
+  await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
+    '',
+  );
   await expect(firstSlot.locator('[data-tuning-effect-target]')).toBeVisible();
   await firstSlot.locator('[data-tuning-target]').selectOption('2');
   await expect(firstSlot.locator('[data-tuning-target]')).toHaveValue('2');
@@ -254,6 +273,93 @@ test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
   await expect(thirdSlot.locator('[data-tuning-result-value]')).toHaveText(
     '+182 SPD',
   );
+});
+
+test('compartilha, restaura e normaliza o time pela URL', async ({ page }) => {
+  await page.goto(
+    '/spd-tuning/?utm_source=share&tower=10&m1=bernard-wind-1579&r1=200&boost1=0&m2=gemini-light-657&artifact2=12&swift2=1&leader=2&m3=talisman-light-1680&artifact3=20#resultado',
+  );
+
+  const slots = page.locator('[data-tuning-slot]');
+  const firstSlot = slots.nth(0);
+  const secondSlot = slots.nth(1);
+  const thirdSlot = slots.nth(2);
+
+  await expect(firstSlot.getByRole('combobox')).toHaveValue('Bernard');
+  await expect(secondSlot.getByRole('combobox')).toHaveValue('Gemini');
+  await expect(thirdSlot.getByRole('combobox')).toHaveValue('Talisman');
+  await expect(page.getByLabel('Torre SPD')).toHaveValue('10');
+  await expect(firstSlot.locator('[data-tuning-rune-speed]')).toHaveValue(
+    '200',
+  );
+  await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
+    '',
+  );
+  await expect(
+    firstSlot.locator('[data-tuning-speed-buff-toggle]'),
+  ).toBeChecked();
+  await expect(secondSlot.getByLabel('Usa Swift')).toBeChecked();
+  await expect(secondSlot.locator('[data-tuning-leader-toggle]')).toBeChecked();
+  await expect(
+    secondSlot.locator('[data-tuning-artifact-percent]'),
+  ).toHaveValue('12');
+  await expect(thirdSlot.locator('[data-tuning-artifact-percent]')).toHaveValue(
+    '20',
+  );
+
+  const resultBeforeReload = await slots
+    .locator('[data-tuning-result-value]')
+    .allTextContents();
+  await page.reload();
+  await expect(slots.nth(0).getByRole('combobox')).toHaveValue('Bernard');
+  await expect(slots.nth(1).getByRole('combobox')).toHaveValue('Gemini');
+  await expect(slots.nth(2).getByRole('combobox')).toHaveValue('Talisman');
+  expect(
+    await slots.locator('[data-tuning-result-value]').allTextContents(),
+  ).toEqual(resultBeforeReload);
+  expect(new URL(page.url()).searchParams.get('utm_source')).toBe('share');
+  expect(new URL(page.url()).hash).toBe('#resultado');
+
+  await page.getByRole('button', { name: 'Limpar time' }).click();
+  const resetUrl = new URL(page.url());
+  expect(Object.fromEntries(resetUrl.searchParams)).toEqual({
+    utm_source: 'share',
+  });
+  expect(resetUrl.hash).toBe('#resultado');
+  await expect(slots.nth(0).getByRole('combobox')).toHaveValue('');
+  await expect(slots.nth(0).locator('[data-tuning-rune-speed]')).toHaveValue(
+    '',
+  );
+
+  await page.evaluate(() => {
+    window.history.pushState(
+      null,
+      '',
+      '?utm_source=share&m1=konamiya-water-56&boost1=0&target1=3#resultado',
+    );
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(slots.nth(0).locator('[data-tuning-search]')).toHaveValue(
+    'Konamiya',
+  );
+  await expect(slots.nth(0).locator('[data-tuning-boost-percent]')).toHaveValue(
+    '',
+  );
+  await expect(slots.nth(0).locator('[data-tuning-target]')).toHaveValue('2');
+
+  await page.evaluate(() => {
+    window.history.pushState(
+      null,
+      '',
+      '?utm_source=share&m1=missing&tower=99&leader=8&swift1=true#resultado',
+    );
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(slots.nth(0).locator('[data-tuning-search]')).toHaveValue('');
+  await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
+  await expect
+    .poll(() => page.url())
+    .toContain('/spd-tuning/?utm_source=share#resultado');
 });
 
 test('empilha os slots no mobile sem criar rolagem horizontal', async ({
