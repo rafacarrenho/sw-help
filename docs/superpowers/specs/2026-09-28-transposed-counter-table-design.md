@@ -11,12 +11,12 @@ tabela inteira deve permanecer visível sem rolagem horizontal.
 
 No desktop, o card volta a ter duas áreas:
 
-- à esquerda, uma área menor com o número da ofensiva, a composição, a
+- à esquerda, uma área com o número da ofensiva, a composição, a
   instrução curta e eventuais fontes;
-- à direita, uma área maior com o título “Configuração sugerida” e a tabela.
+- à direita, uma área com o título “Configuração sugerida” e a tabela.
 
-A divisão será aproximadamente 30/70, permitindo que a orientação de jogo
-permaneça secundária e que a configuração receba a maior parte da largura. Em
+A divisão será 50/50. A largura menor da tabela mantém os valores visualmente
+agrupados, enquanto a composição e a instrução ganham espaço para respirar. Em
 larguras menores, as duas áreas serão empilhadas na ordem composição,
 instrução e tabela.
 
@@ -48,8 +48,11 @@ e as regras de adicional versus valor final não mudam.
 
 ## Responsividade
 
-A tabela usará uma coluna curta para os rótulos e três colunas de monstro com a
-mesma largura. Nomes, runas e badges poderão quebrar linha para evitar overflow.
+A tabela usará 92 px para a coluna de status no desktop e dividirá o espaço
+restante igualmente entre os três monstros. A largura maior do primeiro campo
+equilibra o cabeçalho com as demais colunas. Nomes, runas e badges poderão
+quebrar linha para evitar overflow. No celular estreito, a coluna de status
+continuará reduzida para 52 px.
 
 No desktop, a tabela deve caber na área direita tanto com o menu lateral aberto
 quanto fechado. No celular, o card será empilhado e as quatro colunas devem
