@@ -37,6 +37,11 @@ A tabela conserva as colunas `Monstro`, `Seq.`, `Runa`, `HP`, `ATK`, `DEF`,
 `SPD`, `CR`, `CD`, `RES` e `ACC`. A semântica dos valores, o badge `Desejável`,
 o cálculo automático de SPD e o formato `Tick 5` não mudam.
 
+Todos os cabeçalhos e valores da tabela serão alinhados à esquerda. Isso inclui
+`Seq.`, runas, status numéricos, valores ausentes, SPD e badges `Desejável`, sem
+exceções de alinhamento por coluna. Larguras, conteúdo e comportamento
+responsivo permanecem inalterados.
+
 ## Comportamento responsivo
 
 O breakpoint seguirá o padrão responsivo já usado pela página:
@@ -76,6 +81,8 @@ menu lateral.
 
 - O teste E2E verificará que a tabela não possui overflow horizontal em desktop
   com o menu aberto e com o menu fechado.
+- O teste E2E confirmará o alinhamento à esquerda de cabeçalhos e células,
+  incluindo a coluna `Seq.` e uma coluna de status.
 - O teste E2E móvel confirmará que a região ainda aceita rolagem horizontal e
   que a indicação de arrastar permanece presente.
 - Uma inspeção visual confirmará que todas as colunas estão visíveis no desktop
