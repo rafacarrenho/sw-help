@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
 import { monsterById, monsters } from '../data/catalog';
 import {
   DEFAULT_SPEED_TICK_TOWER_PERCENT,
@@ -92,6 +93,15 @@ const resultText = (value: number | null) => {
             autocomplete="off"
             placeholder="Buscar monstro"
           />
+          <button
+            class="search-clear-button"
+            type="button"
+            aria-label="Limpar busca"
+            title="Limpar busca"
+            data-search-clear
+          >
+            <Icon name="close" size={16} />
+          </button>
           <div
             id="speed-tick-monster-options"
             class="speed-monster-options"

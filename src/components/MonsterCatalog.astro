@@ -69,17 +69,29 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       action="/monstros/"
       data-monster-filters
     >
-      <label class="search-box">
+      <div class="search-box">
         <Icon name="search" size={20} />
-        <span class="sr-only">Buscar por nome ou família</span>
+        <label class="sr-only" for="monster-catalog-search">
+          Buscar por nome ou família
+        </label>
         <input
+          id="monster-catalog-search"
           type="search"
           name="q"
           placeholder="Buscar por nome ou família... ex.: Nora, Dragon"
           maxlength="200"
           autocomplete="off"
         />
-      </label>
+        <button
+          class="search-clear-button"
+          type="button"
+          aria-label="Limpar busca"
+          title="Limpar busca"
+          data-search-clear
+        >
+          <Icon name="close" size={16} />
+        </button>
+      </div>
       <div class="bestiary-selects">
         <label>
           Elemento
