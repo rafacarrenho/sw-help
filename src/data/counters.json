@@ -2,23 +2,9 @@
   {
     "id": "mimirr-elucia-loren",
     "defenseId": "morris-eshir-orion",
-    "team": [
-      "mimirr-light-655",
-      "loren-light-410",
-      "elucia-water-1281"
-    ],
-    "title": "Controle e burst final",
-    "strategy": "Loren abre o setup controlando a barra inimiga e reduzindo a defesa para preparar a finalização. Elucia sustenta o time com cura e controle, e Mimirr entra por último para matar com dano, stun e redução de barra.",
-    "steps": [
-      "Loren usa o primeiro turno para controlar a barra inimiga e diminuir a defesa do alvo.",
-      "Elucia mantém o time seguro com cura e controle durante a sequência.",
-      "Mimirr fecha a ação com dano final, stun e redução de barra para liquidar o alvo."
-    ],
-    "turnOrder": [
-      "loren-light-410",
-      "elucia-water-1281",
-      "mimirr-light-655"
-    ],
+    "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
+    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
+    "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -33,148 +19,134 @@
         "sets": "Violent / Will"
       }
     ],
-    "caution": "O líder continua sendo Mimirr, mas a ordem de ataque é Loren primeiro, Elucia no meio e Mimirr por último.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona",
     "defenseId": "morris-eshir-orion",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta",
     "defenseId": "morris-eshir-orion",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona",
     "defenseId": "morris-eshir-orion",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "mimirr-elucia-loren-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": [
-      "mimirr-light-655",
-      "loren-light-410",
-      "elucia-water-1281"
-    ],
-    "title": "Controle e burst final",
-    "strategy": "Loren abre o setup controlando a barra inimiga e reduzindo a defesa para preparar a finalização. Elucia sustenta o time com cura e controle, e Mimirr entra por último para matar com dano, stun e redução de barra.",
-    "steps": [
-      "Loren usa o primeiro turno para controlar a barra inimiga e diminuir a defesa do alvo.",
-      "Elucia mantém o time seguro com cura e controle durante a sequência.",
-      "Mimirr fecha a ação com dano final, stun e redução de barra para liquidar o alvo."
-    ],
-    "turnOrder": [
-      "loren-light-410",
-      "elucia-water-1281",
-      "mimirr-light-655"
-    ],
+    "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
+    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
+    "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -189,148 +161,134 @@
         "sets": "Violent / Will"
       }
     ],
-    "caution": "O líder continua sendo Mimirr, mas a ordem de ataque é Loren primeiro, Elucia no meio e Mimirr por último.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "mimirr-elucia-loren-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": [
-      "mimirr-light-655",
-      "loren-light-410",
-      "elucia-water-1281"
-    ],
-    "title": "Controle e burst final",
-    "strategy": "Loren abre o setup controlando a barra inimiga e reduzindo a defesa para preparar a finalização. Elucia sustenta o time com cura e controle, e Mimirr entra por último para matar com dano, stun e redução de barra.",
-    "steps": [
-      "Loren usa o primeiro turno para controlar a barra inimiga e diminuir a defesa do alvo.",
-      "Elucia mantém o time seguro com cura e controle durante a sequência.",
-      "Mimirr fecha a ação com dano final, stun e redução de barra para liquidar o alvo."
-    ],
-    "turnOrder": [
-      "loren-light-410",
-      "elucia-water-1281",
-      "mimirr-light-655"
-    ],
+    "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
+    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
+    "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
         "monsterId": "mimirr-light-655",
@@ -345,477 +303,483 @@
         "sets": "Violent / Will"
       }
     ],
-    "caution": "O líder continua sendo Mimirr, mas a ordem de ataque é Loren primeiro, Elucia no meio e Mimirr por último.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "Shihwa conduz o dano, enquanto os revivers garantem a segurança do time durante o burst e a sequência final.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "platy-shihwa-betta-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "platy-fire-835",
-      "shihwa-fire-244",
-      "betta-dark-839"
-    ],
+    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
         "monsterId": "platy-fire-835",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A eficácia depende de a defesa não se recuperar antes do segundo turno; caso isso aconteça, replaneje a prioridade de alvo.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   },
   {
     "id": "betta-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
-    "team": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
-    "title": "Double revive",
-    "strategy": "Shihwa é o núcleo do time: aplica dano adicional por artefatos e elimina o alvo sem deixar reviver, enquanto os outros dois monstros funcionam como reviver para sustentar a equipe e manter o time seguro.",
-    "steps": [
-      "Use Shihwa para abrir a sequência de dano com o foco no alvo principal.",
-      "Mantenha a sobrevivência do time com os revivers para sustentar o setup.",
-      "Aproveite o dano extra e o efeito de Destroy para reduzir o HP total do alvo e facilitar o fim da luta."
-    ],
-    "turnOrder": [
-      "betta-dark-839",
-      "shihwa-fire-244",
-      "iona-light-661"
-    ],
+    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
         "monsterId": "betta-dark-839",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       },
       {
         "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy"
+        "sets": "Violent / Destroy",
+        "stats": {
+          "hp": 20000,
+          "attack": 1000,
+          "defense": 700
+        },
+        "preferredStats": ["accuracy"]
       },
       {
         "monsterId": "iona-light-661",
-        "sets": "Violent / Will"
+        "sets": "Violent / Will",
+        "stats": {
+          "hp": 30000,
+          "defense": 700,
+          "resistance": 100
+        }
       }
     ],
-    "caution": "A abordagem funciona melhor quando o time atacante consegue aguentar o primeiro ciclo de resposta; a estabilidade de runas continua sendo decisiva.",
-    "status": "example",
     "sources": [],
-    "speed": "Tick 5"
+    "tick": 5
   }
 ]

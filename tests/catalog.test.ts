@@ -4,6 +4,11 @@ import { readFileSync, existsSync } from 'node:fs';
 import { validateCatalog } from '../src/lib/validate.ts';
 import { matchesSearch } from '../src/lib/search.ts';
 import {
+  formatCounterSpeed,
+  formatCounterStat,
+  requiredCounterSpeed,
+} from '../src/lib/counter-stats.ts';
+import {
   filterMonsters,
   readMonsterFilters,
   leaderBonusText,
@@ -967,6 +972,116 @@ test('catálogo completo é válido e os retratos locais existem', () => {
       );
   }
 });
+test('diferencia bônus adicionais de metas finais nos counters', () => {
+  assert.equal(formatCounterStat(undefined, 'hp'), '—');
+  assert.equal(formatCounterStat(30000, 'hp'), '+30k');
+  assert.equal(formatCounterStat(30500, 'hp'), '+30,5k');
+  assert.equal(formatCounterStat(1000, 'attack'), '+1k');
+  assert.equal(formatCounterStat(700, 'defense'), '+700');
+  assert.equal(formatCounterStat(100, 'resistance'), '100%');
+  assert.equal(formatCounterStat(85, 'accuracy'), '85%');
+  assert.equal(formatCounterSpeed(149), '+149');
+  assert.equal(formatCounterSpeed(null), '—');
+});
+test('calcula a SPD do counter com Tick, líder, torre e Swift', () => {
+  const speed = (
+    monsterId: string,
+    leaderId: string,
+    runeSets = 'Violent / Will',
+  ) =>
+    requiredCounterSpeed({
+      monster: monsterById.get(monsterId)!,
+      leader: monsterById.get(leaderId)!,
+      tick: 5,
+      runeSets,
+    });
+
+  assert.equal(speed('platy-fire-835', 'platy-fire-835'), 149);
+  assert.equal(speed('shihwa-fire-244', 'platy-fire-835'), 144);
+  assert.equal(speed('iona-light-661', 'platy-fire-835'), 131);
+  assert.equal(speed('betta-dark-839', 'platy-fire-835'), 128);
+  assert.equal(speed('betta-dark-839', 'betta-dark-839'), 156);
+  assert.equal(speed('shihwa-fire-244', 'betta-dark-839'), 168);
+  assert.equal(speed('iona-light-661', 'betta-dark-839'), 158);
+  assert.equal(speed('mimirr-light-655', 'mimirr-light-655'), 142);
+  assert.equal(speed('loren-light-410', 'mimirr-light-655'), 144);
+  assert.equal(speed('elucia-water-1281', 'mimirr-light-655'), 141);
+  assert.equal(speed('platy-fire-835', 'platy-fire-835', 'Swift / Will'), 150);
+});
+test('rejeita metas de counter inválidas ou conflitantes', () => {
+  for (const stats of [{ hp: -1 }, { defense: 700.5 }, { speed: 120 }]) {
+    assert.throws(
+      () =>
+        validateCatalog(
+          monsters,
+          defenses,
+          [
+            {
+              ...counters[0],
+              runes: [
+                { ...counters[0].runes[0], stats },
+                ...counters[0].runes.slice(1),
+              ],
+            } as Counter,
+          ],
+          skills,
+        ),
+      /runas/,
+    );
+  }
+  for (const preferredStats of [['unknown'], ['accuracy', 'accuracy']]) {
+    assert.throws(
+      () =>
+        validateCatalog(
+          monsters,
+          defenses,
+          [
+            {
+              ...counters[0],
+              runes: [
+                { ...counters[0].runes[0], preferredStats },
+                ...counters[0].runes.slice(1),
+              ],
+            } as Counter,
+          ],
+          skills,
+        ),
+      /runas/,
+    );
+  }
+  assert.throws(
+    () =>
+      validateCatalog(
+        monsters,
+        defenses,
+        [
+          {
+            ...counters[0],
+            runes: [
+              {
+                ...counters[0].runes[0],
+                stats: { accuracy: 85 },
+                preferredStats: ['accuracy'],
+              },
+              ...counters[0].runes.slice(1),
+            ],
+          },
+        ],
+        skills,
+      ),
+    /runas/,
+  );
+  assert.throws(
+    () =>
+      validateCatalog(
+        monsters,
+        defenses,
+        [{ ...counters[0], tick: 2 }],
+        skills,
+      ),
+    /Tick/,
+  );
+});
 test('todas as defesas ativas têm o número de counters esperado', () => {
   for (const defense of defenses) {
     const matching = counters.filter(
@@ -1061,17 +1176,7 @@ test('impede IDs duplicados e monstros 5★ em torres 4★, inclusive no ataque'
     /ataque 5★/,
   );
 });
-test('exige fonte em counter documentado e ordem de turno pertencente ao time', () => {
-  assert.throws(
-    () =>
-      validateCatalog(
-        monsters,
-        defenses,
-        [{ ...counters[0], status: 'documented' }],
-        skills,
-      ),
-    /sem fonte/,
-  );
+test('exige ordem de turno pertencente ao time e URL de fonte válida', () => {
   assert.throws(
     () =>
       validateCatalog(

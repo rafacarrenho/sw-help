@@ -11,6 +11,11 @@ import {
   monsterById,
 } from '../../data/catalog';
 import { leaderText } from '../../lib/monster-catalog';
+import {
+  formatCounterSpeed,
+  formatCounterStat,
+  requiredCounterSpeed,
+} from '../../lib/counter-stats';
 
 export const prerender = true;
 
@@ -23,6 +28,17 @@ const { defense } = Astro.props;
 const counters = getCounters(defense.id);
 const name = teamName(defense.team);
 const leader = monsterById.get(defense.team[0])!;
+const counterStatsBeforeSpeed = [
+  { label: 'HP', title: 'Pontos de vida', key: 'hp' },
+  { label: 'ATK', title: 'Ataque', key: 'attack' },
+  { label: 'DEF', title: 'Defesa', key: 'defense' },
+] as const;
+const counterStatsAfterSpeed = [
+  { label: 'CR', title: 'Taxa crítica', key: 'critRate' },
+  { label: 'CD', title: 'Dano crítico', key: 'critDamage' },
+  { label: 'RES', title: 'Resistência', key: 'resistance' },
+  { label: 'ACC', title: 'Precisão', key: 'accuracy' },
+] as const;
 ---
 
 <Layout
@@ -98,114 +114,187 @@ const leader = monsterById.get(defense.team[0])!;
         </a>
       </div>
     ) : (
-      counters.map((counter, index) => (
-        <article class="counter-card">
-          <div class="counter-composition">
-            <div class="counter-label">
-              <span>OFENSIVA {String(index + 1).padStart(2, '0')}</span>
+      counters.map((counter, index) => {
+        const orderedIds = [
+          ...counter.turnOrder,
+          ...counter.team.filter((id) => !counter.turnOrder.includes(id)),
+        ];
+        const builds = orderedIds.map((id) => {
+          const monster = monsterById.get(id)!;
+          const rune = counter.runes.find((entry) => entry.monsterId === id);
+          const runeSets = rune
+            ? rune.sets
+                .split('/')
+                .map((entry) => entry.trim())
+                .filter(Boolean)
+            : [];
+          const sequenceIndex = counter.turnOrder.indexOf(id);
+          return {
+            monster,
+            runeSets,
+            stats: rune?.stats,
+            preferredStats: new Set(rune?.preferredStats ?? []),
+            requiredSpeed: requiredCounterSpeed({
+              monster,
+              leader: monsterById.get(counter.team[0])!,
+              tick: counter.tick,
+              runeSets: rune?.sets ?? '',
+            }),
+            sequence: sequenceIndex >= 0 ? sequenceIndex + 1 : '—',
+          };
+        });
+
+        return (
+          <article class="counter-card">
+            <div class="counter-summary">
+              <div class="counter-composition">
+                <div class="counter-label">
+                  <span>OFENSIVA {String(index + 1).padStart(2, '0')}</span>
+                </div>
+                <Team team={counter.team} linked />
+              </div>
+              <div class="counter-guidance">
+                <div class="counter-instruction">
+                  <h3>Como jogar</h3>
+                  <p>{counter.instruction}</p>
+                </div>
+                {counter.sources.length > 0 && (
+                  <div class="source-list">
+                    <h4>Fontes</h4>
+                    {counter.sources.map((source) => (
+                      <a href={source.url} target="_blank" rel="noreferrer">
+                        {source.title} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <Team team={counter.team} linked />
-            <div class="rune-list">
-              <h4>Configuração sugerida</h4>
+            <div class="counter-build">
+              <div class="counter-build-heading">
+                <h3>Configuração sugerida</h3>
+              </div>
               <div class="counter-table-wrap">
-                <table class="counter-meta-table">
+                <table
+                  class="counter-meta-table"
+                  aria-label={`Configuração da ofensiva ${index + 1}`}
+                >
                   <thead>
                     <tr>
-                      <th
-                        scope="col"
-                        class="monster-col-header"
-                        aria-label="Monstro"
-                      ></th>
-                      <th scope="col" class="sequence-col-header">
-                        Seq.
+                      <th scope="col" class="property-col-header">
+                        Status
                       </th>
-                      <th scope="col">Runa</th>
-                      <th scope="col">Tick</th>
+                      {builds.map(({ monster }) => (
+                        <th scope="col" class="monster-column-header">
+                          <div class="monster-inline">
+                            <div class="monster-inline-portrait">
+                              {monster.image ? (
+                                <img
+                                  src={monster.image}
+                                  alt=""
+                                  width="36"
+                                  height="36"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <span class="monster-inline-fallback">
+                                  {monster.name.slice(0, 2)}
+                                </span>
+                              )}
+                            </div>
+                            <span class="monster-inline-name">
+                              {monster.name}
+                            </span>
+                          </div>
+                        </th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {counter.turnOrder.map((id, index) => {
-                      const monster = monsterById.get(id)!;
-                      const rune = counter.runes.find(
-                        (entry) => entry.monsterId === id,
-                      );
-                      const runeSets = rune
-                        ? rune.sets
-                            .split('/')
-                            .map((entry) => entry.trim())
-                            .filter(Boolean)
-                        : [];
-                      return (
-                        <tr>
-                          <td class="monster-cell">
-                            <div class="monster-inline">
-                              <div class="monster-inline-portrait">
-                                {monster.image ? (
-                                  <img
-                                    src={monster.image}
-                                    alt=""
-                                    width="36"
-                                    height="36"
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <span class="monster-inline-fallback">
-                                    {monster.name.slice(0, 2)}
-                                  </span>
-                                )}
-                              </div>
-                              <span class="monster-inline-name">
-                                {monster.name}
-                              </span>
-                            </div>
-                          </td>
-                          <td class="sequence-cell">{index + 1}</td>
-                          <td class="rune-cell">
-                            {runeSets.length > 0 ? (
-                              runeSets.map((set) => <div>{set}</div>)
+                    <tr>
+                      <th scope="row" class="property-cell">
+                        <abbr title="Sequência">Seq.</abbr>
+                      </th>
+                      {builds.map((build) => <td>{build.sequence}</td>)}
+                    </tr>
+                    <tr>
+                      <th scope="row" class="property-cell">Runa</th>
+                      {builds.map((build) => (
+                        <td class="rune-cell">
+                          {build.runeSets.length > 0 ? (
+                            build.runeSets.map((set) => <div>{set}</div>)
+                          ) : (
+                            <span>—</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                    {counterStatsBeforeSpeed.map((stat) => (
+                      <tr>
+                        <th scope="row" class="property-cell">
+                          <abbr title={stat.title}>{stat.label}</abbr>
+                        </th>
+                        {builds.map((build) => (
+                          <td>
+                            {build.preferredStats.has(stat.key) ? (
+                              <span class="preferred-stat">Desejável</span>
                             ) : (
-                              <span>—</span>
+                              formatCounterStat(
+                                build.stats?.[stat.key],
+                                stat.key,
+                              )
                             )}
                           </td>
-                          <td>{counter.speed}</td>
-                        </tr>
-                      );
-                    })}
+                        ))}
+                      </tr>
+                    ))}
+                    <tr>
+                      <th scope="row" class="property-cell">
+                        <abbr title="Velocidade">SPD</abbr>
+                      </th>
+                      {builds.map((build) => (
+                        <td class="speed-cell">
+                          <span>Tick {counter.tick}</span>
+                          <strong>
+                            {formatCounterSpeed(build.requiredSpeed)}
+                          </strong>
+                        </td>
+                      ))}
+                    </tr>
+                    {counterStatsAfterSpeed.map((stat) => (
+                      <tr>
+                        <th scope="row" class="property-cell">
+                          <abbr title={stat.title}>{stat.label}</abbr>
+                        </th>
+                        {builds.map((build) => (
+                          <td>
+                            {build.preferredStats.has(stat.key) ? (
+                              <span class="preferred-stat">Desejável</span>
+                            ) : (
+                              formatCounterStat(
+                                build.stats?.[stat.key],
+                                stat.key,
+                              )
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
-          <div class="counter-strategy">
-            <h3>{counter.title}</h3>
-            <p>{counter.strategy}</p>
-            <h4>Plano de batalha</h4>
-            <ol class="battle-steps">
-              {counter.steps.map((step) => (
-                <li>{step}</li>
-              ))}
-            </ol>
-            {counter.sources.length > 0 && (
-              <div class="source-list">
-                <h4>Fontes</h4>
-                {counter.sources.map((source) => (
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title} ↗
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </article>
-      ))
+          </article>
+        );
+      })
     )}
   </section>
   <aside class="catalog-note">
     <Icon name="info" size={18} />
     <p>
       <strong>Runas também vencem batalhas.</strong> Avalie velocidade,
-      artefatos e qualidade das runas antes de escolher uma ofensiva. Os
-      exemplos não garantem vitória.
+      artefatos e qualidade das runas antes de escolher uma ofensiva. As
+      sugestões não garantem vitória.
     </p>
   </aside>
   <script>

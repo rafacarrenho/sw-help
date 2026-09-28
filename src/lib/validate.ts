@@ -1,4 +1,8 @@
 import type { Monster, MonsterSkill, Defense, Counter } from './types.ts';
+import { counterStatNames } from './counter-stats.ts';
+import { getTickBreakpoint } from './speed-tick.ts';
+
+const counterStatKeys = new Set<string>(counterStatNames);
 
 export function validateCatalog(
   monsters: Monster[],
@@ -141,10 +145,10 @@ export function validateCatalog(
       fail(`a equipe ${entry.id} precisa de três monstros distintos.`);
     if (entry.team.some((id) => !monsterMap.has(id)))
       fail(`monstro inexistente em ${entry.id}.`);
-    if (!['example', 'documented'].includes(entry.status))
-      fail(`status de ${entry.id}.`);
   }
   for (const defense of defenses) {
+    if (!['example', 'documented'].includes(defense.status))
+      fail(`status de ${defense.id}.`);
     if (!['4star', 'open'].includes(defense.tower))
       fail(`torre de ${defense.id}.`);
     if (!defense.label?.trim() || !defense.description?.trim())
@@ -168,11 +172,7 @@ export function validateCatalog(
       counter.team.some((id) => monsterMap.get(id)!.naturalStars > 4)
     )
       fail(`ataque 5★ em torre 4★: ${counter.id}.`);
-    if (
-      !counter.title?.trim() ||
-      !counter.strategy?.trim() ||
-      !counter.caution?.trim()
-    )
+    if (!counter.instruction?.trim() || counter.instruction.length > 180)
       fail(`texto de ${counter.id}.`);
     if (
       !Array.isArray(counter.turnOrder) ||
@@ -181,18 +181,34 @@ export function validateCatalog(
     )
       fail(`ordem de turnos de ${counter.id}.`);
     if (
-      !Array.isArray(counter.steps) ||
-      counter.steps.some((step) => typeof step !== 'string' || !step.trim())
-    )
-      fail(`passos de ${counter.id}.`);
-    if (
       !Array.isArray(counter.runes) ||
       counter.runes.some(
-        (rune) => !counter.team.includes(rune.monsterId) || !rune.sets?.trim(),
+        (rune) =>
+          !counter.team.includes(rune.monsterId) ||
+          !rune.sets?.trim() ||
+          (rune.stats !== undefined &&
+            (typeof rune.stats !== 'object' ||
+              rune.stats === null ||
+              Object.entries(rune.stats).some(
+                ([key, value]) =>
+                  !counterStatKeys.has(key) ||
+                  !Number.isInteger(value) ||
+                  value < 0,
+              ))) ||
+          (rune.preferredStats !== undefined &&
+            (!Array.isArray(rune.preferredStats) ||
+              new Set(rune.preferredStats).size !==
+                rune.preferredStats.length ||
+              rune.preferredStats.some(
+                (stat) =>
+                  !counterStatKeys.has(stat) ||
+                  rune.stats?.[stat] !== undefined,
+              ))),
       )
     )
       fail(`runas de ${counter.id}.`);
-    if (!counter.speed?.trim()) fail(`velocidade de ${counter.id}.`);
+    if (!Number.isInteger(counter.tick) || !getTickBreakpoint(counter.tick))
+      fail(`Tick de ${counter.id}.`);
     if (
       !Array.isArray(counter.sources) ||
       counter.sources.some(
@@ -200,7 +216,5 @@ export function validateCatalog(
       )
     )
       fail(`fontes de ${counter.id}.`);
-    if (counter.status === 'documented' && counter.sources.length === 0)
-      fail(`counter documentado sem fonte: ${counter.id}.`);
   }
 }

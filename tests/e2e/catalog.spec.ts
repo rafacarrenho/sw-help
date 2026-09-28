@@ -4,6 +4,9 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   page,
 }) => {
   await page.goto('/');
+  await expect(
+    page.getByText('Counters cadastrados', { exact: true }),
+  ).toBeVisible();
   const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
   if (await mobileMenu.isVisible()) await mobileMenu.click();
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(6);
@@ -58,14 +61,112 @@ test('detalhes, recursos locais e layout funcionam sem erros', async ({
     defenseTeam.locator('.monster').nth(1).locator('[data-team-leader-icon]'),
   ).toHaveCount(0);
   const firstCounter = page.locator('.counter-card').first();
+  await expect(
+    firstCounter.getByRole('heading', { name: 'Como jogar' }),
+  ).toBeVisible();
+  await expect(
+    firstCounter.getByRole('heading', { name: 'Configuração sugerida' }),
+  ).toBeVisible();
+  await expect(firstCounter.getByText('Plano de batalha')).toHaveCount(0);
+  const configuration = firstCounter.getByRole('table', {
+    name: 'Configuração da ofensiva 1',
+  });
+  await expect(configuration).toBeVisible();
+  for (const column of ['Status', 'Loren', 'Elucia', 'Mimirr']) {
+    await expect(
+      configuration.getByRole('columnheader', { name: column, exact: true }),
+    ).toBeAttached();
+  }
+  for (const row of [
+    'Seq.',
+    'Runa',
+    'HP',
+    'ATK',
+    'DEF',
+    'SPD',
+    'CR',
+    'CD',
+    'RES',
+    'ACC',
+  ]) {
+    await expect(
+      configuration.getByRole('rowheader', { name: row, exact: true }),
+    ).toBeAttached();
+  }
+  await expect(configuration.locator('tbody tr')).toHaveCount(10);
+  await expect(
+    configuration.getByRole('rowheader', { name: 'Seq.', exact: true }),
+  ).toHaveCSS('text-align', 'left');
+  await expect(configuration.locator('tbody td').first()).toHaveCSS(
+    'text-align',
+    'left',
+  );
+  await expect(configuration.locator('tbody td').last()).toHaveCSS(
+    'text-align',
+    'left',
+  );
+  await expect(
+    configuration.getByRole('columnheader', { name: 'Tick', exact: true }),
+  ).toHaveCount(0);
+  await expect(configuration.locator('tbody tr').nth(5)).toContainText(
+    'Tick 5+144',
+  );
+  const allConfigurationsFit = () =>
+    page.locator('.counter-table-wrap').evaluateAll((elements) =>
+      elements.every(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    );
+  expect(await allConfigurationsFit()).toBeTruthy();
+  await expect(firstCounter.locator('.counter-scroll-hint')).toHaveCount(0);
+  if (page.viewportSize()!.width > 760) {
+    await page
+      .getByRole('button', { name: 'Recolher menu lateral' })
+      .click();
+    await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
+    expect(await allConfigurationsFit()).toBeTruthy();
+  }
+  const secondCounter = page.locator('.counter-card').nth(1);
+  const secondConfiguration = secondCounter.getByRole('table', {
+    name: 'Configuração da ofensiva 2',
+  });
+  for (const [index, monster] of ['Platy', 'Shihwa', 'Iona'].entries()) {
+    await expect(
+      secondConfiguration.getByRole('columnheader').nth(index + 1),
+    ).toHaveText(monster);
+  }
+  const secondRows = secondConfiguration.locator('tbody tr');
+  await expect(secondRows.nth(2).locator('td').nth(0)).toHaveText('+30k');
+  await expect(secondRows.nth(2).locator('td').nth(1)).toHaveText('+20k');
+  await expect(secondRows.nth(3).locator('td').nth(1)).toHaveText('+1k');
+  await expect(secondRows.nth(4).locator('td').nth(0)).toHaveText('+700');
+  await expect(secondRows.nth(5).locator('td').nth(0)).toContainText(
+    'Tick 5+149',
+  );
+  await expect(secondRows.nth(5).locator('td').nth(1)).toContainText(
+    'Tick 5+144',
+  );
+  await expect(secondRows.nth(8).locator('td').nth(0)).toHaveText('100%');
+  await expect(
+    secondRows.nth(9).locator('td').nth(0).getByText('Desejável'),
+  ).toBeAttached();
+  await expect(
+    secondRows.nth(9).locator('td').nth(1).getByText('Desejável'),
+  ).toBeAttached();
+  if (page.viewportSize()!.width <= 460) {
+    expect(await allConfigurationsFit()).toBeTruthy();
+  }
   await expect(firstCounter.locator('[data-team-leader-icon]')).toHaveCount(1);
   await expect(firstCounter.locator('[data-team-leader-icon]')).toHaveAttribute(
     'alt',
     'Líder da composição',
   );
   await expect(
-    page.getByText('Os exemplos não garantem vitória.', { exact: false }),
+    page.getByText('As sugestões não garantem vitória.', { exact: false }),
   ).toBeVisible();
+  await expect(firstCounter.getByText('EXEMPLO', { exact: true })).toHaveCount(
+    0,
+  );
   for (const image of await page.locator('.monster-portrait img').all()) {
     await image.scrollIntoViewIfNeeded();
   }

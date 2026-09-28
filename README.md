@@ -41,18 +41,19 @@ necessário adapter. O projeto pressupõe publicação na raiz do domínio.
 - Busca ignora acentos e maiúsculas e aceita nomes separados por vírgulas.
 - Filtros de torre 4★ e torre livre (sem restrição de estrelas naturais).
 - Busca e filtro na URL, preservados ao abrir uma defesa e voltar ao catálogo.
-- Uma página estática por defesa, com composição, counters, runas, estratégia,
-  ordem interna sugerida e observações.
+- Uma página estática por defesa, com composição, counters, instrução curta,
+  runas, ordem interna e metas para todos os status. A coluna SPD combina o
+  Tick com o bônus calculado para líder, torre de 15% e Swift.
 - Estados sem resultados, sem counters e página 404.
 - Interface responsiva, navegação por teclado e catálogo legível sem JavaScript.
 - Retratos e fontes locais; falha de imagem usa iniciais como fallback.
 
 ## Conteúdo inicial
 
-O site contém **8 defesas, 5 counters demonstrativos e 25 monstros**. Os matchups
-e as sugestões de runas são exemplos de cadastro, **não estratégias competitivas
-validadas**. A interface identifica essa condição e não apresenta estatísticas
-de vitória. Algumas defesas estão sem counters para demonstrar o estado vazio.
+O site contém **6 defesas e 21 counters**, além do catálogo de monstros
+importado. Os matchups e as sugestões de runas são pontos de partida,
+**não estratégias competitivas validadas**, e não apresentam estatísticas de
+vitória.
 
 ## Editar o catálogo
 
@@ -62,7 +63,7 @@ Os dados ficam em três arquivos JSON:
 | ------------------------ | ------------------------------------------------------- |
 | `src/data/monsters.json` | Nomes, aliases, elementos, estrelas naturais e retratos |
 | `src/data/defenses.json` | Equipes de defesa e categoria de torre                  |
-| `src/data/counters.json` | Ofensivas vinculadas às defesas, estratégias e fontes   |
+| `src/data/counters.json` | Ofensivas, instruções, builds e fontes                  |
 
 1. Cadastre os monstros que faltarem em `monsters.json`. O `id` deve ser único,
    em minúsculas, com hífens; `element` aceita `fire`, `water`, `wind`, `light`
@@ -75,15 +76,18 @@ Os dados ficam em três arquivos JSON:
    `tower` aceita `4star` ou `open`. O catálogo mostra os monstros, nomes e badges
    de elemento; `label` e `description` são usados somente na página de detalhes.
 4. Crie os counters com `defenseId` correspondente. Cada counter tem seu próprio
-   `id`, equipe, título, estratégia, passos e observações. Nos counters, o primeiro
-   integrante de `team` também é sempre o líder. `turnOrder`
-   pode ser um array vazio se não houver ordem documentada. `runes` e `sources`
-   também podem ser vazios. A ordem exibida é uma anotação; não calcula ticks.
-5. Use `status: "example"` para exemplos. Só altere para `"documented"` quando
-   houver documentação do matchup e acrescente ao menos uma fonte com `title`
-   e URL HTTP(S) em `sources`. Esse status indica fonte disponível, não garantia
-   de vitória. Defesas também possuem status independente.
-6. Rode `npm test` e `npm run build`, confira o resultado e publique novamente.
+   `id`, equipe e uma `instruction` curta. Nos counters, o primeiro integrante de
+   `team` também é sempre o líder. `turnOrder` pode ser um array vazio se não
+   houver ordem documentada. Cada entrada de `runes` aceita `monsterId`, os sets
+   e um objeto opcional `stats`. Em `stats`, `hp`, `attack` e `defense`
+   representam bônus adicionais; `critRate`, `critDamage`, `resistance` e
+   `accuracy` representam metas finais. Use `preferredStats` para marcar um
+   atributo como `Desejável` sem inventar um valor. O campo numérico `tick`
+   define o breakpoint; a SPD adicional é calculada automaticamente com a SPD
+   base, o líder em `team[0]`, torre de 15% e Swift quando presente nos sets.
+   `sources` também pode ser vazio.
+5. Rode `pnpm test`, `pnpm build` e `pnpm test:e2e`, confira o resultado e
+   publique novamente.
 
 Exemplo de fonte em um counter:
 
@@ -96,7 +100,7 @@ Exemplo de fonte em um counter:
 
 A validação do catálogo interrompe o build se houver IDs duplicados,
 referências inexistentes, equipes inválidas, monstros 5★
-em torres 4★ (inclusive na ofensiva) ou counters documentados sem fonte.
+em torres 4★ (inclusive na ofensiva) ou URLs de fonte inválidas.
 
 ## Estrutura
 

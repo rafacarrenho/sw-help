@@ -77,17 +77,28 @@ export interface Defense {
   description: string;
   status: 'example' | 'documented';
 }
+export interface CounterStats {
+  hp?: number;
+  attack?: number;
+  defense?: number;
+  critRate?: number;
+  critDamage?: number;
+  resistance?: number;
+  accuracy?: number;
+}
+export type CounterStatName = keyof CounterStats;
 export interface Counter {
   id: string;
   defenseId: string;
   team: string[];
-  title: string;
-  strategy: string;
-  steps: string[];
+  instruction: string;
   turnOrder: string[];
-  runes: { monsterId: string; sets: string }[];
-  speed: string;
-  caution: string;
-  status: 'example' | 'documented';
+  runes: {
+    monsterId: string;
+    sets: string;
+    stats?: CounterStats;
+    preferredStats?: CounterStatName[];
+  }[];
+  tick: number;
   sources: { title: string; url: string }[];
 }

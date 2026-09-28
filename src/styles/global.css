@@ -1132,17 +1132,27 @@ footer {
 }
 .counter-card {
   display: grid;
-  grid-template-columns: minmax(290px, 1fr) minmax(0, 1.7fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   border: 1px solid var(--border);
   background: #191c21;
   border-radius: 9px;
   margin-bottom: 22px;
   overflow: hidden;
 }
-.counter-composition {
+.counter-summary {
+  min-width: 0;
   padding: 23px;
   border-right: 1px solid var(--border);
   background: #16191e;
+}
+.counter-composition,
+.counter-guidance {
+  min-width: 0;
+}
+.counter-guidance {
+  margin-top: 20px;
+  padding-top: 17px;
+  border-top: 1px solid var(--border);
 }
 .counter-label {
   flex-wrap: wrap;
@@ -1154,21 +1164,35 @@ footer {
   letter-spacing: 1.3px;
   color: #a3a8b0;
 }
-.counter-composition .monster-team {
-  margin-top: 25px;
-  margin-bottom: 28px;
+.counter-summary .monster-team {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 0;
 }
-.rune-list h4,
-.counter-strategy h4 {
+.counter-instruction {
+  padding: 0;
+}
+.counter-instruction h3,
+.counter-build-heading h3,
+.source-list h4 {
   font-size: var(--text-base);
   font-weight: 600;
   letter-spacing: 0.1px;
-  margin-bottom: 13px;
+  margin-bottom: 9px;
+}
+.counter-instruction p {
+  margin: 0;
+  color: #b1b5bf;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.counter-build {
+  min-width: 0;
+  padding: 23px 25px 25px;
 }
 .counter-table-wrap {
   width: 100%;
-  overflow-x: visible;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #171b20;
@@ -1193,7 +1217,7 @@ footer {
 }
 .counter-meta-table th,
 .counter-meta-table td {
-  padding: 12px 12px;
+  padding: 11px 10px;
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
@@ -1205,28 +1229,21 @@ footer {
   font-weight: 600;
   color: #f1d2a1;
   text-align: left;
-  background: rgba(255, 255, 255, 0.02);
+  background: #191d22;
 }
 .counter-meta-table td {
   color: #d9dde6;
+  text-align: left;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
-.counter-meta-table .monster-col-header {
-  width: 38%;
-  padding: 0;
+.counter-meta-table .property-col-header,
+.counter-meta-table .property-cell {
+  width: 92px;
+  box-shadow: 1px 0 0 var(--border);
 }
-.counter-meta-table .monster-cell {
-  min-width: 0;
-}
-.counter-meta-table .sequence-col-header,
-.counter-meta-table .sequence-cell {
-  width: 12%;
-  text-align: center;
-}
-.counter-meta-table .rune-cell {
-  width: 30%;
-}
-.counter-meta-table td:last-child {
-  width: 20%;
+.counter-meta-table .property-col-header {
+  background: #1f252d;
 }
 .monster-inline {
   display: flex;
@@ -1270,96 +1287,35 @@ footer {
 .counter-meta-table .rune-cell div {
   line-height: 1.5;
 }
-.counter-strategy {
-  padding: 25px 28px;
-}
-.counter-strategy h3 {
-  font-size: var(--text-xl);
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  margin-bottom: 12px;
-}
-.counter-strategy > p {
-  font-size: var(--text-base);
-  color: #b1b5bf;
-  margin-bottom: 20px;
-}
-.turn-order {
-  padding: 14px 16px;
-  background: #202329;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  margin-bottom: 22px;
-}
-.turn-order > span {
-  font-size: var(--text-xs);
-  letter-spacing: 1px;
-  color: #a9adb7;
-}
-.turn-order > div {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.turn-order strong {
-  font-size: var(--text-base);
-  font-weight: 500;
-  color: #e1c494;
-}
-.turn-order svg {
-  color: #838992;
-}
-.turn-order small {
+.counter-meta-table .speed-cell span,
+.counter-meta-table .speed-cell strong {
   display: block;
+}
+.counter-meta-table .speed-cell span {
+  color: #a9adb7;
+  font-size: var(--text-xs);
+}
+.counter-meta-table .speed-cell strong {
+  color: #f1d2a1;
   font-size: var(--text-sm);
-  color: #989eaa;
-  margin-top: 9px;
+  font-weight: 600;
 }
-.battle-steps {
-  padding-left: 18px;
-  color: #b1b5bf;
-  font-size: var(--text-base);
-  line-height: 1.8;
-}
-.battle-steps li {
-  padding-left: 4px;
-  margin-bottom: 7px;
-}
-.battle-steps li::marker {
-  color: var(--gold);
-}
-.caution {
-  display: flex;
-  gap: 10px;
-  padding: 12px 13px;
-  background: #2a251e;
-  border: 1px solid #494033;
-  border-radius: 5px;
-  color: var(--gold);
-  margin-top: 18px;
-  align-items: flex-start;
-}
-.caution svg {
-  margin-top: 2px;
-}
-.caution p {
-  font-size: var(--text-sm);
-  margin: 0;
-  color: #cdbd9f;
-}
-.counter-strategy .example-disclaimer {
-  font-size: var(--text-sm);
-  margin: 13px 0 0;
-  color: #a3a8b2;
+.preferred-stat {
+  display: inline-block;
+  padding: 2px 5px;
+  border: 1px solid #59442a;
+  border-radius: 3px;
+  background: #30281e;
+  color: #d7bd94;
+  font-size: var(--text-xs);
+  line-height: 1.4;
 }
 .source-list {
   margin-top: 20px;
 }
 .source-list a {
   color: var(--gold);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   display: block;
   text-decoration: underline;
 }
@@ -1421,12 +1377,12 @@ footer {
     display: none;
   }
   .counter-card {
-    grid-template-columns: 265px 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
-  .counter-composition {
+  .counter-summary {
     padding: 19px;
   }
-  .counter-strategy {
+  .counter-build {
     padding: 22px;
   }
   .defense-overview {
@@ -1446,27 +1402,26 @@ footer {
   .counter-card {
     display: block;
   }
-  .counter-composition {
+  .counter-summary {
+    display: block;
     border-right: 0;
     border-bottom: 1px solid var(--border);
-    display: block;
   }
-  .counter-composition .monster-team {
+  .counter-guidance {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .counter-summary .monster-team {
     width: min(100%, 320px);
-    margin: 18px auto 22px;
+    margin: 18px auto 0;
   }
   .counter-label {
     display: flex;
     margin-bottom: 0;
   }
-  .rune-list {
-    padding-top: 0;
-  }
   .counter-table-wrap {
     margin-top: 10px;
-  }
-  .counter-meta-table {
-    min-width: 420px;
   }
   .intro-emblem:after {
     width: 95px;
@@ -1736,10 +1691,10 @@ footer {
   .detail-toolbar {
     margin-bottom: 20px;
   }
-  .counter-composition {
+  .counter-summary {
     padding: 20px;
   }
-  .counter-strategy {
+  .counter-build {
     padding: 23px;
   }
   .defense-overview {
@@ -1750,52 +1705,42 @@ footer {
   .counter-card {
     margin-bottom: 18px;
   }
-  .counter-composition,
-  .counter-strategy {
+  .counter-summary,
+  .counter-build {
     padding: 16px 14px;
   }
   .counter-table-wrap {
     margin-top: 10px;
-    overflow-x: auto;
+    overflow: hidden;
   }
   .counter-meta-table {
-    min-width: 420px;
-    font-size: 0.76rem;
+    font-size: var(--text-sm);
   }
   .counter-meta-table thead th,
   .counter-meta-table th,
   .counter-meta-table td {
     padding: 10px 8px;
   }
-  .counter-meta-table .monster-cell {
-    min-width: 144px;
-  }
-  .counter-meta-table .rune-cell {
-    min-width: 100px;
-  }
-  .counter-meta-table .sequence-col-header,
-  .counter-meta-table .sequence-cell {
+  .counter-meta-table .property-col-header,
+  .counter-meta-table .property-cell {
     width: 52px;
   }
   .monster-inline {
-    gap: 8px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .monster-inline-portrait {
+    width: 28px;
+    height: 28px;
   }
   .monster-inline-name {
+    font-size: var(--text-xs);
     white-space: normal;
     line-height: 1.3;
   }
-  .turn-order {
-    padding: 12px 12px 10px;
-  }
-  .turn-order > div {
-    gap: 8px;
-  }
-  .battle-steps {
-    padding-left: 16px;
-    font-size: 0.98rem;
-  }
   .source-list a {
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
   }
   .sidebar {
     width: min(320px, calc(100vw - 32px));
@@ -1890,14 +1835,11 @@ footer {
   .result-count {
     margin-left: 0;
   }
-  .counter-composition {
+  .counter-summary {
     display: block;
   }
-  .counter-composition .monster-team {
+  .counter-summary .monster-team {
     margin: 25px auto;
-  }
-  .rune-list {
-    padding: 0;
   }
   .defense-overview h1 {
     font-size: 27px;
