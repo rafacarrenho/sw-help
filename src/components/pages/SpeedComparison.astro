@@ -197,6 +197,19 @@ const sides = [
               </select>
             </label>
 
+            <label
+              class="speed-comparison-field"
+              data-comparison-initial-buffs
+              hidden
+            >
+              <span>{messages.comparison.initialBuffs}</span>
+              <select data-comparison-initial-buffs-select>
+                <option value="0">0 {messages.comparison.buffs}</option>
+                <option value="1">1 {messages.comparison.buffs}</option>
+                <option value="2">2 {messages.comparison.buffs}</option>
+              </select>
+            </label>
+
             <label class="speed-comparison-field">
               <span>{side.tower}</span>
               <select data-comparison-tower>

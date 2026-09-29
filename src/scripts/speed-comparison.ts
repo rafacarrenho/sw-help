@@ -1,8 +1,11 @@
 import { matchesSearch } from '../lib/search.ts';
 import {
+  CHILLING_SPEED_PER_BUFF,
   compareStructuralSpeed,
+  DEFAULT_CHILLING_INITIAL_BUFFS,
   getSpeedComparisonLeaderPercentages,
   readSpeedComparisonQueryState,
+  SPEED_COMPARISON_CHILLING_ID,
   structuralSpeed,
   writeSpeedComparisonQueryState,
   type SpeedComparisonSideState,
@@ -29,6 +32,7 @@ type SideState = {
   leaderPercent: number;
   towerPercent: number;
   usesSwift: boolean;
+  initialBuffs: number;
 };
 
 type SideElements = {
@@ -43,6 +47,8 @@ type SideElements = {
   element: HTMLElement;
   base: HTMLElement;
   leader: HTMLSelectElement;
+  initialBuffs: HTMLElement;
+  initialBuffsSelect: HTMLSelectElement;
   tower: HTMLSelectElement;
   swift: HTMLInputElement;
   speed: HTMLElement;
@@ -96,12 +102,14 @@ if (root && dataNode) {
       leaderPercent: 0,
       towerPercent: 15,
       usesSwift: true,
+      initialBuffs: 0,
     },
     enemy: {
       monster: null,
       leaderPercent: 0,
       towerPercent: 15,
       usesSwift: true,
+      initialBuffs: 0,
     },
   };
 
@@ -130,6 +138,14 @@ if (root && dataNode) {
         element: query<HTMLElement>(sideRoot, '[data-comparison-element]')!,
         base: query<HTMLElement>(sideRoot, '[data-comparison-base]')!,
         leader: query<HTMLSelectElement>(sideRoot, '[data-comparison-leader]')!,
+        initialBuffs: query<HTMLElement>(
+          sideRoot,
+          '[data-comparison-initial-buffs]',
+        )!,
+        initialBuffsSelect: query<HTMLSelectElement>(
+          sideRoot,
+          '[data-comparison-initial-buffs-select]',
+        )!,
         tower: query<HTMLSelectElement>(sideRoot, '[data-comparison-tower]')!,
         swift: query<HTMLInputElement>(sideRoot, '[data-comparison-swift]')!,
         speed: query<HTMLElement>(sideRoot, '[data-comparison-speed]')!,
@@ -149,18 +165,25 @@ if (root && dataNode) {
   const leaderOptions = (state: SideState) =>
     state.monster ? getSpeedComparisonLeaderPercentages(leaderSources) : [0];
 
+  const passiveSpeedBonus = (state: SideState) =>
+    state.monster?.id === SPEED_COMPARISON_CHILLING_ID
+      ? state.initialBuffs * CHILLING_SPEED_PER_BUFF
+      : 0;
+
   const publicState = (): SpeedComparisonState => ({
     ally: {
       monsterId: states.ally.monster?.id ?? null,
       leaderPercent: states.ally.leaderPercent,
       towerPercent: states.ally.towerPercent,
       usesSwift: states.ally.usesSwift,
+      initialBuffs: states.ally.initialBuffs,
     },
     enemy: {
       monsterId: states.enemy.monster?.id ?? null,
       leaderPercent: states.enemy.leaderPercent,
       towerPercent: states.enemy.towerPercent,
       usesSwift: states.enemy.usesSwift,
+      initialBuffs: states.enemy.initialBuffs,
     },
   });
 
@@ -363,6 +386,10 @@ if (root && dataNode) {
     sideElements.tower.value = String(state.towerPercent);
     sideElements.swift.checked = state.usesSwift;
     sideElements.swift.disabled = !state.monster;
+    const usesChillingPassive =
+      state.monster?.id === SPEED_COMPARISON_CHILLING_ID;
+    sideElements.initialBuffs.hidden = !usesChillingPassive;
+    sideElements.initialBuffsSelect.value = String(state.initialBuffs);
 
     const speed = state.monster
       ? structuralSpeed({
@@ -370,6 +397,7 @@ if (root && dataNode) {
           leaderPercent: state.leaderPercent,
           towerPercent: state.towerPercent,
           usesSwift: state.usesSwift,
+          passiveSpeedBonus: passiveSpeedBonus(state),
         })
       : null;
     sideElements.speed.textContent = speed === null ? '—' : `${speed} SPD`;
@@ -420,12 +448,14 @@ if (root && dataNode) {
         leaderPercent: ally.leaderPercent,
         towerPercent: ally.towerPercent,
         usesSwift: ally.usesSwift,
+        passiveSpeedBonus: passiveSpeedBonus(ally),
       },
       {
         baseSpeed: enemy.monster.speed,
         leaderPercent: enemy.leaderPercent,
         towerPercent: enemy.towerPercent,
         usesSwift: enemy.usesSwift,
+        passiveSpeedBonus: passiveSpeedBonus(enemy),
       },
     );
     if (!comparison) return;
@@ -510,6 +540,10 @@ if (root && dataNode) {
     state.monster = monster;
     state.leaderPercent = 0;
     state.usesSwift = true;
+    state.initialBuffs =
+      monster.id === SPEED_COMPARISON_CHILLING_ID
+        ? DEFAULT_CHILLING_INITIAL_BUFFS
+        : 0;
     elements[side].search.value = monster.name;
     closeOptions(side);
     elements[side].search.blur();
@@ -521,6 +555,7 @@ if (root && dataNode) {
     state.monster = null;
     state.leaderPercent = 0;
     state.usesSwift = true;
+    state.initialBuffs = 0;
   };
 
   const applyQueryState = (queryState: SpeedComparisonState) => {
@@ -532,6 +567,7 @@ if (root && dataNode) {
       states[side].leaderPercent = next.leaderPercent;
       states[side].towerPercent = next.towerPercent;
       states[side].usesSwift = next.usesSwift;
+      states[side].initialBuffs = next.initialBuffs;
       elements[side].search.value = states[side].monster?.name ?? '';
       closeOptions(side);
     });
@@ -593,6 +629,14 @@ if (root && dataNode) {
     });
     sideElements.swift.addEventListener('change', () => {
       state.usesSwift = sideElements.swift.checked;
+      render();
+    });
+    sideElements.initialBuffsSelect.addEventListener('change', () => {
+      if (state.monster?.id !== SPEED_COMPARISON_CHILLING_ID) return;
+      state.initialBuffs = Math.min(
+        2,
+        Math.max(0, Number(sideElements.initialBuffsSelect.value) || 0),
+      );
       render();
     });
   });

@@ -3,6 +3,9 @@ import { combatSpeed } from './speed-tuning.ts';
 
 export const DEFAULT_SPEED_COMPARISON_TOWER_PERCENT = 15;
 export const SWIFT_STRUCTURAL_PERCENT = 25;
+export const SPEED_COMPARISON_CHILLING_ID = 'chilling-water-958';
+export const CHILLING_SPEED_PER_BUFF = 20;
+export const DEFAULT_CHILLING_INITIAL_BUFFS = 2;
 
 export interface SpeedComparisonMonster {
   id: string;
@@ -14,6 +17,7 @@ export interface SpeedComparisonSideState {
   leaderPercent: number;
   towerPercent: number;
   usesSwift: boolean;
+  initialBuffs: number;
 }
 
 export interface SpeedComparisonState {
@@ -26,6 +30,7 @@ export interface StructuralSpeedInput {
   leaderPercent: number;
   towerPercent: number;
   usesSwift: boolean;
+  passiveSpeedBonus?: number;
 }
 
 export interface StructuralSpeedComparison {
@@ -48,6 +53,8 @@ const managedQueryKeys = [
   'enemySwift',
   'allyTower',
   'enemyTower',
+  'allyStartBuffs',
+  'enemyStartBuffs',
 ] as const;
 
 const validTower = (value: string | null) => {
@@ -81,6 +88,7 @@ export function structuralSpeed({
   leaderPercent,
   towerPercent,
   usesSwift,
+  passiveSpeedBonus = 0,
 }: StructuralSpeedInput): number | null {
   if (!Number.isFinite(baseSpeed) || baseSpeed <= 0) return null;
 
@@ -94,6 +102,7 @@ export function structuralSpeed({
     towerPercent,
     leaderPercent,
     usesSwift,
+    passiveSpeedBonus,
   });
 }
 
@@ -129,6 +138,20 @@ const readSide = (
   const validLeaders = monster
     ? getSpeedComparisonLeaderPercentages(leaders)
     : [0];
+  const defaultInitialBuffs =
+    monster?.id === SPEED_COMPARISON_CHILLING_ID
+      ? DEFAULT_CHILLING_INITIAL_BUFFS
+      : 0;
+  const initialBuffsParam = params.get(`${prefix}StartBuffs`);
+  const parsedInitialBuffs =
+    initialBuffsParam === null ? NaN : Number(initialBuffsParam);
+  const initialBuffs =
+    monster?.id === SPEED_COMPARISON_CHILLING_ID &&
+    Number.isInteger(parsedInitialBuffs) &&
+    parsedInitialBuffs >= 0 &&
+    parsedInitialBuffs <= 2
+      ? parsedInitialBuffs
+      : defaultInitialBuffs;
 
   return {
     monsterId: monster?.id ?? null,
@@ -138,6 +161,7 @@ const readSide = (
         : 0,
     towerPercent: validTower(params.get(`${prefix}Tower`)),
     usesSwift: monster ? params.get(`${prefix}Swift`) !== '0' : true,
+    initialBuffs,
   };
 };
 
@@ -166,6 +190,14 @@ const writeSide = (
   }
   if (side.towerPercent !== DEFAULT_SPEED_COMPARISON_TOWER_PERCENT) {
     params.set(`${prefix}Tower`, String(side.towerPercent));
+  }
+  if (side.monsterId === SPEED_COMPARISON_CHILLING_ID) {
+    const normalizedInitialBuffs = Number.isInteger(side.initialBuffs)
+      ? Math.min(2, Math.max(0, side.initialBuffs))
+      : DEFAULT_CHILLING_INITIAL_BUFFS;
+    if (normalizedInitialBuffs !== DEFAULT_CHILLING_INITIAL_BUFFS) {
+      params.set(`${prefix}StartBuffs`, String(normalizedInitialBuffs));
+    }
   }
 };
 

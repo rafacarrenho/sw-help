@@ -220,6 +220,8 @@ export const en = {
     baseSpeed: 'Base SPD',
     speedLeader: 'SPD leader skill',
     noLeader: 'No leader',
+    initialBuffs: 'Initial buffs',
+    buffs: 'buffs',
     usesSwift: 'Uses Swift',
     structuralSpeed: 'Structural SPD',
     noRuneStats: 'Without individual rune stats',
@@ -228,7 +230,7 @@ export const en = {
     resultWaiting: 'The comparison will appear when both sides are configured.',
     noteTitle: 'This is a structural advantage.',
     noteCopy:
-      'Additional SPD from rune stats is not included. Passives, buffs, debuffs, Attack Bar boosts, and other battle effects can change the real turn order.',
+      "Additional SPD from rune stats is not included. Except for Chilling's special case configured above, passives, buffs, debuffs, Attack Bar boosts, and other battle effects can change the real turn order.",
     noScript: 'The SPD comparison needs JavaScript to calculate results.',
     noMonsterFound: 'No monster found',
     advantage: 'ADVANTAGE',

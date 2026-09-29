@@ -113,6 +113,49 @@ test('oferece todas as lideranças e normaliza Swift e conteúdo legados', async
   await expect(enemy.getByLabel('Usa Swift')).not.toBeChecked();
 });
 
+test('aplica a passiva do Chilling conforme os buffs iniciais', async ({
+  page,
+}, testInfo) => {
+  await page.goto(
+    '/pt/comparador-spd/?ally=chilling-water-958&enemy=triton-wind-847',
+  );
+
+  const ally = allyCard(page);
+  const enemy = enemyCard(page);
+  const initialBuffs = ally.getByLabel('Buffs iniciais');
+
+  await expect(initialBuffs).toBeVisible();
+  await expect(initialBuffs).toHaveValue('2');
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('182 SPD');
+  await expect(enemy.getByLabel('Buffs iniciais')).toBeHidden();
+  expect(new URL(page.url()).searchParams.has('allyStartBuffs')).toBe(false);
+
+  if (testInfo.project.name === 'desktop') {
+    const allyResult = await ally
+      .locator('.speed-comparison-card-result')
+      .boundingBox();
+    const enemyResult = await enemy
+      .locator('.speed-comparison-card-result')
+      .boundingBox();
+    expect(allyResult).not.toBeNull();
+    expect(enemyResult).not.toBeNull();
+    expect(allyResult!.y).toBe(enemyResult!.y);
+  }
+
+  await initialBuffs.selectOption('1');
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('162 SPD');
+  await expect(page).toHaveURL(/allyStartBuffs=1/);
+
+  await page.reload();
+  await expect(initialBuffs).toHaveValue('1');
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('162 SPD');
+
+  await ally.getByRole('combobox', { name: 'Monstro' }).fill('Adriana');
+  await ally.getByRole('option', { name: /Adriana/ }).click();
+  await expect(initialBuffs).toBeHidden();
+  await expect(page).not.toHaveURL(/allyStartBuffs=/);
+});
+
 test('inverte vantagem, representa empate e limpa os estados semânticos', async ({
   page,
 }) => {

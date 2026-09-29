@@ -10,6 +10,8 @@
 
 .speed-comparison-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   overflow: visible;
   border: 1px solid var(--border);
@@ -298,7 +300,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 2px 12px;
   align-items: center;
-  margin: 0 18px 18px;
+  margin: auto 18px 18px;
   padding: 14px 16px;
   border: 1px solid #343840;
   border-radius: 11px;

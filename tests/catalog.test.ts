@@ -129,6 +129,16 @@ test('Comparador de SPD calcula vantagem estrutural e folga estrita', () => {
 
   assert.equal(structuralSpeed(adriana), 183);
   assert.equal(structuralSpeed(triton), 163);
+  assert.equal(
+    structuralSpeed({
+      baseSpeed: 101,
+      leaderPercent: 0,
+      towerPercent: 15,
+      usesSwift: true,
+      passiveSpeedBonus: 40,
+    }),
+    182,
+  );
   assert.deepEqual(compareStructuralSpeed(adriana, triton), {
     allySpeed: 183,
     enemySpeed: 163,
@@ -162,6 +172,10 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       'triton-wind-847',
       { id: 'triton-wind-847', element: 'wind' as const, speed: 116 },
     ],
+    [
+      'chilling-water-958',
+      { id: 'chilling-water-958', element: 'water' as const, speed: 101 },
+    ],
   ]);
   const state = readSpeedComparisonQueryState(
     new URLSearchParams(
@@ -177,12 +191,14 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       leaderPercent: 24,
       towerPercent: 14,
       usesSwift: true,
+      initialBuffs: 0,
     },
     enemy: {
       monsterId: 'triton-wind-847',
       leaderPercent: 0,
       towerPercent: 15,
       usesSwift: false,
+      initialBuffs: 0,
     },
   });
   assert.equal(
@@ -191,6 +207,37 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       state,
     ).toString(),
     'utm_source=share&ally=adriana-water-2021&allyLeader=24&allyTower=14&enemy=triton-wind-847&enemySwift=0',
+  );
+
+  const chillingState = readSpeedComparisonQueryState(
+    new URLSearchParams(
+      'ally=chilling-water-958&allyStartBuffs=1&enemy=triton-wind-847&enemyStartBuffs=1',
+    ),
+    comparisonMonsters,
+    monsters,
+  );
+  assert.equal(chillingState.ally.initialBuffs, 1);
+  assert.equal(chillingState.enemy.initialBuffs, 0);
+  assert.equal(
+    writeSpeedComparisonQueryState(
+      new URLSearchParams('allyStartBuffs=9&enemyStartBuffs=1'),
+      chillingState,
+    ).toString(),
+    'ally=chilling-water-958&allyStartBuffs=1&enemy=triton-wind-847',
+  );
+
+  const defaultChillingState = readSpeedComparisonQueryState(
+    new URLSearchParams('ally=chilling-water-958&allyStartBuffs=9'),
+    comparisonMonsters,
+    monsters,
+  );
+  assert.equal(defaultChillingState.ally.initialBuffs, 2);
+  assert.equal(
+    writeSpeedComparisonQueryState(
+      new URLSearchParams('allyStartBuffs=9'),
+      defaultChillingState,
+    ).toString(),
+    'ally=chilling-water-958',
   );
 });
 

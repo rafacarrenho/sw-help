@@ -223,6 +223,8 @@ export const ptBR: Messages = {
     baseSpeed: 'SPD base',
     speedLeader: 'Liderança de SPD',
     noLeader: 'Sem líder',
+    initialBuffs: 'Buffs iniciais',
+    buffs: 'buffs',
     usesSwift: 'Usa Swift',
     structuralSpeed: 'SPD estrutural',
     noRuneStats: 'Sem atributos individuais das runas',
@@ -232,7 +234,7 @@ export const ptBR: Messages = {
       'A comparação aparecerá quando os dois lados estiverem configurados.',
     noteTitle: 'Esta é uma vantagem estrutural.',
     noteCopy:
-      'A SPD adicional dos atributos das runas não entra no cálculo. Passivas, buffs, debuffs, boosts de barra e outros efeitos de batalha podem alterar a ordem real.',
+      'A SPD adicional dos atributos das runas não entra no cálculo. Fora o caso especial do Chilling configurado acima, passivas, buffs, debuffs, boosts de barra e outros efeitos de batalha podem alterar a ordem real.',
     noScript:
       'O comparador de SPD precisa de JavaScript para calcular os resultados.',
     noMonsterFound: 'Nenhum monstro encontrado',
