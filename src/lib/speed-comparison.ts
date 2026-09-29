@@ -1,0 +1,182 @@
+import type { Monster } from './types.ts';
+import { combatSpeed } from './speed-tuning.ts';
+
+export const DEFAULT_SPEED_COMPARISON_TOWER_PERCENT = 15;
+export const SWIFT_STRUCTURAL_PERCENT = 25;
+
+export interface SpeedComparisonMonster {
+  id: string;
+  speed: number;
+}
+
+export interface SpeedComparisonSideState {
+  monsterId: string | null;
+  leaderPercent: number;
+  towerPercent: number;
+  usesSwift: boolean;
+}
+
+export interface SpeedComparisonState {
+  ally: SpeedComparisonSideState;
+  enemy: SpeedComparisonSideState;
+}
+
+export interface StructuralSpeedInput {
+  baseSpeed: number;
+  leaderPercent: number;
+  towerPercent: number;
+  usesSwift: boolean;
+}
+
+export interface StructuralSpeedComparison {
+  allySpeed: number;
+  enemySpeed: number;
+  winner: 'ally' | 'enemy' | 'tie';
+  advantage: number;
+  strictRuneTolerance: number;
+}
+
+type LeaderMonster = Pick<Monster, 'leaderSkill'>;
+
+const managedQueryKeys = [
+  'mode',
+  'ally',
+  'enemy',
+  'allyLeader',
+  'enemyLeader',
+  'allySwift',
+  'enemySwift',
+  'allyTower',
+  'enemyTower',
+] as const;
+
+const validTower = (value: string | null) => {
+  if (value === null || value.trim() === '') {
+    return DEFAULT_SPEED_COMPARISON_TOWER_PERCENT;
+  }
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed >= 0 && parsed <= 15
+    ? parsed
+    : DEFAULT_SPEED_COMPARISON_TOWER_PERCENT;
+};
+
+export function getSpeedComparisonLeaderPercentages(
+  monsters: readonly LeaderMonster[],
+): number[] {
+  const percentages = new Set<number>([0]);
+
+  for (const monster of monsters) {
+    const leader = monster.leaderSkill;
+    if (!leader || leader.attribute !== 'Attack Speed') {
+      continue;
+    }
+    percentages.add(leader.amount);
+  }
+
+  return Array.from(percentages).sort((first, second) => first - second);
+}
+
+export function structuralSpeed({
+  baseSpeed,
+  leaderPercent,
+  towerPercent,
+  usesSwift,
+}: StructuralSpeedInput): number | null {
+  if (!Number.isFinite(baseSpeed) || baseSpeed <= 0) return null;
+
+  const swiftDisplayedSpeed = usesSwift
+    ? Math.ceil((baseSpeed * SWIFT_STRUCTURAL_PERCENT) / 100)
+    : 0;
+
+  return combatSpeed({
+    baseSpeed,
+    runeSpeed: swiftDisplayedSpeed,
+    towerPercent,
+    leaderPercent,
+    usesSwift,
+  });
+}
+
+export function compareStructuralSpeed(
+  ally: StructuralSpeedInput,
+  enemy: StructuralSpeedInput,
+): StructuralSpeedComparison | null {
+  const allySpeed = structuralSpeed(ally);
+  const enemySpeed = structuralSpeed(enemy);
+  if (allySpeed === null || enemySpeed === null) return null;
+
+  const difference = allySpeed - enemySpeed;
+  const advantage = Math.abs(difference);
+
+  return {
+    allySpeed,
+    enemySpeed,
+    winner: difference > 0 ? 'ally' : difference < 0 ? 'enemy' : 'tie',
+    advantage,
+    strictRuneTolerance: Math.max(0, advantage - 1),
+  };
+}
+
+const readSide = (
+  params: URLSearchParams,
+  prefix: 'ally' | 'enemy',
+  monsters: ReadonlyMap<string, SpeedComparisonMonster>,
+  leaders: readonly LeaderMonster[],
+): SpeedComparisonSideState => {
+  const monsterId = params.get(prefix);
+  const monster = monsterId ? monsters.get(monsterId) : undefined;
+  const parsedLeader = Number(params.get(`${prefix}Leader`));
+  const validLeaders = monster
+    ? getSpeedComparisonLeaderPercentages(leaders)
+    : [0];
+
+  return {
+    monsterId: monster?.id ?? null,
+    leaderPercent:
+      Number.isFinite(parsedLeader) && validLeaders.includes(parsedLeader)
+        ? parsedLeader
+        : 0,
+    towerPercent: validTower(params.get(`${prefix}Tower`)),
+    usesSwift: monster ? params.get(`${prefix}Swift`) !== '0' : true,
+  };
+};
+
+export function readSpeedComparisonQueryState(
+  params: URLSearchParams,
+  monsters: ReadonlyMap<string, SpeedComparisonMonster>,
+  leaders: readonly LeaderMonster[],
+): SpeedComparisonState {
+  return {
+    ally: readSide(params, 'ally', monsters, leaders),
+    enemy: readSide(params, 'enemy', monsters, leaders),
+  };
+}
+
+const writeSide = (
+  params: URLSearchParams,
+  prefix: 'ally' | 'enemy',
+  side: SpeedComparisonSideState,
+) => {
+  if (side.monsterId) {
+    params.set(prefix, side.monsterId);
+    if (side.leaderPercent > 0) {
+      params.set(`${prefix}Leader`, String(side.leaderPercent));
+    }
+    if (!side.usesSwift) params.set(`${prefix}Swift`, '0');
+  }
+  if (side.towerPercent !== DEFAULT_SPEED_COMPARISON_TOWER_PERCENT) {
+    params.set(`${prefix}Tower`, String(side.towerPercent));
+  }
+};
+
+export function writeSpeedComparisonQueryState(
+  params: URLSearchParams,
+  state: SpeedComparisonState,
+): URLSearchParams {
+  const nextParams = new URLSearchParams(params);
+  managedQueryKeys.forEach((key) => nextParams.delete(key));
+
+  writeSide(nextParams, 'ally', state.ally);
+  writeSide(nextParams, 'enemy', state.enemy);
+  return nextParams;
+}

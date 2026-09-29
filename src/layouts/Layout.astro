@@ -5,11 +5,13 @@ import '../styles/global.css';
 import '../styles/monsters.css';
 import '../styles/speed-tick.css';
 import '../styles/speed-tuning.css';
+import '../styles/speed-comparison.css';
 interface Props {
   title?: string;
   description?: string;
   detail?: boolean;
-  section?: 'siege' | 'monsters' | 'speed-tick' | 'speed-tuning';
+  section?:
+    'siege' | 'monsters' | 'speed-tick' | 'speed-tuning' | 'speed-comparison';
 }
 const {
   title = 'Siege Counter',
@@ -131,6 +133,17 @@ const {
           {section === 'speed-tuning' && <span class="active-dot"></span>}
         </a>
         <a
+          class:list={['nav-item', { active: section === 'speed-comparison' }]}
+          href="/comparador-spd/"
+          aria-label="Comparador de SPD"
+          data-nav-label="Comparador de SPD"
+          aria-current={section === 'speed-comparison' ? 'page' : undefined}
+        >
+          <Icon name="speed" />
+          <span>Comparador de SPD</span>
+          {section === 'speed-comparison' && <span class="active-dot"></span>}
+        </a>
+        <a
           class:list={['nav-item', { active: section === 'speed-tick' }]}
           href="/spd-tick/"
           aria-label="Spd Tick"
@@ -186,7 +199,9 @@ const {
                   ? '/spd-tick/'
                   : section === 'speed-tuning'
                     ? '/spd-tuning/'
-                    : '/'
+                    : section === 'speed-comparison'
+                      ? '/comparador-spd/'
+                      : '/'
             }
           >
             {section === 'monsters'
@@ -195,7 +210,9 @@ const {
                 ? 'Spd Tick'
                 : section === 'speed-tuning'
                   ? 'Spd Tuning'
-                  : 'Siege Counter'}
+                  : section === 'speed-comparison'
+                    ? 'Comparador de SPD'
+                    : 'Siege Counter'}
           </a>
           {detail && (
             <>

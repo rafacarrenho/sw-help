@@ -44,6 +44,13 @@ import {
   writeSpeedTuningQueryState,
   type SpeedTuningQueryMonster,
 } from '../src/lib/speed-tuning.ts';
+import {
+  compareStructuralSpeed,
+  getSpeedComparisonLeaderPercentages,
+  readSpeedComparisonQueryState,
+  structuralSpeed,
+  writeSpeedComparisonQueryState,
+} from '../src/lib/speed-comparison.ts';
 import { monsterById } from '../src/data/catalog.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
 import type {
@@ -61,6 +68,94 @@ const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
 const defenses: Defense[] = read('defenses');
 const counters: Counter[] = read('counters');
+
+test('Comparador de SPD descobre todas as lideranças sem filtrar conteúdo', () => {
+  assert.deepEqual(
+    getSpeedComparisonLeaderPercentages(monsters),
+    [0, 10, 15, 16, 17, 19, 20, 21, 23, 24, 28, 30, 33],
+  );
+});
+
+test('Comparador de SPD calcula vantagem estrutural e folga estrita', () => {
+  const adriana = {
+    baseSpeed: 111,
+    leaderPercent: 24,
+    towerPercent: 15,
+    usesSwift: true,
+  };
+  const triton = {
+    baseSpeed: 116,
+    leaderPercent: 0,
+    towerPercent: 15,
+    usesSwift: true,
+  };
+
+  assert.equal(structuralSpeed(adriana), 183);
+  assert.equal(structuralSpeed(triton), 163);
+  assert.deepEqual(compareStructuralSpeed(adriana, triton), {
+    allySpeed: 183,
+    enemySpeed: 163,
+    winner: 'ally',
+    advantage: 20,
+    strictRuneTolerance: 19,
+  });
+  assert.equal(
+    compareStructuralSpeed(
+      { ...adriana, leaderPercent: 0, towerPercent: 0, usesSwift: false },
+      { ...adriana, leaderPercent: 0, towerPercent: 0, usesSwift: false },
+    )?.winner,
+    'tie',
+  );
+  assert.equal(
+    compareStructuralSpeed(
+      { ...adriana, leaderPercent: 0, towerPercent: 0, usesSwift: false },
+      triton,
+    )?.winner,
+    'enemy',
+  );
+});
+
+test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
+  const comparisonMonsters = new Map([
+    [
+      'adriana-water-2021',
+      { id: 'adriana-water-2021', element: 'water' as const, speed: 111 },
+    ],
+    [
+      'triton-wind-847',
+      { id: 'triton-wind-847', element: 'wind' as const, speed: 116 },
+    ],
+  ]);
+  const state = readSpeedComparisonQueryState(
+    new URLSearchParams(
+      'mode=arena&ally=adriana-water-2021&allyLeader=24&allySwift=1&allyTower=14&enemy=triton-wind-847&enemyLeader=999&enemySwift=0&enemyTower=99',
+    ),
+    comparisonMonsters,
+    monsters,
+  );
+
+  assert.deepEqual(state, {
+    ally: {
+      monsterId: 'adriana-water-2021',
+      leaderPercent: 24,
+      towerPercent: 14,
+      usesSwift: true,
+    },
+    enemy: {
+      monsterId: 'triton-wind-847',
+      leaderPercent: 0,
+      towerPercent: 15,
+      usesSwift: false,
+    },
+  });
+  assert.equal(
+    writeSpeedComparisonQueryState(
+      new URLSearchParams('utm_source=share&ally=old'),
+      state,
+    ).toString(),
+    'utm_source=share&ally=adriana-water-2021&allyLeader=24&allyTower=14&enemy=triton-wind-847&enemySwift=0',
+  );
+});
 
 test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
   assert.deepEqual(

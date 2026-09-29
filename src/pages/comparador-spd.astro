@@ -1,0 +1,240 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { monsterById, monsters } from '../data/catalog.ts';
+import { elementLabels } from '../lib/monster-catalog.ts';
+
+const getUnawakenedName = (monster: (typeof monsters)[number]) => {
+  let currentMonster = monster;
+  const visitedIds = new Set<string>([monster.id]);
+
+  while (currentMonster.awakensFrom) {
+    const previousForm = monsterById.get(currentMonster.awakensFrom);
+    if (!previousForm || visitedIds.has(previousForm.id)) break;
+    visitedIds.add(previousForm.id);
+    currentMonster = previousForm;
+  }
+
+  return currentMonster.id === monster.id ? null : currentMonster.name;
+};
+
+const monsterData = monsters
+  .filter((monster) => (monster.speed ?? 0) > 0)
+  .map((monster) => ({
+    id: monster.id,
+    name: monster.name,
+    unawakenedName: getUnawakenedName(monster),
+    aliases: monster.aliases,
+    element: monster.element,
+    elementLabel: elementLabels[monster.element] ?? monster.element,
+    speed: monster.speed ?? 0,
+    image: monster.image ?? null,
+  }));
+
+const serializedData = JSON.stringify({
+  monsters: monsterData,
+  leaders: monsters
+    .filter((monster) => monster.leaderSkill?.attribute === 'Attack Speed')
+    .map((monster) => ({ leaderSkill: monster.leaderSkill })),
+}).replaceAll('<', '\\u003c');
+
+const sides = [
+  { id: 'ally', number: '01', title: 'Seu monstro', tower: 'Torre aliada' },
+  {
+    id: 'enemy',
+    number: '02',
+    title: 'Monstro inimigo',
+    tower: 'Torre inimiga',
+  },
+] as const;
+---
+
+<Layout
+  title="Comparador de SPD"
+  description="Compare a vantagem estrutural de velocidade entre dois monstros."
+  section="speed-comparison"
+>
+  <section class="page-intro speed-comparison-intro">
+    <div>
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> DISPUTA PELO PRIMEIRO TURNO
+      </span>
+      <h1>
+        Comparador de <span>SPD</span>
+      </h1>
+      <p>
+        Compare a vantagem de SPD base, liderança, Swift e torre
+        <br class="mobile-break" /> antes dos atributos individuais das runas.
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="speed" size={66} />
+    </div>
+  </section>
+
+  <section
+    class="speed-comparison-tool"
+    aria-labelledby="speed-comparison-title"
+    data-speed-comparison
+  >
+    <div class="section-heading speed-comparison-heading">
+      <div>
+        <h2 id="speed-comparison-title">Compare os contestadores</h2>
+        <p>Configure cada lado para descobrir a vantagem estrutural.</p>
+      </div>
+    </div>
+
+    <div class="speed-comparison-grid">
+      {sides.map((side) => (
+        <article
+          class:list={[
+            'speed-comparison-card',
+            `speed-comparison-card--${side.id}`,
+          ]}
+          data-comparison-side={side.id}
+          aria-labelledby={`comparison-${side.id}-title`}
+        >
+          <header class="speed-comparison-card-header">
+            <span class="speed-comparison-step" aria-hidden="true">
+              {side.number}
+            </span>
+            <div>
+              <span>{side.id === 'ally' ? 'SEU LADO' : 'OUTRO LADO'}</span>
+              <h3 id={`comparison-${side.id}-title`}>{side.title}</h3>
+            </div>
+          </header>
+
+          <div class="speed-comparison-search-root">
+            <label for={`comparison-${side.id}-search`}>Monstro</label>
+            <div class="speed-comparison-combobox">
+              <input
+                id={`comparison-${side.id}-search`}
+                data-comparison-search
+                type="search"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls={`comparison-${side.id}-options`}
+                aria-expanded="false"
+                autocomplete="off"
+                placeholder="Buscar monstro"
+              />
+              <button
+                class="search-clear-button"
+                type="button"
+                aria-label={`Limpar ${side.title.toLowerCase()}`}
+                title="Limpar busca"
+                data-search-clear
+              >
+                <Icon name="close" size={16} />
+              </button>
+              <div
+                id={`comparison-${side.id}-options`}
+                class="speed-comparison-options"
+                data-comparison-options
+                role="listbox"
+                aria-label={`Monstros para ${side.title.toLowerCase()}`}
+                hidden
+              />
+            </div>
+          </div>
+
+          <div class="speed-comparison-monster-summary">
+            <span
+              class="speed-comparison-portrait is-empty"
+              data-comparison-portrait
+              aria-hidden="true"
+            >
+              <span data-comparison-placeholder>?</span>
+              <span data-comparison-fallback hidden></span>
+              <img data-comparison-image alt="" width="68" height="68" hidden />
+            </span>
+            <div class="speed-comparison-monster-copy">
+              <strong data-comparison-name>Nenhum monstro</strong>
+              <span data-comparison-element>Selecione no campo acima</span>
+            </div>
+            <div class="speed-comparison-base">
+              <span>SPD base</span>
+              <strong data-comparison-base>—</strong>
+            </div>
+          </div>
+
+          <div class="speed-comparison-fields">
+            <label class="speed-comparison-field">
+              <span>Liderança de SPD</span>
+              <select data-comparison-leader disabled>
+                <option value="0">Sem líder</option>
+              </select>
+            </label>
+
+            <label class="speed-comparison-field">
+              <span>{side.tower}</span>
+              <select data-comparison-tower>
+                {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+                  (percent) => (
+                    <option value={percent} selected={percent === 15}>
+                      {percent}%
+                    </option>
+                  ),
+                )}
+              </select>
+            </label>
+
+            <label class="speed-comparison-check">
+              <input data-comparison-swift type="checkbox" checked disabled />
+              <span>Usa Swift</span>
+            </label>
+          </div>
+
+          <div class="speed-comparison-card-result is-empty">
+            <div class="speed-comparison-card-result-heading">
+              <span>SPD estrutural</span>
+              <span data-comparison-status hidden></span>
+            </div>
+            <strong data-comparison-speed>—</strong>
+            <small>Sem atributos individuais das runas</small>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <section
+      class="speed-comparison-result is-empty"
+      data-comparison-result
+      aria-labelledby="comparison-result-title"
+      aria-live="polite"
+    >
+      <span class="speed-comparison-result-kicker">RESULTADO</span>
+      <h2 id="comparison-result-title" data-comparison-result-title>
+        Selecione os dois monstros
+      </h2>
+      <p data-comparison-result-copy>
+        A comparação aparecerá quando os dois lados estiverem configurados.
+      </p>
+      <p class="speed-comparison-tie-copy" data-comparison-tie-copy hidden></p>
+    </section>
+
+    <aside class="speed-comparison-note">
+      <Icon name="info" size={19} />
+      <p>
+        <strong>Esta é uma vantagem estrutural.</strong> A SPD adicional dos
+        atributos das runas não entra no cálculo. Passivas, buffs, debuffs,
+        boosts de barra e outros efeitos de batalha podem alterar a ordem real.
+      </p>
+    </aside>
+  </section>
+
+  <noscript>
+    <p class="notice">
+      O comparador de SPD precisa de JavaScript para calcular os resultados.
+    </p>
+  </noscript>
+
+  <script
+    id="speed-comparison-data"
+    type="application/json"
+    set:html={serializedData}
+  ></script>
+  <script>
+    import '../scripts/speed-comparison.ts';
+  </script>
+</Layout>
