@@ -4,12 +4,11 @@ import {
   catalogPageUrl,
   readMonsterFilters,
   filterMonsters,
-  elementLabels,
-  formLabel,
   leaderBonusText,
   leaderScopeText,
   leaderSkillIcon,
 } from '../lib/monster-catalog';
+import { routePath, type Locale } from '../i18n/routes';
 
 const root = document.querySelector<HTMLElement>('[data-monster-catalog]')!;
 const form = root.querySelector<HTMLFormElement>('[data-monster-filters]')!;
@@ -32,7 +31,16 @@ let debounce: ReturnType<typeof setTimeout>;
 
 type MonsterCatalogWindow = Window & {
   __MONSTER_INDEX__?: MonsterSummary[];
+  __MONSTER_CATALOG_CONFIG__?: {
+    locale: Locale;
+    elementLabels: Record<string, string>;
+    messages: Record<string, string>;
+  };
 };
+const config = (window as MonsterCatalogWindow).__MONSTER_CATALOG_CONFIG__!;
+const locale = config.locale;
+const messages = config.messages;
+const elementLabels = config.elementLabels;
 
 function loadIndex() {
   const embedded = (window as MonsterCatalogWindow).__MONSTER_INDEX__;
@@ -71,9 +79,9 @@ function pageHref(page: number, params: URLSearchParams) {
   if (query) {
     const filtered = new URLSearchParams(params);
     if (page > 1) filtered.set('page', String(page));
-    return `/monstros/?${filtered}`;
+    return `${routePath('monsters', locale)}?${filtered}`;
   }
-  return catalogPageUrl(page);
+  return catalogPageUrl(page, locale);
 }
 function setDetailLinks() {
   const params = parameters();
@@ -85,9 +93,12 @@ function setDetailLinks() {
 }
 function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   const card = template.cloneNode(true) as HTMLAnchorElement;
-  card.href = `/monstros/${monster.id}/`;
+  card.href = routePath('monster', locale, { id: monster.id });
   card.search = params.toString();
-  card.setAttribute('aria-label', `Ver ${monster.name}, ${formLabel(monster)}`);
+  card.setAttribute(
+    'aria-label',
+    `${messages.view} ${monster.name}, ${monster.awakenLevel === 2 ? messages.secondAwakening : ''}`,
+  );
   card.querySelector('.monster')!.className =
     `monster monster--${monster.element}`;
   card.querySelector('.monster-name')!.textContent = monster.name;
@@ -105,7 +116,7 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   marker.title = elementLabels[monster.element];
   marker.setAttribute(
     'aria-label',
-    `Elemento: ${elementLabels[monster.element]}`,
+    `${messages.element}: ${elementLabels[monster.element]}`,
   );
   marker.replaceChildren(
     root
@@ -123,9 +134,9 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
       tag.setAttribute('data-form', 'true');
       const top = card.querySelector<HTMLElement>('.bestiary-card-top');
       if (top) top.appendChild(tag);
-      tag.textContent = formLabel(monster);
+      tag.textContent = messages.secondAwakening;
     } else {
-      formTag.textContent = formLabel(monster);
+      formTag.textContent = messages.secondAwakening;
     }
   } else if (formTag) {
     formTag.remove();
@@ -136,7 +147,10 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   if (monster.awakenLevel === 2)
     stars.classList.add('natural-stars--second-awaken');
   stars.textContent = '★'.repeat(monster.naturalStars);
-  stars.setAttribute('aria-label', `${monster.naturalStars} estrelas naturais`);
+  stars.setAttribute(
+    'aria-label',
+    `${monster.naturalStars} ${messages.naturalStars}`,
+  );
   const leader = card.querySelector<HTMLElement>('[data-leader]')!;
   const leaderIcon = leader.querySelector<HTMLImageElement>(
     '[data-catalog-leader-icon]',
@@ -147,11 +161,11 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   if (iconPath) leaderIcon.src = iconPath;
   else leaderIcon.removeAttribute('src');
   leader.querySelector('[data-catalog-leader-primary]')!.textContent =
-    leaderBonusText(monster.leaderSkill);
+    leaderBonusText(monster.leaderSkill, locale);
   const leaderContext = leader.querySelector<HTMLElement>(
     '[data-catalog-leader-context]',
   )!;
-  const scope = leaderScopeText(monster.leaderSkill);
+  const scope = leaderScopeText(monster.leaderSkill, locale);
   leaderContext.hidden = !scope;
   leaderContext.textContent = scope ?? '';
   return card;
@@ -165,11 +179,15 @@ async function update(
   const params = parameters();
   error.hidden = true;
   grid.setAttribute('aria-busy', 'true');
-  count.textContent = 'Buscando monstros…';
+  count.textContent = messages.searching;
   try {
     const monsters = await loadIndex();
     if (revision !== version) return;
-    const matches = filterMonsters(monsters, readMonsterFilters(params));
+    const matches = filterMonsters(
+      monsters,
+      readMonsterFilters(params),
+      locale,
+    );
     const pages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE));
     currentPage = Math.min(Math.max(1, Math.trunc(page) || 1), pages);
     const detailParams = new URLSearchParams(params);
@@ -181,9 +199,9 @@ async function update(
     );
     empty.hidden = matches.length > 0;
     pagination.hidden = matches.length === 0;
-    count.textContent = `${matches.length.toLocaleString('pt-BR')} resultados · página ${currentPage} de ${pages}`;
+    count.textContent = `${matches.length.toLocaleString(locale === 'pt-BR' ? 'pt-BR' : 'en-US')} ${messages.results} · ${messages.page} ${currentPage} ${messages.of} ${pages}`;
     root.querySelector('[data-page-label]')!.textContent =
-      `Página ${currentPage} de ${pages}`;
+      `${messages.page} ${currentPage} ${messages.of} ${pages}`;
     prev.hidden = currentPage === 1;
     next.hidden = currentPage === pages;
     prev.href = pageHref(currentPage - 1, params);
@@ -201,7 +219,7 @@ async function update(
   } catch {
     if (revision !== version) return;
     error.hidden = false;
-    count.textContent = 'Busca indisponível. Você pode tentar novamente.';
+    count.textContent = messages.searchUnavailable;
   } finally {
     if (revision === version) grid.removeAttribute('aria-busy');
   }
@@ -221,7 +239,7 @@ function restore() {
   }
   const page = Number(
     params.get('page') ??
-      location.pathname.match(/\/pagina\/(\d+)\//)?.[1] ??
+      location.pathname.match(/\/(?:page|pagina)\/(\d+)\//)?.[1] ??
       1,
   );
   void update(page, 'none');

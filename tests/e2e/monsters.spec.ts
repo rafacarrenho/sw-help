@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('menu, filtros combinados e retorno da ficha preservam a busca', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/pt/');
   const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
   if (await mobileMenu.isVisible()) await mobileMenu.click();
   await page.getByRole('link', { name: 'Catálogo de Monstros' }).click();
@@ -39,7 +39,7 @@ test('menu, filtros combinados e retorno da ficha preservam a busca', async ({
 });
 
 test('paginação, histórico, líder e estado vazio', async ({ page }) => {
-  await page.goto('/monstros/');
+  await page.goto('/pt/monstros/');
   const firstName = await page
     .locator('[data-monster-card]')
     .first()
@@ -83,7 +83,7 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
 test('filtra pelo conteúdo da habilidade de líder e preserva a seleção', async ({
   page,
 }) => {
-  await page.goto('/monstros/');
+  await page.goto('/pt/monstros/');
   expect(
     await page
       .locator('.bestiary-selects select')
@@ -121,7 +121,7 @@ test('filtra pelo conteúdo da habilidade de líder e preserva a seleção', asy
 test('ordena por HP, ATQ e DEF e preserva a escolha na URL', async ({
   page,
 }) => {
-  await page.goto('/monstros/');
+  await page.goto('/pt/monstros/');
   const sort = page.getByRole('combobox', { name: 'Ordenar por' });
   for (const attribute of ['hp', 'attack', 'defense']) {
     await sort.selectOption(attribute);
@@ -139,7 +139,11 @@ test('ordena por HP, ATQ e DEF e preserva a escolha na URL', async ({
         ).__MONSTER_INDEX__;
         const byId = new Map(index?.map((monster) => [monster.id, monster]));
         return cards.map((card) => {
-          const id = card.getAttribute('href')?.split('/').filter(Boolean)[1];
+          const id = card
+            .getAttribute('href')
+            ?.split('/')
+            .filter(Boolean)
+            .at(-1);
           return id ? (byId.get(id)?.sortStats?.[String(key)] ?? 0) : 0;
         });
       }, attribute);
@@ -155,7 +159,7 @@ test('ordena por HP, ATQ e DEF e preserva a escolha na URL', async ({
 test('todos os registros paginam com URL válida e busca se recupera de falha', async ({
   page,
 }) => {
-  await page.goto('/monstros/');
+  await page.goto('/pt/monstros/');
   await page.route('**/monstros/index.json', (route) => route.abort());
   await page.evaluate(() => {
     delete (window as Window & { __MONSTER_INDEX__?: unknown })
@@ -168,7 +172,7 @@ test('todos os registros paginam com URL válida e busca se recupera de falha', 
   await expect(page.locator('[data-monster-card]').first()).toContainText(
     'Nora',
   );
-  await page.goto('/monstros/?page=20');
+  await page.goto('/pt/monstros/?page=20');
   await expect(page.locator('[data-page-label]')).toHaveText('Página 20 de 24');
   await page.getByRole('link', { name: 'Próxima' }).click();
   await expect(page).toHaveURL(/\/pagina\/21\//);
@@ -183,7 +187,7 @@ test('fichas e paginação estática funcionam sem JavaScript', async ({
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(`${baseURL}/monstros/`);
+  await page.goto(`${baseURL}/pt/monstros/`);
   await expect(page.locator('[data-monster-card]')).toHaveCount(48);
   await page.getByRole('link', { name: 'Próxima' }).click();
   await expect(page).toHaveURL(/\/pagina\/2\//);
@@ -199,9 +203,9 @@ test('Siege referencia o catálogo e layout permanece legível', async ({
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/siege/morris-eshir-orion/');
+  await page.goto('/pt/siege/morris-eshir-orion/');
   await page.getByRole('link', { name: 'Ver Morris no catálogo' }).click();
-  await expect(page).toHaveURL(/\/monstros\/morris-wind-1020\//);
+  await expect(page).toHaveURL(/\/pt\/monstros\/morris-wind-1020\//);
   await expect(page.locator('.monster-profile img').first()).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Na mesma família' }),
@@ -211,7 +215,7 @@ test('Siege referencia o catálogo e layout permanece legível', async ({
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBeTruthy();
-  await page.goto('/monstros/');
+  await page.goto('/pt/monstros/');
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -223,7 +227,7 @@ test('Siege referencia o catálogo e layout permanece legível', async ({
 test('ficha exibe atributos, habilidades originais e formas de obtenção', async ({
   page,
 }) => {
-  await page.goto('/monstros/carcano/');
+  await page.goto('/pt/monstros/carcano/');
   await expect(page.getByText('9.225')).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Accurate Fire' }),

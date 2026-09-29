@@ -3,7 +3,6 @@
     "id": "mimirr-elucia-loren",
     "defenseId": "morris-eshir-orion",
     "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
-    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
     "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
@@ -26,7 +25,6 @@
     "id": "platy-shihwa-iona",
     "defenseId": "morris-eshir-orion",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -66,7 +64,6 @@
     "id": "platy-shihwa-betta",
     "defenseId": "morris-eshir-orion",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -106,7 +103,6 @@
     "id": "betta-shihwa-iona",
     "defenseId": "morris-eshir-orion",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -145,7 +141,6 @@
     "id": "mimirr-elucia-loren-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
     "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
-    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
     "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
@@ -168,7 +163,6 @@
     "id": "platy-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -208,7 +202,6 @@
     "id": "platy-shihwa-betta-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -248,7 +241,6 @@
     "id": "betta-shihwa-iona-morris-trevor-figaro",
     "defenseId": "morris-trevor-figaro",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -287,7 +279,6 @@
     "id": "mimirr-elucia-loren-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
     "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
-    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
     "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
       {
@@ -310,7 +301,6 @@
     "id": "platy-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -350,7 +340,6 @@
     "id": "platy-shihwa-betta-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -390,7 +379,6 @@
     "id": "betta-shihwa-iona-morris-orion-trevor",
     "defenseId": "morris-orion-trevor",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -429,7 +417,6 @@
     "id": "platy-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -469,7 +456,6 @@
     "id": "platy-shihwa-betta-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -509,7 +495,6 @@
     "id": "betta-shihwa-iona-solveig-vigor-cichlid",
     "defenseId": "solveig-vigor-cichlid",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -548,7 +533,6 @@
     "id": "platy-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -588,7 +572,6 @@
     "id": "platy-shihwa-betta-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -628,7 +611,6 @@
     "id": "betta-shihwa-iona-solveig-cichlid-molly",
     "defenseId": "solveig-cichlid-molly",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -667,7 +649,6 @@
     "id": "platy-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {
@@ -707,7 +688,6 @@
     "id": "platy-shihwa-betta-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
       {
@@ -747,7 +727,6 @@
     "id": "betta-shihwa-iona-solveig-iris-hraesvelg",
     "defenseId": "solveig-iris-hraesvelg",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
       {

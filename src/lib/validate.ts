@@ -1,4 +1,9 @@
-import type { Monster, MonsterSkill, Defense, Counter } from './types.ts';
+import type {
+  Monster,
+  MonsterSkill,
+  DefenseBase,
+  CounterBase,
+} from './types.ts';
 import { counterStatNames } from './counter-stats.ts';
 import { getTickBreakpoint } from './speed-tick.ts';
 
@@ -6,8 +11,8 @@ const counterStatKeys = new Set<string>(counterStatNames);
 
 export function validateCatalog(
   monsters: Monster[],
-  defenses: Defense[],
-  counters: Counter[],
+  defenses: DefenseBase[],
+  counters: CounterBase[],
   skills?: MonsterSkill[],
 ): void {
   const fail = (message: string): never => {
@@ -151,8 +156,6 @@ export function validateCatalog(
       fail(`status de ${defense.id}.`);
     if (!['4star', 'open'].includes(defense.tower))
       fail(`torre de ${defense.id}.`);
-    if (!defense.label?.trim() || !defense.description?.trim())
-      fail(`descrição de ${defense.id}.`);
     const allFourStar = defense.team.every(
       (id) => monsterMap.get(id)!.naturalStars === 4,
     );
@@ -172,8 +175,6 @@ export function validateCatalog(
       counter.team.some((id) => monsterMap.get(id)!.naturalStars > 4)
     )
       fail(`ataque 5★ em torre 4★: ${counter.id}.`);
-    if (!counter.instruction?.trim() || counter.instruction.length > 180)
-      fail(`texto de ${counter.id}.`);
     if (
       !Array.isArray(counter.turnOrder) ||
       new Set(counter.turnOrder).size !== counter.turnOrder.length ||

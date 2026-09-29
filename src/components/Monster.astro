@@ -1,13 +1,16 @@
 ---
-import { monsterById, elementNames } from '../data/catalog';
+import { monsterById } from '../data/catalog';
 import ElementIcon from './ElementIcon.astro';
 import { leaderSkillIcon, leaderText } from '../lib/monster-catalog';
+import { getMessages, routePath, type Locale } from '../i18n';
 interface Props {
   id: string;
   leader?: boolean;
   linked?: boolean;
+  locale?: Locale;
 }
-const { id, leader = false, linked = false } = Astro.props;
+const { id, leader = false, linked = false, locale = 'pt-BR' } = Astro.props;
+const messages = getMessages(locale);
 const monster = monsterById.get(id)!;
 const leaderIcon = leader ? leaderSkillIcon(monster.leaderSkill) : null;
 const Tag = linked ? 'a' : 'div';
@@ -15,8 +18,14 @@ const Tag = linked ? 'a' : 'div';
 
 <Tag
   class={`monster monster--${monster.element}`}
-  href={linked ? `/monstros/${id}/` : undefined}
-  aria-label={linked ? `Ver ${monster.name} no catálogo` : undefined}
+  href={linked ? routePath('monster', locale, { id }) : undefined}
+  aria-label={
+    linked
+      ? locale === 'pt-BR'
+        ? `Ver ${monster.name} no catálogo`
+        : `View ${monster.name} in the catalog`
+      : undefined
+  }
 >
   <div class="monster-portrait">
     <span class="monster-fallback" aria-hidden="true">
@@ -29,18 +38,18 @@ const Tag = linked ? 'a' : 'div';
       <img
         class="leader-marker"
         src={leaderIcon}
-        alt="Líder da composição"
+        alt={locale === 'pt-BR' ? 'Líder da composição' : 'Team leader'}
         width="32"
         height="32"
-        title={`Líder da composição · ${leaderText(monster.leaderSkill)}`}
+        title={`${locale === 'pt-BR' ? 'Líder da composição' : 'Team leader'} · ${leaderText(monster.leaderSkill, locale)}`}
         data-team-leader-icon
       />
     )}
     <span
       class="element-marker"
       role="img"
-      aria-label={`Elemento: ${elementNames[monster.element]}`}
-      title={elementNames[monster.element]}
+      aria-label={`${messages.monsters.element}: ${messages.common[monster.element]}`}
+      title={messages.common[monster.element]}
     >
       <ElementIcon element={monster.element} />
     </span>

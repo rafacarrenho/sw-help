@@ -6,28 +6,89 @@ import '../styles/monsters.css';
 import '../styles/speed-tick.css';
 import '../styles/speed-tuning.css';
 import '../styles/speed-comparison.css';
+import {
+  getMessages,
+  localizedHref,
+  routePath,
+  type Locale,
+  type RouteName,
+  type RouteParams,
+} from '../i18n';
 interface Props {
   title?: string;
   description?: string;
   detail?: boolean;
+  locale?: Locale;
+  routeName?: RouteName;
+  routeParams?: RouteParams;
+  noIndex?: boolean;
   section?:
     'siege' | 'monsters' | 'speed-tick' | 'speed-tuning' | 'speed-comparison';
 }
 const {
   title = 'Siege Counter',
-  description = 'Encontre composições para enfrentar as defesas de Siege no Summoners War.',
+  locale = 'en',
   detail = false,
   section = 'siege',
+  routeName = section === 'monsters'
+    ? 'monsters'
+    : section === 'speed-tick'
+      ? 'speedTick'
+      : section === 'speed-tuning'
+        ? 'speedTuning'
+        : section === 'speed-comparison'
+          ? 'speedComparison'
+          : 'home',
+  routeParams = {},
+  noIndex = false,
 } = Astro.props;
+const messages = getMessages(locale);
+const description =
+  Astro.props.description ?? messages.layout.defaultDescription;
+const canonicalPath = routePath(routeName, locale, routeParams);
+const canonicalUrl = new URL(canonicalPath, Astro.site ?? Astro.url.origin);
+const englishUrl = new URL(
+  routePath(routeName, 'en', routeParams),
+  Astro.site ?? Astro.url.origin,
+);
+const portugueseUrl = new URL(
+  routePath(routeName, 'pt-BR', routeParams),
+  Astro.site ?? Astro.url.origin,
+);
+const languageSearch = Astro.url.search;
+const sectionRoute: RouteName =
+  section === 'monsters'
+    ? 'monsters'
+    : section === 'speed-tick'
+      ? 'speedTick'
+      : section === 'speed-tuning'
+        ? 'speedTuning'
+        : section === 'speed-comparison'
+          ? 'speedComparison'
+          : 'home';
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex,follow" />}
     <meta name="theme-color" content="#101215" />
+    <meta property="og:title" content={`${title} · SW Help`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === 'en' ? 'pt_BR' : 'en_US'}
+    />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={englishUrl} />
+    <link rel="alternate" hreflang="pt-BR" href={portugueseUrl} />
+    <link rel="alternate" hreflang="x-default" href={englishUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · SW Help</title>
     <script is:inline>
@@ -41,22 +102,31 @@ const {
       } catch {}
     </script>
   </head>
-  <body>
+  <body
+    data-open-menu={messages.layout.openMenu}
+    data-close-menu={messages.layout.closeMenu}
+    data-expand-sidebar={messages.layout.expandSidebar}
+    data-collapse-sidebar={messages.layout.collapseSidebar}
+  >
     <a class="skip-link" href="#main">
-      Pular para o conteúdo
+      {messages.layout.skip}
     </a>
     <header class="mobile-header">
       <button
         class="mobile-menu-toggle"
         type="button"
-        aria-label="Abrir menu"
+        aria-label={messages.layout.openMenu}
         aria-controls="app-sidebar"
         aria-expanded="false"
         data-mobile-menu-toggle
       >
         <Icon name="menu" size={22} />
       </button>
-      <a href="/" class="mobile-brand" aria-label="SW Help, início">
+      <a
+        href={routePath('home', locale)}
+        class="mobile-brand"
+        aria-label={messages.layout.homeLabel}
+      >
         <span class="brand-symbol">
           <Icon name="swords" size={21} />
         </span>
@@ -68,7 +138,11 @@ const {
     </header>
     <aside class="sidebar" id="app-sidebar" data-sidebar>
       <div class="sidebar-header">
-        <a href="/" class="brand" aria-label="SW Help, início">
+        <a
+          href={routePath('home', locale)}
+          class="brand"
+          aria-label={messages.layout.homeLabel}
+        >
           <span class="brand-symbol">
             <Icon name="swords" size={23} />
           </span>
@@ -82,8 +156,8 @@ const {
           type="button"
           aria-controls="app-sidebar"
           aria-expanded="true"
-          aria-label="Recolher menu lateral"
-          title="Recolher menu lateral"
+          aria-label={messages.layout.collapseSidebar}
+          title={messages.layout.collapseSidebar}
           data-desktop-sidebar-toggle
         >
           <Icon name="chevron" size={16} />
@@ -91,17 +165,17 @@ const {
         <button
           class="mobile-menu-close"
           type="button"
-          aria-label="Fechar menu"
+          aria-label={messages.layout.closeMenu}
           data-mobile-menu-close
         >
           <Icon name="close" size={22} />
         </button>
       </div>
-      <div class="nav-group-label">SEU ARSENAL</div>
-      <nav aria-label="Ferramentas">
+      <div class="nav-group-label">{messages.layout.arsenal}</div>
+      <nav aria-label={messages.layout.tools}>
         <a
           class:list={['nav-item', { active: section === 'siege' }]}
-          href="/"
+          href={routePath('home', locale)}
           aria-label="Siege Counter"
           data-nav-label="Siege Counter"
           aria-current={section === 'siege' && !detail ? 'page' : undefined}
@@ -112,18 +186,18 @@ const {
         </a>
         <a
           class:list={['nav-item', { active: section === 'monsters' }]}
-          href="/monstros/"
-          aria-label="Catálogo de Monstros"
-          data-nav-label="Catálogo de Monstros"
+          href={routePath('monsters', locale)}
+          aria-label={messages.layout.monsterCatalog}
+          data-nav-label={messages.layout.monsterCatalog}
           aria-current={section === 'monsters' && !detail ? 'page' : undefined}
         >
           <Icon name="book" />
-          <span>Catálogo de Monstros</span>
+          <span>{messages.layout.monsterCatalog}</span>
           {section === 'monsters' && <span class="active-dot"></span>}
         </a>
         <a
           class:list={['nav-item', { active: section === 'speed-tuning' }]}
-          href="/spd-tuning/"
+          href={routePath('speedTuning', locale)}
           aria-label="Spd Tuning"
           data-nav-label="Spd Tuning"
           aria-current={section === 'speed-tuning' ? 'page' : undefined}
@@ -134,18 +208,18 @@ const {
         </a>
         <a
           class:list={['nav-item', { active: section === 'speed-comparison' }]}
-          href="/comparador-spd/"
-          aria-label="Comparador de SPD"
-          data-nav-label="Comparador de SPD"
+          href={routePath('speedComparison', locale)}
+          aria-label={messages.layout.speedComparison}
+          data-nav-label={messages.layout.speedComparison}
           aria-current={section === 'speed-comparison' ? 'page' : undefined}
         >
           <Icon name="speed" />
-          <span>Comparador de SPD</span>
+          <span>{messages.layout.speedComparison}</span>
           {section === 'speed-comparison' && <span class="active-dot"></span>}
         </a>
         <a
           class:list={['nav-item', { active: section === 'speed-tick' }]}
-          href="/spd-tick/"
+          href={routePath('speedTick', locale)}
           aria-label="Spd Tick"
           data-nav-label="Spd Tick"
           aria-current={section === 'speed-tick' ? 'page' : undefined}
@@ -156,16 +230,35 @@ const {
         </a>
       </nav>
       <div class="sidebar-bottom">
-        <div class="sidebar-note">
-          <span class="note-sigil">
-            <Icon name="shield" size={24} />
+        <nav class="language-switcher" aria-label={messages.layout.language}>
+          <span class="language-switcher-label">
+            <Icon name="globe" size={18} />
+            <span>{messages.layout.language}</span>
           </span>
-          <strong>Conhecimento é vantagem.</strong>
-          <p>Prepare seu time antes de entrar na batalha.</p>
-        </div>
-        <span class="community-mark">
-          <span class="status-dot"></span> Feito para a comunidade
-        </span>
+          <div class="language-options">
+            <a
+              href={localizedHref(routeName, 'en', routeParams, languageSearch)}
+              lang="en"
+              aria-current={locale === 'en' ? 'page' : undefined}
+              data-nav-label={messages.layout.english}
+            >
+              EN
+            </a>
+            <a
+              href={localizedHref(
+                routeName,
+                'pt-BR',
+                routeParams,
+                languageSearch,
+              )}
+              lang="pt-BR"
+              aria-current={locale === 'pt-BR' ? 'page' : undefined}
+              data-nav-label={messages.layout.portuguese}
+            >
+              PT
+            </a>
+          </div>
+        </nav>
         <span class="version">
           SW HELP <span>v0.1</span>
         </span>
@@ -174,7 +267,7 @@ const {
     <button
       class="sidebar-backdrop"
       type="button"
-      aria-label="Fechar menu"
+      aria-label={messages.layout.closeMenu}
       aria-hidden="true"
       tabindex="-1"
       data-sidebar-backdrop
@@ -189,36 +282,26 @@ const {
     <div class="workspace">
       <header class="topbar">
         <div class="breadcrumb">
-          <span>Ferramentas</span>
+          <span>{messages.layout.tools}</span>
           <Icon name="chevron" size={13} />
-          <a
-            href={
-              section === 'monsters'
-                ? '/monstros/'
-                : section === 'speed-tick'
-                  ? '/spd-tick/'
-                  : section === 'speed-tuning'
-                    ? '/spd-tuning/'
-                    : section === 'speed-comparison'
-                      ? '/comparador-spd/'
-                      : '/'
-            }
-          >
+          <a href={routePath(sectionRoute, locale)}>
             {section === 'monsters'
-              ? 'Monstros'
+              ? messages.layout.monsters
               : section === 'speed-tick'
                 ? 'Spd Tick'
                 : section === 'speed-tuning'
                   ? 'Spd Tuning'
                   : section === 'speed-comparison'
-                    ? 'Comparador de SPD'
+                    ? messages.layout.speedComparison
                     : 'Siege Counter'}
           </a>
           {detail && (
             <>
               <Icon name="chevron" size={13} />
               <span class="breadcrumb-detail">
-                {section === 'monsters' ? 'Monstro' : 'Defesa'}
+                {section === 'monsters'
+                  ? messages.layout.monster
+                  : messages.layout.defense}
               </span>
             </>
           )}
@@ -232,10 +315,10 @@ const {
       </main>
       <footer>
         <span>
-          SW Help <span class="footer-dot">·</span> Um toolkit de invocador para
-          invocador.
+          SW Help <span class="footer-dot">·</span>{' '}
+          {messages.layout.footerTagline}
         </span>
-        <span>Projeto da comunidade. Sem vínculo com a Com2uS.</span>
+        <span>{messages.layout.footerDisclaimer}</span>
       </footer>
     </div>
     <noscript>
@@ -277,6 +360,7 @@ const {
       const tooltipItems =
         document.querySelectorAll<HTMLElement>('[data-nav-label]');
       const mobileMedia = window.matchMedia('(max-width: 760px)');
+      const navigationMessages = document.body.dataset;
       const navigationStorageKey = 'sw-help:sidebar-collapsed';
       const readDesktopPreference = () => {
         try {
@@ -337,7 +421,9 @@ const {
           mobileToggle.setAttribute('aria-expanded', String(mobileOpen));
           mobileToggle.setAttribute(
             'aria-label',
-            mobileOpen ? 'Fechar menu' : 'Abrir menu',
+            mobileOpen
+              ? navigationMessages.closeMenu || ''
+              : navigationMessages.openMenu || '',
           );
           sidebar.inert = !mobileOpen;
           sidebar.setAttribute('aria-hidden', String(!mobileOpen));
@@ -361,11 +447,13 @@ const {
         desktopToggle.setAttribute('aria-expanded', String(!desktopCollapsed));
         desktopToggle.setAttribute(
           'aria-label',
-          desktopCollapsed ? 'Expandir menu lateral' : 'Recolher menu lateral',
+          desktopCollapsed
+            ? navigationMessages.expandSidebar || ''
+            : navigationMessages.collapseSidebar || '',
         );
         desktopToggle.title = desktopCollapsed
-          ? 'Expandir menu lateral'
-          : 'Recolher menu lateral';
+          ? navigationMessages.expandSidebar || ''
+          : navigationMessages.collapseSidebar || '';
       };
 
       const openMobileNavigation = () => {

@@ -1,0 +1,361 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Team from '../Team.astro';
+import Icon from '../Icon.astro';
+import ElementIcon from '../ElementIcon.astro';
+import { getCountersFor, teamName, monsterById } from '../../data/catalog';
+import { leaderText } from '../../lib/monster-catalog';
+import {
+  formatCounterSpeed,
+  formatCounterStat,
+  requiredCounterSpeed,
+} from '../../lib/counter-stats';
+import type { Defense } from '../../lib/types';
+import { getMessages, routePath, type Locale } from '../../i18n';
+
+interface Props {
+  defense: Defense;
+  locale: Locale;
+}
+const { defense, locale } = Astro.props;
+const messages = getMessages(locale);
+const counters = getCountersFor(defense.id, locale);
+const name = teamName(defense.team);
+const leader = monsterById.get(defense.team[0])!;
+const counterStatsBeforeSpeed = [
+  { label: 'HP', title: messages.common.health, key: 'hp' },
+  {
+    label: locale === 'pt-BR' ? 'ATK' : 'ATK',
+    title: messages.common.attack,
+    key: 'attack',
+  },
+  { label: 'DEF', title: messages.common.defense, key: 'defense' },
+] as const;
+const counterStatsAfterSpeed = [
+  { label: 'CR', title: messages.common.criticalRate, key: 'critRate' },
+  { label: 'CD', title: messages.common.criticalDamage, key: 'critDamage' },
+  { label: 'RES', title: messages.common.resistance, key: 'resistance' },
+  { label: 'ACC', title: messages.common.accuracy, key: 'accuracy' },
+] as const;
+---
+
+<Layout
+  title={name}
+  description={`${messages.siege.descriptionPrefix} ${name}.`}
+  detail
+  locale={locale}
+  routeName="siege"
+  routeParams={{ id: defense.id }}
+>
+  <div class="detail-toolbar">
+    <a href={routePath('home', locale)} class="back-link" data-back-link>
+      <span>←</span> {messages.siege.allDefenses}
+    </a>
+    <button
+      type="button"
+      class="button button-secondary"
+      data-share
+      data-copy-label={messages.siege.copyLink}
+      data-copied-label={messages.siege.copied}
+      hidden
+    >
+      <Icon name="link" size={16} />
+      <span>{messages.siege.copyLink}</span>
+    </button>
+    <span
+      class="sr-only"
+      data-share-status
+      data-copied-status={messages.siege.copiedStatus}
+      data-copy-error={messages.siege.copyError}
+      role="status"
+    ></span>
+  </div>
+  <section class="defense-overview">
+    <div>
+      <span class="eyebrow">{messages.siege.dossier}</span>
+      <h1>{name}</h1>
+      <div class="defense-meta">
+        <div class="meta-block">
+          <span class="meta-label">{messages.siege.elements}</span>
+          <div class="meta-chips">
+            {defense.team.map((id) => (
+              <span
+                class={`meta-chip meta-chip--${monsterById.get(id)!.element}`}
+              >
+                <ElementIcon element={monsterById.get(id)!.element} />
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">{messages.siege.leaderSkill}</span>
+          <p>{leaderText(leader.leaderSkill, locale)}</p>
+        </div>
+      </div>
+      <div class="detail-badges">
+        <span
+          class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}
+        >
+          <Icon name="tower" size={14} />
+          {defense.tower === '4star'
+            ? messages.siege.fourStarTower
+            : messages.siege.openTower}
+        </span>
+      </div>
+    </div>
+    <div class="defense-team-panel">
+      <span class="panel-label">{messages.siege.enemyTeam}</span>
+      <Team team={defense.team} linked locale={locale} />
+    </div>
+  </section>
+  <section class="counter-section" aria-labelledby="counter-heading">
+    <div class="section-heading">
+      <div>
+        <h2 id="counter-heading">
+          {messages.siege.possibleAnswers}{' '}
+          <span class="count-badge">{counters.length}</span>
+        </h2>
+        <p>{messages.siege.answersIntro}</p>
+      </div>
+      <Icon name="swords" size={22} />
+    </div>
+    {counters.length === 0 ? (
+      <div class="empty-state">
+        <span class="empty-icon">
+          <Icon name="book" size={30} />
+        </span>
+        <h3>{messages.siege.noCounters}</h3>
+        <p>{messages.siege.noCountersCopy}</p>
+        <a class="button" href={routePath('home', locale)} data-back-link>
+          {messages.siege.exploreDefenses} <Icon name="arrow" size={16} />
+        </a>
+      </div>
+    ) : (
+      counters.map((counter, index) => {
+        const orderedIds = [
+          ...counter.turnOrder,
+          ...counter.team.filter((id) => !counter.turnOrder.includes(id)),
+        ];
+        const builds = orderedIds.map((id) => {
+          const monster = monsterById.get(id)!;
+          const rune = counter.runes.find((entry) => entry.monsterId === id);
+          const runeSets = rune
+            ? rune.sets
+                .split('/')
+                .map((entry) => entry.trim())
+                .filter(Boolean)
+            : [];
+          const sequenceIndex = counter.turnOrder.indexOf(id);
+          return {
+            monster,
+            runeSets,
+            stats: rune?.stats,
+            preferredStats: new Set(rune?.preferredStats ?? []),
+            requiredSpeed: requiredCounterSpeed({
+              monster,
+              leader: monsterById.get(counter.team[0])!,
+              tick: counter.tick,
+              runeSets: rune?.sets ?? '',
+            }),
+            sequence: sequenceIndex >= 0 ? sequenceIndex + 1 : '—',
+          };
+        });
+
+        return (
+          <article class="counter-card">
+            <div class="counter-summary">
+              <div class="counter-composition">
+                <div class="counter-label">
+                  <span>
+                    {messages.siege.offense}{' '}
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <Team team={counter.team} linked locale={locale} />
+              </div>
+              <div class="counter-guidance">
+                <div class="counter-instruction">
+                  <h3>{messages.siege.howToPlay}</h3>
+                  <p>{counter.instruction}</p>
+                </div>
+                {counter.sources.length > 0 && (
+                  <div class="source-list">
+                    <h4>{messages.siege.sources}</h4>
+                    {counter.sources.map((source) => (
+                      <a href={source.url} target="_blank" rel="noreferrer">
+                        {source.title} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div class="counter-build">
+              <div class="counter-build-heading">
+                <h3>{messages.siege.suggestedBuild}</h3>
+              </div>
+              <div class="counter-table-wrap">
+                <table
+                  class="counter-meta-table"
+                  aria-label={`${messages.siege.offenseBuild} ${index + 1}`}
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col" class="property-col-header">
+                        {messages.siege.status}
+                      </th>
+                      {builds.map(({ monster }) => (
+                        <th scope="col" class="monster-column-header">
+                          <div class="monster-inline">
+                            <div class="monster-inline-portrait">
+                              {monster.image ? (
+                                <img
+                                  src={monster.image}
+                                  alt=""
+                                  width="36"
+                                  height="36"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <span class="monster-inline-fallback">
+                                  {monster.name.slice(0, 2)}
+                                </span>
+                              )}
+                            </div>
+                            <span class="monster-inline-name">
+                              {monster.name}
+                            </span>
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="property-cell">
+                        <abbr title={messages.siege.sequence}>Seq.</abbr>
+                      </th>
+                      {builds.map((build) => (
+                        <td>{build.sequence}</td>
+                      ))}
+                    </tr>
+                    <tr>
+                      <th scope="row" class="property-cell">
+                        {messages.siege.rune}
+                      </th>
+                      {builds.map((build) => (
+                        <td class="rune-cell">
+                          {build.runeSets.length > 0 ? (
+                            build.runeSets.map((set) => <div>{set}</div>)
+                          ) : (
+                            <span>—</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                    {counterStatsBeforeSpeed.map((stat) => (
+                      <tr>
+                        <th scope="row" class="property-cell">
+                          <abbr title={stat.title}>{stat.label}</abbr>
+                        </th>
+                        {builds.map((build) => (
+                          <td>
+                            {build.preferredStats.has(stat.key) ? (
+                              <span class="preferred-stat">
+                                {messages.common.desirable}
+                              </span>
+                            ) : (
+                              formatCounterStat(
+                                build.stats?.[stat.key],
+                                stat.key,
+                              )
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                    <tr>
+                      <th scope="row" class="property-cell">
+                        <abbr title={messages.siege.speed}>SPD</abbr>
+                      </th>
+                      {builds.map((build) => (
+                        <td class="speed-cell">
+                          <span>Tick {counter.tick}</span>
+                          <strong>
+                            {formatCounterSpeed(build.requiredSpeed)}
+                          </strong>
+                        </td>
+                      ))}
+                    </tr>
+                    {counterStatsAfterSpeed.map((stat) => (
+                      <tr>
+                        <th scope="row" class="property-cell">
+                          <abbr title={stat.title}>{stat.label}</abbr>
+                        </th>
+                        {builds.map((build) => (
+                          <td>
+                            {build.preferredStats.has(stat.key) ? (
+                              <span class="preferred-stat">
+                                {messages.common.desirable}
+                              </span>
+                            ) : (
+                              formatCounterStat(
+                                build.stats?.[stat.key],
+                                stat.key,
+                              )
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    )}
+  </section>
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      <strong>{messages.siege.noteTitle}</strong> {messages.siege.noteCopy}
+    </p>
+  </aside>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const backParams = new URLSearchParams();
+    if (params.get('q')) backParams.set('q', params.get('q')!.slice(0, 200));
+    if (['4star', 'open'].includes(params.get('tower') ?? ''))
+      backParams.set('tower', params.get('tower')!);
+    document
+      .querySelectorAll<HTMLAnchorElement>('[data-back-link]')
+      .forEach((link) => {
+        link.search = backParams.toString();
+      });
+    const share = document.querySelector<HTMLButtonElement>('[data-share]')!;
+    if (navigator.clipboard?.writeText) {
+      share.hidden = false;
+      share.addEventListener('click', async () => {
+        const status = document.querySelector<HTMLElement>(
+          '[data-share-status]',
+        )!;
+        try {
+          await navigator.clipboard.writeText(
+            `${location.origin}${location.pathname}`,
+          );
+          share.querySelector('span')!.textContent =
+            share.dataset.copiedLabel || '';
+          status.textContent = status.dataset.copiedStatus || '';
+          setTimeout(() => {
+            share.querySelector('span')!.textContent =
+              share.dataset.copyLabel || '';
+          }, 2200);
+        } catch {
+          status.textContent = status.dataset.copyError || '';
+        }
+      });
+    }
+  </script>
+</Layout>

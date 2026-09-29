@@ -9,6 +9,7 @@ import {
   type SpeedComparisonState,
 } from '../lib/speed-comparison.ts';
 import type { Element, Monster } from '../lib/types.ts';
+import type { Locale } from '../i18n/routes.ts';
 
 type MonsterOption = {
   id: string;
@@ -54,11 +55,24 @@ const dataNode = document.getElementById('speed-comparison-data');
 
 if (root && dataNode) {
   const data = JSON.parse(dataNode.textContent ?? '{}') as {
+    locale?: Locale;
+    messages?: Record<string, string>;
     monsters?: MonsterOption[];
     leaders?: Array<Pick<Monster, 'leaderSkill'>>;
   };
+  const locale = data.locale ?? 'en';
+  const messages = data.messages ?? {};
+  const message = (key: string, fallback = '') => messages[key] ?? fallback;
+  const interpolate = (
+    template: string,
+    values: Record<string, string | number>,
+  ) =>
+    Object.entries(values).reduce(
+      (result, [key, value]) => result.replaceAll(`{${key}}`, String(value)),
+      template,
+    );
   const sortedMonsters = [...(data.monsters ?? [])].sort((first, second) =>
-    first.name.localeCompare(second.name, 'pt-BR', { sensitivity: 'base' }),
+    first.name.localeCompare(second.name, locale, { sensitivity: 'base' }),
   );
   const leaderSources = data.leaders ?? [];
   const monsterById = new Map(
@@ -227,7 +241,7 @@ if (root && dataNode) {
     if (visible.length === 0) {
       const empty = document.createElement('p');
       empty.className = 'speed-comparison-options-empty';
-      empty.textContent = 'Nenhum monstro encontrado';
+      empty.textContent = message('noMonsterFound', 'No monster found');
       sideElements.options.append(empty);
     } else {
       const fragment = document.createDocumentFragment();
@@ -297,7 +311,8 @@ if (root && dataNode) {
       ...percentages.map((percent) => {
         const option = document.createElement('option');
         option.value = String(percent);
-        option.textContent = percent === 0 ? 'Sem líder' : `${percent}%`;
+        option.textContent =
+          percent === 0 ? message('noLeader', 'No leader') : `${percent}%`;
         return option;
       }),
     );
@@ -316,8 +331,11 @@ if (root && dataNode) {
     sideElements.image.removeAttribute('src');
 
     if (!monster) {
-      sideElements.name.textContent = 'Nenhum monstro';
-      sideElements.element.textContent = 'Selecione no campo acima';
+      sideElements.name.textContent = message('noMonster', 'No monster');
+      sideElements.element.textContent = message(
+        'selectAbove',
+        'Select one above',
+      );
       sideElements.base.textContent = '—';
       return;
     }
@@ -373,10 +391,10 @@ if (root && dataNode) {
     sideElements.cardResult.classList.add(`is-${status}`);
     sideElements.comparisonStatus.textContent =
       status === 'advantage'
-        ? 'VANTAGEM'
+        ? message('advantage', 'ADVANTAGE')
         : status === 'disadvantage'
-          ? 'DESVANTAGEM'
-          : 'EMPATE';
+          ? message('disadvantage', 'DISADVANTAGE')
+          : message('tie', 'TIE');
     sideElements.comparisonStatus.hidden = false;
   };
 
@@ -386,9 +404,11 @@ if (root && dataNode) {
     if (!ally.monster || !enemy.monster) {
       result.classList.add('is-empty');
       result.classList.remove('is-ally', 'is-enemy', 'is-tie');
-      resultTitle.textContent = 'Selecione os dois monstros';
-      resultCopy.textContent =
-        'A comparação aparecerá quando os dois lados estiverem configurados.';
+      resultTitle.textContent = message('selectBoth', 'Select both monsters');
+      resultCopy.textContent = message(
+        'resultWaiting',
+        'The comparison will appear when both sides are configured.',
+      );
       tieCopy.hidden = true;
       tieCopy.textContent = '';
       return;
@@ -415,11 +435,23 @@ if (root && dataNode) {
       setComparisonStatus('ally', 'tie');
       setComparisonStatus('enemy', 'tie');
       result.classList.add('is-tie');
-      resultTitle.textContent = 'Empate estrutural';
-      resultCopy.textContent = `${ally.monster.name} e ${enemy.monster.name} chegam a ${comparison.allySpeed} SPD estrutural.`;
+      resultTitle.textContent = message('structuralTie', 'Structural tie');
+      resultCopy.textContent = interpolate(
+        message(
+          'tieResult',
+          '{ally} and {enemy} both reach {speed} structural SPD.',
+        ),
+        {
+          ally: ally.monster.name,
+          enemy: enemy.monster.name,
+          speed: comparison.allySpeed,
+        },
+      );
       tieCopy.hidden = false;
-      tieCopy.textContent =
-        'Um único ponto de SPD adicional das runas pode decidir quem age primeiro.';
+      tieCopy.textContent = message(
+        'tieDecision',
+        'A single point of additional rune SPD can decide who moves first.',
+      );
       return;
     }
 
@@ -433,13 +465,38 @@ if (root && dataNode) {
     const winnerName = winner.monster!.name;
     const loserName = loser.monster!.name;
     result.classList.add(comparison.winner === 'ally' ? 'is-ally' : 'is-enemy');
-    resultTitle.textContent = `${winnerName} tem vantagem de ${comparison.advantage} SPD`;
+    resultTitle.textContent = interpolate(
+      message('advantageTitle', '{winner} has a {advantage} SPD advantage'),
+      { winner: winnerName, advantage: comparison.advantage },
+    );
     resultCopy.textContent =
       comparison.strictRuneTolerance === 0
-        ? `${winnerName} pode ter a mesma SPD adicional das runas e ainda agir antes de ${loserName}.`
-        : `${winnerName} pode ter até ${comparison.strictRuneTolerance} SPD adicional a menos nas runas e ainda agir antes de ${loserName}.`;
+        ? interpolate(
+            message(
+              'sameRuneSpeed',
+              '{winner} can have the same additional rune SPD and still move before {loser}.',
+            ),
+            { winner: winnerName, loser: loserName },
+          )
+        : interpolate(
+            message(
+              'runeTolerance',
+              '{winner} can have up to {tolerance} less additional rune SPD and still move before {loser}.',
+            ),
+            {
+              winner: winnerName,
+              loser: loserName,
+              tolerance: comparison.strictRuneTolerance,
+            },
+          );
     tieCopy.hidden = false;
-    tieCopy.textContent = `Com ${comparison.advantage} SPD adicional a menos, os dois empatam em SPD de combate.`;
+    tieCopy.textContent = interpolate(
+      message(
+        'combatTie',
+        'With {advantage} less additional SPD, both monsters tie in combat SPD.',
+      ),
+      { advantage: comparison.advantage },
+    );
   };
 
   const render = (updateUrl = true) => {

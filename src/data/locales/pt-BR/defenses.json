@@ -1,0 +1,26 @@
+{
+  "morris-eshir-orion": {
+    "label": "Pressão & controle",
+    "description": "Composição com dano de alvo único, controle e sustain para manter a pressão."
+  },
+  "morris-trevor-figaro": {
+    "label": "Burst versátil",
+    "description": "Defesa com dano focado e boa capacidade de pressionar em sequência."
+  },
+  "morris-orion-trevor": {
+    "label": "Controle & pressão",
+    "description": "Composição equilibrada com suporte, controle e bom potencial de dano em sequência."
+  },
+  "solveig-vigor-cichlid": {
+    "label": "Sustain e pressão",
+    "description": "Composição com suporte, dano contínuo e certa resistência para sustentar a defesa."
+  },
+  "solveig-cichlid-molly": {
+    "label": "Pressão em cadeia",
+    "description": "Defesa com pressão consistente e boa continuidade de dano em sequência."
+  },
+  "solveig-iris-hraesvelg": {
+    "label": "Pressão & controle",
+    "description": "Defesa com dano contínuo, suporte e boa capacidade de pressionar a linha adversária."
+  }
+}

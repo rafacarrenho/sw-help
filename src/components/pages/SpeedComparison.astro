@@ -1,0 +1,268 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../Icon.astro';
+import { monsterById, monsters } from '../../data/catalog.ts';
+import { elementLabelsFor } from '../../lib/monster-catalog.ts';
+import { getMessages, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const elementLabels = elementLabelsFor(locale);
+
+const getUnawakenedName = (monster: (typeof monsters)[number]) => {
+  let currentMonster = monster;
+  const visitedIds = new Set<string>([monster.id]);
+
+  while (currentMonster.awakensFrom) {
+    const previousForm = monsterById.get(currentMonster.awakensFrom);
+    if (!previousForm || visitedIds.has(previousForm.id)) break;
+    visitedIds.add(previousForm.id);
+    currentMonster = previousForm;
+  }
+
+  return currentMonster.id === monster.id ? null : currentMonster.name;
+};
+
+const monsterData = monsters
+  .filter((monster) => (monster.speed ?? 0) > 0)
+  .map((monster) => ({
+    id: monster.id,
+    name: monster.name,
+    unawakenedName: getUnawakenedName(monster),
+    aliases: monster.aliases,
+    element: monster.element,
+    elementLabel: elementLabels[monster.element] ?? monster.element,
+    speed: monster.speed ?? 0,
+    image: monster.image ?? null,
+  }));
+
+const serializedData = JSON.stringify({
+  locale,
+  messages: messages.comparison,
+  monsters: monsterData,
+  leaders: monsters
+    .filter((monster) => monster.leaderSkill?.attribute === 'Attack Speed')
+    .map((monster) => ({ leaderSkill: monster.leaderSkill })),
+}).replaceAll('<', '\\u003c');
+
+const sides = [
+  {
+    id: 'ally',
+    number: '01',
+    title: messages.comparison.yourMonster,
+    tower: messages.comparison.allyTower,
+  },
+  {
+    id: 'enemy',
+    number: '02',
+    title: messages.comparison.enemyMonster,
+    tower: messages.comparison.enemyTower,
+  },
+] as const;
+---
+
+<Layout
+  title={messages.comparison.title}
+  description={messages.comparison.description}
+  section="speed-comparison"
+  locale={locale}
+  routeName="speedComparison"
+>
+  <section class="page-intro speed-comparison-intro">
+    <div>
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> {messages.comparison.eyebrow}
+      </span>
+      <h1>
+        {messages.comparison.headingPrefix}{' '}
+        <span>{messages.comparison.headingAccent}</span>
+      </h1>
+      <p>
+        {messages.comparison.introLine1}
+        <br class="mobile-break" /> {messages.comparison.introLine2}
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="speed" size={66} />
+    </div>
+  </section>
+
+  <section
+    class="speed-comparison-tool"
+    aria-labelledby="speed-comparison-title"
+    data-speed-comparison
+  >
+    <div class="section-heading speed-comparison-heading">
+      <div>
+        <h2 id="speed-comparison-title">{messages.comparison.compareTitle}</h2>
+        <p>{messages.comparison.compareCopy}</p>
+      </div>
+    </div>
+
+    <div class="speed-comparison-grid">
+      {sides.map((side) => (
+        <article
+          class:list={[
+            'speed-comparison-card',
+            `speed-comparison-card--${side.id}`,
+          ]}
+          data-comparison-side={side.id}
+          aria-labelledby={`comparison-${side.id}-title`}
+        >
+          <header class="speed-comparison-card-header">
+            <span class="speed-comparison-step" aria-hidden="true">
+              {side.number}
+            </span>
+            <div>
+              <span>
+                {side.id === 'ally'
+                  ? messages.comparison.yourSide
+                  : messages.comparison.otherSide}
+              </span>
+              <h3 id={`comparison-${side.id}-title`}>{side.title}</h3>
+            </div>
+          </header>
+
+          <div class="speed-comparison-search-root">
+            <label for={`comparison-${side.id}-search`}>
+              {messages.comparison.monster}
+            </label>
+            <div class="speed-comparison-combobox">
+              <input
+                id={`comparison-${side.id}-search`}
+                data-comparison-search
+                type="search"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls={`comparison-${side.id}-options`}
+                aria-expanded="false"
+                autocomplete="off"
+                placeholder={messages.comparison.searchMonster}
+              />
+              <button
+                class="search-clear-button"
+                type="button"
+                aria-label={messages.comparison.clearMonster.replace(
+                  '{monster}',
+                  side.title.toLowerCase(),
+                )}
+                title={messages.common.clearSearch}
+                data-search-clear
+              >
+                <Icon name="close" size={16} />
+              </button>
+              <div
+                id={`comparison-${side.id}-options`}
+                class="speed-comparison-options"
+                data-comparison-options
+                role="listbox"
+                aria-label={`${messages.comparison.monstersFor} ${side.title.toLowerCase()}`}
+                hidden
+              />
+            </div>
+          </div>
+
+          <div class="speed-comparison-monster-summary">
+            <span
+              class="speed-comparison-portrait is-empty"
+              data-comparison-portrait
+              aria-hidden="true"
+            >
+              <span data-comparison-placeholder>?</span>
+              <span data-comparison-fallback hidden></span>
+              <img data-comparison-image alt="" width="68" height="68" hidden />
+            </span>
+            <div class="speed-comparison-monster-copy">
+              <strong data-comparison-name>
+                {messages.comparison.noMonster}
+              </strong>
+              <span data-comparison-element>
+                {messages.comparison.selectAbove}
+              </span>
+            </div>
+            <div class="speed-comparison-base">
+              <span>{messages.comparison.baseSpeed}</span>
+              <strong data-comparison-base>—</strong>
+            </div>
+          </div>
+
+          <div class="speed-comparison-fields">
+            <label class="speed-comparison-field">
+              <span>{messages.comparison.speedLeader}</span>
+              <select data-comparison-leader disabled>
+                <option value="0">{messages.comparison.noLeader}</option>
+              </select>
+            </label>
+
+            <label class="speed-comparison-field">
+              <span>{side.tower}</span>
+              <select data-comparison-tower>
+                {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+                  (percent) => (
+                    <option value={percent} selected={percent === 15}>
+                      {percent}%
+                    </option>
+                  ),
+                )}
+              </select>
+            </label>
+
+            <label class="speed-comparison-check">
+              <input data-comparison-swift type="checkbox" checked disabled />
+              <span>{messages.comparison.usesSwift}</span>
+            </label>
+          </div>
+
+          <div class="speed-comparison-card-result is-empty">
+            <div class="speed-comparison-card-result-heading">
+              <span>{messages.comparison.structuralSpeed}</span>
+              <span data-comparison-status hidden></span>
+            </div>
+            <strong data-comparison-speed>—</strong>
+            <small>{messages.comparison.noRuneStats}</small>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <section
+      class="speed-comparison-result is-empty"
+      data-comparison-result
+      aria-labelledby="comparison-result-title"
+      aria-live="polite"
+    >
+      <span class="speed-comparison-result-kicker">
+        {messages.comparison.result}
+      </span>
+      <h2 id="comparison-result-title" data-comparison-result-title>
+        {messages.comparison.selectBoth}
+      </h2>
+      <p data-comparison-result-copy>{messages.comparison.resultWaiting}</p>
+      <p class="speed-comparison-tie-copy" data-comparison-tie-copy hidden></p>
+    </section>
+
+    <aside class="speed-comparison-note">
+      <Icon name="info" size={19} />
+      <p>
+        <strong>{messages.comparison.noteTitle}</strong>{' '}
+        {messages.comparison.noteCopy}
+      </p>
+    </aside>
+  </section>
+
+  <noscript>
+    <p class="notice">{messages.comparison.noScript}</p>
+  </noscript>
+
+  <script
+    id="speed-comparison-data"
+    type="application/json"
+    set:html={serializedData}
+  ></script>
+  <script>
+    import '../../scripts/speed-comparison.ts';
+  </script>
+</Layout>

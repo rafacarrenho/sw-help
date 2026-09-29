@@ -8,48 +8,79 @@ import { monsters } from '../data/catalog';
 import metadata from '../data/monsters-meta.json';
 import {
   PAGE_SIZE,
-  elementLabels,
-  attributeLabels,
+  elementLabelsFor,
+  attributeLabelsFor,
   filterMonsters,
   readMonsterFilters,
   catalogPageUrl,
   catalogElementOptions,
-  leaderScopeOptions,
+  leaderScopeOptionsFor,
   toMonsterSummary,
 } from '../lib/monster-catalog';
+import { getMessages, numberLocale, routePath, type Locale } from '../i18n';
 interface Props {
   page?: number;
+  locale?: Locale;
 }
-const { page = 1 } = Astro.props;
+const { page = 1, locale = 'en' } = Astro.props;
+const messages = getMessages(locale);
+const elementLabels = elementLabelsFor(locale);
+const attributeLabels = attributeLabelsFor(locale);
+const leaderScopeOptions = leaderScopeOptionsFor(locale);
 const monsterIndex = monsters.map(toMonsterSummary);
 const sorted = filterMonsters(
   monsterIndex,
   readMonsterFilters(new URLSearchParams()),
+  locale,
 );
 const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
 const entries = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
-  timeZone: 'UTC',
-});
+const updated = new Date(metadata.importedAt).toLocaleDateString(
+  numberLocale(locale),
+  {
+    timeZone: 'UTC',
+  },
+);
+const clientConfig = JSON.stringify({
+  locale,
+  elementLabels,
+  messages: {
+    view: locale === 'pt-BR' ? 'Ver' : 'View',
+    element: messages.monsters.element,
+    naturalStars: messages.monsters.naturalStars.toLowerCase(),
+    results: messages.monsters.results,
+    page: messages.monsters.page,
+    of: messages.monsters.of,
+    searching:
+      locale === 'pt-BR' ? 'Buscando monstros…' : 'Searching monsters…',
+    searchUnavailable:
+      locale === 'pt-BR'
+        ? 'Busca indisponível. Você pode tentar novamente.'
+        : 'Search unavailable. You can try again.',
+    secondAwakening: messages.monster.secondAwakening,
+    noLeaderSkill: messages.monster.noLeaderSkill,
+  },
+}).replaceAll('<', '\\u003c');
 ---
 
 <Layout
-  title="Catálogo de Monstros"
+  title={messages.monsters.title}
   section="monsters"
-  description="Explore monstros de Summoners War por nome, família, elemento e habilidade de líder."
+  description={messages.monsters.description}
+  locale={locale}
+  routeName={page > 1 ? 'monsterPage' : 'monsters'}
+  routeParams={page > 1 ? { page } : {}}
 >
   <section class="page-intro">
     <div>
       <span class="eyebrow">
-        <span class="eyebrow-mark"></span> CONHEÇA SEUS ALIADOS
+        <span class="eyebrow-mark"></span> {messages.monsters.eyebrow}
       </span>
       <h1>
-        Catálogo de <span>Monstros</span>
+        {messages.monsters.headingPrefix}{' '}
+        <span>{messages.monsters.headingAccent}</span>
       </h1>
-      <p>
-        Encontre seu próximo líder. Explore famílias, elementos e formas de cada
-        monstro.
-      </p>
+      <p>{messages.monsters.intro}</p>
     </div>
     <div class="intro-emblem" aria-hidden="true">
       <Icon name="book" size={60} />
@@ -57,36 +88,42 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
   </section>
   <div class="bestiary-summary">
     <span>
-      <strong>{monsters.length.toLocaleString('pt-BR')}</strong> monstros
-      obtíveis
+      <strong>{monsters.length.toLocaleString(numberLocale(locale))}</strong>{' '}
+      {messages.monsters.obtainable}
     </span>
-    <span>Atualizado em {updated}</span>
+    <span>
+      {messages.monsters.updated} {updated}
+    </span>
   </div>
-  <section aria-label="Explorar monstros" data-monster-catalog data-page={page}>
+  <section
+    aria-label={messages.monsters.explore}
+    data-monster-catalog
+    data-page={page}
+  >
     <form
       class="bestiary-filters"
       role="search"
-      action="/monstros/"
+      action={routePath('monsters', locale)}
       data-monster-filters
     >
       <div class="search-box">
         <Icon name="search" size={20} />
         <label class="sr-only" for="monster-catalog-search">
-          Buscar por nome ou família
+          {messages.monsters.searchLabel}
         </label>
         <input
           id="monster-catalog-search"
           type="search"
           name="q"
-          placeholder="Buscar por nome ou família... ex.: Nora, Dragon"
+          placeholder={messages.monsters.searchPlaceholder}
           maxlength="200"
           autocomplete="off"
         />
         <button
           class="search-clear-button"
           type="button"
-          aria-label="Limpar busca"
-          title="Limpar busca"
+          aria-label={messages.common.clearSearch}
+          title={messages.common.clearSearch}
           data-search-clear
         >
           <Icon name="close" size={16} />
@@ -94,80 +131,80 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
       </div>
       <div class="bestiary-selects">
         <label>
-          Elemento
+          {messages.monsters.element}
           <select name="element">
-            <option value="">Todos</option>
+            <option value="">{messages.common.all}</option>
             {catalogElementOptions.map(([value, name]) => (
               <option value={value}>{name}</option>
             ))}
           </select>
         </label>
         <label>
-          Estrelas naturais
+          {messages.monsters.naturalStars}
           <select name="stars">
-            <option value="">Todas</option>
+            <option value="">{messages.common.all}</option>
             {[1, 2, 3, 4, 5].map((n) => (
-              <option value={n}>{n}★ naturais</option>
+              <option value={n}>
+                {n}★ {messages.monsters.naturalStars.toLowerCase()}
+              </option>
             ))}
           </select>
         </label>
         <label>
-          Habilidade de líder
+          {messages.monsters.leaderSkill}
           <select name="leader">
-            <option value="">Todas</option>
-            <option value="any">Com habilidade de líder</option>
-            <option value="none">Sem habilidade de líder</option>
+            <option value="">{messages.common.all}</option>
+            <option value="any">{messages.monsters.withLeader}</option>
+            <option value="none">{messages.monsters.withoutLeader}</option>
             {Object.entries(attributeLabels).map(([value, name]) => (
               <option value={value}>{name}</option>
             ))}
           </select>
         </label>
         <label>
-          Conteúdo da habilidade de líder
+          {messages.monsters.leaderContent}
           <select name="leaderScope">
-            <option value="">Todos</option>
+            <option value="">{messages.common.all}</option>
             {leaderScopeOptions.map(({ value, label }) => (
               <option value={value}>{label}</option>
             ))}
           </select>
         </label>
         <label>
-          Ordenar por
+          {messages.monsters.sortBy}
           <select name="sort">
-            <option value="name">Nome (A–Z)</option>
-            <option value="stars">Mais estrelas</option>
-            <option value="speed">Maior SPD base</option>
-            <option value="hp">Maior HP máximo</option>
-            <option value="attack">Maior ATQ máximo</option>
-            <option value="defense">Maior DEF máxima</option>
+            <option value="name">{messages.monsters.sortName}</option>
+            <option value="stars">{messages.monsters.sortStars}</option>
+            <option value="speed">{messages.monsters.sortSpeed}</option>
+            <option value="hp">{messages.monsters.sortHp}</option>
+            <option value="attack">{messages.monsters.sortAttack}</option>
+            <option value="defense">{messages.monsters.sortDefense}</option>
           </select>
         </label>
       </div>
       <div class="bestiary-results-bar">
         <p data-monster-count role="status" aria-live="polite" tabindex="-1">
-          {sorted.length.toLocaleString('pt-BR')} resultados · página {page} de{' '}
-          {totalPages}
+          {sorted.length.toLocaleString(numberLocale(locale))}{' '}
+          {messages.monsters.results} · {messages.monsters.page} {page}{' '}
+          {messages.monsters.of} {totalPages}
         </p>
         <button type="button" class="bestiary-clear" data-reset-monsters>
-          Limpar filtros
+          {messages.common.clearFilters}
         </button>
       </div>
     </form>
     <noscript>
-      <p class="notice">
-        Use as páginas abaixo para explorar todos os monstros. Ative JavaScript
-        para buscar e filtrar.
-      </p>
+      <p class="notice">{messages.monsters.noScript}</p>
     </noscript>
     <div class="notice" data-monster-error hidden role="alert">
-      Não foi possível carregar a busca.{' '}
+      {messages.monsters.loadError}{' '}
       <button type="button" class="bestiary-clear" data-retry-monsters>
-        Tentar novamente
+        {messages.common.retry}
       </button>
     </div>
     <div class="bestiary-grid" data-monster-grid>
       {entries.map((monster) => (
-        <MonsterCard monster={monster} />
+        <MonsterCard monster={monster} locale={locale} />
       ))}
     </div>
     {Object.keys(elementLabels).map((element) => (
@@ -177,50 +214,50 @@ const updated = new Date(metadata.importedAt).toLocaleDateString('pt-BR', {
     ))}
     <div class="empty-state" data-monster-empty hidden>
       <Icon name="search" size={30} />
-      <h2>Nenhum monstro encontrado</h2>
-      <p>Tente outro nome ou remova alguns filtros.</p>
+      <h2>{messages.monsters.noResults}</h2>
+      <p>{messages.monsters.noResultsCopy}</p>
       <button type="button" class="button" data-reset-monsters>
-        Limpar filtros
+        {messages.common.clearFilters}
       </button>
     </div>
     <nav
       class="bestiary-pagination"
-      aria-label="Páginas de monstros"
+      aria-label={messages.monsters.pagesLabel}
       data-monster-pagination
     >
       <a
         class="button button-secondary"
-        href={catalogPageUrl(page - 1)}
+        href={catalogPageUrl(page - 1, locale)}
         data-page-prev
         hidden={page === 1}
       >
-        ← Anterior
+        ← {messages.monsters.previous}
       </a>
       <span data-page-label>
-        Página {page} de {totalPages}
+        {messages.monsters.page} {page} {messages.monsters.of} {totalPages}
       </span>
       <a
         class="button button-secondary"
-        href={catalogPageUrl(page + 1)}
+        href={catalogPageUrl(page + 1, locale)}
         data-page-next
         hidden={page === totalPages}
       >
-        Próxima →
+        {messages.monsters.next} →
       </a>
     </nav>
   </section>
   <aside class="catalog-note">
     <Icon name="info" size={18} />
     <p>
-      Inclui apenas as formas finais obtíveis registradas no{' '}
+      {messages.monsters.sourceNotePrefix}{' '}
       <a href="https://swarfarm.com/" target="_blank" rel="noreferrer">
         SWARFARM ↗
       </a>
-      . Estrelas indicam a raridade natural.
+      . {messages.monsters.sourceNoteSuffix}
     </p>
   </aside>
   <script
-    set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsterIndex)};`}
+    set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsterIndex)}; window['__MONSTER_CATALOG_CONFIG__'] = ${clientConfig};`}
   ></script>
   <script>
     import '../scripts/monsters';

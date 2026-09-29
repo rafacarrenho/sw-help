@@ -7,19 +7,21 @@ import {
   leaderScopeText,
   leaderSkillIcon,
 } from '../lib/monster-catalog';
+import { routePath, type Locale } from '../i18n';
 interface Props {
   monster: MonsterSummary;
+  locale?: Locale;
 }
-const { monster } = Astro.props;
+const { monster, locale = 'pt-BR' } = Astro.props;
 const leaderIcon = leaderSkillIcon(monster.leaderSkill);
-const leaderScope = leaderScopeText(monster.leaderSkill);
+const leaderScope = leaderScopeText(monster.leaderSkill, locale);
 ---
 
 <a
   class="bestiary-card"
-  href={`/monstros/${monster.id}/`}
+  href={routePath('monster', locale, { id: monster.id })}
   data-monster-card
-  aria-label={`Ver ${monster.name}, ${formLabel(monster)}`}
+  aria-label={`${locale === 'pt-BR' ? 'Ver' : 'View'} ${monster.name}, ${formLabel(monster, locale)}`}
 >
   <div class="bestiary-card-top">
     <span
@@ -37,11 +39,11 @@ const leaderScope = leaderScopeText(monster.leaderSkill);
     </span>
     {monster.awakenLevel === 2 && (
       <span class="form-tag" data-form>
-        {formLabel(monster)}
+        {formLabel(monster, locale)}
       </span>
     )}
   </div>
-  <MonsterPortrait id={monster.id} />
+  <MonsterPortrait id={monster.id} locale={locale} />
   <span class="bestiary-family" data-family>
     {monster.family}
   </span>
@@ -62,7 +64,7 @@ const leaderScope = leaderScopeText(monster.leaderSkill);
     />
     <span class="bestiary-leader-copy">
       <strong data-catalog-leader-primary>
-        {leaderBonusText(monster.leaderSkill)}
+        {leaderBonusText(monster.leaderSkill, locale)}
       </strong>
       <small data-catalog-leader-context hidden={!leaderScope}>
         {leaderScope}

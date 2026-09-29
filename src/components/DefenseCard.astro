@@ -3,11 +3,14 @@ import type { Defense } from '../lib/types';
 import { getCounters, searchText, teamName } from '../data/catalog';
 import Team from './Team.astro';
 import Icon from './Icon.astro';
+import { getMessages, routePath, type Locale } from '../i18n';
 interface Props {
   defense: Defense;
   index: number;
+  locale?: Locale;
 }
-const { defense, index } = Astro.props;
+const { defense, index, locale = 'pt-BR' } = Astro.props;
+const messages = getMessages(locale);
 const count = getCounters(defense.id).length;
 ---
 
@@ -19,26 +22,29 @@ const count = getCounters(defense.id).length;
 >
   <a
     class="defense-link"
-    href={`/siege/${defense.id}/`}
-    aria-label={`Ver counters de ${teamName(defense.team)}`}
+    href={routePath('siege', locale, { id: defense.id })}
+    aria-label={`${locale === 'pt-BR' ? 'Ver counters de' : 'View counters for'} ${teamName(defense.team)}`}
   >
     <div class="card-top">
       <span
         class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}
       >
         <Icon name="tower" size={13} />
-        {defense.tower === '4star' ? 'TORRE 4★' : 'TORRE LIVRE'}
+        {defense.tower === '4star'
+          ? messages.siege.fourStarTower
+          : messages.siege.openTower}
       </span>
       <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
     </div>
-    <Team team={defense.team} />
+    <Team team={defense.team} locale={locale} />
     <div class="card-bottom">
       <span>
         <Icon name="swords" size={15} />
         <strong>{count}</strong> {count === 1 ? 'counter' : 'counters'}
       </span>
       <span class="card-cta">
-        Ver defesa <Icon name="arrow" size={16} />
+        {locale === 'pt-BR' ? 'Ver defesa' : 'View defense'}{' '}
+        <Icon name="arrow" size={16} />
       </span>
     </div>
   </a>

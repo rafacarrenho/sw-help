@@ -1,6 +1,8 @@
 import { matchesSearch } from '../lib/search';
 
 const form = document.querySelector<HTMLFormElement>('[data-search-form]')!;
+const resultSingular = form.dataset.resultSingular ?? 'defense found';
+const resultPlural = form.dataset.resultPlural ?? 'defenses found';
 const search = form.querySelector<HTMLInputElement>('input[type="search"]')!;
 const radios = [
   ...form.querySelectorAll<HTMLInputElement>('input[name="tower"]'),
@@ -24,7 +26,7 @@ function applyFilters(updateUrl = true) {
     card.hidden = !visible;
     if (visible) count++;
   });
-  result.textContent = `${count} ${count === 1 ? 'defesa encontrada' : 'defesas encontradas'}`;
+  result.textContent = `${count} ${count === 1 ? resultSingular : resultPlural}`;
   empty.hidden = count !== 0;
   const params = new URLSearchParams();
   if (search.value.trim()) params.set('q', search.value.trim());

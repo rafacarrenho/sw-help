@@ -5,7 +5,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
 
-  await page.goto('/');
+  await page.goto('/pt/');
   const sidebar = page.locator('[data-sidebar]');
   const workspace = page.locator('.workspace');
   const toggle = page.getByRole('button', { name: 'Recolher menu lateral' });
@@ -60,7 +60,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
   await expect(catalogLink).toHaveAttribute('aria-describedby', 'nav-tooltip');
 
   await catalogLink.click();
-  await expect(page).toHaveURL(/\/monstros\/$/);
+  await expect(page).toHaveURL(/\/pt\/monstros\/$/);
   await expect(sidebar).toHaveCSS('width', '80px');
   await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
   expect(
@@ -88,7 +88,7 @@ test('mobile abre como drawer e fecha por Escape e backdrop', async ({
   await page.addInitScript(() => {
     window.localStorage.setItem('sw-help:sidebar-collapsed', 'true');
   });
-  await page.goto('/');
+  await page.goto('/pt/');
   const sidebar = page.locator('[data-sidebar]');
   const openButton = page.getByRole('button', { name: 'Abrir menu' });
   const mobileBrand = page.locator('.mobile-brand');

@@ -51,13 +51,15 @@ import {
   structuralSpeed,
   writeSpeedComparisonQueryState,
 } from '../src/lib/speed-comparison.ts';
-import { monsterById } from '../src/data/catalog.ts';
+import { monsterById, defensesFor, countersFor } from '../src/data/catalog.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
+import { getMessages, routePath } from '../src/i18n/index.ts';
 import type {
   Monster,
   MonsterSkill,
-  Defense,
+  DefenseBase,
   Counter,
+  CounterBase,
 } from '../src/lib/types.ts';
 
 const read = (name: string) =>
@@ -66,8 +68,43 @@ const read = (name: string) =>
   );
 const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
-const defenses: Defense[] = read('defenses');
-const counters: Counter[] = read('counters');
+const defenses: DefenseBase[] = read('defenses');
+const counters: CounterBase[] = read('counters');
+
+test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
+  assert.equal(routePath('home', 'en'), '/');
+  assert.equal(routePath('home', 'pt-BR'), '/pt/');
+  assert.equal(routePath('monsters', 'en'), '/monsters/');
+  assert.equal(routePath('monsters', 'pt-BR'), '/pt/monstros/');
+  assert.equal(routePath('speedComparison', 'en'), '/speed-comparison/');
+  assert.equal(routePath('speedComparison', 'pt-BR'), '/pt/comparador-spd/');
+  assert.equal(
+    routePath('monster', 'pt-BR', { id: 'nora' }),
+    '/pt/monstros/nora/',
+  );
+});
+
+test('conteúdo editorial tem cobertura em inglês e português', () => {
+  const englishDefenses = defensesFor('en');
+  const portugueseDefenses = defensesFor('pt-BR');
+  const englishCounters = countersFor('en');
+  const portugueseCounters = countersFor('pt-BR');
+
+  assert.equal(englishDefenses.length, defenses.length);
+  assert.equal(portugueseDefenses.length, defenses.length);
+  assert.equal(englishCounters.length, counters.length);
+  assert.equal(portugueseCounters.length, counters.length);
+  assert.notEqual(
+    englishDefenses[0].description,
+    portugueseDefenses[0].description,
+  );
+  assert.notEqual(
+    englishCounters[0].instruction,
+    portugueseCounters[0].instruction,
+  );
+  assert.equal(getMessages('en').layout.language, 'Language');
+  assert.equal(getMessages('pt-BR').layout.language, 'Idioma');
+});
 
 test('Comparador de SPD descobre todas as lideranças sem filtrar conteúdo', () => {
   assert.deepEqual(

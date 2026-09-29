@@ -1,0 +1,26 @@
+{
+  "morris-eshir-orion": {
+    "label": "Pressure & control",
+    "description": "Single-target damage, control, and sustain keep the pressure on."
+  },
+  "morris-trevor-figaro": {
+    "label": "Versatile burst",
+    "description": "Focused damage and strong follow-up pressure define this defense."
+  },
+  "morris-orion-trevor": {
+    "label": "Control & pressure",
+    "description": "A balanced composition with support, control, and strong follow-up damage."
+  },
+  "solveig-vigor-cichlid": {
+    "label": "Sustain & pressure",
+    "description": "Support, continuous damage, and resilience help this defense hold its ground."
+  },
+  "solveig-cichlid-molly": {
+    "label": "Chain pressure",
+    "description": "Consistent pressure and reliable follow-up damage keep the defense moving."
+  },
+  "solveig-iris-hraesvelg": {
+    "label": "Pressure & control",
+    "description": "Continuous damage, support, and control put steady pressure on the opposing team."
+  }
+}

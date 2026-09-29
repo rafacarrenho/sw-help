@@ -69,14 +69,17 @@ export interface MonsterSkill {
   scalesWith: string[];
   source: string;
 }
-export interface Defense {
+export interface DefenseBase {
   id: string;
   team: string[];
   tower: Tower;
-  label: string;
-  description: string;
   status: 'example' | 'documented';
 }
+export interface DefenseCopy {
+  label: string;
+  description: string;
+}
+export type Defense = DefenseBase & DefenseCopy;
 export interface CounterStats {
   hp?: number;
   attack?: number;
@@ -87,11 +90,10 @@ export interface CounterStats {
   accuracy?: number;
 }
 export type CounterStatName = keyof CounterStats;
-export interface Counter {
+export interface CounterBase {
   id: string;
   defenseId: string;
   team: string[];
-  instruction: string;
   turnOrder: string[];
   runes: {
     monsterId: string;
@@ -102,3 +104,4 @@ export interface Counter {
   tick: number;
   sources: { title: string; url: string }[];
 }
+export type Counter = CounterBase & { instruction: string };

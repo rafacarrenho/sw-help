@@ -3,48 +3,36 @@
     "id": "morris-eshir-orion",
     "team": ["morris-wind-1020", "eshir-light-1326", "orion-water-589"],
     "tower": "4star",
-    "label": "Pressão & controle",
-    "description": "Composição com dano de alvo único, controle e sustain para manter a pressão.",
     "status": "example"
   },
   {
     "id": "morris-trevor-figaro",
     "team": ["morris-wind-1020", "trevor-fire-894", "figaro-light-663"],
     "tower": "4star",
-    "label": "Burst versátil",
-    "description": "Defesa com dano focado e boa capacidade de pressionar em sequência.",
     "status": "example"
   },
   {
     "id": "morris-orion-trevor",
     "team": ["morris-wind-1020", "orion-water-589", "trevor-fire-894"],
     "tower": "4star",
-    "label": "Controle & pressão",
-    "description": "Composição equilibrada com suporte, controle e bom potencial de dano em sequência.",
     "status": "example"
   },
   {
     "id": "solveig-vigor-cichlid",
     "team": ["solveig-fire-2193", "vigor", "cichlid-wind-837"],
     "tower": "4star",
-    "label": "Sustain e pressão",
-    "description": "Composição com suporte, dano contínuo e certa resistência para sustentar a defesa.",
     "status": "example"
   },
   {
     "id": "solveig-cichlid-molly",
     "team": ["solveig-fire-2193", "cichlid-wind-837", "molly-light-838"],
     "tower": "4star",
-    "label": "Pressão em cadeia",
-    "description": "Defesa com pressão consistente e boa continuidade de dano em sequência.",
     "status": "example"
   },
   {
     "id": "solveig-iris-hraesvelg",
     "team": ["solveig-fire-2193", "iris-light-858", "hraesvelg-wind-520"],
     "tower": "4star",
-    "label": "Pressão & controle",
-    "description": "Defesa com dano contínuo, suporte e boa capacidade de pressionar a linha adversária.",
     "status": "example"
   }
 ]

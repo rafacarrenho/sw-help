@@ -1,15 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import { getMessages, routePath, type Locale } from '../i18n';
+
+const locale: Locale = Astro.url.pathname.startsWith('/pt/') ? 'pt-BR' : 'en';
+const messages = getMessages(locale);
 ---
 
-<Layout title="Página não encontrada">
+<Layout title={messages.notFound.title} locale={locale} noIndex>
   <div class="empty-state not-found">
-    <span class="eyebrow">404 · FORA DO MAPA</span>
-    <h1>Esta defesa não está por aqui.</h1>
-    <p>O endereço pode ter mudado. Explore as composições do catálogo.</p>
-    <a class="button" href="/">
-      Voltar ao Siege Counter <Icon name="arrow" size={16} />
+    <span class="eyebrow">{messages.notFound.eyebrow}</span>
+    <h1>{messages.notFound.heading}</h1>
+    <p>{messages.notFound.copy}</p>
+    <a class="button" href={routePath('home', locale)}>
+      {messages.notFound.action} <Icon name="arrow" size={16} />
     </a>
   </div>
 </Layout>

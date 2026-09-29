@@ -1,0 +1,443 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MonsterPortrait from '../Monster.astro';
+import MonsterCard from '../MonsterCard.astro';
+import Icon from '../Icon.astro';
+import {
+  monsters,
+  monsterById,
+  defenses,
+  counters,
+  teamName,
+} from '../../data/catalog';
+import { skillById } from '../../data/skill-catalog';
+import metadata from '../../data/monsters-meta.json';
+import {
+  formLabel,
+  leaderText,
+  leaderSkillIcon,
+  archetypeLabelsFor,
+  elementLabelsFor,
+} from '../../lib/monster-catalog';
+import type { Monster } from '../../lib/types';
+import { getMessages, numberLocale, routePath, type Locale } from '../../i18n';
+
+interface Props {
+  monster: Monster;
+  locale: Locale;
+}
+const { monster, locale } = Astro.props;
+const messages = getMessages(locale);
+const elementNames = elementLabelsFor(locale);
+const archetypeLabels = archetypeLabelsFor(locale);
+const leaderIcon = leaderSkillIcon(monster.leaderSkill);
+const monsterSkills = (monster.skillIds ?? [])
+  .flatMap((id) => {
+    const skill = skillById.get(id);
+    return skill ? [skill] : [];
+  })
+  .sort((a, b) => a.slot - b.slot || a.id - b.id);
+const stats = monster.maxLevelStats
+  ? [
+      [
+        messages.monster.maxHp,
+        monster.maxLevelStats.hp.toLocaleString(numberLocale(locale)),
+      ],
+      [
+        messages.monster.maxAttack,
+        monster.maxLevelStats.attack.toLocaleString(numberLocale(locale)),
+      ],
+      [
+        messages.monster.maxDefense,
+        monster.maxLevelStats.defense.toLocaleString(numberLocale(locale)),
+      ],
+      [messages.monster.baseSpeed, String(monster.speed ?? '—')],
+      [messages.common.criticalRate, `${monster.maxLevelStats.critRate}%`],
+      [messages.common.criticalDamage, `${monster.maxLevelStats.critDamage}%`],
+      [messages.common.resistance, `${monster.maxLevelStats.resistance}%`],
+      [messages.common.accuracy, `${monster.maxLevelStats.accuracy}%`],
+    ]
+  : [];
+const family = monsters
+  .filter((m) => m.familyId === monster.familyId && m.id !== monster.id)
+  .sort(
+    (a, b) =>
+      a.element.localeCompare(b.element) ||
+      (a.awakenLevel ?? 0) - (b.awakenLevel ?? 0),
+  );
+const evolution = (() => {
+  let first = monster;
+  while (first.awakensFrom) {
+    const previous = monsterById.get(first.awakensFrom);
+    if (!previous) break;
+    first = previous;
+  }
+
+  const sequence = [first];
+  let next = first.awakensTo ? monsterById.get(first.awakensTo) : null;
+
+  while (next) {
+    sequence.push(next);
+    next = next.awakensTo ? monsterById.get(next.awakensTo) : null;
+  }
+
+  return sequence;
+})();
+const uses = defenses.filter(
+  (d) =>
+    d.team.includes(monster.id) ||
+    counters.some((c) => c.defenseId === d.id && c.team.includes(monster.id)),
+);
+const updated = new Date(metadata.importedAt).toLocaleDateString(
+  numberLocale(locale),
+  {
+    timeZone: 'UTC',
+  },
+);
+const catalogPath = routePath('monsters', locale);
+const catalogPageTemplate = routePath('monsterPage', locale, {
+  page: '__PAGE__',
+});
+---
+
+<Layout
+  title={`${monster.name} · ${elementNames[monster.element]}`}
+  section="monsters"
+  detail
+  locale={locale}
+  routeName="monster"
+  routeParams={{ id: monster.id }}
+  description={
+    locale === 'pt-BR'
+      ? `${monster.name}, ${elementNames[monster.element]}, ${formLabel(monster, locale)}: habilidade de líder, família e informações em Summoners War.`
+      : `${monster.name}, ${elementNames[monster.element]}, ${formLabel(monster, locale)}: leader skill, family, and Summoners War information.`
+  }
+>
+  <div class="detail-toolbar">
+    <a
+      class="back-link"
+      href={catalogPath}
+      data-back-monsters
+      data-catalog-path={catalogPath}
+      data-page-path={catalogPageTemplate}
+    >
+      <span>←</span> {messages.monster.allMonsters}
+    </a>
+  </div>
+  <script is:inline>
+    (() => {
+      const current = new URLSearchParams(location.search);
+      const back = new URLSearchParams();
+      for (const key of [
+        'q',
+        'element',
+        'stars',
+        'leader',
+        'leaderScope',
+        'sort',
+      ]) {
+        const value = current.get(key);
+        if (value && !(key === 'sort' && value === 'name')) {
+          back.set(key, value);
+        }
+      }
+      const page = Math.max(1, Math.trunc(Number(current.get('page'))) || 1);
+      const link = document.querySelector('[data-back-monsters]');
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (back.size) {
+        if (page > 1) back.set('page', String(page));
+        link.href = `${link.dataset.catalogPath}?${back}`;
+      } else if (page > 1) {
+        link.href = (link.dataset.pagePath || '').replace(
+          '__PAGE__',
+          String(page),
+        );
+      }
+    })();
+  </script>
+  <section class="monster-profile">
+    <div class="monster-profile-portrait">
+      <MonsterPortrait id={monster.id} locale={locale} />
+      {!monster.image && <span>{messages.monster.portraitUnavailable}</span>}
+      <span
+        class:list={[
+          'natural-stars',
+          {
+            'natural-stars--awakened': monster.awakenLevel === 1,
+            'natural-stars--second-awaken': monster.awakenLevel === 2,
+          },
+        ]}
+        aria-label={`${monster.naturalStars} ${messages.monster.naturalStars.toLowerCase()}`}
+      >
+        {'★'.repeat(monster.naturalStars)}
+      </span>
+      <span>{messages.monster.naturalStars}</span>
+    </div>
+    <div class="monster-profile-content">
+      <span class="eyebrow">{monster.family}</span>
+      <h1>{monster.name}</h1>
+      <div class="monster-profile-tags">
+        <span>{elementNames[monster.element]}</span>
+        {monster.awakenLevel === 2 && <span>{formLabel(monster, locale)}</span>}
+        <span>
+          {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
+        </span>
+      </div>
+      <div class="monster-leader-panel">
+        {leaderIcon && (
+          <img
+            class="leader-emblem"
+            src={leaderIcon}
+            alt=""
+            width="54"
+            height="54"
+            aria-hidden="true"
+            data-leader-icon
+          />
+        )}
+        <div>
+          <h2>{messages.monster.leaderSkill}</h2>
+          <p>{leaderText(monster.leaderSkill, locale)}</p>
+        </div>
+      </div>
+      {stats.length > 0 && (
+        <dl class="monster-facts" aria-label={messages.monster.monsterStats}>
+          {stats.map(([label, value]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {monster.obtainable === false && (
+        <p class="monster-availability">{messages.monster.unobtainable}</p>
+      )}
+      {evolution.length > 1 && (
+        <div class="monster-evolution">
+          <h2>{messages.monster.evolution}</h2>
+          <div class="monster-evolution-sequence">
+            {evolution.map((stage, index) => (
+              <>
+                {index > 0 && (
+                  <span class="monster-evolution-arrow" aria-hidden="true">
+                    →
+                  </span>
+                )}
+                <div class="monster-evolution-step">
+                  {stage.image ? (
+                    <img
+                      src={stage.image}
+                      alt={`${stage.name} (${formLabel(stage, locale)})`}
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="monster-evolution-fallback">
+                      {stage.name.slice(0, 2)}
+                    </span>
+                  )}
+                </div>
+              </>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+  {monsterSkills.length > 0 && (
+    <section
+      class="monster-related monster-skills"
+      aria-labelledby="skills-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2 id="skills-title">{messages.monster.skills}</h2>
+          <p>{messages.monster.originalDescriptions}</p>
+        </div>
+        {typeof monster.skillUpsToMax === 'number' && (
+          <span class="count-badge">
+            {monster.skillUpsToMax} {messages.monster.upgradesToMax}
+          </span>
+        )}
+      </div>
+      <div class="monster-skill-list">
+        {monsterSkills.map((skill) => (
+          <article class="monster-skill-card">
+            <div class="monster-skill-heading">
+              <span class="monster-skill-slot">S{skill.slot}</span>
+              <div>
+                <h3>{skill.name}</h3>
+                <div class="monster-skill-tags">
+                  {skill.passive && <span>{messages.monster.passive}</span>}
+                  {skill.aoe && <span>{messages.monster.area}</span>}
+                  {skill.random && <span>{messages.monster.randomTarget}</span>}
+                  {skill.cooltime !== null && (
+                    <span>
+                      {messages.monster.cooldown}: {skill.cooltime}{' '}
+                      {messages.monster.turns}
+                    </span>
+                  )}
+                  {skill.hits > 0 && (
+                    <span>
+                      {skill.hits}{' '}
+                      {skill.hits === 1
+                        ? messages.monster.hit
+                        : messages.monster.hits}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            {skill.description && (
+              <p class="monster-skill-description">{skill.description}</p>
+            )}
+            {skill.effects.length > 0 && (
+              <ul class="monster-skill-effects">
+                {skill.effects.map((effect) => (
+                  <li>
+                    <strong>{effect.name}</strong>
+                    {effect.chance > 0 && (
+                      <span>
+                        {effect.chance}% {messages.monster.chance}
+                      </span>
+                    )}
+                    {effect.description && <p>{effect.description}</p>}
+                    {effect.note && <small>{effect.note}</small>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(skill.multiplierFormula || skill.scalesWith.length > 0) && (
+              <div class="monster-skill-scaling">
+                {skill.multiplierFormula && (
+                  <span>
+                    {messages.monster.multiplier}:{' '}
+                    <code>{skill.multiplierFormula}</code>
+                  </span>
+                )}
+                {skill.scalesWith.length > 0 && (
+                  <span>
+                    {messages.monster.scalesWith}: {skill.scalesWith.join(', ')}
+                  </span>
+                )}
+              </div>
+            )}
+            {skill.levelProgress.length > 0 && (
+              <details class="monster-skill-progress">
+                <summary>
+                  <span
+                    class="monster-skill-progress-disclosure"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="monster-skill-progress-label">
+                    {messages.monster.upgradeProgression}
+                  </span>
+                  <span class="monster-skill-progress-count">
+                    {skill.levelProgress.length}{' '}
+                    {skill.levelProgress.length === 1
+                      ? messages.monster.step
+                      : messages.monster.steps}
+                  </span>
+                </summary>
+                <ol>
+                  {skill.levelProgress.map((progress, index) => (
+                    <li>
+                      <span aria-hidden="true">{index + 1}</span>
+                      <p>{progress}</p>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+  {(monster.sources?.length ?? 0) > 0 && (
+    <section
+      class="monster-related monster-sources"
+      aria-labelledby="sources-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2 id="sources-title">{messages.monster.howToGet}</h2>
+          <p>{messages.monster.sourcesIntro}</p>
+        </div>
+        <span class="count-badge">{monster.sources!.length}</span>
+      </div>
+      <ul class="monster-source-list">
+        {monster.sources!.map((source) => (
+          <li>
+            <div>
+              <strong>{source.name}</strong>
+              {source.description && <p>{source.description}</p>}
+            </div>
+            {source.farmable && (
+              <span class="farmable-tag">{messages.monster.farmable}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+  {uses.length > 0 && (
+    <section class="monster-related" aria-labelledby="siege-uses-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="siege-uses-title">{messages.monster.inSiegeCounter}</h2>
+          <p>{messages.monster.usesIntro}</p>
+        </div>
+        <Icon name="swords" />
+      </div>
+      <div class="monster-uses">
+        {uses.map((defense) => (
+          <a href={routePath('siege', locale, { id: defense.id })}>
+            <span>{teamName(defense.team)}</span>
+            <Icon name="arrow" size={18} />
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+  {family.length > 0 && (
+    <section class="monster-related" aria-labelledby="family-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="family-title">{messages.monster.sameFamily}</h2>
+          <p>{messages.monster.familyIntro}</p>
+        </div>
+        <span class="count-badge">{family.length}</span>
+      </div>
+      <div class="bestiary-grid">
+        {family.map((relative) => (
+          <MonsterCard monster={relative} locale={locale} />
+        ))}
+      </div>
+    </section>
+  )}
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      {messages.monster.dataPrefix}{' '}
+      <a href={monster.source} target="_blank" rel="noreferrer">
+        SWARFARM ↗
+      </a>
+      , {messages.monster.importedOn} {updated}.{' '}
+      {messages.monster.speedDisclaimer}
+      {leaderIcon && (
+        <>
+          {' '}
+          {messages.monster.leaderIconVia}{' '}
+          <a href="https://swarena.gg/" target="_blank" rel="noreferrer">
+            SWArena ↗
+          </a>
+          .
+        </>
+      )}{' '}
+      {messages.monster.ownership}
+    </p>
+  </aside>
+</Layout>

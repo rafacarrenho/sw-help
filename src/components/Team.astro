@@ -1,14 +1,16 @@
 ---
 import Monster from './Monster.astro';
+import type { Locale } from '../i18n';
 interface Props {
   team: string[];
   linked?: boolean;
+  locale?: Locale;
 }
-const { team, linked = false } = Astro.props;
+const { team, linked = false, locale = 'pt-BR' } = Astro.props;
 ---
 
 <div class="monster-team">
   {team.map((id, index) => (
-    <Monster id={id} leader={index === 0} linked={linked} />
+    <Monster id={id} leader={index === 0} linked={linked} locale={locale} />
   ))}
 </div>
