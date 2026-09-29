@@ -15,11 +15,11 @@ suportadas.
 
 A ferramenta terá um seletor segmentado e acessível com três modos:
 
-| Modo | Monstros efetivos | Constante de tick | Lideranças de SPD válidas |
-| --- | ---: | ---: | --- |
-| Siege | 3 | `0.0007` | General, Guild e Element |
-| Arena | 4 | `0.0007` | General, Arena e Element |
-| RTA | 4 | `0.00015` | General, Arena e Element |
+| Modo  | Monstros efetivos | Constante de tick | Lideranças de SPD válidas |
+| ----- | ----------------: | ----------------: | ------------------------- |
+| Siege |                 3 |          `0.0007` | General, Guild e Element  |
+| Arena |                 4 |          `0.0007` | General, Arena e Element  |
+| RTA   |                 4 |         `0.00015` | General, Arena e Element  |
 
 RTA representará os quatro monstros que efetivamente entram na batalha após o
 ban. A simulação de cinco escolhas e diferentes resultados de ban não pertence

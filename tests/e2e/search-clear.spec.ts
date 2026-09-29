@@ -44,7 +44,7 @@ test('mantém a ação de limpar visível em todas as buscas preenchidas', async
   );
 
   await page.goto('/spd-tuning/');
-  const slots = page.locator('[data-tuning-slot]');
+  const slots = page.locator('[data-tuning-slot]:visible');
   await expect(slots).toHaveCount(3);
   for (const slot of await slots.all()) {
     await expect(

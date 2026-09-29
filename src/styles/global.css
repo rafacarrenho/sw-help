@@ -442,7 +442,7 @@ main {
   gap: 7px;
   margin-bottom: 13px;
 }
-.eyebrow > span {
+.eyebrow > .eyebrow-mark {
   display: inline-block;
   width: 5px;
   height: 5px;

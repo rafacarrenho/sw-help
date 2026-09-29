@@ -4,9 +4,38 @@ import {
 } from '../data/speed-tuning.ts';
 import type { Element, Monster, MonsterSkill } from './types.ts';
 
+export type SpeedTuningMode = 'siege' | 'arena' | 'rta';
+
 export const SIEGE_TICK_CONSTANT = 0.0007;
+export const ARENA_TICK_CONSTANT = 0.0007;
+export const RTA_TICK_CONSTANT = 0.00015;
 export const DEFAULT_SPEED_TUNING_TOWER_PERCENT = 15;
 export const SPEED_BUFF_PERCENT = 30;
+
+export const SPEED_TUNING_MODE_CONFIG = {
+  siege: {
+    slotCount: 3,
+    tickConstant: SIEGE_TICK_CONSTANT,
+    leaderAreas: ['General', 'Guild', 'Element'],
+  },
+  arena: {
+    slotCount: 4,
+    tickConstant: ARENA_TICK_CONSTANT,
+    leaderAreas: ['General', 'Arena', 'Element'],
+  },
+  rta: {
+    slotCount: 4,
+    tickConstant: RTA_TICK_CONSTANT,
+    leaderAreas: ['General', 'Arena', 'Element'],
+  },
+} as const satisfies Record<
+  SpeedTuningMode,
+  {
+    slotCount: 3 | 4;
+    tickConstant: number;
+    leaderAreas: readonly string[];
+  }
+>;
 
 export interface SpeedTuningEffect {
   percent?: number;
@@ -46,6 +75,7 @@ export interface FollowerTuningInput {
   leaderPercent: number;
   usesSwift: boolean;
   passiveSpeedBonus?: number;
+  tickConstant?: number;
 }
 
 export interface FollowerTuningResult {
@@ -60,6 +90,7 @@ export interface SpeedTuningQueryMonster {
   hasSpeedBuff: boolean;
   hasTargetEffect: boolean;
   leaderAmount: number | null;
+  leaderArea?: string | null;
 }
 
 export interface SpeedTuningQuerySlotState {
@@ -74,16 +105,18 @@ export interface SpeedTuningQuerySlotState {
 }
 
 export interface SpeedTuningQueryState {
+  mode: SpeedTuningMode;
   towerPercent: number;
   activeLeaderIndex: number | null;
   slots: SpeedTuningQuerySlotState[];
 }
 
-const SPEED_TUNING_SLOT_COUNT = 3;
+export const SPEED_TUNING_MAX_SLOT_COUNT = 4;
 const speedTuningQueryKeys = [
+  'mode',
   'tower',
   'leader',
-  ...Array.from({ length: SPEED_TUNING_SLOT_COUNT }, (_, index) => [
+  ...Array.from({ length: SPEED_TUNING_MAX_SLOT_COUNT }, (_, index) => [
     `m${index + 1}`,
     `r${index + 1}`,
     `swift${index + 1}`,
@@ -109,13 +142,42 @@ const queryNumber = (
   return Number.isFinite(parsed) ? clamp(parsed, minimum, maximum) : fallback;
 };
 
-const defaultTargetIndex = (slotIndex: number) =>
-  Math.min(slotIndex + 1, SPEED_TUNING_SLOT_COUNT - 1);
+export function speedTuningModeFromValue(
+  value: string | null | undefined,
+): SpeedTuningMode {
+  return value === 'arena' || value === 'rta' ? value : 'siege';
+}
+
+export function isSpeedLeaderValidForMode(
+  leader: SpeedTuningLeader | null,
+  mode: SpeedTuningMode,
+): boolean {
+  return Boolean(
+    leader &&
+    (SPEED_TUNING_MODE_CONFIG[mode].leaderAreas as readonly string[]).includes(
+      leader.area,
+    ),
+  );
+}
+
+const queryMonsterHasValidLeader = (
+  monster: SpeedTuningQueryMonster | undefined,
+  mode: SpeedTuningMode,
+) =>
+  monster?.leaderAmount !== null &&
+  monster?.leaderAmount !== undefined &&
+  (monster.leaderArea === undefined ||
+    monster.leaderArea === null ||
+    (SPEED_TUNING_MODE_CONFIG[mode].leaderAreas as readonly string[]).includes(
+      monster.leaderArea,
+    ));
 
 export function readSpeedTuningQueryState(
   params: URLSearchParams,
   monsters: ReadonlyMap<string, SpeedTuningQueryMonster>,
 ): SpeedTuningQueryState {
+  const mode = speedTuningModeFromValue(params.get('mode'));
+  const slotCount = SPEED_TUNING_MODE_CONFIG[mode].slotCount;
   const towerParam = params.get('tower');
   const parsedTower = towerParam === null ? NaN : Number(towerParam);
   const towerPercent =
@@ -124,12 +186,15 @@ export function readSpeedTuningQueryState(
       : DEFAULT_SPEED_TUNING_TOWER_PERCENT;
 
   const slots = Array.from(
-    { length: SPEED_TUNING_SLOT_COUNT },
+    { length: SPEED_TUNING_MAX_SLOT_COUNT },
     (_, slotIndex): SpeedTuningQuerySlotState => {
       const slotNumber = slotIndex + 1;
       const monsterParam = params.get(`m${slotNumber}`);
-      const monster = monsterParam ? monsters.get(monsterParam) : null;
-      const targetFallback = defaultTargetIndex(slotIndex);
+      const monster =
+        slotIndex < slotCount && monsterParam
+          ? monsters.get(monsterParam)
+          : null;
+      const targetFallback = Math.min(slotIndex + 1, slotCount - 1);
 
       if (!monster || !monsterParam) {
         return {
@@ -148,7 +213,7 @@ export function readSpeedTuningQueryState(
       const targetIndex =
         Number.isInteger(targetParam) &&
         targetParam > slotNumber &&
-        targetParam <= SPEED_TUNING_SLOT_COUNT
+        targetParam <= slotCount
           ? targetParam - 1
           : targetFallback;
       const initialBuffsParam = params.get(`startBuffs${slotNumber}`);
@@ -168,7 +233,7 @@ export function readSpeedTuningQueryState(
           slotIndex === 0 ? queryNumber(params.get('r1'), 0, 0, 999) : 0,
         usesSwift: params.get(`swift${slotNumber}`) === '1',
         boostPercent:
-          monster.defaultBoostPercent === null || slotIndex > 1
+          monster.defaultBoostPercent === null || slotIndex >= slotCount - 1
             ? 0
             : queryNumber(
                 params.get(`boost${slotNumber}`),
@@ -178,10 +243,10 @@ export function readSpeedTuningQueryState(
               ),
         speedBuffEnabled:
           monster.hasSpeedBuff &&
-          slotIndex < 2 &&
+          slotIndex < slotCount - 1 &&
           params.get(`buff${slotNumber}`) !== '0',
         targetIndex:
-          monster.hasTargetEffect && slotIndex < 2
+          monster.hasTargetEffect && slotIndex < slotCount - 1
             ? targetIndex
             : targetFallback,
         artifactPercent:
@@ -197,7 +262,8 @@ export function readSpeedTuningQueryState(
     .map((slot, index) => ({
       index,
       amount:
-        slot.monsterId === null
+        slot.monsterId === null ||
+        !queryMonsterHasValidLeader(monsters.get(slot.monsterId), mode)
           ? null
           : (monsters.get(slot.monsterId)?.leaderAmount ?? null),
     }))
@@ -220,7 +286,7 @@ export function readSpeedTuningQueryState(
       ).index;
   }
 
-  return { towerPercent, activeLeaderIndex, slots };
+  return { mode, towerPercent, activeLeaderIndex, slots };
 }
 
 export function writeSpeedTuningQueryState(
@@ -231,6 +297,10 @@ export function writeSpeedTuningQueryState(
   const nextParams = new URLSearchParams(params);
   speedTuningQueryKeys.forEach((key) => nextParams.delete(key));
 
+  const mode = speedTuningModeFromValue(state.mode);
+  const slotCount = SPEED_TUNING_MODE_CONFIG[mode].slotCount;
+  if (mode !== 'siege') nextParams.set('mode', mode);
+
   if (state.towerPercent !== DEFAULT_SPEED_TUNING_TOWER_PERCENT) {
     nextParams.set(
       'tower',
@@ -238,7 +308,7 @@ export function writeSpeedTuningQueryState(
     );
   }
 
-  state.slots.slice(0, SPEED_TUNING_SLOT_COUNT).forEach((slot, slotIndex) => {
+  state.slots.slice(0, slotCount).forEach((slot, slotIndex) => {
     if (!slot.monsterId) return;
     const monster = monsters.get(slot.monsterId);
     if (!monster) return;
@@ -263,7 +333,7 @@ export function writeSpeedTuningQueryState(
     }
 
     if (
-      slotIndex < 2 &&
+      slotIndex < slotCount - 1 &&
       monster.defaultBoostPercent !== null &&
       slot.boostPercent !== monster.defaultBoostPercent
     ) {
@@ -272,17 +342,21 @@ export function writeSpeedTuningQueryState(
         String(clamp(slot.boostPercent, 0, 100)),
       );
     }
-    if (slotIndex < 2 && monster.hasSpeedBuff && !slot.speedBuffEnabled) {
+    if (
+      slotIndex < slotCount - 1 &&
+      monster.hasSpeedBuff &&
+      !slot.speedBuffEnabled
+    ) {
       nextParams.set(`buff${slotNumber}`, '0');
     }
 
-    const targetFallback = defaultTargetIndex(slotIndex);
+    const targetFallback = Math.min(slotIndex + 1, slotCount - 1);
     if (
-      slotIndex < 2 &&
+      slotIndex < slotCount - 1 &&
       monster.hasTargetEffect &&
       slot.targetIndex !== targetFallback &&
       slot.targetIndex > slotIndex &&
-      slot.targetIndex < SPEED_TUNING_SLOT_COUNT
+      slot.targetIndex < slotCount
     ) {
       nextParams.set(`target${slotNumber}`, String(slot.targetIndex + 1));
     }
@@ -297,7 +371,7 @@ export function writeSpeedTuningQueryState(
 
   const hasLeader = state.slots.some((slot) => {
     if (!slot.monsterId) return false;
-    return (monsters.get(slot.monsterId)?.leaderAmount ?? null) !== null;
+    return queryMonsterHasValidLeader(monsters.get(slot.monsterId), mode);
   });
   if (hasLeader) {
     const activeSlot =
@@ -306,7 +380,7 @@ export function writeSpeedTuningQueryState(
         : state.slots[state.activeLeaderIndex];
     const activeHasLeader = Boolean(
       activeSlot?.monsterId &&
-      (monsters.get(activeSlot.monsterId)?.leaderAmount ?? null) !== null,
+      queryMonsterHasValidLeader(monsters.get(activeSlot.monsterId), mode),
     );
     nextParams.set(
       'leader',
@@ -457,19 +531,24 @@ export function getSpeedTuningCapabilities(
   };
 }
 
-export function getSiegeSpeedLeader(
+export function getSpeedTuningLeader(
   monster: Pick<Monster, 'leaderSkill'>,
+  mode?: SpeedTuningMode,
 ): SpeedTuningLeader | null {
   const leader = monster.leaderSkill;
   if (!leader || leader.attribute !== 'Attack Speed') return null;
-  if (!['General', 'Guild', 'Element'].includes(leader.area)) return null;
-
-  return {
+  const result = {
     amount: leader.amount,
     area: leader.area,
     element: leader.element,
   };
+  return mode === undefined || isSpeedLeaderValidForMode(result, mode)
+    ? result
+    : null;
 }
+
+export const getSiegeSpeedLeader = (monster: Pick<Monster, 'leaderSkill'>) =>
+  getSpeedTuningLeader(monster, 'siege');
 
 export function applicableLeaderPercent(
   leader: SpeedTuningLeader | null,
@@ -557,6 +636,7 @@ export function tuneFollower({
   leaderPercent,
   usesSwift,
   passiveSpeedBonus = 0,
+  tickConstant = SIEGE_TICK_CONSTANT,
 }: FollowerTuningInput): FollowerTuningResult | null {
   if (
     !Number.isFinite(anchorCombatSpeed) ||
@@ -565,18 +645,20 @@ export function tuneFollower({
     iteration < 1 ||
     !Number.isFinite(accumulatedAtbBoost) ||
     !Number.isFinite(artifactSpeedIncrease) ||
-    !Number.isFinite(passiveSpeedBonus)
+    !Number.isFinite(passiveSpeedBonus) ||
+    !Number.isFinite(tickConstant) ||
+    tickConstant <= 0
   ) {
     return null;
   }
 
-  const anchorTicks = Math.ceil(1 / (anchorCombatSpeed * SIEGE_TICK_CONSTANT));
+  const anchorTicks = Math.ceil(1 / (anchorCombatSpeed * tickConstant));
   const normalizedBoost = Math.max(0, accumulatedAtbBoost) / 100;
   const numerator =
-    anchorCombatSpeed * SIEGE_TICK_CONSTANT * (anchorTicks + iteration) -
+    anchorCombatSpeed * tickConstant * (anchorTicks + iteration) -
     normalizedBoost;
 
-  let denominator = SIEGE_TICK_CONSTANT * (anchorTicks + iteration);
+  let denominator = tickConstant * (anchorTicks + iteration);
   if (
     speedBuffStartIteration !== null &&
     speedBuffStartIteration >= 1 &&
@@ -589,8 +671,7 @@ export function tuneFollower({
       (SPEED_BUFF_PERCENT / 100) *
         (1 + clamp(artifactSpeedIncrease, 0, 100) / 100);
     denominator =
-      SIEGE_TICK_CONSTANT *
-      (anchorTicks + normalTicks + buffedTicks * speedModifier);
+      tickConstant * (anchorTicks + normalTicks + buffedTicks * speedModifier);
   }
 
   if (!Number.isFinite(denominator) || denominator <= 0) return null;

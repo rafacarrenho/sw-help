@@ -31,11 +31,14 @@ import {
 } from '../src/lib/speed-tick.ts';
 import {
   applicableLeaderPercent,
+  ARENA_TICK_CONSTANT,
   combatSpeed,
   DEFAULT_SPEED_TUNING_TOWER_PERCENT,
   getSiegeSpeedLeader,
+  getSpeedTuningLeader,
   getSpeedTuningCapabilities,
   minimumRuneSpeedForCombat,
+  RTA_TICK_CONSTANT,
   readSpeedTuningQueryState,
   tuneFollower,
   writeSpeedTuningQueryState,
@@ -168,6 +171,34 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
       activeAdditionalPercent: 15,
       minimumSpeed: 239,
     }),
+    null,
+  );
+  assert.deepEqual(
+    getSpeedTuningLeader(
+      {
+        leaderSkill: {
+          attribute: 'Attack Speed',
+          amount: 33,
+          area: 'Arena',
+          element: null,
+        },
+      },
+      'rta',
+    ),
+    { amount: 33, area: 'Arena', element: null },
+  );
+  assert.equal(
+    getSpeedTuningLeader(
+      {
+        leaderSkill: {
+          attribute: 'Attack Speed',
+          amount: 28,
+          area: 'Guild',
+          element: null,
+        },
+      },
+      'arena',
+    ),
     null,
   );
 });
@@ -443,6 +474,36 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
   );
 });
 
+test('Speed Tuning usa ticks de Arena e RTA nas quatro posições', () => {
+  const baseInput = {
+    anchorCombatSpeed: 300,
+    accumulatedAtbBoost: 30,
+    speedBuffStartIteration: null,
+    artifactSpeedIncrease: 0,
+    baseSpeed: 100,
+    towerPercent: 15,
+    leaderPercent: 0,
+    usesSwift: false,
+  };
+
+  assert.deepEqual(
+    tuneFollower({
+      ...baseInput,
+      iteration: 3,
+      tickConstant: ARENA_TICK_CONSTANT,
+    }),
+    { runeSpeed: 132, combatSpeed: 247, minimumCombatSpeed: 247 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      ...baseInput,
+      iteration: 3,
+      tickConstant: RTA_TICK_CONSTANT,
+    }),
+    { runeSpeed: 109, combatSpeed: 224, minimumCombatSpeed: 224 },
+  );
+});
+
 test('query params do Speed Tick preservam e restauram filtros válidos', () => {
   const validation = {
     monsterIds: new Set(['anne-fire-181', 'nora']),
@@ -521,6 +582,7 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
   const state = readSpeedTuningQueryState(params, queryMonsters);
 
   assert.deepEqual(state, {
+    mode: 'siege',
     towerPercent: 0,
     activeLeaderIndex: 1,
     slots: [
@@ -548,6 +610,16 @@ test('query params do Speed Tuning preservam e restauram todo o time', () => {
         monsterId: 'talisman-light-1680',
         runeSpeed: 0,
         usesSwift: true,
+        boostPercent: 0,
+        speedBuffEnabled: false,
+        targetIndex: 2,
+        artifactPercent: 0,
+        initialBuffs: 0,
+      },
+      {
+        monsterId: null,
+        runeSpeed: 0,
+        usesSwift: false,
         boostPercent: 0,
         speedBuffEnabled: false,
         targetIndex: 2,
@@ -629,6 +701,74 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
     ).toString(),
     'm1=bernard&m2=konamiya',
   );
+});
+
+test('query params do Speed Tuning suportam quatro monstros e líderes por modo', () => {
+  const queryMonsters = new Map<string, SpeedTuningQueryMonster>([
+    [
+      'guild-leader',
+      {
+        defaultBoostPercent: null,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: 28,
+        leaderArea: 'Guild',
+      },
+    ],
+    [
+      'arena-leader',
+      {
+        defaultBoostPercent: null,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: 33,
+        leaderArea: 'Arena',
+      },
+    ],
+    [
+      'single-booster',
+      {
+        defaultBoostPercent: 100,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: true,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'follower',
+      {
+        defaultBoostPercent: null,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+  ]);
+  const params = new URLSearchParams(
+    'mode=rta&m1=guild-leader&m2=arena-leader&leader=1&m3=single-booster&target3=4&m4=follower',
+  );
+  const state = readSpeedTuningQueryState(params, queryMonsters);
+
+  assert.equal(state.mode, 'rta');
+  assert.equal(state.slots.length, 4);
+  assert.equal(state.slots[3]?.monsterId, 'follower');
+  assert.equal(state.slots[2]?.targetIndex, 3);
+  assert.equal(state.activeLeaderIndex, 1);
+  assert.equal(
+    writeSpeedTuningQueryState(params, state, queryMonsters).toString(),
+    'mode=rta&m1=guild-leader&m2=arena-leader&m3=single-booster&m4=follower&leader=2',
+  );
+
+  const invalidMode = readSpeedTuningQueryState(
+    new URLSearchParams('mode=unknown&m1=guild-leader&m4=follower'),
+    queryMonsters,
+  );
+  assert.equal(invalidMode.mode, 'siege');
+  assert.equal(invalidMode.slots[3]?.monsterId, null);
 });
 
 test('query params preservam os buffs iniciais exclusivos do Chilling', () => {

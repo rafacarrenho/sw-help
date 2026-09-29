@@ -23,12 +23,30 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   await expect(
     page.locator('.sidebar a[aria-label="Spd Tuning"]'),
   ).toHaveAttribute('aria-current', 'page');
+  const contextLayout = await page
+    .locator('[data-tuning-context]')
+    .evaluate((element) => {
+      const style = getComputedStyle(element);
+      const bounds = element.getBoundingClientRect();
+      return {
+        background: style.backgroundColor,
+        transform: style.transform,
+        width: bounds.width,
+        height: bounds.height,
+      };
+    });
+  expect(contextLayout.background).toBe('rgba(0, 0, 0, 0)');
+  expect(contextLayout.transform).toBe('none');
+  expect(contextLayout.width).toBeGreaterThan(100);
+  expect(contextLayout.height).toBeLessThan(30);
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
-  await expect(page.locator('[data-tuning-slot]')).toHaveCount(3);
+  await expect(page.locator('[data-tuning-slot]:visible')).toHaveCount(3);
   await expect(page.getByText('SPD das runas', { exact: true })).toBeVisible();
   await expect(page.locator('[data-tuning-rune-speed]')).toHaveValue('');
   await expect(
-    page.getByText('SPD adicional mínima', { exact: true }),
+    page
+      .locator('[data-tuning-slot]:visible')
+      .getByText('SPD adicional mínima', { exact: true }),
   ).toHaveCount(2);
   await expect(page.getByText(/\+verde|SPD verde/i)).toHaveCount(0);
 
@@ -464,6 +482,80 @@ test('compartilha, restaura e normaliza o time pela URL', async ({ page }) => {
     .toContain('/spd-tuning/?utm_source=share#resultado');
 });
 
+test('alterna Arena e RTA com quatro monstros e preserva o quarto slot', async ({
+  page,
+}) => {
+  await page.goto('/spd-tuning/?mode=arena');
+  await expect(page.getByLabel('Arena')).toBeChecked();
+  await expect(page.locator('[data-tuning-slot]:visible')).toHaveCount(4);
+  await expect(page.locator('[data-tuning-context]')).toHaveText(
+    'ORDEM DE ATAQUE NA ARENA',
+  );
+
+  await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
+  await selectMonster(page, 1, 'lushen', 'lushen');
+  await selectMonster(page, 2, 'kahli', 'kahli-fire-1818');
+  await selectMonster(page, 3, 'talisman', 'talisman-light-1680');
+  const slots = page.locator('[data-tuning-slot]');
+  await slots.nth(0).locator('[data-tuning-rune-speed]').fill('200');
+  await expect(slots.nth(3).locator('[data-tuning-result-value]')).toHaveText(
+    /^\+\d+ SPD$/,
+  );
+  const arenaFourthResult = await slots
+    .nth(3)
+    .locator('[data-tuning-result-value]')
+    .textContent();
+  expect(new URL(page.url()).searchParams.get('m4')).toBe(
+    'talisman-light-1680',
+  );
+
+  await page.getByLabel('RTA').check();
+  await expect(page.locator('[data-tuning-context]')).toHaveText(
+    'ORDEM DE ATAQUE NO RTA',
+  );
+  await expect(page.locator('[data-tuning-note-copy]')).toContainText('1,5%');
+  await expect(
+    slots.nth(3).locator('[data-tuning-result-value]'),
+  ).not.toHaveText(arenaFourthResult ?? '');
+  expect(new URL(page.url()).searchParams.get('mode')).toBe('rta');
+
+  await page.getByRole('radio', { name: 'Siege' }).check();
+  await expect(page.locator('[data-tuning-slot]:visible')).toHaveCount(3);
+  expect(new URL(page.url()).searchParams.has('mode')).toBe(false);
+  expect(new URL(page.url()).searchParams.has('m4')).toBe(false);
+
+  await page.getByLabel('Arena').check();
+  await expect(page.locator('[data-tuning-slot]:visible')).toHaveCount(4);
+  await expect(slots.nth(3).locator('[data-tuning-search]')).toHaveValue(
+    'Talisman',
+  );
+  expect(new URL(page.url()).searchParams.get('m4')).toBe(
+    'talisman-light-1680',
+  );
+});
+
+test('troca automaticamente a liderança válida entre Siege e Arena', async ({
+  page,
+}) => {
+  await page.goto('/spd-tuning/');
+  await selectMonster(page, 0, 'sylvia', 'sylvia-dark-882');
+  await selectMonster(page, 1, 'vanessa', 'vanessa-fire-294');
+  const slots = page.locator('[data-tuning-slot]');
+
+  await expect(
+    slots.nth(0).locator('[data-tuning-leader-toggle]'),
+  ).toBeChecked();
+  await expect(slots.nth(1).locator('[data-tuning-leader]')).toBeHidden();
+
+  await page.getByLabel('Arena').check();
+  await expect(slots.nth(0).locator('[data-tuning-leader]')).toBeHidden();
+  await expect(slots.nth(1).locator('[data-tuning-leader]')).toBeVisible();
+  await expect(
+    slots.nth(1).locator('[data-tuning-leader-toggle]'),
+  ).toBeChecked();
+  expect(new URL(page.url()).searchParams.get('leader')).toBe('2');
+});
+
 test('empilha os slots no mobile sem criar rolagem horizontal', async ({
   page,
 }, testInfo) => {
@@ -471,7 +563,7 @@ test('empilha os slots no mobile sem criar rolagem horizontal', async ({
   await page.goto('/spd-tuning/');
   await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
 
-  const slots = page.locator('[data-tuning-slot]');
+  const slots = page.locator('[data-tuning-slot]:visible');
   const boxes = await slots.evaluateAll((nodes) =>
     nodes.map((node) => {
       const rect = node.getBoundingClientRect();

@@ -5,7 +5,7 @@ import { monsterById, monsters } from '../data/catalog.ts';
 import { skillById } from '../data/skill-catalog.ts';
 import { elementLabels } from '../lib/monster-catalog.ts';
 import {
-  getSiegeSpeedLeader,
+  getSpeedTuningLeader,
   getSpeedTuningCapabilities,
 } from '../lib/speed-tuning.ts';
 
@@ -34,7 +34,7 @@ const monsterData = monsters
     elementLabel: elementLabels[monster.element] ?? monster.element,
     speed: monster.speed ?? 0,
     image: monster.image ?? null,
-    leader: getSiegeSpeedLeader(monster),
+    leader: getSpeedTuningLeader(monster),
     capabilities: getSpeedTuningCapabilities(monster, skillById),
   }));
 
@@ -47,25 +47,27 @@ const slots = [
   { number: 1, label: 'Primeiro turno' },
   { number: 2, label: 'Segundo turno' },
   { number: 3, label: 'Terceiro turno' },
+  { number: 4, label: 'Quarto turno' },
 ];
 ---
 
 <Layout
   title="Spd Tuning"
-  description="Calcule a velocidade necessária para ajustar a ordem de turno do seu time de Siege e GvG."
+  description="Calcule a velocidade necessária para ajustar a ordem de turno do seu time em Siege, Arena e RTA."
   section="speed-tuning"
 >
   <section class="page-intro speed-tuning-intro">
     <div>
       <span class="eyebrow">
-        <span></span> ORDEM DE ATAQUE EM SIEGE
+        <span class="eyebrow-mark"></span>
+        <span data-tuning-context>ORDEM DE ATAQUE EM SIEGE</span>
       </span>
       <h1>
         Spd <span>Tuning</span>
       </h1>
-      <p>
-        Monte seu time na ordem de ataque e descubra a SPD mínima
-        <br class="mobile-break" /> para ninguém ser cortado entre os turnos.
+      <p data-tuning-intro-copy>
+        Monte seu time de Siege na ordem de ataque e descubra a SPD mínima para
+        ninguém ser cortado entre os turnos.
       </p>
     </div>
     <div class="intro-emblem" aria-hidden="true">
@@ -83,6 +85,27 @@ const slots = [
         </p>
       </div>
       <div class="speed-tuning-actions">
+        <fieldset class="speed-tuning-mode" aria-label="Conteúdo do tuning">
+          <legend>Conteúdo</legend>
+          <div>
+            {[
+              ['siege', 'Siege'],
+              ['arena', 'Arena'],
+              ['rta', 'RTA'],
+            ].map(([value, label]) => (
+              <label>
+                <input
+                  data-tuning-mode
+                  type="radio"
+                  name="speed-tuning-mode"
+                  value={value}
+                  checked={value === 'siege'}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <label class="speed-tuning-tower">
           <span>Torre SPD</span>
           <select id="speed-tuning-tower">
@@ -110,6 +133,7 @@ const slots = [
         <article
           class="speed-tuning-slot"
           data-tuning-slot={index}
+          hidden={index === 3}
           aria-labelledby={`speed-tuning-slot-${slot.number}-title`}
         >
           <header class="speed-tuning-slot-header">
@@ -211,7 +235,7 @@ const slots = [
               </select>
             </label>
 
-            {index < 2 && (
+            {index < slots.length - 1 && (
               <>
                 <label class="speed-tuning-field" data-tuning-boost hidden>
                   <span>Boost de ATB (%)</span>
@@ -284,9 +308,11 @@ const slots = [
     <aside class="speed-tuning-note">
       <Icon name="info" size={19} />
       <p>
-        A SPD mínima considera a torre, a liderança ativa, Swift, boosts de ATB
-        e buffs de SPD selecionados. Use o valor adicional de SPD exibido nos
-        detalhes do monstro no jogo.
+        <span data-tuning-note-copy>
+          Siege usa ticks de 7%. A SPD mínima considera torre, liderança, Swift,
+          boosts de ATB e buffs de SPD. Use a SPD adicional exibida nos detalhes
+          do monstro no jogo.
+        </span>
       </p>
     </aside>
   </section>
@@ -302,13 +328,18 @@ const slots = [
       applicableLeaderPercent,
       combatSpeed,
       DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+      isSpeedLeaderValidForMode,
       minimumRuneSpeedForCombat,
       readSpeedTuningQueryState,
+      SPEED_TUNING_MAX_SLOT_COUNT,
+      SPEED_TUNING_MODE_CONFIG,
+      speedTuningModeFromValue,
       tuneFollower,
       writeSpeedTuningQueryState,
       type FollowerTuningResult,
       type SpeedTuningEffect,
       type SpeedTuningLeader,
+      type SpeedTuningMode,
       type SpeedTuningQueryMonster,
       type SpeedTuningQueryState,
     } from '../lib/speed-tuning.ts';
@@ -399,6 +430,7 @@ const slots = [
             monster.capabilities.atbBoost?.scope === 'single' ||
             monster.capabilities.speedBuff?.scope === 'single',
           leaderAmount: monster.leader?.amount ?? null,
+          leaderArea: monster.leader?.area ?? null,
         },
       ]),
     );
@@ -406,20 +438,44 @@ const slots = [
       'speed-tuning-tower',
     ) as HTMLSelectElement | null;
     const resetButton = document.getElementById('speed-tuning-reset');
+    const modeInputs = Array.from(
+      document.querySelectorAll<HTMLInputElement>('[data-tuning-mode]'),
+    );
+    const flow = document.querySelector<HTMLElement>('.speed-tuning-flow');
+    const contextLabel = document.querySelector<HTMLElement>(
+      '[data-tuning-context]',
+    );
+    const introCopy = document.querySelector<HTMLElement>(
+      '[data-tuning-intro-copy]',
+    );
+    const noteCopy = document.querySelector<HTMLElement>(
+      '[data-tuning-note-copy]',
+    );
     const slotRoots = Array.from(
       document.querySelectorAll<HTMLElement>('[data-tuning-slot]'),
     );
-    const states: SlotState[] = Array.from({ length: 3 }, (_, index) => ({
-      monster: null,
-      usesSwift: false,
-      leaderActive: false,
-      runeSpeed: 0,
-      boostPercent: 0,
-      speedBuffEnabled: false,
-      targetIndex: Math.min(index + 1, 2),
-      artifactPercent: 0,
-      initialBuffs: 0,
-    }));
+    let currentMode: SpeedTuningMode = 'siege';
+    const states: SlotState[] = Array.from(
+      { length: SPEED_TUNING_MAX_SLOT_COUNT },
+      (_, index) => ({
+        monster: null,
+        usesSwift: false,
+        leaderActive: false,
+        runeSpeed: 0,
+        boostPercent: 0,
+        speedBuffEnabled: false,
+        targetIndex: Math.min(index + 1, SPEED_TUNING_MAX_SLOT_COUNT - 1),
+        artifactPercent: 0,
+        initialBuffs: 0,
+      }),
+    );
+
+    const activeSlotCount = () =>
+      SPEED_TUNING_MODE_CONFIG[currentMode].slotCount;
+    const defaultTargetForSlot = (slotIndex: number) =>
+      Math.min(slotIndex + 1, activeSlotCount() - 1);
+    const validLeader = (leader: SpeedTuningLeader | null) =>
+      isSpeedLeaderValidForMode(leader, currentMode);
 
     const query = <T extends globalThis.Element>(
       root: ParentNode,
@@ -524,7 +580,11 @@ const slots = [
       const candidates = states
         .map((state, index) => ({
           index,
-          amount: state.monster?.leader?.amount ?? -1,
+          amount:
+            index < activeSlotCount() &&
+            validLeader(state.monster?.leader ?? null)
+              ? (state.monster?.leader?.amount ?? -1)
+              : -1,
         }))
         .filter(({ amount }) => amount >= 0);
       const highestAmount = Math.max(
@@ -545,6 +605,17 @@ const slots = [
       });
     };
 
+    const reconcileLeaderForMode = () => {
+      const activeIndex = states.findIndex((state) => state.leaderActive);
+      if (
+        activeIndex >= 0 &&
+        (activeIndex >= activeSlotCount() ||
+          !validLeader(states[activeIndex]?.monster?.leader ?? null))
+      ) {
+        activateBestAvailableLeader();
+      }
+    };
+
     const clearSlot = (slotIndex: number, keepSearchValue = false) => {
       const state = states[slotIndex];
       const slotElements = elements[slotIndex];
@@ -556,7 +627,10 @@ const slots = [
       state.runeSpeed = 0;
       state.boostPercent = 0;
       state.speedBuffEnabled = false;
-      state.targetIndex = Math.min(slotIndex + 1, 2);
+      state.targetIndex = Math.min(
+        slotIndex + 1,
+        SPEED_TUNING_MAX_SLOT_COUNT - 1,
+      );
       state.artifactPercent = 0;
       state.initialBuffs = 0;
       if (!keepSearchValue) slotElements.search.value = '';
@@ -574,7 +648,7 @@ const slots = [
         monster.id === CHILLING_ID ? DEFAULT_CHILLING_INITIAL_BUFFS : 0;
       state.boostPercent = monster.capabilities.atbBoost?.percent ?? 0;
       state.speedBuffEnabled = Boolean(monster.capabilities.speedBuff);
-      if (monster.leader) activateBestAvailableLeader(slotIndex);
+      if (validLeader(monster.leader)) activateBestAvailableLeader(slotIndex);
       slotElements.search.value = monster.name;
       closeOptions(slotIndex);
       slotElements.search.blur();
@@ -675,8 +749,12 @@ const slots = [
     };
 
     const activeLeader = () =>
-      states.find((state) => state.leaderActive && state.monster?.leader)
-        ?.monster?.leader ?? null;
+      states.find(
+        (state, index) =>
+          index < activeSlotCount() &&
+          state.leaderActive &&
+          validLeader(state.monster?.leader ?? null),
+      )?.monster?.leader ?? null;
 
     const leaderForSlot = (slotIndex: number) => {
       const monster = states[slotIndex]?.monster;
@@ -693,7 +771,16 @@ const slots = [
       Boolean(
         effect &&
         (effect.scope === 'team' ||
-          states[providerIndex]?.targetIndex === targetIndex),
+          (() => {
+            const selectedTarget = states[providerIndex]?.targetIndex;
+            const effectiveTarget =
+              selectedTarget !== undefined &&
+              selectedTarget > providerIndex &&
+              selectedTarget < activeSlotCount()
+                ? selectedTarget
+                : defaultTargetForSlot(providerIndex);
+            return effectiveTarget === targetIndex;
+          })()),
       );
 
     const accumulatedBoost = (targetIndex: number) => {
@@ -743,6 +830,7 @@ const slots = [
     };
 
     const currentQueryState = (): SpeedTuningQueryState => ({
+      mode: currentMode,
       towerPercent: clampNumber(
         Number(towerSelect?.value ?? DEFAULT_SPEED_TUNING_TOWER_PERCENT),
         0,
@@ -784,9 +872,11 @@ const slots = [
       const scope =
         leader.area === 'Guild'
           ? 'Guild'
-          : leader.area === 'Element'
-            ? monster.elementLabel
-            : 'Geral';
+          : leader.area === 'Arena'
+            ? 'Arena/RTA'
+            : leader.area === 'Element'
+              ? monster.elementLabel
+              : 'Geral';
       return `Usar líder SPD +${leader.amount}% · ${scope}`;
     };
 
@@ -838,9 +928,10 @@ const slots = [
         slotElements.fallback.hidden = false;
       }
 
-      slotElements.leader.hidden = !monster.leader;
-      slotElements.leaderToggle.checked = state.leaderActive;
-      if (monster.leader) {
+      const leaderIsValid = validLeader(monster.leader);
+      slotElements.leader.hidden = !leaderIsValid;
+      slotElements.leaderToggle.checked = leaderIsValid && state.leaderActive;
+      if (monster.leader && leaderIsValid) {
         slotElements.leaderLabel.textContent = leaderLabel(
           monster.leader,
           monster,
@@ -857,31 +948,32 @@ const slots = [
       }
 
       const boost = monster.capabilities.atbBoost;
+      const canProvideEffect = slotIndex < activeSlotCount() - 1;
       if (slotElements.boost) {
-        slotElements.boost.hidden = !boost;
+        slotElements.boost.hidden = !boost || !canProvideEffect;
       }
       if (slotElements.boostPercent) {
         slotElements.boostPercent.value = displayNumber(state.boostPercent);
-        slotElements.boostPercent.disabled = !boost;
+        slotElements.boostPercent.disabled = !boost || !canProvideEffect;
       }
 
       const speedBuff = monster.capabilities.speedBuff;
       if (slotElements.speedBuff && slotElements.speedBuffToggle) {
-        slotElements.speedBuff.hidden = !speedBuff;
+        slotElements.speedBuff.hidden = !speedBuff || !canProvideEffect;
         slotElements.speedBuffToggle.checked = state.speedBuffEnabled;
       }
 
       const needsTarget = Boolean(
-        boost?.scope === 'single' ||
-        (speedBuff?.scope === 'single' && state.speedBuffEnabled),
+        canProvideEffect &&
+        (boost?.scope === 'single' ||
+          (speedBuff?.scope === 'single' && state.speedBuffEnabled)),
       );
       if (slotElements.effectTarget && slotElements.target) {
         slotElements.effectTarget.hidden = !needsTarget;
-        if (!needsTarget) state.targetIndex = Math.min(slotIndex + 1, 2);
         const options = [];
         for (
           let targetIndex = slotIndex + 1;
-          targetIndex < 3;
+          targetIndex < activeSlotCount();
           targetIndex += 1
         ) {
           options.push(
@@ -889,12 +981,12 @@ const slots = [
           );
         }
         slotElements.target.replaceChildren(...options);
-        if (
-          !options.some((option) => Number(option.value) === state.targetIndex)
-        ) {
-          state.targetIndex = Math.min(slotIndex + 1, 2);
-        }
-        slotElements.target.value = String(state.targetIndex);
+        const displayedTarget = options.some(
+          (option) => Number(option.value) === state.targetIndex,
+        )
+          ? state.targetIndex
+          : defaultTargetForSlot(slotIndex);
+        slotElements.target.value = String(displayedTarget);
       }
     };
 
@@ -912,6 +1004,49 @@ const slots = [
       slotElements.result.classList.remove('is-empty');
       slotElements.resultValue.textContent = value;
       slotElements.resultDetail.textContent = detail;
+    };
+
+    const modeCopy: Record<
+      SpeedTuningMode,
+      { context: string; intro: string; note: string }
+    > = {
+      siege: {
+        context: 'ORDEM DE ATAQUE EM SIEGE',
+        intro:
+          'Monte seu time de Siege na ordem de ataque e descubra a SPD mínima para ninguém ser cortado entre os turnos.',
+        note: 'Siege usa ticks de 7%. A SPD mínima considera torre, liderança, Swift, boosts de ATB e buffs de SPD. Use a SPD adicional exibida nos detalhes do monstro no jogo.',
+      },
+      arena: {
+        context: 'ORDEM DE ATAQUE NA ARENA',
+        intro:
+          'Monte seu time de Arena na ordem de ataque e descubra a SPD mínima para ninguém ser cortado entre os turnos.',
+        note: 'Arena usa ticks de 7%. A SPD mínima considera torre, liderança, Swift, boosts de ATB e buffs de SPD. Use a SPD adicional exibida nos detalhes do monstro no jogo.',
+      },
+      rta: {
+        context: 'ORDEM DE ATAQUE NO RTA',
+        intro:
+          'Monte os quatro monstros efetivos após o ban e descubra a SPD mínima para manter a ordem de ataque no RTA.',
+        note: 'RTA usa ticks de 1,5%. A SPD mínima considera torre, liderança, Swift, boosts de ATB e buffs de SPD. O cálculo representa os quatro monstros após o ban.',
+      },
+    };
+
+    const renderMode = () => {
+      const slotCount = activeSlotCount();
+      if (flow) flow.dataset.slotCount = String(slotCount);
+      modeInputs.forEach((input) => {
+        input.checked = input.value === currentMode;
+      });
+      elements.forEach((slotElements, slotIndex) => {
+        slotElements.root.hidden = slotIndex >= slotCount;
+        const arrow = slotElements.root.querySelector<HTMLElement>(
+          '.speed-tuning-arrow',
+        );
+        if (arrow) arrow.hidden = slotIndex >= slotCount - 1;
+      });
+      const copy = modeCopy[currentMode];
+      if (contextLabel) contextLabel.textContent = copy.context;
+      if (introCopy) introCopy.textContent = copy.intro;
+      if (noteCopy) noteCopy.textContent = copy.note;
     };
 
     const tuneSlot = (
@@ -933,16 +1068,47 @@ const slots = [
         leaderPercent: leaderForSlot(slotIndex),
         usesSwift: state.usesSwift,
         passiveSpeedBonus: passiveSpeedBonus(state),
+        tickConstant: SPEED_TUNING_MODE_CONFIG[currentMode].tickConstant,
       });
     };
 
+    const raiseFollowerToCombatSpeed = (
+      slotIndex: number,
+      minimumCombatSpeed: number,
+    ): FollowerTuningResult | null => {
+      const state = states[slotIndex];
+      const monster = state?.monster;
+      if (!state || !monster) return null;
+      const input = {
+        baseSpeed: monster.speed,
+        towerPercent: Number(
+          towerSelect?.value ?? DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+        ),
+        leaderPercent: leaderForSlot(slotIndex),
+        usesSwift: state.usesSwift,
+        passiveSpeedBonus: passiveSpeedBonus(state),
+      };
+      const runeSpeed = minimumRuneSpeedForCombat(minimumCombatSpeed, input);
+      if (runeSpeed === null) return null;
+      const raisedCombatSpeed = combatSpeed({ ...input, runeSpeed });
+      return raisedCombatSpeed === null
+        ? null
+        : {
+            runeSpeed,
+            combatSpeed: raisedCombatSpeed,
+            minimumCombatSpeed,
+          };
+    };
+
     const renderResults = () => {
+      const slotCount = activeSlotCount();
       const anchor = states[0];
       const anchorMonster = anchor?.monster;
       if (!anchor || !anchorMonster) {
         setEmptyResult(0, 'Selecione o Monstro 1');
-        setEmptyResult(1, 'Selecione primeiro o Monstro 1');
-        setEmptyResult(2, 'Selecione primeiro o Monstro 1');
+        for (let slotIndex = 1; slotIndex < slotCount; slotIndex += 1) {
+          setEmptyResult(slotIndex, 'Selecione primeiro o Monstro 1');
+        }
         return;
       }
 
@@ -958,6 +1124,9 @@ const slots = [
       });
       if (anchorCombatSpeed === null) {
         setEmptyResult(0, 'Revise a SPD informada');
+        for (let slotIndex = 1; slotIndex < slotCount; slotIndex += 1) {
+          setEmptyResult(slotIndex, 'Revise primeiro o Monstro 1');
+        }
         return;
       }
       setResult(
@@ -970,80 +1139,64 @@ const slots = [
         }`,
       );
 
-      let secondResult = tuneSlot(1, anchorCombatSpeed);
-      const thirdResult = states[1]?.monster
-        ? tuneSlot(2, anchorCombatSpeed)
-        : null;
-
-      if (!states[1]?.monster) {
-        setEmptyResult(1, 'Selecione o Monstro 2');
-        setEmptyResult(2, 'Selecione primeiro o Monstro 2');
-        return;
+      const followerResults: Array<FollowerTuningResult | null> = Array.from(
+        { length: slotCount },
+        () => null,
+      );
+      let firstMissingIndex = -1;
+      for (let slotIndex = 1; slotIndex < slotCount; slotIndex += 1) {
+        if (!states[slotIndex]?.monster) {
+          firstMissingIndex = slotIndex;
+          break;
+        }
+        followerResults[slotIndex] = tuneSlot(slotIndex, anchorCombatSpeed);
       }
 
-      if (
-        secondResult &&
-        thirdResult &&
-        secondResult.combatSpeed < thirdResult.combatSpeed
+      const lastCalculatedIndex =
+        firstMissingIndex < 0 ? slotCount - 1 : firstMissingIndex - 1;
+      for (
+        let slotIndex = lastCalculatedIndex - 1;
+        slotIndex >= 1;
+        slotIndex -= 1
       ) {
-        const second = states[1];
-        const secondMonster = second?.monster;
-        if (second && secondMonster) {
-          const raisedRuneSpeed = minimumRuneSpeedForCombat(
-            thirdResult.combatSpeed,
-            {
-              baseSpeed: secondMonster.speed,
-              towerPercent: Number(towerSelect?.value ?? 15),
-              leaderPercent: leaderForSlot(1),
-              usesSwift: second.usesSwift,
-              passiveSpeedBonus: passiveSpeedBonus(second),
-            },
+        const current = followerResults[slotIndex];
+        const next = followerResults[slotIndex + 1];
+        if (current && next && current.combatSpeed < next.combatSpeed) {
+          followerResults[slotIndex] = raiseFollowerToCombatSpeed(
+            slotIndex,
+            next.combatSpeed,
           );
-          if (raisedRuneSpeed !== null) {
-            secondResult = {
-              runeSpeed: raisedRuneSpeed,
-              combatSpeed:
-                combatSpeed({
-                  baseSpeed: secondMonster.speed,
-                  runeSpeed: raisedRuneSpeed,
-                  towerPercent: Number(towerSelect?.value ?? 15),
-                  leaderPercent: leaderForSlot(1),
-                  usesSwift: second.usesSwift,
-                  passiveSpeedBonus: passiveSpeedBonus(second),
-                }) ?? thirdResult.combatSpeed,
-              minimumCombatSpeed: thirdResult.combatSpeed,
-            };
-          }
         }
       }
 
-      if (secondResult) {
-        setResult(
-          1,
-          `+${secondResult.runeSpeed} SPD`,
-          `${secondResult.combatSpeed} SPD de combate`,
-        );
-      } else {
-        setEmptyResult(1, 'Não foi possível calcular');
-      }
-
-      if (!states[2]?.monster) {
-        setEmptyResult(2, 'Selecione o Monstro 3');
-      } else if (thirdResult) {
-        setResult(
-          2,
-          `+${thirdResult.runeSpeed} SPD`,
-          `${thirdResult.combatSpeed} SPD de combate`,
-        );
-      } else {
-        setEmptyResult(2, 'Não foi possível calcular');
+      for (let slotIndex = 1; slotIndex < slotCount; slotIndex += 1) {
+        if (firstMissingIndex >= 0 && slotIndex >= firstMissingIndex) {
+          setEmptyResult(
+            slotIndex,
+            slotIndex === firstMissingIndex
+              ? `Selecione o Monstro ${slotIndex + 1}`
+              : `Selecione primeiro o Monstro ${firstMissingIndex + 1}`,
+          );
+          continue;
+        }
+        const result = followerResults[slotIndex];
+        if (result) {
+          setResult(
+            slotIndex,
+            `+${result.runeSpeed} SPD`,
+            `${result.combatSpeed} SPD de combate`,
+          );
+        } else {
+          setEmptyResult(slotIndex, 'Não foi possível calcular');
+        }
       }
     };
 
     const render = () => {
+      renderMode();
       elements.forEach((_, slotIndex) => renderMonster(slotIndex));
       elements.forEach((slotElements, slotIndex) => {
-        if (!slotElements.artifact) return;
+        if (slotIndex >= activeSlotCount() || !slotElements.artifact) return;
         const receivesSpeedBuff = speedBuffStart(slotIndex) !== null;
         slotElements.artifact.hidden = !receivesSpeedBuff;
         const state = states[slotIndex];
@@ -1063,6 +1216,8 @@ const slots = [
         new URLSearchParams(window.location.search),
         queryMonsters,
       );
+
+      currentMode = restored.mode;
 
       if (towerSelect) towerSelect.value = String(restored.towerPercent);
       restored.slots.forEach((restoredSlot, slotIndex) => {
@@ -1216,6 +1371,15 @@ const slots = [
     });
 
     towerSelect?.addEventListener('change', render);
+    modeInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (!input.checked) return;
+        currentMode = speedTuningModeFromValue(input.value);
+        reconcileLeaderForMode();
+        closeAllOptions();
+        render();
+      });
+    });
     resetButton?.addEventListener('click', () => {
       states.forEach((_, index) => clearSlot(index));
       if (towerSelect) {

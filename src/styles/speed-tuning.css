@@ -8,8 +8,70 @@
 
 .speed-tuning-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: end;
+}
+
+.speed-tuning-mode {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.speed-tuning-mode legend {
+  padding: 0;
+}
+
+.speed-tuning-mode > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(72px, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #14171b;
+}
+
+.speed-tuning-mode label {
+  position: relative;
+  display: grid;
+  min-height: 42px;
+  cursor: pointer;
+}
+
+.speed-tuning-mode label + label {
+  border-left: 1px solid var(--border);
+}
+
+.speed-tuning-mode input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.speed-tuning-mode span {
+  display: grid;
+  place-items: center;
+  padding: 8px 12px;
+  color: #d7d9de;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.speed-tuning-mode input:checked + span {
+  background: rgba(233, 186, 119, 0.14);
+  color: var(--gold);
+}
+
+.speed-tuning-mode input:focus-visible + span {
+  outline: 2px solid var(--gold);
+  outline-offset: -3px;
 }
 
 .speed-tuning-tower {
@@ -57,6 +119,10 @@
   margin-top: 20px;
 }
 
+.speed-tuning-flow[data-slot-count='4'] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .speed-tuning-slot {
   position: relative;
   display: flex;
@@ -68,6 +134,11 @@
   border-radius: 14px;
   background: linear-gradient(155deg, #1a1e23 0%, #15181c 68%);
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+}
+
+.speed-tuning-slot[hidden],
+.speed-tuning-arrow[hidden] {
+  display: none;
 }
 
 .speed-tuning-slot-header {
@@ -391,6 +462,33 @@
   font-size: var(--text-sm);
 }
 
+@media (min-width: 1121px) and (max-width: 1280px) {
+  .speed-tuning-flow[data-slot-count='4'] {
+    grid-template-columns: 1fr;
+    row-gap: 40px;
+  }
+
+  .speed-tuning-flow[data-slot-count='4'] .speed-tuning-slot {
+    min-height: auto;
+  }
+
+  .speed-tuning-flow[data-slot-count='4'] .speed-tuning-arrow {
+    top: auto;
+    right: auto;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  .speed-tuning-flow[data-slot-count='4'] .speed-tuning-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .speed-tuning-flow[data-slot-count='4'] .speed-tuning-result {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 1120px) {
   .speed-tuning-flow {
     grid-template-columns: 1fr;
@@ -435,6 +533,10 @@
     width: 100%;
   }
 
+  .speed-tuning-mode {
+    flex: 1 1 100%;
+  }
+
   .speed-tuning-tower {
     flex: 1;
   }
@@ -452,6 +554,10 @@
   .speed-tuning-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .speed-tuning-mode {
+    grid-column: 1 / -1;
   }
 
   .speed-tuning-tower select,
