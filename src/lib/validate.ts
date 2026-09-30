@@ -41,7 +41,7 @@ export function validateCatalog(
       skill.id <= 0 ||
       !skill.name?.trim() ||
       !Number.isInteger(skill.slot) ||
-      skill.slot < 0 ||
+      skill.slot < -1 ||
       (skill.cooltime !== null &&
         (!Number.isInteger(skill.cooltime) || skill.cooltime < 0)) ||
       !Number.isInteger(skill.hits) ||

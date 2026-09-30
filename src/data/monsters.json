@@ -12050,7 +12050,7 @@
     "archetype": "Support",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 95,
+    "speed": 98,
     "maxLevelStats": {
       "hp": 10050,
       "attack": 505,
@@ -12111,7 +12111,7 @@
     "archetype": "Support",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 111,
+    "speed": 114,
     "maxLevelStats": {
       "hp": 11700,
       "attack": 549,
@@ -16711,7 +16711,7 @@
     "archetype": "Support",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 95,
+    "speed": 98,
     "maxLevelStats": {
       "hp": 8895,
       "attack": 461,
@@ -16767,7 +16767,7 @@
     "archetype": "Support",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 96,
+    "speed": 99,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 439,
@@ -20072,7 +20072,7 @@
     "archetype": "Support",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 95,
+    "speed": 98,
     "maxLevelStats": {
       "hp": 9555,
       "attack": 527,
@@ -20128,7 +20128,7 @@
     "archetype": "Support",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 96,
+    "speed": 99,
     "maxLevelStats": {
       "hp": 11205,
       "attack": 549,
@@ -25984,7 +25984,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 95,
+    "speed": 98,
     "maxLevelStats": {
       "hp": 7740,
       "attack": 582,
@@ -26028,7 +26028,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 96,
+    "speed": 99,
     "maxLevelStats": {
       "hp": 10875,
       "attack": 538,
@@ -36631,7 +36631,7 @@
     "archetype": "Support",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 95,
+    "speed": 98,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 549,
@@ -36680,7 +36680,7 @@
     "archetype": "Support",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 111,
+    "speed": 114,
     "maxLevelStats": {
       "hp": 12675,
       "attack": 516,
@@ -36709,7 +36709,7 @@
     "leaderSkill": {
       "attribute": "Resistance",
       "amount": 33,
-      "area": "Dungeon",
+      "area": "Guild",
       "element": null
     },
     "image": "/monsters/unit_icon_0020_3_1.png",
@@ -37066,8 +37066,8 @@
     "obtainable": true,
     "speed": 96,
     "maxLevelStats": {
-      "hp": 9720,
-      "attack": 648,
+      "hp": 10380,
+      "attack": 604,
       "defense": 681,
       "critRate": 15,
       "critDamage": 50,
@@ -40057,8 +40057,8 @@
     "obtainable": true,
     "speed": 101,
     "maxLevelStats": {
-      "hp": 9885,
-      "attack": 637,
+      "hp": 10545,
+      "attack": 593,
       "defense": 681,
       "critRate": 15,
       "critDamage": 50,
@@ -45598,8 +45598,8 @@
     "speed": 100,
     "maxLevelStats": {
       "hp": 9225,
-      "attack": 714,
-      "defense": 648,
+      "attack": 780,
+      "defense": 582,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -45879,8 +45879,8 @@
     "speed": 101,
     "maxLevelStats": {
       "hp": 10050,
-      "attack": 790,
-      "defense": 681,
+      "attack": 845,
+      "defense": 626,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -55200,9 +55200,9 @@
     "obtainable": true,
     "speed": 102,
     "maxLevelStats": {
-      "hp": 9885,
-      "attack": 659,
-      "defense": 659,
+      "hp": 10545,
+      "attack": 626,
+      "defense": 648,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -57987,9 +57987,9 @@
       "accuracy": 0
     },
     "skillIds": [
+      1835,
       1833,
-      1834,
-      1835
+      1834
     ],
     "skillUpsToMax": 0,
     "sources": [],
@@ -58024,9 +58024,9 @@
       "accuracy": 0
     },
     "skillIds": [
+      1844,
       1842,
-      1843,
-      1844
+      1843
     ],
     "skillUpsToMax": 0,
     "sources": [],
@@ -58061,9 +58061,9 @@
       "accuracy": 0
     },
     "skillIds": [
+      1845,
       1842,
-      1843,
-      1845
+      1843
     ],
     "skillUpsToMax": 0,
     "sources": [],
@@ -80958,7 +80958,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10380,
       "attack": 714,
@@ -81000,7 +81000,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 9390,
       "attack": 801,
@@ -81042,7 +81042,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 9555,
       "attack": 758,
@@ -81084,7 +81084,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10050,
       "attack": 769,
@@ -81126,7 +81126,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 736,
@@ -81168,7 +81168,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11040,
       "attack": 801,
@@ -81210,7 +81210,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 9885,
       "attack": 889,
@@ -81252,7 +81252,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 845,
@@ -81294,7 +81294,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 867,
@@ -81336,7 +81336,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10875,
       "attack": 823,
@@ -82697,7 +82697,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10380,
       "attack": 714,
@@ -82758,7 +82758,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 9390,
       "attack": 801,
@@ -82819,7 +82819,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 9555,
       "attack": 758,
@@ -82880,7 +82880,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10050,
       "attack": 769,
@@ -82929,7 +82929,7 @@
     "archetype": "Attack",
     "awakenLevel": 0,
     "obtainable": true,
-    "speed": 102,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 736,
@@ -82978,7 +82978,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11040,
       "attack": 801,
@@ -83039,7 +83039,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 9885,
       "attack": 889,
@@ -83100,7 +83100,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 845,
@@ -83161,7 +83161,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 867,
@@ -83210,7 +83210,7 @@
     "archetype": "Attack",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 103,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 10875,
       "attack": 823,
@@ -89207,8 +89207,8 @@
     "speed": 115,
     "maxLevelStats": {
       "hp": 9885,
-      "attack": 878,
-      "defense": 604,
+      "attack": 900,
+      "defense": 582,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -96501,9 +96501,9 @@
     "obtainable": true,
     "speed": 101,
     "maxLevelStats": {
-      "hp": 9720,
+      "hp": 10380,
       "attack": 790,
-      "defense": 538,
+      "defense": 494,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -96538,9 +96538,9 @@
     "obtainable": true,
     "speed": 101,
     "maxLevelStats": {
-      "hp": 9225,
+      "hp": 9720,
       "attack": 801,
-      "defense": 560,
+      "defense": 527,
       "critRate": 30,
       "critDamage": 50,
       "resistance": 15,
@@ -98190,9 +98190,9 @@
     "obtainable": true,
     "speed": 101,
     "maxLevelStats": {
-      "hp": 9720,
+      "hp": 10380,
       "attack": 790,
-      "defense": 538,
+      "defense": 494,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -98227,9 +98227,9 @@
     "obtainable": true,
     "speed": 101,
     "maxLevelStats": {
-      "hp": 9225,
+      "hp": 9720,
       "attack": 801,
-      "defense": 560,
+      "defense": 527,
       "critRate": 30,
       "critDamage": 50,
       "resistance": 15,
@@ -99752,9 +99752,9 @@
     "obtainable": true,
     "speed": 99,
     "maxLevelStats": {
-      "hp": 8730,
-      "attack": 790,
-      "defense": 604,
+      "hp": 9720,
+      "attack": 812,
+      "defense": 516,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -99962,9 +99962,9 @@
     "obtainable": true,
     "speed": 100,
     "maxLevelStats": {
-      "hp": 9555,
+      "hp": 10545,
       "attack": 878,
-      "defense": 626,
+      "defense": 560,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -100824,8 +100824,8 @@
     "obtainable": true,
     "speed": 103,
     "maxLevelStats": {
-      "hp": 10050,
-      "attack": 714,
+      "hp": 10545,
+      "attack": 681,
       "defense": 593,
       "critRate": 15,
       "critDamage": 50,
@@ -100842,8 +100842,8 @@
     "awakensFrom": null,
     "awakensTo": null,
     "leaderSkill": {
-      "attribute": "Defense",
-      "amount": 38,
+      "attribute": "Attack Speed",
+      "amount": 28,
       "area": "Guild",
       "element": null
     },
@@ -100992,8 +100992,8 @@
     "obtainable": true,
     "speed": 103,
     "maxLevelStats": {
-      "hp": 10875,
-      "attack": 747,
+      "hp": 11700,
+      "attack": 692,
       "defense": 670,
       "critRate": 30,
       "critDamage": 50,
@@ -103219,8 +103219,8 @@
     "obtainable": true,
     "speed": 103,
     "maxLevelStats": {
-      "hp": 10050,
-      "attack": 714,
+      "hp": 10545,
+      "attack": 681,
       "defense": 593,
       "critRate": 15,
       "critDamage": 50,
@@ -103237,8 +103237,8 @@
     "awakensFrom": "desert-warrior-water-2167",
     "awakensTo": null,
     "leaderSkill": {
-      "attribute": "Defense",
-      "amount": 38,
+      "attribute": "Attack Speed",
+      "amount": 28,
       "area": "Guild",
       "element": null
     },
@@ -103387,8 +103387,8 @@
     "obtainable": true,
     "speed": 103,
     "maxLevelStats": {
-      "hp": 10875,
-      "attack": 747,
+      "hp": 11700,
+      "attack": 692,
       "defense": 670,
       "critRate": 30,
       "critDamage": 50,
@@ -106790,8 +106790,8 @@
       "hp": 10710,
       "attack": 878,
       "defense": 549,
-      "critRate": 30,
-      "critDamage": 50,
+      "critRate": 15,
+      "critDamage": 70,
       "resistance": 15,
       "accuracy": 0
     },
@@ -120784,8 +120784,8 @@
     "obtainable": true,
     "speed": 100,
     "maxLevelStats": {
-      "hp": 10545,
-      "attack": 769,
+      "hp": 11535,
+      "attack": 703,
       "defense": 670,
       "critRate": 30,
       "critDamage": 50,
@@ -126308,7 +126308,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 659,
@@ -126350,7 +126350,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 11205,
       "attack": 637,
@@ -126392,7 +126392,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 11040,
       "attack": 637,
@@ -126434,7 +126434,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 582,
@@ -126471,7 +126471,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10050,
       "attack": 593,
@@ -126508,7 +126508,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11850,
       "attack": 703,
@@ -126550,7 +126550,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 12510,
       "attack": 681,
@@ -126592,7 +126592,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 12180,
       "attack": 692,
@@ -126634,7 +126634,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11370,
       "attack": 626,
@@ -126676,7 +126676,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11205,
       "attack": 648,
@@ -126920,9 +126920,9 @@
     "obtainable": true,
     "speed": 105,
     "maxLevelStats": {
-      "hp": 10875,
-      "attack": 736,
-      "defense": 681,
+      "hp": 11700,
+      "attack": 648,
+      "defense": 714,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -126962,9 +126962,9 @@
     "obtainable": true,
     "speed": 105,
     "maxLevelStats": {
-      "hp": 9885,
-      "attack": 758,
-      "defense": 560,
+      "hp": 9390,
+      "attack": 801,
+      "defense": 549,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -129892,7 +129892,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10710,
       "attack": 659,
@@ -129934,7 +129934,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 11205,
       "attack": 637,
@@ -129976,7 +129976,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 11040,
       "attack": 637,
@@ -130018,7 +130018,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10215,
       "attack": 582,
@@ -130055,7 +130055,7 @@
     "archetype": "HP",
     "awakenLevel": 0,
     "obtainable": false,
-    "speed": 101,
+    "speed": 104,
     "maxLevelStats": {
       "hp": 10050,
       "attack": 593,
@@ -130092,7 +130092,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11850,
       "attack": 703,
@@ -130134,7 +130134,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 12510,
       "attack": 681,
@@ -130176,7 +130176,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 12180,
       "attack": 692,
@@ -130218,7 +130218,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11370,
       "attack": 626,
@@ -130260,7 +130260,7 @@
     "archetype": "HP",
     "awakenLevel": 1,
     "obtainable": true,
-    "speed": 102,
+    "speed": 105,
     "maxLevelStats": {
       "hp": 11205,
       "attack": 648,
@@ -130504,9 +130504,9 @@
     "obtainable": true,
     "speed": 105,
     "maxLevelStats": {
-      "hp": 10875,
-      "attack": 736,
-      "defense": 681,
+      "hp": 11700,
+      "attack": 648,
+      "defense": 714,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -130546,9 +130546,9 @@
     "obtainable": true,
     "speed": 105,
     "maxLevelStats": {
-      "hp": 9885,
-      "attack": 758,
-      "defense": 560,
+      "hp": 9390,
+      "attack": 801,
+      "defense": 549,
       "critRate": 15,
       "critDamage": 50,
       "resistance": 15,
@@ -135269,8 +135269,8 @@
     "obtainable": true,
     "speed": 104,
     "maxLevelStats": {
-      "hp": 10710,
-      "attack": 823,
+      "hp": 11370,
+      "attack": 780,
       "defense": 604,
       "critRate": 15,
       "critDamage": 50,

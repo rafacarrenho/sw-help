@@ -29140,9 +29140,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +10%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -29226,9 +29226,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +10%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -39096,7 +39096,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -42850,7 +42850,7 @@
     "name": "Triple Crush",
     "description": "Attacks the enemy 3 times with magic and weakens the Defense for 2 turns with a 50% chance for each attack. The damage increases according to the Attack Speed.",
     "slot": 2,
-    "cooltime": 3,
+    "cooltime": 2,
     "hits": 3,
     "passive": false,
     "aoe": false,
@@ -42895,7 +42895,7 @@
     "name": "Triple Crush",
     "description": "Attacks the enemy 3 times with magic and weakens the Defense for 2 turns with a 50% chance for each attack. The damage increases according to the Attack Speed.",
     "slot": 2,
-    "cooltime": 3,
+    "cooltime": 2,
     "hits": 3,
     "passive": false,
     "aoe": false,
@@ -42947,7 +42947,7 @@
   {
     "id": 1120,
     "name": "Super Crush",
-    "description": "Attacks all enemies to inflict damage that's proportionate to the enemy's MAX HP and stuns them with a 40% chance. If the target is not stunned after attacking, decreases the Attack Bar of the target by 50% with a 100% chance.",
+    "description": "Attacks all enemies to deal damage proportionate to their MAX HP and stun them for 1 turn with a 40% chance. Decreases the Attack Bar of enemies that are not stunned after the attack by 70% with a 100% chance.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -42956,11 +42956,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Effect Rate +10%",
-      "Damage +10%",
-      "Effect Rate +10%",
-      "Damage +10%",
-      "Effect Rate +10%",
+      "Effect Rate +10%\r",
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -42979,7 +42979,7 @@
         "isBuff": false,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 50,
+        "quantity": 70,
         "note": "If enemy is immune to stun"
       }
     ],
@@ -42993,7 +42993,7 @@
   {
     "id": 1121,
     "name": "Super Crush",
-    "description": "Attacks all enemies to inflict damage that's proportionate to the enemy's MAX HP and stuns them with a 40% chance. If the target is not stunned after attacking, decreases the Attack Bar of the target by 50% with a 100% chance.",
+    "description": "Attacks all enemies to deal damage proportionate to their MAX HP and stun them for 1 turn with a 40% chance. Decreases the Attack Bar of enemies that are not stunned after the attack by 70% with a 100% chance.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -43002,11 +43002,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Effect Rate +10%",
-      "Damage +10%",
-      "Effect Rate +10%",
-      "Damage +10%",
-      "Effect Rate +10%",
+      "Effect Rate +10%\r",
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -43025,7 +43025,7 @@
         "isBuff": false,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 50,
+        "quantity": 70,
         "note": "If enemy is immune to stun"
       }
     ],
@@ -45016,7 +45016,7 @@
   {
     "id": 1167,
     "name": "Daydream",
-    "description": "Recovers the HP of all allies by 30% by putting yourself to an irresistible sleep for 1 turn. In addition, increases the Attack Speed of all allies for 2 turns and decreases their skill cooldown by 1 turn.",
+    "description": "Recovers the HP of all allies by 50% and puts yourself to an irresistible sleep for 1 turn. In addition, increases the Attack Speed of all allies for 2 turns and decreases their skill cooldowns by 1 turn.",
     "slot": 3,
     "cooltime": 6,
     "hits": 0,
@@ -45025,9 +45025,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Recovery +10%",
-      "Recovery +10%",
-      "Cooltime Turn -1",
+      "Recovery +10%\r",
+      "Recovery +10%\r",
+      "Cooltime Turn -1\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -45037,7 +45037,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 30,
+        "quantity": 50,
         "note": ""
       },
       {
@@ -46104,7 +46104,7 @@
   {
     "id": 1194,
     "name": "Mountain's Power",
-    "description": "Attacks the enemy with the might of the mountains to inflict damage by 15% of your MAX HP and recovers the HP of all allies by 15% of your MAX HP.",
+    "description": "Attacks the enemy with the might of the mountains to deal damage equal to 20% of your MAX HP and recovers the HP of all allies by 15% of your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -46113,9 +46113,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -46125,7 +46125,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 15,
+        "quantity": 20,
         "note": ""
       },
       {
@@ -46138,7 +46138,7 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "0.15*{MAX HP} (Fixed)",
+    "multiplierFormula": "0.2*{MAX HP} (Fixed)",
     "scalesWith": [
       "MAX HP"
     ],
@@ -46147,7 +46147,7 @@
   {
     "id": 1195,
     "name": "Mountain's Power",
-    "description": "Attacks the enemy with the might of the mountains to inflict damage by 15% of your MAX HP and recovers the HP of all allies by 15% of your MAX HP.",
+    "description": "Attacks the enemy with the might of the mountains to deal damage equal to 20% of your MAX HP and recovers the HP of all allies by 15% of your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -46156,9 +46156,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -46168,7 +46168,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 15,
+        "quantity": 20,
         "note": ""
       },
       {
@@ -46181,7 +46181,7 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "0.15*{MAX HP} (Fixed)",
+    "multiplierFormula": "0.2*{MAX HP} (Fixed)",
     "scalesWith": [
       "MAX HP"
     ],
@@ -53378,7 +53378,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61300,7 +61300,7 @@
   {
     "id": 1644,
     "name": "Nightmare Melody",
-    "description": "Puts all enemies to sleep for 1 turn with a 60% chance and inflicts 2 Continuous Damage effects for 2 turns with a 60% chance.",
+    "description": "Puts all enemies to sleep for 1 turn with a 60% chance and inflicts 2 Continuous Damage for 2 turns with a 60% chance. Blocks enemies that are already asleep from removing harmful effects for 1 turn.",
     "slot": 2,
     "cooltime": 4,
     "hits": 0,
@@ -61309,9 +61309,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Effect Rate +5%",
-      "Effect Rate +10%",
-      "Effect Rate +10%",
+      "Effect Rate +5%\r",
+      "Effect Rate +10%\r",
+      "Effect Rate +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61332,6 +61332,15 @@
         "chance": 50,
         "quantity": 2,
         "note": ""
+      },
+      {
+        "name": "Harmful Effect Removal Blocked",
+        "description": "Harmful effects cannot be removed while this effect is on. This effect will be removed first when a harmful effect removal skill is used, and other harmful effects can be removed afterwards. Does not apply to bosses.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": "enemies that are already asleep"
       }
     ],
     "multiplierFormula": "",
@@ -61441,7 +61450,7 @@
   {
     "id": 1647,
     "name": "Nightmare Melody",
-    "description": "Puts all enemies to sleep for 1 turn with a 60% chance and inflicts 2 Continuous Damage effects for 2 turns with a 60% chance.",
+    "description": "Puts all enemies to sleep for 1 turn with a 60% chance and inflicts 2 Continuous Damage for 2 turns with a 60% chance. Blocks enemies that are already asleep from removing harmful effects for 1 turn.",
     "slot": 2,
     "cooltime": 4,
     "hits": 0,
@@ -61450,9 +61459,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Effect Rate +5%",
-      "Effect Rate +10%",
-      "Effect Rate +10%",
+      "Effect Rate +5%\r",
+      "Effect Rate +10%\r",
+      "Effect Rate +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61473,6 +61482,15 @@
         "chance": 50,
         "quantity": 2,
         "note": ""
+      },
+      {
+        "name": "Harmful Effect Removal Blocked",
+        "description": "Harmful effects cannot be removed while this effect is on. This effect will be removed first when a harmful effect removal skill is used, and other harmful effects can be removed afterwards. Does not apply to bosses.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": "enemies that are already asleep"
       }
     ],
     "multiplierFormula": "",
@@ -61532,7 +61550,7 @@
   {
     "id": 1649,
     "name": "Distorted Healing Music",
-    "description": "Attacks all enemies to inflict damage that increases accordingly to your MAX HP, puts them to sleep for 1 turn, and creates a shield that's equivalent to 30% of your MAX HP on all allies for 3 turns.",
+    "description": "Attacks all enemies to put them to sleep for 2 turns and creates a Shield equal to 30% of your MAX HP on all allies for 3 turns. The damage increases according to your MAX HP.",
     "slot": 3,
     "cooltime": 6,
     "hits": 1,
@@ -61541,7 +61559,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1",
+      "Cooltime Turn -1\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61551,7 +61569,7 @@
         "isBuff": false,
         "type": "Debuff",
         "chance": 100,
-        "quantity": 1,
+        "quantity": 2,
         "note": ""
       },
       {
@@ -62724,7 +62742,7 @@
   {
     "id": 1685,
     "name": "Purifying Wave",
-    "description": "Removes the harmful effects on all allies and increases their Defense for 2 turns.",
+    "description": "Removes all harmful effects on all allies and increases their Defense for 2 turns. In addition, recovers the HP of allies with harmful effects removed by 15%.",
     "slot": 2,
     "cooltime": 5,
     "hits": 1,
@@ -62733,11 +62751,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
-      "Cooltime Turn -1",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
+      "Cooltime Turn -1\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -62758,6 +62776,15 @@
         "chance": 0,
         "quantity": 2,
         "note": ""
+      },
+      {
+        "name": "Heal",
+        "description": "Increases ally's HP",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": null,
+        "quantity": 15,
+        "note": "Of allies with harmful effects"
       }
     ],
     "multiplierFormula": "",
@@ -64631,7 +64658,7 @@
     "name": "Triple Crush",
     "description": "Attacks the enemy 3 times with magic and weakens the Defense for 2 turns with a 50% chance for each attack. The damage increases according to the Attack Speed.",
     "slot": 2,
-    "cooltime": 3,
+    "cooltime": 2,
     "hits": 3,
     "passive": false,
     "aoe": false,
@@ -65865,7 +65892,7 @@
     "id": 1833,
     "name": "Guillotine",
     "description": "Smites the enemy, removing 1 Beneficial Effect and decreasing Attack Speed and Attack Power for 3 turns.",
-    "slot": 1,
+    "slot": -1,
     "cooltime": null,
     "hits": 1,
     "passive": false,
@@ -65884,7 +65911,7 @@
     "id": 1834,
     "name": "Xenocide",
     "description": "Strikes all enemies, decreasing their Defense for 3 turns.",
-    "slot": 2,
+    "slot": -1,
     "cooltime": 3,
     "hits": 1,
     "passive": false,
@@ -65903,7 +65930,7 @@
     "id": 1835,
     "name": "Fatal Flames (Passive)",
     "description": "Counterattacks the enemies with burning flames and recovers a certain amount of damage as HP. [Automatic Effect]",
-    "slot": 3,
+    "slot": -1,
     "cooltime": null,
     "hits": 1,
     "passive": true,
@@ -66034,7 +66061,7 @@
     "id": 1842,
     "name": "Mind Break",
     "description": "Attacks the enemy with a strong mental force and removes a beneficial effect.",
-    "slot": 1,
+    "slot": -1,
     "cooltime": null,
     "hits": 1,
     "passive": false,
@@ -66053,7 +66080,7 @@
     "id": 1843,
     "name": "Paranoia",
     "description": "Manifests a horrible delusion and attacks all enemies and decreases the defense for 3 turns. Damage increases according to the number of merges.",
-    "slot": 2,
+    "slot": -1,
     "cooltime": 4,
     "hits": 1,
     "passive": false,
@@ -66072,7 +66099,7 @@
     "id": 1844,
     "name": "Incarnation Split",
     "description": "Summons 2 of the 3 incarnations within and removes all harmful effects. Each incarnation will have its own skill and characteristics, and will merge with Lyrith after 5 turns.",
-    "slot": 3,
+    "slot": -1,
     "cooltime": 3,
     "hits": 1,
     "passive": true,
@@ -66089,7 +66116,7 @@
     "id": 1845,
     "name": "Incarnation Split",
     "description": "Summons 2 of the 3 incarnations within and removes all harmful effects. Each incarnation will have its own skill and characteristics, and will merge with Lyrith after 5 turns.",
-    "slot": 3,
+    "slot": -1,
     "cooltime": 3,
     "hits": 1,
     "passive": true,
@@ -67470,9 +67497,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
       "Damage +15%"
     ],
     "effects": [
@@ -67513,9 +67540,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
       "Damage +15%"
     ],
     "effects": [
@@ -67556,9 +67583,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
       "Damage +15%"
     ],
     "effects": [
@@ -68207,7 +68234,7 @@
   {
     "id": 1937,
     "name": "Internal Force (Passive)",
-    "description": "When the battle begins, balances the Defense and Attack Power so that the value of the lower stat will equal that of the higher stat. Creates a Shield equal to your Defense for 2 turns when you are attacked. Increases the damage dealt by 50% when you have a Shield. [Automatic Effect]",
+    "description": "When the battle begins, balances the Defense and Attack Power so that the value of the lower stat will equal that of the higher stat. Creates a Shield in proportion to your Defense for 2 turns when you are attacked. Increases the damage dealt by 50% when you have a Shield. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -71237,9 +71264,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Recovery +5%\r",
-      "Recovery +10%\r",
-      "Recovery +15%\r",
+      "Recovery +5%",
+      "Recovery +10%",
+      "Recovery +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71287,11 +71314,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Cooltime Turn -1\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71332,7 +71359,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71380,9 +71407,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71423,7 +71450,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71647,9 +71674,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Recovery +5%\r",
-      "Recovery +10%\r",
-      "Recovery +15%\r",
+      "Recovery +5%",
+      "Recovery +10%",
+      "Recovery +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71688,11 +71715,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Cooltime Turn -1\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71742,7 +71769,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71799,9 +71826,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -71851,7 +71878,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -75307,9 +75334,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Damage +15%\r",
+      "Damage +10%",
+      "Damage +10%",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -84177,7 +84204,7 @@
   {
     "id": 2412,
     "name": "Start of Attacking",
-    "description": "Attacks the enemy with the beast 2 times. The beast's attack removes all beneficial effects granted on the enemy, and the rider's attack ignores the enemy's Defense by 25% for each beneficial effect the beast removed. Afterwards, the Attack Bar of other allies will be increased, up to 50%, in proportion to the enemy's lost HP from this attack.",
+    "description": "Attacks the enemy with the beast 2 times. The beast's attack removes all beneficial effects granted on the enemy, and the rider's attack ignores the enemy's Defense by 35% for each beneficial effect the beast removed. Afterwards, increases the Attack Bar of other allies by up to 50% in proportion to the HP the enemy lost from this attack.",
     "slot": 3,
     "cooltime": 5,
     "hits": 2,
@@ -84186,8 +84213,8 @@
     "random": false,
     "maxLevel": 4,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -84206,7 +84233,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 25,
+        "quantity": 35,
         "note": "Per beneficial effect removed"
       },
       {
@@ -85378,10 +85405,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +10%\r",
+      "Damage +10%",
+      "Damage +10%",
+      "Damage +10%",
+      "Effect Rate +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -87797,7 +87824,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -89071,9 +89098,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -89167,9 +89194,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -89263,9 +89290,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -91716,9 +91743,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -91812,9 +91839,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -91908,9 +91935,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -107626,7 +107653,7 @@
   {
     "id": 3344,
     "name": "Bubbly Bubble",
-    "description": "Attacks the enemy, dealing more damage according to your MAX HP. Removes 1 beneficial effect with a 30% chance and puts the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 30% chance and put the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking. This attack does not wake up sleeping enemies, and the damage is proportionate to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -107683,7 +107710,7 @@
   {
     "id": 3345,
     "name": "Bubbly Bubble",
-    "description": "Attacks the enemy, dealing more damage according to your MAX HP. Removes 1 beneficial effect with a 30% chance and puts the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 30% chance and put the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking. This attack does not wake up sleeping enemies, and the damage is proportionate to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -107740,7 +107767,7 @@
   {
     "id": 3346,
     "name": "Bubbly Bubble",
-    "description": "Attacks the enemy, dealing more damage according to your MAX HP. Removes 1 beneficial effect with a 30% chance and puts the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 30% chance and put the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking. This attack does not wake up sleeping enemies, and the damage is proportionate to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -107797,7 +107824,7 @@
   {
     "id": 3347,
     "name": "Bubbly Bubble",
-    "description": "Attacks the enemy, dealing more damage according to your MAX HP. Removes 1 beneficial effect with a 30% chance and puts the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 30% chance and put the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking. This attack does not wake up sleeping enemies, and the damage is proportionate to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -107854,7 +107881,7 @@
   {
     "id": 3348,
     "name": "Bubbly Bubble",
-    "description": "Attacks the enemy, dealing more damage according to your MAX HP. Removes 1 beneficial effect with a 30% chance and puts the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 30% chance and put the target to sleep for 1 turn with a 30% chance. You will also fall asleep after attacking. This attack does not wake up sleeping enemies, and the damage is proportionate to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -108179,7 +108206,7 @@
   {
     "id": 3358,
     "name": "Dream Invader (Passive)",
-    "description": "When you attack the enemy on your turn, the enemy's Defense is ignored if both you and the enemy target are sleeping. [Automatic Effect]",
+    "description": "When you attack the enemy on your turn, ignores the enemy's Defense if both you and the target are asleep. In addition, if you defeat a sleeping enemy on your turn, the target cannot be revived during battle. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -108197,6 +108224,15 @@
         "chance": 100,
         "quantity": 0,
         "note": ""
+      },
+      {
+        "name": "Anti-Revive",
+        "description": "Prevents an enemy from being resurrected after being killed.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": "If you defeat a sleeping enemy on your turn"
       }
     ],
     "multiplierFormula": "",
@@ -110505,7 +110541,7 @@
   {
     "id": 3418,
     "name": "Grinding",
-    "description": "Attacks all enemies 3 times with a giant whirlwind to reduce their Attack Bar by 25% on each hit, and attacks them once more to freeze them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to freeze the target.",
+    "description": "Attacks all enemies 3 times with a giant whirlwind to decrease their Attack Bar by 25% on each hit, and attacks once more to freeze them for 1 turn with a 75% chance. If the enemy's Attack Bar is 0, you are guaranteed to freeze the target.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -110514,10 +110550,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110526,7 +110562,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -110535,7 +110571,7 @@
         "description": "The target will be frozen and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -110581,7 +110617,7 @@
   {
     "id": 3420,
     "name": "Grinding",
-    "description": "Attacks all enemies 3 times with a giant whirlwind to reduce their Attack Bar by 25% on each hit, and attacks them once more to stun them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
+    "description": "Attacks all enemies 3 times with a giant whirlwind to decrease their Attack Bar by 25% on each hit, and attacks once more to stun them for 1 turn with a 75% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -110590,10 +110626,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110602,7 +110638,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -110611,7 +110647,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -110657,7 +110693,7 @@
   {
     "id": 3422,
     "name": "Grinding",
-    "description": "Attacks all enemies 3 times with a giant whirlwind to reduce their Attack Bar by 25% on each hit, and attacks them once more to stun them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
+    "description": "Attacks all enemies 3 times with a giant whirlwind to decrease their Attack Bar by 25% on each hit, and attacks once more to stun them for 1 turn with a 75% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -110666,10 +110702,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110678,7 +110714,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -110687,7 +110723,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -110701,7 +110737,7 @@
   {
     "id": 3423,
     "name": "Cold Brew (Passive)",
-    "description": "Attacking the frozen enemy reduces the target's Attack Bar by 30% each. If you attack the frozen enemy on your turn, the damage dealt will be increased by 200%. [Automatic Effect]",
+    "description": "Decreases the enemy's Attack Bar by 15% when you attack. Increases the damage by 200% when attacking a frozen enemy on your turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -110716,8 +110752,8 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
-        "quantity": 30,
+        "chance": 100,
+        "quantity": 15,
         "note": ""
       },
       {
@@ -110798,7 +110834,7 @@
   {
     "id": 3425,
     "name": "Caffeine (Passive)",
-    "description": "You will be immune to Sleep, and grants one of the following effects for 2 turns when you gain a turn: Increase Attack Power, Increase Defense or Increase Attack Speed. [Automatic Effect]",
+    "description": "Gains immunity against Sleep. In addition, grants one of the following effects to all allies for 2 turns whenever you gain a turn: Increase Attack Power, Increase Defense, or Increase Attack Speed. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -110813,7 +110849,7 @@
         "description": "The target's Attack Power will be increased by 50%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
         "note": ""
       },
@@ -110822,7 +110858,7 @@
         "description": "The target's defense will be increased by 70%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
         "note": ""
       },
@@ -110831,8 +110867,17 @@
         "description": "The target's Attack Speed will be increased by 30%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Immune to Sleep",
+        "description": "Becomes immune to Sleep",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 0,
         "note": ""
       }
     ],
@@ -112982,7 +113027,7 @@
   {
     "id": 3485,
     "name": "Spinning Tea Spoon",
-    "description": "Attacks all enemies 3 times to reduce their Attack Bar by 25% on each hit, and attacks them once more to freeze them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to freeze the target.",
+    "description": "Attacks all enemies 3 times to decrease their Attack Bar by 25% on each hit, and attacks once more to freeze them for 1 turn with a 75% chance. If an enemy's Attack Bar is 0, the target is guaranteed to be frozen.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -112991,10 +113036,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113003,7 +113048,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -113012,7 +113057,7 @@
         "description": "The target will be frozen and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -113058,7 +113103,7 @@
   {
     "id": 3487,
     "name": "Spinning Tea Spoon",
-    "description": "Attacks all enemies 3 times to reduce their Attack Bar by 25% on each hit, and attacks them once more to stun them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
+    "description": "Attacks all enemies 3 times to decrease their Attack Bar by 25% on each hit, and attacks once more to stun them for 1 turn with a 75% chance. If an enemy's Attack Bar is 0, the target is guaranteed to be stunned.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -113067,10 +113112,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113079,7 +113124,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -113088,7 +113133,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -113134,7 +113179,7 @@
   {
     "id": 3489,
     "name": "Spinning Tea Spoon",
-    "description": "Attacks all enemies 3 times to reduce their Attack Bar by 25% on each hit, and attacks them once more to stun them for 1 turn with a 50% chance. If the enemy's Attack Bar is 0, you are guaranteed to stun the target.",
+    "description": "Attacks all enemies 3 times to decrease their Attack Bar by 25% on each hit, and attacks once more to stun them for 1 turn with a 75% chance. If an enemy's Attack Bar is 0, the target is guaranteed to be stunned.",
     "slot": 2,
     "cooltime": 4,
     "hits": 3,
@@ -113143,10 +113188,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +10%",
-      "Damage +10%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +10%\r",
+      "Damage +10%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113155,7 +113200,7 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 25,
         "note": ""
       },
@@ -113164,7 +113209,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 75,
         "quantity": 1,
         "note": ""
       }
@@ -113178,7 +113223,7 @@
   {
     "id": 3490,
     "name": "Iced Tea (Passive)",
-    "description": "Attacking the frozen enemy reduces the target's Attack Bar by 30% each. If you attack the frozen enemy on your turn, the damage dealt will be increased by 200%. [Automatic Effect]",
+    "description": "Decreases the enemy's Attack Bar by 15% when you attack. Increases the damage by 200% when attacking a frozen enemy on your turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -113193,8 +113238,8 @@
         "description": "Reduces the enemy's attack gauge",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
-        "quantity": 30,
+        "chance": 100,
+        "quantity": 15,
         "note": ""
       },
       {
@@ -113275,7 +113320,7 @@
   {
     "id": 3492,
     "name": "Mind and Body Rest (Passive)",
-    "description": "You will be immune to Sleep, and grants one of the following effects for 2 turns when you gain a turn: Increase Attack Power, Increase Defense or Increase Attack Speed. [Automatic Effect]",
+    "description": "Gains immunity against Sleep. In addition, grants one of the following effects to all allies for 2 turns whenever you gain a turn: Increase Attack Power, Increase Defense, or Increase Attack Speed. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -113290,7 +113335,7 @@
         "description": "The target's Attack Power will be increased by 50%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
         "note": ""
       },
@@ -113299,7 +113344,7 @@
         "description": "The target's defense will be increased by 70%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
         "note": ""
       },
@@ -113308,7 +113353,7 @@
         "description": "The target's Attack Speed will be increased by 30%.",
         "isBuff": true,
         "type": "Buff",
-        "chance": 0,
+        "chance": 33,
         "quantity": 2,
         "note": ""
       },
@@ -113317,7 +113362,7 @@
         "description": "Becomes immune to Sleep",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 0,
+        "chance": 100,
         "quantity": 0,
         "note": ""
       }
@@ -120761,7 +120806,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Effect Rate +5%\r",
+      "Effect Rate +5%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -124547,7 +124592,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +5%\r",
+      "Damage +5%",
       "Damage +15%"
     ],
     "effects": [
@@ -125130,7 +125175,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +5%\r",
+      "Damage +5%",
       "Damage +15%"
     ],
     "effects": [
@@ -127000,7 +127045,7 @@
   {
     "id": 3933,
     "name": "Mischievous Curse (Passive)",
-    "description": "Prevents the enemy from removing harmful effects with an 80% chance for 1 turn if you attack the enemy under harmful effects, and silences for 1 turn with a 30% chance if you attack the enemy with no harmful effects. In addition, increases your Attack Bar by 20% whenever the enemy is granted with harmful effects. [Automatic Effect]",
+    "description": "When you attack an enemy granted with a harmful effect, blocks the enemy from removing harmful effects for 1 turn with a 30% chance. When you attack an enemy with no harmful effects, silences the enemy for 1 turn with a 30% chance. In addition, increases your Attack Bar by 20% whenever an enemy is granted with a harmful effect. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -127009,7 +127054,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Effect Rate +10%",
+      "Effect Rate +10%\r",
       "Effect Rate +10%"
     ],
     "effects": [
@@ -127018,9 +127063,9 @@
         "description": "Harmful effects cannot be removed while this effect is on. This effect will be removed first when a harmful effect removal skill is used, and other harmful effects can be removed afterwards. Does not apply to bosses.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 80,
+        "chance": 30,
         "quantity": 1,
-        "note": ""
+        "note": "When you attack an enemy granted with a harmful effect"
       },
       {
         "name": "Increase ATB",
@@ -127048,7 +127093,7 @@
   {
     "id": 3934,
     "name": "Blessing of Curse (Passive)",
-    "description": "For every harmful effect granted on yourself, the damage dealt is increased by 20% and the damage taken is decreased by 5%. Grants one of the harmful effects granted on yourself to the target when attacking. In addition, ignores all the harmful effects granted on yourself and gains immunity against the Oblivion effect. [Automatic Effect]",
+    "description": "For each harmful effect granted on allies (including yourself), increases the damage dealt by 20%, up to 200%, and decreases the damage taken by 5%, up to 50%. Grants 1 of the harmful effects granted on yourself to the target when you attack. In addition, ignores all the harmful effects granted on yourself and gains immunity against Oblivion. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -127065,7 +127110,7 @@
         "type": "Neutral",
         "chance": 0,
         "quantity": 20,
-        "note": "Per harmful effect granted on yourself"
+        "note": "Per harmful effect granted on all allies, up to 200%"
       },
       {
         "name": "Decrease Damage",
@@ -127092,6 +127137,15 @@
         "type": "Neutral",
         "chance": 0,
         "quantity": 0,
+        "note": ""
+      },
+      {
+        "name": "Transfer Debuff",
+        "description": "Removes a debuff from casting monster and applies it to the target monster.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
         "note": ""
       }
     ],
@@ -127636,7 +127690,7 @@
   {
     "id": 3948,
     "name": "Mischievous Curse (Passive)",
-    "description": "Prevents the enemy from removing harmful effects with an 80% chance for 1 turn if you attack the enemy under harmful effects, and silences for 1 turn with a 30% chance if you attack the enemy with no harmful effects. In addition, increases your Attack Bar by 20% whenever the enemy is granted with harmful effects. [Automatic Effect]",
+    "description": "When you attack an enemy granted with a harmful effect, blocks the enemy from removing harmful effects for 1 turn with a 30% chance. When you attack an enemy with no harmful effects, silences the enemy for 1 turn with a 30% chance. In addition, increases your Attack Bar by 20% whenever an enemy is granted with a harmful effect. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -127645,7 +127699,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Effect Rate +10%",
+      "Effect Rate +10%\r",
       "Effect Rate +10%"
     ],
     "effects": [
@@ -127654,9 +127708,9 @@
         "description": "Harmful effects cannot be removed while this effect is on. This effect will be removed first when a harmful effect removal skill is used, and other harmful effects can be removed afterwards. Does not apply to bosses.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 80,
+        "chance": 30,
         "quantity": 1,
-        "note": ""
+        "note": "When you attack an enemy granted with a harmful effect"
       },
       {
         "name": "Increase ATB",
@@ -127684,7 +127738,7 @@
   {
     "id": 3949,
     "name": "Blessing of Curse (Passive)",
-    "description": "For every harmful effect granted on yourself, the damage dealt is increased by 20% and the damage taken is decreased by 5%. Grants one of the harmful effects granted on yourself to the target when attacking. In addition, ignores all the harmful effects granted on yourself and gains immunity against the Oblivion effect. [Automatic Effect]",
+    "description": "For each harmful effect granted on allies (including yourself), increases the damage dealt by 20%, up to 200%, and decreases the damage taken by 5%, up to 50%. Grants 1 of the harmful effects granted on yourself to the target when you attack. In addition, ignores all the harmful effects granted on yourself and gains immunity against Oblivion. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -127701,7 +127755,7 @@
         "type": "Neutral",
         "chance": 0,
         "quantity": 20,
-        "note": "Per harmful effect granted on yourself"
+        "note": "Per harmful effect granted on all allies, up to 200%"
       },
       {
         "name": "Decrease Damage",
@@ -127728,6 +127782,15 @@
         "type": "Neutral",
         "chance": 0,
         "quantity": 0,
+        "note": ""
+      },
+      {
+        "name": "Transfer Debuff",
+        "description": "Removes a debuff from casting monster and applies it to the target monster.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
         "note": ""
       }
     ],
@@ -129283,7 +129346,7 @@
   {
     "id": 4016,
     "name": "Giant's Bat",
-    "description": "Recovers HP of all allies by 30%, and attacks all enemies to inflict damage that increases according to your MAX HP and stun for 1 turn. In addition, decreases the Attack Bar by 80% if your MAX HP is higher than the target's.",
+    "description": "Recovers the HP of all allies by 30%, and then attacks all enemies to stun for 1 turn and decrease their Attack Bar by 80%. The damage increases according to your MAX HP.",
     "slot": 3,
     "cooltime": 5,
     "hits": 1,
@@ -129292,7 +129355,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +20%",
+      "Damage +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -129321,7 +129384,7 @@
         "type": "Neutral",
         "chance": 0,
         "quantity": 80,
-        "note": "if your MAX HP is higher than the target"
+        "note": ""
       }
     ],
     "multiplierFormula": "2.4*{ATK} + 0.2*{MAX HP}",
@@ -130823,7 +130886,7 @@
   {
     "id": 4055,
     "name": "Horn of Charge",
-    "description": "Increases the ally target's Attack Bar by 10%.",
+    "description": "Increases the ally target's Attack Bar by 12%.",
     "slot": 1,
     "cooltime": null,
     "hits": 0,
@@ -130832,9 +130895,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +5%",
-      "Damage +15%",
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130844,7 +130907,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 10,
+        "quantity": 12,
         "note": ""
       }
     ],
@@ -130855,7 +130918,7 @@
   {
     "id": 4056,
     "name": "Horn of Charge",
-    "description": "Increases the ally target's Attack Bar by 10%.",
+    "description": "Increases the ally target's Attack Bar by 12%.",
     "slot": 1,
     "cooltime": null,
     "hits": 0,
@@ -130864,9 +130927,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +5%",
-      "Damage +15%",
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130876,7 +130939,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 10,
+        "quantity": 12,
         "note": ""
       }
     ],
@@ -130887,7 +130950,7 @@
   {
     "id": 4057,
     "name": "Horn of Charge",
-    "description": "Increases the ally target's Attack Bar by 10%.",
+    "description": "Increases the ally target's Attack Bar by 12%.",
     "slot": 1,
     "cooltime": null,
     "hits": 0,
@@ -130896,9 +130959,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +5%",
-      "Damage +15%",
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130908,7 +130971,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 10,
+        "quantity": 12,
         "note": ""
       }
     ],
@@ -130919,7 +130982,7 @@
   {
     "id": 4058,
     "name": "Horn of Charge",
-    "description": "Increases the ally target's Attack Bar by 10%.",
+    "description": "Increases the ally target's Attack Bar by 12%.",
     "slot": 1,
     "cooltime": null,
     "hits": 0,
@@ -130928,9 +130991,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +5%",
-      "Damage +15%",
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130940,7 +131003,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 10,
+        "quantity": 12,
         "note": ""
       }
     ],
@@ -130951,7 +131014,7 @@
   {
     "id": 4059,
     "name": "Horn of Charge",
-    "description": "Increases the ally target's Attack Bar by 10%.",
+    "description": "Increases the ally target's Attack Bar by 12%.",
     "slot": 1,
     "cooltime": null,
     "hits": 0,
@@ -130960,9 +131023,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +5%",
-      "Damage +15%",
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130972,7 +131035,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 0,
-        "quantity": 10,
+        "quantity": 12,
         "note": ""
       }
     ],
@@ -131823,7 +131886,7 @@
   {
     "id": 4097,
     "name": "Metamorphosis (Passive)",
-    "description": "Whenever you grant harmful effects on the enemy with your skill, you grant yourself Shield, Immunity, or Counterattack for 2 turns each if the effect is not already applied to yourself. In addition, decreases the cooldown of [Dancing Star] by 1 turn if you have 2 or more beneficial effects after the turn ends. [Automatic Effect]",
+    "description": "Whenever you attack the enemy, grants yourself one of the following beneficial effects you do not already have for 2 turns: Shield, Immunity, or Counterattack. In addition, decreases the cooldown of [Dancing Star] by 1 turn if you have 2 or more beneficial effects after your turn ends. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -133146,7 +133209,7 @@
   {
     "id": 4130,
     "name": "Magic Control (Passive)",
-    "description": "When the enemy removes harmful effects or an ally's beneficial effects, beneficial effects granted on the enemy target are removed together. Afterwards, removes 1 harmful effect from yourself and the ally with the highest Attack Bar and increases both's Attack Bar by 20%. [Automatic Effect]",
+    "description": "When an enemy removes a harmful effect or an ally's beneficial effect, beneficial effects granted on the enemy are also removed. Afterwards, removes 1 harmful effect from the 2 allies with the highest Attack Bar and increases their Attack Bar by 20%. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -133162,8 +133225,8 @@
         "isBuff": false,
         "type": "Neutral",
         "chance": 100,
-        "quantity": null,
-        "note": "When the enemy removes harmful effects, and the ally with the highest attack bar"
+        "quantity": 1,
+        "note": "When the enemy removes harmful effects or an ally's beneficial effects, beneficial effects granted on the enemy target are removed together."
       },
       {
         "name": "Cleanse",
@@ -133172,7 +133235,16 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 1,
-        "note": "Ally with highest attack bar is cleansed.."
+        "note": "Ally with the highest Attack Bar"
+      },
+      {
+        "name": "Cleanse",
+        "description": "Removes one or more debuffs",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": "Ally with the highest Attack Bar"
       },
       {
         "name": "Increase ATB",
@@ -133181,7 +133253,16 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 20,
-        "note": "Ally with highest attack bar is boosted."
+        "note": "Ally with the highest Attack Bar"
+      },
+      {
+        "name": "Increase ATB",
+        "description": "The ATK bar of ally monsters is filled by a set amount. This allows ally monsters to attack again sooner.",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 20,
+        "note": "Ally with the highest Attack Bar"
       }
     ],
     "multiplierFormula": "",
@@ -134661,7 +134742,7 @@
   {
     "id": 4176,
     "name": "Backup Code (Passive)",
-    "description": "When you take fatal damage, offsets the damage and all the follow-up damage. If the fatal damage came from the enemy's attack, reflects 50% of the damage to the target (boss excluded) that attacked you. In addition, damage increases by 20% for each harmful effect granted on the target whenever you attack the enemy. [Automatic Effect]",
+    "description": "When you take fatal damage, offsets the damage and all the follow-up damage. If the fatal damage came from the enemy's attack, reflects 80% of the damage to the target (boss excluded) that attacked you. In addition, increases the damage by 20% for each harmful effect granted on the target when you attack the enemy. [Automatic Effect]",
     "slot": 3,
     "cooltime": 3,
     "hits": 0,
@@ -134686,7 +134767,7 @@
         "isBuff": true,
         "type": "Buff",
         "chance": 100,
-        "quantity": 50,
+        "quantity": 80,
         "note": "Boss ecluded"
       },
       {
@@ -136031,7 +136112,7 @@
   {
     "id": 4210,
     "name": "Reaction (Passive)",
-    "description": "Whenever you grant harmful effects on the enemy with your skill, you grant yourself Shield, Immunity, or Counterattack for 2 turns each if the effect is not already applied to yourself. In addition, decreases the cooldown of [Star of Explosion] by 1 turn if you have 2 or more beneficial effects after the turn ends. [Automatic Effect]",
+    "description": "Whenever you attack the enemy, grants yourself one of the following beneficial effects you do not already have for 2 turns: Shield, Immunity, or Counterattack. In addition, decreases the cooldown of [Star of Explosion] by 1 turn if you have 2 or more beneficial effects after your turn ends. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -137354,7 +137435,7 @@
   {
     "id": 4243,
     "name": "Magic Mastery (Passive)",
-    "description": "When the enemy removes harmful effects or an ally's beneficial effects, beneficial effects granted on the enemy target are removed together. Afterwards, removes 1 harmful effect from yourself and the ally with the highest Attack Bar and increases both's Attack Bar by 20%. [Automatic Effect]",
+    "description": "When an enemy removes a harmful effect or an ally's beneficial effect, beneficial effects granted on the enemy are also removed. Afterwards, removes 1 harmful effect from the 2 allies with the highest Attack Bar and increases their Attack Bar by 20%. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -137365,15 +137446,6 @@
     "levelProgress": [],
     "effects": [
       {
-        "name": "Increase ATB",
-        "description": "The ATK bar of ally monsters is filled by a set amount. This allows ally monsters to attack again sooner.",
-        "isBuff": true,
-        "type": "Neutral",
-        "chance": 100,
-        "quantity": 20,
-        "note": "When the enemy removes harmful effects, and the ally with the highest attack bar"
-      },
-      {
         "name": "Remove Buff",
         "description": "Removes one or more beneficial effects from target monster(s)",
         "isBuff": false,
@@ -137381,6 +137453,42 @@
         "chance": 100,
         "quantity": 1,
         "note": "When the enemy removes harmful effects or an ally's beneficial effects, beneficial effects granted on the enemy target are removed together."
+      },
+      {
+        "name": "Cleanse",
+        "description": "Removes one or more debuffs",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": "Ally with the highest Attack Bar"
+      },
+      {
+        "name": "Cleanse",
+        "description": "Removes one or more debuffs",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": "Ally with the highest Attack Bar"
+      },
+      {
+        "name": "Increase ATB",
+        "description": "The ATK bar of ally monsters is filled by a set amount. This allows ally monsters to attack again sooner.",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 20,
+        "note": "Ally with the highest Attack Bar"
+      },
+      {
+        "name": "Increase ATB",
+        "description": "The ATK bar of ally monsters is filled by a set amount. This allows ally monsters to attack again sooner.",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 20,
+        "note": "Ally with the highest Attack Bar"
       }
     ],
     "multiplierFormula": "",
@@ -142320,7 +142428,7 @@
   {
     "id": 4422,
     "name": "Strong Willpower (Passive)",
-    "description": "Increases your Attack Bar by 30% if you get harmful effects. Decreases your HP by 10% and the HP of all enemies (boss excluded) by 25% each if you have a harmful effect when you gain a turn. [Automatic Effect]",
+    "description": "Increases your Attack Bar by 30% when you are granted with a harmful effect. Decreases your HP by 20% and the HP of all enemies (excluding the boss) by 25% each if you have a harmful effect when you gain a turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -142336,8 +142444,8 @@
         "isBuff": false,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 10,
-        "note": "when you gain a turn"
+        "quantity": 20,
+        "note": "if you have a harmful effect when you gain a turn"
       },
       {
         "name": "HP reduction",
@@ -142346,7 +142454,7 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 25,
-        "note": "when you gain a turn"
+        "note": "if you have a harmful effect when you gain a turn"
       },
       {
         "name": "Increase ATB",
@@ -142355,7 +142463,7 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 30,
-        "note": "if you get harmful effects"
+        "note": "when you are granted with a harmful effect"
       }
     ],
     "multiplierFormula": "",
@@ -142365,7 +142473,7 @@
   {
     "id": 4423,
     "name": "Straw Doll Technique: Resonance",
-    "description": "Attacks one of the enemy targets that attacked you and deals 60% of the target's MAX HP as damage (10% for bosses), provokes for 1 turn, and then recovers your HP by 15%. This skill becomes available when you are attacked and remains ready until used.",
+    "description": "Attacks one of the enemies that attacked you to deal damage equal to 60% of the target's MAX HP (10% for bosses), provoke for 1 turn, and then recovers your HP by 15%. This skill becomes available when you are attacked during the enemy's turn and remains ready until used.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -143993,7 +144101,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +20%\r",
+      "Damage +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -146982,7 +147090,7 @@
   {
     "id": 4556,
     "name": "Strong Vengeance (Passive)",
-    "description": "Increases your Attack Bar by 30% if you get harmful effects. Decreases your HP by 10% and the HP of all enemies (boss excluded) by 25% each if you have a harmful effect when you gain a turn. [Automatic Effect]",
+    "description": "Increases your Attack Bar by 30% when you are granted with a harmful effect. Decreases your HP by 20% and the HP of all enemies (excluding the boss) by 25% each if you have a harmful effect when you gain a turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -146998,8 +147106,8 @@
         "isBuff": false,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 10,
-        "note": "when you gain a turn"
+        "quantity": 20,
+        "note": "if you have a harmful effect when you gain a turn"
       },
       {
         "name": "HP reduction",
@@ -147008,7 +147116,7 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 25,
-        "note": "when you gain a turn"
+        "note": "if you have a harmful effect when you gain a turn"
       },
       {
         "name": "Increase ATB",
@@ -147017,7 +147125,7 @@
         "type": "Neutral",
         "chance": 100,
         "quantity": 30,
-        "note": "if you get harmful effects"
+        "note": "when you are granted with a harmful effect"
       }
     ],
     "multiplierFormula": "",
@@ -147027,7 +147135,7 @@
   {
     "id": 4557,
     "name": "Exorcism Resonance",
-    "description": "Attacks one of the enemy targets that attacked you and deals 60% of the target's MAX HP as damage (10% for bosses), provokes for 1 turn, and then recovers your HP by 15%. This skill becomes available when you are attacked and remains ready until used.",
+    "description": "Attacks one of the enemies that attacked you to deal damage equal to 60% of the target's MAX HP (10% for bosses), provoke for 1 turn, and then recovers your HP by 15%. This skill becomes available when you are attacked during the enemy's turn and remains ready until used.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -147567,7 +147675,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +20%\r",
+      "Damage +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -149570,7 +149678,7 @@
   {
     "id": 4621,
     "name": "Unique Blood (Passive)",
-    "description": "Decreases your HP by 10% and creates a shield equal to 20% of your MAX HP for 2 turns at the start of your turn. While having a shield, gains immunity against inability effects and counterattacks with [Triple Roundhouse Kick] when you are attacked on the enemy's turn. [Automatic Effect]",
+    "description": "Decreases your HP by 10% and creates a Shield equal to 30% of your MAX HP on yourself for 2 turns at the start of your turn. While having a Shield, gains immunity against inability effects and counterattacks with [Triple Roundhouse Kick] when you are attacked during the enemy's turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -149598,7 +149706,7 @@
         "type": "Buff",
         "chance": 0,
         "quantity": 2,
-        "note": "At the start of your turn"
+        "note": "30% your MAX HP, at the start of your turn"
       },
       {
         "name": "Counter",
@@ -151579,7 +151687,7 @@
   {
     "id": 4668,
     "name": "Majestic Tide",
-    "description": "Recovers your HP and the HP of the ally with the lowest HP ratio, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
+    "description": "Recovers the HP of all allies by 15%, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -151588,10 +151696,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +10%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Effect Rate +10%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -151601,16 +151709,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": null,
-        "note": ""
-      },
-      {
-        "name": "Heal",
-        "description": "Increases ally's HP",
-        "isBuff": true,
-        "type": "Neutral",
-        "chance": null,
-        "quantity": null,
+        "quantity": 20,
         "note": ""
       },
       {
@@ -151632,7 +151731,7 @@
   {
     "id": 4669,
     "name": "Majestic Tide",
-    "description": "Recovers your HP and the HP of the ally with the lowest HP ratio, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
+    "description": "Recovers the HP of all allies by 15%, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -151641,10 +151740,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +10%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Effect Rate +10%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -151654,16 +151753,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": null,
-        "note": ""
-      },
-      {
-        "name": "Heal",
-        "description": "Increases ally's HP",
-        "isBuff": true,
-        "type": "Neutral",
-        "chance": null,
-        "quantity": null,
+        "quantity": 15,
         "note": ""
       },
       {
@@ -151685,7 +151775,7 @@
   {
     "id": 4670,
     "name": "Majestic Tide",
-    "description": "Recovers your HP and the HP of the ally with the lowest HP ratio, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
+    "description": "Recovers the HP of all allies by 15%, and then attacks all enemies to deal damage proportionate to your Defense and provoke them for 1 turn with a 50% chance.",
     "slot": 2,
     "cooltime": 4,
     "hits": 1,
@@ -151694,10 +151784,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%",
-      "Effect Rate +10%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Effect Rate +10%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -151707,16 +151797,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": null,
-        "note": ""
-      },
-      {
-        "name": "Heal",
-        "description": "Increases ally's HP",
-        "isBuff": true,
-        "type": "Neutral",
-        "chance": null,
-        "quantity": null,
+        "quantity": 20,
         "note": ""
       },
       {
@@ -151813,7 +151894,7 @@
   {
     "id": 4673,
     "name": "Last Stand (Passive)",
-    "description": "Grants Endure for 1 turn and HP recovery effect for 2 turns on all allies if an ally (including yourself) takes fatal damage from an attack that ignores Defense. This effect is only activated once per turn. [Automatic Effect]",
+    "description": "When an attack that ignores Defense deals fatal damage to an ally (including yourself) or decreases their HP to 15% or below, grants Endure for 1 turn and HP Recovery for 2 turns on all allies. This effect is only activated once per turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -151830,7 +151911,7 @@
         "type": "Buff",
         "chance": 100,
         "quantity": 1,
-        "note": "if an ally takes fatal damage from an attack that ignores Defense"
+        "note": "When an attack that ignores Defense deals fatal damage to an ally (including yourself) or decreases their HP to 15% or below"
       },
       {
         "name": "Recovery",
@@ -151839,7 +151920,7 @@
         "type": "Buff",
         "chance": 100,
         "quantity": 2,
-        "note": "If an ally takes fatal damage from an attack that ignores Defense."
+        "note": "When an attack that ignores Defense deals fatal damage to an ally (including yourself) or decreases their HP to 15% or below"
       }
     ],
     "multiplierFormula": "",
@@ -153189,7 +153270,7 @@
   {
     "id": 4705,
     "name": "Vermilion Blood (Passive)",
-    "description": "Decreases your HP by 10% and creates a shield equal to 20% of your MAX HP for 2 turns at the start of your turn. While having a shield, gains immunity against inability effects and counterattacks with [Triple Flame Kick] when you are attacked on the enemy's turn. [Automatic Effect]",
+    "description": "Decreases your HP by 10% and creates a Shield equal to 30% of your MAX HP on yourself for 2 turns at the start of your turn. While having a Shield, gains immunity against inability effects and counterattacks with [Triple Flame Kick] when you are attacked during the enemy's turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -153217,7 +153298,7 @@
         "type": "Buff",
         "chance": 0,
         "quantity": 2,
-        "note": "At the start of your turn"
+        "note": "30% your MAX HP, at the start of your turn"
       },
       {
         "name": "Counter",
@@ -156329,7 +156410,7 @@
   {
     "id": 4781,
     "name": "Moonfall",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -156364,16 +156445,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4781/"
   },
   {
     "id": 4782,
     "name": "Moonfall",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -156408,16 +156490,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4782/"
   },
   {
     "id": 4783,
     "name": "Moonfall",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -156452,16 +156535,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4783/"
   },
   {
     "id": 4784,
     "name": "Moonfall",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -156496,16 +156580,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4784/"
   },
   {
     "id": 4785,
     "name": "Moonfall",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -156540,9 +156625,10 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4785/"
   },
@@ -156593,7 +156679,7 @@
   {
     "id": 4787,
     "name": "Phoenix Smasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -156602,11 +156688,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156624,7 +156710,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -156639,7 +156725,7 @@
   {
     "id": 4788,
     "name": "Phoenix Smasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -156648,11 +156734,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156670,7 +156756,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -156685,7 +156771,7 @@
   {
     "id": 4789,
     "name": "Phoenix Smasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -156694,11 +156780,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156716,7 +156802,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -159123,7 +159209,7 @@
   {
     "id": 4890,
     "name": "Emergency Drive (Passive)",
-    "description": "When you take fatal damage, all harmful effects are removed and only the mechanical frame remains for 2 turns. Uses [Rending Claw] on all enemies when you gain a turn. While in the mechanical frame state, you gain immunity against inability effects and Attack Bar decreasing effects, and deal 50% increased damage. However, you cannot counterattack or attack together. You cannot be defeated while the effect lasts, but will die once the effect ends. [Automatic Effect]",
+    "description": "When you take fatal damage, all effects granted on yourself are removed and only the mechanical frame remains for 2 turns. Uses [Rending Claw] on all enemies when you gain a turn. While in the mechanical frame state, you gain immunity against inability effects and Attack Bar decreasing effects and deal 70% increased damage. However, you cannot counterattack or attack together. You cannot be defeated while the effect lasts, but will die once the effect ends. [Automatic Effect]",
     "slot": 3,
     "cooltime": 8,
     "hits": 0,
@@ -159186,7 +159272,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 50,
+        "quantity": 70,
         "note": "While in Mechanical Frame State"
       }
     ],
@@ -159890,8 +159976,8 @@
   },
   {
     "id": 4911,
-    "name": "Kindling Grasp",
-    "description": "Attacks all enemies to inflict Continuous Damage for 2 turns.",
+    "name": "Dark Grasp",
+    "description": "Attacks all enemies to decrease their Attack Power for 2 turns.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -159909,8 +159995,8 @@
   },
   {
     "id": 4912,
-    "name": "Kindling Pulse",
-    "description": "Attacks all enemies 3 times to grant Silence for 2 turns with a 50% chance. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Continuous Damage.",
+    "name": "Dark Pulse",
+    "description": "Attacks all enemies 3 times. The first and second hits steal 1 beneficial effect with a 50% chance, and the last hit blocks enemies without a beneficial effect from receiving beneficial effects for 2 turns. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Decrease Attack Power.",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -159928,8 +160014,8 @@
   },
   {
     "id": 4913,
-    "name": "Kindling Might",
-    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss attacks an enemy granted with a harmful effect. When attacking enemies granted with Continuous Damage, Chaos Force increases by the number of those enemies.",
+    "name": "Dark Might",
+    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss is granted with a beneficial effect. When attacking enemies granted with Decrease Attack Power, Chaos Force increases by the number of those enemies.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -159947,7 +160033,7 @@
   },
   {
     "id": 4914,
-    "name": "Kindling Explosion",
+    "name": "Dark Explosion",
     "description": "Decreases the HP of all enemies by 1% per stack of Chaos Force, and then attacks all enemies. The damage dealt increases by 1% per stack of Chaos Force. This attack does not activate passive skills of the enemies.",
     "slot": 4,
     "cooltime": null,
@@ -159966,8 +160052,8 @@
   },
   {
     "id": 4915,
-    "name": "Pitch-black Grasp",
-    "description": "Attacks all enemies to increase their chance of landing a Glancing Hit for 2 turns.",
+    "name": "Storm Grasp",
+    "description": "Attacks all enemies to block them from receiving beneficial effects for 2 turns.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -159985,8 +160071,8 @@
   },
   {
     "id": 4916,
-    "name": "Pitch-black Pulse",
-    "description": "Attacks all enemies 3 times. Each hit removes all beneficial effects with a 50% chance and inflicts Continuous Damage for each beneficial effect removed for 2 turns. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Increase Glancing Hit Chance.",
+    "name": "Storm Pulse",
+    "description": "Attacks all enemies 3 times. The first hit inflicts Continuous Damage for 2 turns with a 50% chance, the second hit decreases their Attack Power for 2 turns with a 50% chance, and the third hit decreases their Defense for 2 turns with a 50% chance. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Beneficial Effects Blocked.",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -160004,8 +160090,8 @@
   },
   {
     "id": 4917,
-    "name": "Pitch-black Might",
-    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss attacks an enemy with no beneficial effects. When attacking enemies granted with Increase Glancing Hit Chance, Chaos Force increases by the number of those enemies.",
+    "name": "Storm Might",
+    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss attacks an enemy with no beneficial effects. When attacking enemies granted with Beneficial Effects Blocked, Chaos Force increases by the number of those enemies.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -160023,7 +160109,7 @@
   },
   {
     "id": 4918,
-    "name": "Pitch-black Explosion",
+    "name": "Storm Explosion",
     "description": "Decreases the HP of all enemies by 1% per stack of Chaos Force, and then attacks all enemies with an attack that ignores all damage reduction effects. The damage dealt increases by 1% per stack of Chaos Force. This attack does not activate passive skills of the enemies.",
     "slot": 4,
     "cooltime": null,
@@ -161465,7 +161551,7 @@
   {
     "id": 4958,
     "name": "Power Punch",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -161500,16 +161586,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4958/"
   },
   {
     "id": 4959,
     "name": "Power Punch",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -161544,16 +161631,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4959/"
   },
   {
     "id": 4960,
     "name": "Power Punch",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -161588,16 +161676,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4960/"
   },
   {
     "id": 4961,
     "name": "Power Punch",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -161632,16 +161721,17 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4961/"
   },
   {
     "id": 4962,
     "name": "Power Punch",
-    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance.",
+    "description": "Attacks the enemy to remove 1 beneficial effect with a 35% chance and provoke for 1 turn with a 35% chance. The damage increases according to your MAX HP.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -161676,9 +161766,10 @@
         "note": ""
       }
     ],
-    "multiplierFormula": "3.8*{ATK}",
+    "multiplierFormula": "1.9*{ATK} + 0.16*{MAX HP}",
     "scalesWith": [
-      "ATK"
+      "ATK",
+      "MAX HP"
     ],
     "source": "https://swarfarm.com/api/v2/skills/4962/"
   },
@@ -161729,7 +161820,7 @@
   {
     "id": 4964,
     "name": "Bone Crasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -161738,11 +161829,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161760,7 +161851,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -161775,7 +161866,7 @@
   {
     "id": 4965,
     "name": "Bone Crasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -161784,11 +161875,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161806,7 +161897,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -161821,7 +161912,7 @@
   {
     "id": 4966,
     "name": "Bone Crasher",
-    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 50% chance. The damage of this attack is proportionate to your MAX HP.",
+    "description": "Attacks the enemy 2 times. The first hit grants Irresistible for 2 turns with a 50% chance, and the second hit stuns for 1 turn with a 65% chance. The damage of this attack is proportionate to your MAX HP.",
     "slot": 2,
     "cooltime": 4,
     "hits": 2,
@@ -161830,11 +161921,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +5%",
-      "Damage +15%",
-      "Effect Rate +20%",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +20%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161852,7 +161943,7 @@
         "description": "The target will be stunned and won't be able to attack.",
         "isBuff": false,
         "type": "Debuff",
-        "chance": 50,
+        "chance": 65,
         "quantity": 1,
         "note": "2nd hit"
       }
@@ -162725,8 +162816,8 @@
   },
   {
     "id": 4990,
-    "name": "Burning Grasp",
-    "description": "Attacks all enemies to leave a Branding effect for 2 turns.",
+    "name": "Cold Grasp",
+    "description": "Attacks all enemies to freeze for 2 turns.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -162744,8 +162835,8 @@
   },
   {
     "id": 4991,
-    "name": "Burning Pulse",
-    "description": "Increases the Attack Power for 2 turns, and then attacks all enemies 3 times. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Brand.",
+    "name": "Cold Pulse",
+    "description": "Grants a Shield equal to 5% of the boss's MAX HP on itself for 2 turns, and then attacks all enemies 3 times. Each hit inflicts Continuous Damage for 2 turns with a 50% chance on enemies with no harmful effects. Gains 1 stack of Chaos Force whenever attacking a frozen enemy.",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -162763,8 +162854,8 @@
   },
   {
     "id": 4992,
-    "name": "Burning Might",
-    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss attacks an enemy with 50% or less HP. When attacking branded enemies, Chaos Force increases by the number of those enemies.",
+    "name": "Cold Might",
+    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss's HP is at 50% or above. When attacking frozen enemies, Chaos Force increases by the number of those enemies.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -162782,7 +162873,7 @@
   },
   {
     "id": 4993,
-    "name": "Burning Explosion",
+    "name": "Cold Explosion",
     "description": "Decreases the HP of all enemies by 1% per stack of Chaos Force, and then attacks all enemies. The damage dealt increases by 1% per stack of Chaos Force. This attack does not activate passive skills of the enemies.",
     "slot": 4,
     "cooltime": null,
@@ -162801,8 +162892,8 @@
   },
   {
     "id": 4994,
-    "name": "Cold Grasp",
-    "description": "Attacks all enemies to freeze for 2 turns.",
+    "name": "Kindling Grasp",
+    "description": "Attacks all enemies to inflict Continuous Damage for 2 turns.",
     "slot": 1,
     "cooltime": null,
     "hits": 1,
@@ -162820,8 +162911,8 @@
   },
   {
     "id": 4995,
-    "name": "Cold Pulse",
-    "description": "Attacks all enemies 3 times to decrease their Attack Power for 2 turns. Gains 1 stack of Chaos Force whenever attacking a frozen enemy.",
+    "name": "Kindling Pulse",
+    "description": "Grants Reflect Harmful Effect on itself for 2 turns, and then attacks all enemies 3 times. Each hit grants Silence on enemies with no harmful effects for 2 turns with a 50% chance. Gains 1 stack of Chaos Force whenever attacking an enemy granted with Continuous Damage.",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -162839,8 +162930,8 @@
   },
   {
     "id": 4996,
-    "name": "Cold Might",
-    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss's HP is at 50% or above. When attacking frozen enemies, Chaos Force increases by the number of those enemies.",
+    "name": "Kindling Might",
+    "description": "Attacks all enemies. Gains 5 stacks of Chaos Force if the boss attacks an enemy granted with a harmful effect. When attacking enemies granted with Continuous Damage, Chaos Force increases by the number of those enemies.",
     "slot": 3,
     "cooltime": null,
     "hits": 1,
@@ -162858,7 +162949,7 @@
   },
   {
     "id": 4997,
-    "name": "Cold Explosion",
+    "name": "Kindling Explosion",
     "description": "Decreases the HP of all enemies by 1% per stack of Chaos Force, and then attacks all enemies with an attack that ignores all damage reduction effects. The damage dealt increases by 1% per stack of Chaos Force. This attack does not activate passive skills of the enemies.",
     "slot": 4,
     "cooltime": null,
@@ -163679,7 +163770,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -164501,7 +164592,7 @@
   {
     "id": 5047,
     "name": "You Cannot Pass!",
-    "description": "Removes all harmful effects on all allies, and attacks all enemies to remove all beneficial effects and disturb HP recovery for 2 turns. The damage is proportionate to your MAX HP.",
+    "description": "Removes all harmful effects on all allies and recovers their HP by 25%. Afterwards, attacks all enemies to remove all beneficial effects and disturb HP recovery for 2 turns. The damage is proportionate to your MAX HP.",
     "slot": 3,
     "cooltime": 5,
     "hits": 1,
@@ -164510,7 +164601,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%",
+      "Damage +15%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -164539,6 +164630,15 @@
         "type": "Debuff",
         "chance": 100,
         "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Heal",
+        "description": "Increases ally's HP",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 25,
         "note": ""
       }
     ],
@@ -169346,10 +169446,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169442,10 +169542,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169495,10 +169595,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169582,7 +169682,7 @@
   {
     "id": 5218,
     "name": "Super Solenoid",
-    "description": "Attacks all enemies to steal all their beneficial effects. Increases your Attack Bar by 20% for each beneficial effect removed.",
+    "description": "Attacks all enemies to steal all their beneficial effects. Increases your Attack Bar by 25% for each beneficial effect removed.",
     "slot": 3,
     "cooltime": 5,
     "hits": 1,
@@ -169591,7 +169691,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%",
+      "Damage +15%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169610,7 +169710,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 20,
+        "quantity": 25,
         "note": "For each beneficial effect removed"
       }
     ],
@@ -169623,7 +169723,7 @@
   {
     "id": 5219,
     "name": "Transmission (Passive)",
-    "description": "Recovers the HP of all allies by 20% when you gain a turn under an inability effect. In addition, increases the damage that allies deal to enemies by 20% while you are under an inability effect. [Automatic Effect]",
+    "description": "Recovers the HP of all allies by 15% whenever you fall under an inability effect. In addition, increases the damage that allies deal to enemies by 20% while you are under an inability effect. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -169639,8 +169739,8 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 20,
-        "note": "When you gain a turn under an inability effect"
+        "quantity": 15,
+        "note": "whenever you fall under an inability effect"
       },
       {
         "name": "Increase Damage",
@@ -169659,7 +169759,7 @@
   {
     "id": 5220,
     "name": "Electrifying Gift",
-    "description": "Attacks all enemies to provoke for 2 turns and block them from receiving beneficial effects for 2 turns.",
+    "description": "Attacks all enemies to remove 1 beneficial effect and block them from receiving beneficial effects for 2 turns. Provokes enemies with no beneficial effects to remove for 1 turn.",
     "slot": 3,
     "cooltime": 5,
     "hits": 1,
@@ -169668,17 +169768,17 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%",
+      "Damage +15%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
       {
-        "name": "Provoke",
-        "description": "The target is forced to attack the Monster that is provoked.",
+        "name": "Remove Buff",
+        "description": "Removes one or more beneficial effects from target monster(s)",
         "isBuff": false,
-        "type": "Debuff",
+        "type": "Neutral",
         "chance": 100,
-        "quantity": 2,
+        "quantity": 1,
         "note": ""
       },
       {
@@ -169689,6 +169789,15 @@
         "chance": 100,
         "quantity": 2,
         "note": ""
+      },
+      {
+        "name": "Provoke",
+        "description": "The target is forced to attack the Monster that is provoked.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": "enemies with no beneficial effects"
       }
     ],
     "multiplierFormula": "4.6*{ATK}",
@@ -170334,7 +170443,7 @@
   {
     "id": 5237,
     "name": "World Tree Fragment",
-    "description": "Removes all harmful effects on all allies, and attacks all enemies to remove all beneficial effects and disturb HP recovery for 2 turns. The damage is proportionate to your MAX HP.",
+    "description": "Removes all harmful effects on all allies and recovers their HP by 25%. Afterwards, attacks all enemies to remove all beneficial effects and disturb HP recovery for 2 turns. The damage is proportionate to your MAX HP.",
     "slot": 3,
     "cooltime": 5,
     "hits": 1,
@@ -170343,7 +170452,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%",
+      "Damage +15%\r",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -170372,6 +170481,15 @@
         "type": "Debuff",
         "chance": 100,
         "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Heal",
+        "description": "Increases ally's HP",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 25,
         "note": ""
       }
     ],
@@ -172753,7 +172871,7 @@
   {
     "id": 5297,
     "name": "Magic Interpretation (Passive)",
-    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 10%. [Automatic Effect]",
+    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 25%. [Automatic Effect]",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -172780,7 +172898,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": 10,
+        "quantity": 25,
         "note": "When an enemy granted with a harmful effect gains a turn"
       }
     ],
@@ -172791,7 +172909,7 @@
   {
     "id": 5298,
     "name": "Magic Interpretation (Passive)",
-    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 10%. [Automatic Effect]",
+    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 25%. [Automatic Effect]",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -172818,7 +172936,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": 10,
+        "quantity": 25,
         "note": "When an enemy granted with a harmful effect gains a turn"
       }
     ],
@@ -172870,7 +172988,7 @@
   {
     "id": 5300,
     "name": "Magic Interpretation (Passive)",
-    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 10%. [Automatic Effect]",
+    "description": "After you attack, recovers your HP by 10% per enemy granted with a harmful effect among the targets you attacked. In addition, when an enemy granted with a harmful effect gains a turn, increases your Attack Bar by 25%. [Automatic Effect]",
     "slot": 2,
     "cooltime": null,
     "hits": 1,
@@ -172897,7 +173015,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": null,
-        "quantity": 10,
+        "quantity": 25,
         "note": "When an enemy granted with a harmful effect gains a turn"
       }
     ],
@@ -173033,7 +173151,7 @@
   {
     "id": 5304,
     "name": "The Height of Magic (Passive)",
-    "description": "When you are attacked during the enemy's turn, offsets the damage with a 25% chance. If the offset succeeds, attacks all enemies to stun for 1 turn. [Automatic Effect]",
+    "description": "When you are attacked during the enemy's turn, offsets the damage with a 40% chance. If the offset succeeds, attacks all enemies to stun for 1 turn. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -173050,7 +173168,7 @@
         "description": "Offset/Nullifies the damage taken",
         "isBuff": false,
         "type": "Neutral",
-        "chance": 25,
+        "chance": 40,
         "quantity": 100,
         "note": "When you are attacked during the enemy's turn"
       },
@@ -173694,7 +173812,7 @@
   {
     "id": 5319,
     "name": "Ally Cover (Passive)",
-    "description": "Grants Reflect Harmful Effect on all allies for 1 turn at the start of your turn, and decreases the damage that other allies receive by 20%. In addition, increases your Attack Bar by 10% when an ally, including yourself, is attacked. This does not accumulate with other damage reduction effects. [Automatic Effect]",
+    "description": "Grants Reflect Harmful Effect on all allies for 1 turn at the start of your turn. In addition, increases your Attack Bar by 5% whenever an ally (including yourself) is attacked and decreases the damage other allies receive by 10%. This does not accumulate with other damage reduction effects. [Automatic Effect]",
     "slot": 3,
     "cooltime": null,
     "hits": 0,
@@ -173719,7 +173837,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 20,
+        "quantity": 10,
         "note": "Other allies (excludes yourself)"
       },
       {
@@ -173728,7 +173846,7 @@
         "isBuff": true,
         "type": "Neutral",
         "chance": 100,
-        "quantity": 15,
+        "quantity": 5,
         "note": "For each harmful effect granted on the enemies after the attack."
       }
     ],
@@ -174902,7 +175020,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [

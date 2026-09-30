@@ -36,7 +36,11 @@ const monsterSkills = (monster.skillIds ?? [])
     const skill = skillById.get(id);
     return skill ? [skill] : [];
   })
-  .sort((a, b) => a.slot - b.slot || a.id - b.id);
+  .sort((a, b) => {
+    const aSlot = a.slot < 0 ? Number.POSITIVE_INFINITY : a.slot;
+    const bSlot = b.slot < 0 ? Number.POSITIVE_INFINITY : b.slot;
+    return aSlot - bSlot || a.id - b.id;
+  });
 const stats = monster.maxLevelStats
   ? [
       [
@@ -266,7 +270,9 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
         {monsterSkills.map((skill) => (
           <article class="monster-skill-card">
             <div class="monster-skill-heading">
-              <span class="monster-skill-slot">S{skill.slot}</span>
+              {skill.slot >= 0 && (
+                <span class="monster-skill-slot">S{skill.slot}</span>
+              )}
               <div>
                 <h3>{skill.name}</h3>
                 <div class="monster-skill-tags">

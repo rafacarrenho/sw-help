@@ -1291,6 +1291,22 @@ test('catálogo completo é válido e os retratos locais existem', () => {
       );
   }
 });
+test('aceita apenas o sentinela -1 para habilidades sem slot normal', () => {
+  const specialSkills = skills.map((skill, index) =>
+    index === 0 ? { ...skill, slot: -1 } : skill,
+  );
+  assert.doesNotThrow(() =>
+    validateCatalog(monsters, defenses, counters, specialSkills),
+  );
+  assert.throws(
+    () =>
+      validateCatalog(monsters, defenses, counters, [
+        { ...skills[0], slot: -2 },
+        ...skills.slice(1),
+      ]),
+    /habilidade/,
+  );
+});
 test('diferencia bônus adicionais de metas finais nos counters', () => {
   assert.equal(formatCounterStat(undefined, 'hp'), '—');
   assert.equal(formatCounterStat(30000, 'hp'), '+30k');
@@ -1317,11 +1333,11 @@ test('calcula a SPD do counter com Tick, líder, torre e Swift', () => {
 
   assert.equal(speed('platy-fire-835', 'platy-fire-835'), 149);
   assert.equal(speed('shihwa-fire-244', 'platy-fire-835'), 144);
-  assert.equal(speed('iona-light-661', 'platy-fire-835'), 131);
+  assert.equal(speed('iona-light-661', 'platy-fire-835'), 127);
   assert.equal(speed('betta-dark-839', 'platy-fire-835'), 128);
   assert.equal(speed('betta-dark-839', 'betta-dark-839'), 156);
   assert.equal(speed('shihwa-fire-244', 'betta-dark-839'), 168);
-  assert.equal(speed('iona-light-661', 'betta-dark-839'), 158);
+  assert.equal(speed('iona-light-661', 'betta-dark-839'), 154);
   assert.equal(speed('mimirr-light-655', 'mimirr-light-655'), 142);
   assert.equal(speed('loren-light-410', 'mimirr-light-655'), 144);
   assert.equal(speed('elucia-water-1281', 'mimirr-light-655'), 141);
