@@ -50,8 +50,9 @@ JavaScript.
 ## Navigation and Breadcrumbs
 
 The desktop and mobile SW Help brand links will continue to point to the
-localized home page. The sidebar will gain a localized Home entry before the
-tool group, while Siege Counter will point to its new dedicated route.
+localized home page. The sidebar will not contain a separate Home entry because
+the brand and breadcrumb already provide that path. Siege Counter will point to
+its dedicated route, and the sidebar will remain focused on tools.
 
 Breadcrumbs will express the new hierarchy:
 
@@ -60,9 +61,9 @@ Breadcrumbs will express the new hierarchy:
 - a defense or monster detail: `Home > Tool name > Detail type`.
 
 Every breadcrumb segment that represents a page will be a link, while the
-current segment will use text and `aria-current` semantics. The active sidebar
-state will distinguish Home from Siege Counter instead of treating both as the
-same section.
+current segment will use text and `aria-current` semantics. The Home page will
+not activate a sidebar item. Tool pages will retain their own active sidebar
+state.
 
 ## 404 Recovery and SEO
 
@@ -85,6 +86,7 @@ Automated coverage will verify that:
 - Siege Counter catalog and detail pages use the new canonical routes;
 - legacy defense URLs redirect to their new canonical counterparts;
 - the brand always returns to the localized home page;
+- the sidebar does not duplicate the Home link;
 - breadcrumbs render the correct home, tool, and detail hierarchy;
 - the 404 primary action returns to `/` and no longer labels the destination as
   Siege Counter;
