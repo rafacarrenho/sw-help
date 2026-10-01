@@ -8,16 +8,30 @@ interface Props {
   locale: Locale;
   activeGame?: GameDefinition;
   forceSelector?: boolean;
+  placement?: 'topbar' | 'sidebar';
 }
 
-const { locale, activeGame, forceSelector = false } = Astro.props;
+const {
+  locale,
+  activeGame,
+  forceSelector = false,
+  placement = 'topbar',
+} = Astro.props;
 const messages = getMessages(locale);
 const registeredGames: readonly GameDefinition[] = games;
 const showSelector = forceSelector || registeredGames.length > 1;
 ---
 
 {showSelector ? (
-  <div class="game-switcher topbar-game-switcher" data-game-root>
+  <div
+    class:list={[
+      'game-switcher',
+      placement === 'sidebar'
+        ? 'sidebar-game-switcher'
+        : 'topbar-game-switcher',
+    ]}
+    data-game-root
+  >
     <button
       class="game-toggle"
       type="button"
@@ -26,8 +40,17 @@ const showSelector = forceSelector || registeredGames.length > 1;
       aria-controls="game-menu"
       aria-label={messages.layout.chooseGame}
       data-game-toggle
+      data-nav-label={
+        placement === 'sidebar' ? messages.layout.chooseGame : undefined
+      }
     >
-      <span class="status-dot" />
+      {placement === 'sidebar' ? (
+        <span class="game-toggle-icon" aria-hidden="true">
+          <Icon name="gamepad" size={18} />
+        </span>
+      ) : (
+        <span class="status-dot" />
+      )}
       <strong>{activeGame?.name ?? messages.layout.chooseGame}</strong>
       <Icon name="chevron" size={13} class="game-chevron" />
     </button>

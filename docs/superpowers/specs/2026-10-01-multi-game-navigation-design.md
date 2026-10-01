@@ -11,7 +11,7 @@ The site has two navigation levels:
 1. The portal home and complete games section are available from the brand and footer.
 2. Contextual sidebar navigation belongs to the selected game and lists its home and tools.
 
-The brand always links to the localized portal home. Summoners War is the only initial entry, so the sidebar does not show a redundant “current game” selector. Its home link is labeled simply “Summoners War”, without “overview” or “visão geral”. The portal home always shows an accessible game selector in the topbar. On game pages, the topbar remains a compact contextual badge until the registry contains two or more games, when it also becomes a selector.
+The brand always links to the localized portal home. The portal home shows an accessible game selector inside the sidebar, where it acts as the entry point to every registered game. Once a visitor enters Summoners War, that portal selector disappears and the sidebar shows only the contextual navigation for the active game. Its home link is labeled simply “Summoners War”, without “overview” or “visão geral”. On game pages, the topbar remains a compact contextual badge until the registry contains two or more games, when it becomes an additional selector.
 
 ## Routes
 
@@ -36,7 +36,7 @@ Existing public paths redirect permanently to their new equivalents and preserve
 
 ## Responsive behavior
 
-Expanded desktop navigation starts directly with the selected game's home and tools. Collapsed desktop navigation keeps icons, active states, and tooltips. Mobile uses the existing modal drawer and focus management. The portal home exposes the game selector from the topbar, while the footer always lists portal links and registered games. The topbar's inner content shares the same maximum width and horizontal alignment as the main content and footer.
+On the portal home, the sidebar starts with the game selector and contains no game-specific navigation. Expanded desktop game navigation starts directly with the selected game's home and tools. Collapsed desktop navigation keeps icons, active states, selectors, and tooltips. Mobile uses the existing modal drawer and focus management. The footer always lists portal links and registered games. The topbar's inner content shares the same maximum width and horizontal alignment as the main content and footer.
 
 ## Footer
 

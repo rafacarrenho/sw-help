@@ -331,6 +331,9 @@ const serializedStructuredData = JSON.stringify(
           <Icon name="close" size={22} />
         </button>
       </div>
+      {routeName === 'portalHome' && (
+        <GameContext locale={locale} forceSelector placement="sidebar" />
+      )}
       {activeGame && (
         <nav
           class="game-navigation"
@@ -494,11 +497,7 @@ const serializedStructuredData = JSON.stringify(
               </>
             )}
           </div>
-          <GameContext
-            locale={locale}
-            activeGame={activeGame}
-            forceSelector={routeName === 'portalHome'}
-          />
+          <GameContext locale={locale} activeGame={activeGame} />
         </div>
       </header>
       <main id="main">

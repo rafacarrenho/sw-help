@@ -19,6 +19,30 @@ test('desktop alinha header, conteúdo principal e footer', async ({
   expect(Math.abs(topbar!.width - footer!.width)).toBeLessThanOrEqual(1);
 });
 
+test('seletor de jogos continua acessível com a sidebar recolhida', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/pt');
+  await page.getByRole('button', { name: 'Recolher menu lateral' }).click();
+
+  const selector = page.locator('.sidebar [data-game-toggle]');
+  await expect(selector).toBeVisible();
+  await expect(selector).toHaveCSS('width', '48px');
+  await selector.click();
+
+  const menu = page.locator('.sidebar [data-game-menu]');
+  await expect(menu).toBeVisible();
+  const menuBox = await menu.boundingBox();
+  expect(menuBox).not.toBeNull();
+  expect(menuBox!.x).toBeGreaterThan(80);
+  await expect(menu.locator('[data-game-link]')).toHaveAttribute(
+    'href',
+    '/pt/summoners-war',
+  );
+});
+
 test('desktop persiste a escolha entre páginas e recargas', async ({
   page,
 }, testInfo) => {

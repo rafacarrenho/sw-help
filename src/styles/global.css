@@ -254,6 +254,27 @@ p {
 .topbar-game-switcher {
   flex: 0 0 auto;
 }
+.sidebar-game-switcher {
+  width: 100%;
+}
+.sidebar-game-switcher .game-toggle {
+  width: 100%;
+}
+.sidebar-game-switcher .game-toggle strong {
+  flex: 1;
+}
+.sidebar-game-switcher .game-menu {
+  right: auto;
+  left: 0;
+  width: 100%;
+  min-width: 0;
+}
+.game-toggle-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+}
 .game-toggle {
   min-height: 36px;
   display: flex;
@@ -542,6 +563,28 @@ html.nav-collapsed .nav-item small {
 html.nav-collapsed .game-navigation {
   margin-top: 14px;
 }
+html.nav-collapsed .sidebar-game-switcher {
+  display: flex;
+  justify-content: center;
+}
+html.nav-collapsed .sidebar-game-switcher .game-toggle {
+  width: 48px;
+  min-height: 48px;
+  justify-content: center;
+  padding: 0;
+}
+html.nav-collapsed .sidebar-game-switcher .game-toggle strong,
+html.nav-collapsed .sidebar-game-switcher .game-chevron {
+  display: none;
+}
+html.nav-collapsed .sidebar-game-switcher .game-menu {
+  position: fixed;
+  top: 132px;
+  right: auto;
+  left: 92px;
+  width: 240px;
+  min-width: 240px;
+}
 html.nav-collapsed .sidebar-bottom {
   width: 100%;
   padding-top: 18px;
@@ -550,9 +593,6 @@ html.nav-collapsed .language-switcher {
   padding: 5px;
 }
 html.nav-collapsed .language-switcher-label {
-  display: none;
-}
-html.nav-collapsed .version {
   display: none;
 }
 html.nav-collapsed .language-toggle {

@@ -28,7 +28,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
 
 test('home apresenta as ferramentas e a navegação usa a nova hierarquia', async ({
   page,
-}) => {
+}, testInfo) => {
   await page.goto('/pt');
   await expect(page.locator('.game-card')).toHaveAttribute(
     'href',
@@ -37,8 +37,12 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
   await expect(page.locator('.breadcrumb')).toHaveText('Início');
   await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
 
-  const gameSelector = page.locator('[data-game-toggle]');
+  if (testInfo.project.name === 'mobile') {
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+  }
+  const gameSelector = page.locator('.sidebar [data-game-toggle]');
   await expect(gameSelector).toBeVisible();
+  await expect(page.locator('.topbar [data-game-toggle]')).toHaveCount(0);
   await expect(gameSelector).toHaveAttribute('aria-expanded', 'false');
   await gameSelector.click();
   await expect(
