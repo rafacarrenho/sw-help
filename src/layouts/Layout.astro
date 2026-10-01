@@ -97,6 +97,13 @@ const sectionLabel =
             : messages.layout.home;
 const documentTitle = title === 'SW Help' ? title : `${title} · SW Help`;
 const structuredData: Record<string, unknown>[] = [];
+const webApplicationRoutes = new Set<RouteName>([
+  'siegeCounter',
+  'monsters',
+  'speedComparison',
+  'speedTuning',
+  'speedTick',
+]);
 
 if (routeName === 'home') {
   structuredData.push({
@@ -141,6 +148,35 @@ if (routeName === 'home') {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: breadcrumbItems,
+  });
+}
+
+if (webApplicationRoutes.has(routeName)) {
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: title,
+    url: canonicalUrl.href,
+    description,
+    applicationCategory:
+      routeName === 'siegeCounter' || routeName === 'monsters'
+        ? 'ReferenceApplication'
+        : 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires a modern web browser with JavaScript',
+    isAccessibleForFree: true,
+    inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en',
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'USD',
+    },
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SW Help',
+      url: new URL(routePath('home', locale), Astro.site ?? Astro.url.origin)
+        .href,
+    },
   });
 }
 
