@@ -1,0 +1,34 @@
+---
+import Icon from '../Icon.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getMessages, routePath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+---
+
+<Layout
+  title={messages.notFound.title}
+  description={messages.notFound.copy}
+  locale={locale}
+  breadcrumbLabel="404"
+  noIndex
+>
+  <div class="empty-state not-found">
+    <span class="eyebrow">{messages.notFound.eyebrow}</span>
+    <h1>{messages.notFound.heading}</h1>
+    <p>{messages.notFound.copy}</p>
+    <div class="not-found-actions">
+      <a class="button" href={routePath('home', locale)}>
+        {messages.notFound.action} <Icon name="arrow" size={16} />
+      </a>
+      <a class="button button-secondary" href={routePath('monsters', locale)}>
+        {messages.notFound.catalogAction}
+      </a>
+    </div>
+  </div>
+</Layout>

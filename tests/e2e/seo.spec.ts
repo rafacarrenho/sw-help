@@ -75,6 +75,36 @@ test('404 em inglês retorna status correto e não publica canonical', async ({
   await expect(
     page.getByRole('link', { name: 'Explore monsters' }),
   ).toHaveAttribute('href', '/monsters');
+  await expect(
+    page.getByLabel('Breadcrumb').getByRole('link', { name: 'Home' }),
+  ).toHaveAttribute('href', '/');
+});
+
+test('404 em português preserva idioma e links localizados', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  const response = await page.goto('/pt/pagina-inexistente');
+  expect(response?.status()).toBe(404);
+  await expect(page).toHaveTitle('Página não encontrada · SW Help');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    'noindex,follow',
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
+  await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Voltar ao início' }),
+  ).toHaveAttribute('href', '/pt');
+  await expect(
+    page.getByRole('link', { name: 'Explorar monstros' }),
+  ).toHaveAttribute('href', '/pt/monstros');
+  await expect(
+    page.getByLabel('Breadcrumb').getByRole('link', { name: 'Início' }),
+  ).toHaveAttribute('href', '/pt');
 });
 
 test('página normal preserva canonical e alternativas de idioma', async ({

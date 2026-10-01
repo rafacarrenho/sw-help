@@ -1,29 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Icon from '../components/Icon.astro';
-import { getMessages, routePath } from '../i18n';
+import NotFound from '../components/pages/NotFound.astro';
 
-const locale = 'en' as const;
-const messages = getMessages(locale);
+const locale =
+  Astro.url.pathname === '/pt' || Astro.url.pathname.startsWith('/pt/')
+    ? 'pt-BR'
+    : 'en';
 ---
 
-<Layout
-  title={messages.notFound.title}
-  description={messages.notFound.copy}
-  locale={locale}
-  noIndex
->
-  <div class="empty-state not-found">
-    <span class="eyebrow">{messages.notFound.eyebrow}</span>
-    <h1>{messages.notFound.heading}</h1>
-    <p>{messages.notFound.copy}</p>
-    <div class="not-found-actions">
-      <a class="button" href={routePath('home', locale)}>
-        {messages.notFound.action} <Icon name="arrow" size={16} />
-      </a>
-      <a class="button button-secondary" href={routePath('monsters', locale)}>
-        {messages.notFound.catalogAction}
-      </a>
-    </div>
-  </div>
-</Layout>
+<NotFound locale={locale} />

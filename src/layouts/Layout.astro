@@ -22,6 +22,7 @@ interface Props {
   routeName?: RouteName;
   routeParams?: RouteParams;
   noIndex?: boolean;
+  breadcrumbLabel?: string;
   section?:
     | 'home'
     | 'siege'
@@ -48,6 +49,7 @@ const {
             : 'home',
   routeParams = {},
   noIndex = false,
+  breadcrumbLabel,
 } = Astro.props;
 const messages = getMessages(locale);
 const description =
@@ -309,7 +311,13 @@ const sectionLabel =
     <div class="workspace">
       <header class="topbar">
         <div class="breadcrumb" aria-label="Breadcrumb">
-          {section === 'home' ? (
+          {breadcrumbLabel ? (
+            <>
+              <a href={routePath('home', locale)}>{messages.layout.home}</a>
+              <Icon name="chevron" size={13} />
+              <span aria-current="page">{breadcrumbLabel}</span>
+            </>
+          ) : section === 'home' ? (
             <span aria-current="page">{messages.layout.home}</span>
           ) : (
             <>
