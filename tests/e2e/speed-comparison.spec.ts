@@ -8,7 +8,7 @@ const enemyCard = (page: import('@playwright/test').Page) =>
 test('compara Adriana com líder 24 e Swift contra Triton sem líder', async ({
   page,
 }) => {
-  await page.goto('/pt/comparador-spd/');
+  await page.goto('/pt/comparador-spd');
 
   const ally = allyCard(page);
   const enemy = enemyCard(page);
@@ -60,7 +60,7 @@ test('oferece todas as lideranças e normaliza Swift e conteúdo legados', async
   page,
 }) => {
   await page.goto(
-    '/pt/comparador-spd/?mode=arena&ally=adriana-water-2021&allyLeader=30&allySwift=1&allyTower=14&enemy=triton-wind-847&enemyTower=13',
+    '/pt/comparador-spd?mode=arena&ally=adriana-water-2021&allyLeader=30&allySwift=1&allyTower=14&enemy=triton-wind-847&enemyTower=13',
   );
 
   const ally = allyCard(page);
@@ -117,7 +117,7 @@ test('aplica a passiva do Chilling conforme os buffs iniciais', async ({
   page,
 }, testInfo) => {
   await page.goto(
-    '/pt/comparador-spd/?ally=chilling-water-958&enemy=triton-wind-847',
+    '/pt/comparador-spd?ally=chilling-water-958&enemy=triton-wind-847',
   );
 
   const ally = allyCard(page);
@@ -160,7 +160,7 @@ test('inverte vantagem, representa empate e limpa os estados semânticos', async
   page,
 }) => {
   await page.goto(
-    '/pt/comparador-spd/?ally=adriana-water-2021&enemy=triton-wind-847&enemySwift=1',
+    '/pt/comparador-spd?ally=adriana-water-2021&enemy=triton-wind-847&enemySwift=1',
   );
   const ally = allyCard(page);
   const enemy = enemyCard(page);
@@ -179,7 +179,7 @@ test('inverte vantagem, representa empate e limpa os estados semânticos', async
   );
 
   await page.goto(
-    '/pt/comparador-spd/?ally=adriana-water-2021&enemy=adriana-water-2021',
+    '/pt/comparador-spd?ally=adriana-water-2021&enemy=adriana-water-2021',
   );
   await expect(ally.locator('[data-comparison-status]')).toHaveText('EMPATE');
   await expect(enemy.locator('[data-comparison-status]')).toHaveText('EMPATE');
@@ -203,7 +203,7 @@ test('inverte vantagem, representa empate e limpa os estados semânticos', async
 test('abre pelo menu e empilha os lados no celular', async ({
   page,
 }, testInfo) => {
-  await page.goto('/pt/');
+  await page.goto('/pt');
   const comparisonNavigationLink = page.locator(
     '.nav-item[aria-label="Comparador de SPD"]',
   );
@@ -212,7 +212,7 @@ test('abre pelo menu e empilha os lados no celular', async ({
     await page.getByRole('button', { name: 'Abrir menu' }).click();
   }
   await comparisonNavigationLink.click();
-  await expect(page).toHaveURL(/\/pt\/comparador-spd\/$/);
+  await expect(page).toHaveURL(/\/pt\/comparador-spd$/);
   await expect(comparisonNavigationLink).toHaveAttribute(
     'aria-current',
     'page',

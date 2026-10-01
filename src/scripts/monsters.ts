@@ -239,7 +239,7 @@ function restore() {
   }
   const page = Number(
     params.get('page') ??
-      location.pathname.match(/\/(?:page|pagina)\/(\d+)\//)?.[1] ??
+      location.pathname.match(/\/(?:page|pagina)\/(\d+)\/?$/)?.[1] ??
       1,
   );
   void update(page, 'none');

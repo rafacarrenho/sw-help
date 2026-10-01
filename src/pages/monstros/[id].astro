@@ -1,5 +1,10 @@
 ---
+import { monsters } from '../../data/catalog';
 import { routePath } from '../../i18n';
+
+export function getStaticPaths() {
+  return monsters.map(({ id }) => ({ params: { id } }));
+}
 
 const { id } = Astro.params;
 

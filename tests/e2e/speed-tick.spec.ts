@@ -8,7 +8,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
 
-  await page.goto('/pt/spd-tick/');
+  await page.goto('/pt/spd-tick');
 
   await expect(
     page.getByRole('heading', { name: 'Calculadora por monstro' }),
@@ -272,7 +272,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
 });
 
 test('reposiciona a busca ao focar somente no mobile', async ({ page }) => {
-  await page.goto('/pt/spd-tick/');
+  await page.goto('/pt/spd-tick');
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   const monsterField = page.locator('.speed-select--monster');
@@ -300,7 +300,7 @@ test('reposiciona a busca ao focar somente no mobile', async ({ page }) => {
 test('replica os valores de Anne e aplica a correção Swift', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tick/');
+  await page.goto('/pt/spd-tick');
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   await monsterSearch.fill('anne');
@@ -358,7 +358,7 @@ test('restaura e normaliza resultados compartilhados pela URL', async ({
   page,
 }) => {
   await page.goto(
-    '/pt/spd-tick/?utm_source=share&monster=anne-fire-181&tower=0&leader=24&swift=1#resultado',
+    '/pt/spd-tick?utm_source=share&monster=anne-fire-181&tower=0&leader=24&swift=1#resultado',
   );
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
@@ -395,7 +395,7 @@ test('restaura e normaliza resultados compartilhados pela URL', async ({
     .toEqual({ monster: null, campaign: 'share', hash: '#resultado' });
 
   await page.goto(
-    '/pt/spd-tick/?monster=missing&tower=99&leader=999&swift=true&utm_source=share',
+    '/pt/spd-tick?monster=missing&tower=99&leader=999&swift=true&utm_source=share',
   );
   await expect(monsterSearch).toHaveValue('');
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
@@ -411,7 +411,7 @@ test('restaura e normaliza resultados compartilhados pela URL', async ({
     history.pushState(
       null,
       '',
-      '/pt/spd-tick/?monster=nora&tower=10&leader=0&swift=1',
+      '/pt/spd-tick?monster=nora&tower=10&leader=0&swift=1',
     );
     window.dispatchEvent(new PopStateEvent('popstate'));
   });
@@ -425,7 +425,7 @@ test('exibe fallback quando a foto do resultado não carrega', async ({
   page,
 }) => {
   await page.route('**/monsters/*.png', (route) => route.abort());
-  await page.goto('/pt/spd-tick/');
+  await page.goto('/pt/spd-tick');
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   await monsterSearch.fill('nóra');
@@ -442,7 +442,7 @@ test('mantém o emblema SPD centralizado nos breakpoints móveis', async ({
 }) => {
   for (const width of [461, 500, 600, 760]) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto('/pt/spd-tick/');
+    await page.goto('/pt/spd-tick');
 
     const alignment = await page.locator('.intro-emblem').evaluate((emblem) => {
       const emblemRect = emblem.getBoundingClientRect();

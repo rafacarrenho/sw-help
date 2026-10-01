@@ -74,14 +74,14 @@ const counters: CounterBase[] = read('counters');
 
 test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
   assert.equal(routePath('home', 'en'), '/');
-  assert.equal(routePath('home', 'pt-BR'), '/pt/');
-  assert.equal(routePath('monsters', 'en'), '/monsters/');
-  assert.equal(routePath('monsters', 'pt-BR'), '/pt/monstros/');
-  assert.equal(routePath('speedComparison', 'en'), '/speed-comparison/');
-  assert.equal(routePath('speedComparison', 'pt-BR'), '/pt/comparador-spd/');
+  assert.equal(routePath('home', 'pt-BR'), '/pt');
+  assert.equal(routePath('monsters', 'en'), '/monsters');
+  assert.equal(routePath('monsters', 'pt-BR'), '/pt/monstros');
+  assert.equal(routePath('speedComparison', 'en'), '/speed-comparison');
+  assert.equal(routePath('speedComparison', 'pt-BR'), '/pt/comparador-spd');
   assert.equal(
     routePath('monster', 'pt-BR', { id: 'nora' }),
-    '/pt/monstros/nora/',
+    '/pt/monstros/nora',
   );
 });
 

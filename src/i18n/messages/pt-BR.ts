@@ -347,6 +347,7 @@ export const ptBR: Messages = {
     heading: 'Esta defesa não está por aqui.',
     copy: 'O endereço pode ter mudado. Explore as composições do catálogo.',
     action: 'Voltar ao Siege Counter',
+    catalogAction: 'Explorar monstros',
   },
   taxonomy: {
     allContent: 'Todos os conteúdos',

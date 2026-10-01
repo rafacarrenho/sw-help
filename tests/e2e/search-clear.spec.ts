@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('mantém a ação de limpar visível em todas as buscas preenchidas', async ({
   page,
 }) => {
-  await page.goto('/pt/');
+  await page.goto('/pt');
   let search = page.getByRole('searchbox');
   let clear = page.getByRole('button', { name: 'Limpar busca' });
   await expect(clear).toBeHidden();
@@ -15,7 +15,7 @@ test('mantém a ação de limpar visível em todas as buscas preenchidas', async
   await expect(search).toBeFocused();
   await expect(clear).toBeHidden();
 
-  await page.goto('/pt/monstros/');
+  await page.goto('/pt/monstros');
   search = page.getByRole('searchbox');
   clear = page.getByRole('button', { name: 'Limpar busca' });
   await expect(clear).toBeHidden();
@@ -27,7 +27,7 @@ test('mantém a ação de limpar visível em todas as buscas preenchidas', async
   await expect(search).toBeFocused();
   await expect(clear).toBeHidden();
 
-  await page.goto('/pt/spd-tick/');
+  await page.goto('/pt/spd-tick');
   search = page.getByRole('combobox', { name: 'Monstro' });
   clear = page.getByRole('button', { name: 'Limpar busca' });
   await expect(clear).toBeHidden();
@@ -43,7 +43,7 @@ test('mantém a ação de limpar visível em todas as buscas preenchidas', async
     'Nenhum monstro selecionado',
   );
 
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   const slots = page.locator('[data-tuning-slot]:visible');
   await expect(slots).toHaveCount(3);
   for (const slot of await slots.all()) {

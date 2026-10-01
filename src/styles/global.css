@@ -1059,6 +1059,13 @@ input[type='search']:placeholder-shown + .search-clear-button {
   font-size: var(--text-base);
   color: var(--muted);
 }
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
 .button {
   display: inline-flex;
   align-items: center;

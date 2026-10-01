@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   page,
 }) => {
-  await page.goto('/pt/');
+  await page.goto('/pt');
   await expect(
     page.getByText('Counters cadastrados', { exact: true }),
   ).toBeVisible();
@@ -12,11 +12,11 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(6);
   await expect(page.getByRole('link', { name: 'Spd Tuning' })).toHaveAttribute(
     'href',
-    '/pt/spd-tuning/',
+    '/pt/spd-tuning',
   );
   await expect(page.getByRole('link', { name: 'Spd Tick' })).toHaveAttribute(
     'href',
-    '/pt/spd-tick/',
+    '/pt/spd-tick',
   );
   const mobileClose = page.locator('[data-mobile-menu-close]');
   if (await mobileClose.isVisible()) await mobileClose.click();
@@ -36,21 +36,21 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   await expect(page.getByLabel('Torre 4★', { exact: true })).toBeChecked();
 });
 test('estado vazio permite limpar busca e filtro', async ({ page }) => {
-  await page.goto('/pt/?q=inexistente&tower=4star');
+  await page.goto('/pt?q=inexistente&tower=4star');
   await expect(
     page.getByRole('heading', { name: 'Nenhuma defesa encontrada' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Limpar filtros' }).click();
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(6);
   await expect(page.getByRole('searchbox')).toBeFocused();
-  await expect(page).toHaveURL('http://127.0.0.1:4321/pt/');
+  await expect(page).toHaveURL('http://127.0.0.1:4321/pt');
 });
 test('detalhes, recursos locais e layout funcionam sem erros', async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/pt/siege/morris-eshir-orion/');
+  await page.goto('/pt/siege/morris-eshir-orion');
   await expect(page.locator('.counter-card')).toHaveCount(4);
   const defenseTeam = page.locator('.defense-team-panel .monster-team');
   await expect(defenseTeam.locator('[data-team-leader-icon]')).toHaveAttribute(
@@ -186,7 +186,7 @@ test('detalhes, recursos locais e layout funcionam sem erros', async ({
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
   ).toBeTruthy();
-  await page.goto('/pt/');
+  await page.goto('/pt');
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -200,7 +200,7 @@ test('catálogo e detalhes são navegáveis sem JavaScript', async ({
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(`${baseURL}/pt/`);
+  await page.goto(`${baseURL}/pt`);
   await expect(page.locator('[data-defense-card]')).toHaveCount(6);
   await page
     .getByRole('link', { name: 'Ver counters de Morris · Eshir · Orion' })

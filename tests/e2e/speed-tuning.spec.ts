@@ -18,7 +18,7 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
 
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   await expect(page).toHaveTitle(/Spd Tuning/);
   await expect(
     page.locator('.sidebar a[aria-label="Spd Tuning"]'),
@@ -213,7 +213,7 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
 test('aplica boost de alvo único e mantém somente uma liderança ativa', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   await selectMonster(page, 0, 'konamiya', 'konamiya-water-56');
   const firstSlot = page.locator('[data-tuning-slot]').nth(0);
   await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
@@ -281,7 +281,7 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
 test('reconhece buff de SPD em área da Adriana e do Chilling', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   const firstSlot = page.locator('[data-tuning-slot]').nth(0);
 
   await selectMonster(page, 0, 'adriana', 'adriana-water-2021');
@@ -368,7 +368,7 @@ test('reconhece buff de SPD em área da Adriana e do Chilling', async ({
 test('amplifica o buff de SPD somente enquanto Miriam está ativa', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   const slots = page.locator('[data-tuning-slot]');
   const firstSlot = slots.nth(0);
   const secondSlot = slots.nth(1);
@@ -418,7 +418,7 @@ test('amplifica o buff de SPD somente enquanto Miriam está ativa', async ({
 test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   await selectMonster(page, 0, 'kabilla', 'kabilla-light-430');
   await selectMonster(page, 1, 'gemini', 'gemini-light-657');
   await selectMonster(page, 2, 'talisman', 'talisman-light-1680');
@@ -447,7 +447,7 @@ test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
 
 test('compartilha, restaura e normaliza o time pela URL', async ({ page }) => {
   await page.goto(
-    '/pt/spd-tuning/?utm_source=share&tower=10&m1=bernard-wind-1579&r1=200&boost1=0&m2=gemini-light-657&artifact2=12&swift2=1&leader=2&m3=talisman-light-1680&artifact3=20#resultado',
+    '/pt/spd-tuning?utm_source=share&tower=10&m1=bernard-wind-1579&r1=200&boost1=0&m2=gemini-light-657&artifact2=12&swift2=1&leader=2&m3=talisman-light-1680&artifact3=20#resultado',
   );
 
   const slots = page.locator('[data-tuning-slot]');
@@ -529,13 +529,13 @@ test('compartilha, restaura e normaliza o time pela URL', async ({ page }) => {
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
   await expect
     .poll(() => page.url())
-    .toContain('/pt/spd-tuning/?utm_source=share#resultado');
+    .toContain('/pt/spd-tuning?utm_source=share#resultado');
 });
 
 test('alterna Arena e RTA com quatro monstros e preserva o quarto slot', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/?mode=arena');
+  await page.goto('/pt/spd-tuning?mode=arena');
   await expect(page.getByLabel('Arena')).toBeChecked();
   await expect(page.locator('[data-tuning-slot]:visible')).toHaveCount(4);
   await expect(page.locator('[data-tuning-context]')).toHaveText(
@@ -587,7 +587,7 @@ test('alterna Arena e RTA com quatro monstros e preserva o quarto slot', async (
 test('troca automaticamente a liderança válida entre Siege e Arena', async ({
   page,
 }) => {
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   await selectMonster(page, 0, 'sylvia', 'sylvia-dark-882');
   await selectMonster(page, 1, 'vanessa', 'vanessa-fire-294');
   const slots = page.locator('[data-tuning-slot]');
@@ -610,7 +610,7 @@ test('empilha os slots no mobile sem criar rolagem horizontal', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile');
-  await page.goto('/pt/spd-tuning/');
+  await page.goto('/pt/spd-tuning');
   await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
 
   const slots = page.locator('[data-tuning-slot]:visible');

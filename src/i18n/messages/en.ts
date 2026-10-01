@@ -340,6 +340,7 @@ export const en = {
     heading: 'This defense is not here.',
     copy: 'The address may have changed. Explore the catalog compositions.',
     action: 'Back to Siege Counter',
+    catalogAction: 'Explore monsters',
   },
   taxonomy: {
     allContent: 'All content',

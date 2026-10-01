@@ -79,16 +79,20 @@ const sectionRoute: RouteName =
     <meta property="og:title" content={`${title} · SW Help`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
     <meta
       property="og:locale:alternate"
       content={locale === 'en' ? 'pt_BR' : 'en_US'}
     />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="en" href={englishUrl} />
-    <link rel="alternate" hreflang="pt-BR" href={portugueseUrl} />
-    <link rel="alternate" hreflang="x-default" href={englishUrl} />
+    {!noIndex && (
+      <>
+        <meta property="og:url" content={canonicalUrl} />
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hreflang="en" href={englishUrl} />
+        <link rel="alternate" hreflang="pt-BR" href={portugueseUrl} />
+        <link rel="alternate" hreflang="x-default" href={englishUrl} />
+      </>
+    )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · SW Help</title>
     <script is:inline>

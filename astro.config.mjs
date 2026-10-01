@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://sw-help.rafabcarrenho.workers.dev',
-  output: 'server',
-  adapter: cloudflare(),
-  trailingSlash: 'always',
+  output: 'static',
+  build: {
+    format: 'file',
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', { path: 'pt', codes: ['pt', 'pt-BR'] }],
