@@ -40,8 +40,16 @@ const counterStatsAfterSpeed = [
 ---
 
 <Layout
-  title={name}
-  description={`${messages.siege.descriptionPrefix} ${name}.`}
+  title={
+    locale === 'pt-BR'
+      ? `Counters para ${name} no Siege – Summoners War`
+      : `${name} Siege Counters – Summoners War`
+  }
+  description={
+    locale === 'pt-BR'
+      ? `Veja counters cadastrados para a defesa ${name} no Siege de Summoners War, com composições de ofensiva, runas, atributos e sequência.`
+      : `Find registered Summoners War Siege counters for the ${name} defense, including offense teams, suggested runes, stats, and turn sequence.`
+  }
   detail
   locale={locale}
   section="siege"

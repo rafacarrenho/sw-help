@@ -1,0 +1,60 @@
+---
+import Icon from './Icon.astro';
+import { routePath, type Locale } from '../i18n';
+import type { SeoPageContent } from '../data/seo-content';
+
+interface Props {
+  content: SeoPageContent;
+  locale: Locale;
+  id: string;
+}
+
+const { content, locale, id } = Astro.props;
+const hasFaqs = Boolean(content.faqs?.length);
+---
+
+<div class="seo-content">
+  <div class="seo-guide">
+    <span class="seo-guide-kicker">SW HELP</span>
+    <h2 id={`${id}-guide-title`}>{content.heading}</h2>
+    <div class="seo-guide-copy">
+      {content.intro.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </div>
+
+  {hasFaqs && (
+    <div class="seo-faq" aria-labelledby={`${id}-faq-title`}>
+      <div class="section-heading seo-faq-heading">
+        <div>
+          <h2 id={`${id}-faq-title`}>{content.faqHeading}</h2>
+          {content.faqIntro && <p>{content.faqIntro}</p>}
+        </div>
+        <span class="section-icon" aria-hidden="true">
+          <Icon name="info" size={18} />
+        </span>
+      </div>
+      <div class="seo-faq-grid">
+        {content.faqs?.map((faq) => (
+          <article class="seo-faq-item">
+            <h3>{faq.question}</h3>
+            <p>{faq.answer}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <nav class="seo-related" aria-labelledby={`${id}-related-title`}>
+    <h2 id={`${id}-related-title`}>{content.relatedHeading}</h2>
+    <div class="seo-related-links">
+      {content.related.map((link) => (
+        <a href={routePath(link.route, locale)}>
+          {link.label}
+          <Icon name="arrow" size={15} />
+        </a>
+      ))}
+    </div>
+  </nav>
+</div>

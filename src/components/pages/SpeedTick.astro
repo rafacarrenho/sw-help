@@ -1,7 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../Icon.astro';
+import SeoContent from '../SeoContent.astro';
 import { monsterById, monsters } from '../../data/catalog';
+import { seoContent } from '../../data/seo-content';
 import {
   DEFAULT_SPEED_TICK_TOWER_PERCENT,
   getPossibleSpeedLeaders,
@@ -15,6 +17,7 @@ interface Props {
 }
 const { locale } = Astro.props;
 const messages = getMessages(locale);
+const searchContent = seoContent[locale].speedTick;
 
 const defaultBaseSpeed = 100;
 const defaultTowerPercent = DEFAULT_SPEED_TICK_TOWER_PERCENT;
@@ -246,6 +249,8 @@ const resultText = (value: number | null) => {
       </div>
     </div>
   </section>
+
+  <SeoContent content={searchContent} locale={locale} id="speed-tick" />
 
   <script
     id="speed-tick-data"

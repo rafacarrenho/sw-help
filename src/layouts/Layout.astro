@@ -95,6 +95,58 @@ const sectionLabel =
           : section === 'siege'
             ? 'Siege Counter'
             : messages.layout.home;
+const documentTitle = title === 'SW Help' ? title : `${title} · SW Help`;
+const structuredData: Record<string, unknown>[] = [];
+
+if (routeName === 'home') {
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'SW Help',
+    alternateName: 'SW Help · Summoners War Toolkit',
+    url: canonicalUrl.href,
+    description,
+    inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en',
+  });
+} else {
+  const breadcrumbItems = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: messages.layout.home,
+      item: new URL(routePath('home', locale), Astro.site ?? Astro.url.origin)
+        .href,
+    },
+  ];
+
+  if (detail) {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 2,
+      name: sectionLabel,
+      item: new URL(
+        routePath(sectionRoute, locale),
+        Astro.site ?? Astro.url.origin,
+      ).href,
+    });
+  }
+
+  breadcrumbItems.push({
+    '@type': 'ListItem',
+    position: breadcrumbItems.length + 1,
+    name: title,
+    item: canonicalUrl.href,
+  });
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems,
+  });
+}
+
+const serializedStructuredData = JSON.stringify(
+  structuredData.length === 1 ? structuredData[0] : structuredData,
+).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -103,11 +155,19 @@ const sectionLabel =
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    {noIndex && <meta name="robots" content="noindex,follow" />}
+    <meta
+      name="robots"
+      content={
+        noIndex
+          ? 'noindex,follow'
+          : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+      }
+    />
     <meta name="theme-color" content="#101215" />
-    <meta property="og:title" content={`${title} · SW Help`} />
+    <meta property="og:title" content={documentTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SW Help" />
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
     <meta
       property="og:locale:alternate"
@@ -122,8 +182,17 @@ const sectionLabel =
         <link rel="alternate" hreflang="x-default" href={englishUrl} />
       </>
     )}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{title} · SW Help</title>
+    <title>{documentTitle}</title>
+    {!noIndex && (
+      <script
+        type="application/ld+json"
+        set:html={serializedStructuredData}
+      ></script>
+    )}
     <script is:inline>
       try {
         if (

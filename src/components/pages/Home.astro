@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../Icon.astro';
+import SeoContent from '../SeoContent.astro';
+import { seoContent } from '../../data/seo-content';
 import {
   getMessages,
   routePath,
@@ -14,6 +16,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const messages = getMessages(locale);
+const searchContent = seoContent[locale].home;
 const tools: Array<{
   route: RouteName;
   icon: string;
@@ -120,4 +123,5 @@ const tools: Array<{
       ))}
     </div>
   </section>
+  <SeoContent content={searchContent} locale={locale} id="home" />
 </Layout>

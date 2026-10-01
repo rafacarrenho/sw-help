@@ -3,7 +3,7 @@ import type { Messages } from './en.ts';
 export const ptBR: Messages = {
   layout: {
     defaultDescription:
-      'Encontre composições para enfrentar as defesas de Siege no Summoners War.',
+      'Planeje times de Siege, pesquise monstros e calcule SPD com ferramentas gratuitas de Summoners War.',
     skip: 'Pular para o conteúdo',
     openMenu: 'Abrir menu',
     closeMenu: 'Fechar menu',
@@ -25,30 +25,30 @@ export const ptBR: Messages = {
     footerDisclaimer: 'Projeto da comunidade. Sem vínculo com a Com2uS.',
   },
   landing: {
-    title: 'Ferramentas para Summoners War',
+    title: 'Ferramentas de Summoners War: Siege, SPD e Monstros',
     description:
-      'Planeje ofensivas de Siege, explore monstros e compare velocidade com ferramentas focadas em Summoners War.',
+      'Ferramentas grátis de Summoners War para counters de Siege, monstros, Spd Tuning, comparação de velocidade e breakpoints de Tick.',
     eyebrow: 'SEU TOOLKIT DE INVOCADOR',
     headingPrefix: 'Planeje melhor.',
     headingAccent: 'Entre preparado.',
     intro:
-      'Ferramentas práticas para estudar defesas, explorar monstros e preparar a ordem dos turnos antes da batalha.',
+      'Planeje ofensivas de Siege, pesquise monstros de Summoners War e calcule a SPD necessária para a ordem dos turnos.',
     primaryAction: 'Abrir Siege Counter',
     secondaryAction: 'Explorar monstros',
     toolsTitle: 'Escolha uma ferramenta',
     toolsCopy:
       'Comece pela informação que você precisa para a próxima batalha.',
     siegeTitle: 'Siege Counter',
-    siegeCopy: 'Encontre ofensivas cadastradas para defesas de Siege.',
+    siegeCopy: 'Busque defesas de Siege no Summoners War e ideias de ofensiva.',
     monstersTitle: 'Catálogo de Monstros',
     monstersCopy:
-      'Explore monstros, atributos, habilidades e efeitos de líder.',
+      'Pesquise monstros de SW, atributos base, habilidades e lideranças.',
     tuningTitle: 'Spd Tuning',
-    tuningCopy: 'Prepare a ordem dos turnos do seu time.',
+    tuningCopy: 'Calcule a SPD necessária para ajustar a ordem do seu time.',
     comparisonTitle: 'Comparador de SPD',
-    comparisonCopy: 'Compare vantagens estruturais de velocidade.',
+    comparisonCopy: 'Compare dois monstros por SPD base, líder, torre e Swift.',
     tickTitle: 'Spd Tick',
-    tickCopy: 'Calcule requisitos de velocidade para ticks de combate.',
+    tickCopy: 'Calcule a SPD de runa para Tick 4, Tick 5 e Tick 6.',
     openTool: 'Abrir ferramenta',
   },
   common: {
@@ -78,10 +78,13 @@ export const ptBR: Messages = {
     desirable: 'Desejável',
   },
   home: {
+    title: 'Counters de Siege no Summoners War',
+    description:
+      'Busque defesas de Siege no Summoners War e encontre ideias de ofensiva com runas, atributos e ordem de turno para torres 4★ e livres.',
     summaryLabel: 'Resumo do catálogo',
     eyebrow: 'PLANEJE. ADAPTE. CONQUISTE.',
-    introLine1: 'Uma boa ofensiva começa antes da batalha.',
-    introLine2: 'Encontre o time para enfrentar cada defesa.',
+    introLine1: 'Planeje sua ofensiva de Siege no Summoners War.',
+    introLine2: 'Busque a defesa inimiga e confira possíveis counters.',
     defensesCatalog: 'Defesas no catálogo',
     compositions: 'COMPOSIÇÕES',
     countersRegistered: 'Counters cadastrados',
@@ -109,14 +112,14 @@ export const ptBR: Messages = {
     exampleCatalog: 'CATÁLOGO DE EXEMPLO',
   },
   monsters: {
-    title: 'Catálogo de Monstros',
+    title: 'Monstros de Summoners War: Database e Catálogo',
     description:
-      'Explore monstros de Summoners War por nome, família, elemento e habilidade de líder.',
+      'Pesquise monstros de Summoners War por nome, família, elemento, estrelas e liderança. Veja atributos base, habilidades e formas.',
     eyebrow: 'CONHEÇA SEUS ALIADOS',
     headingPrefix: 'Catálogo de',
     headingAccent: 'Monstros',
     intro:
-      'Encontre seu próximo líder. Explore famílias, elementos e formas de cada monstro.',
+      'Pesquise monstros de Summoners War e compare famílias, elementos, atributos base, habilidades e lideranças.',
     obtainable: 'monstros obtíveis',
     updated: 'Atualizado em',
     explore: 'Explorar monstros',
@@ -226,14 +229,14 @@ export const ptBR: Messages = {
       'Avalie velocidade, artefatos e qualidade das runas antes de escolher uma ofensiva. As sugestões não garantem vitória.',
   },
   comparison: {
-    title: 'Comparador de SPD',
+    title: 'Comparador de SPD para Summoners War',
     description:
-      'Compare a vantagem estrutural de velocidade entre dois monstros.',
+      'Compare dois monstros de Summoners War por SPD base, liderança, torre e Swift para calcular a vantagem e a diferença de runas.',
     eyebrow: 'DISPUTA PELO PRIMEIRO TURNO',
     headingPrefix: 'Comparador de',
     headingAccent: 'SPD',
-    introLine1: 'Compare a vantagem de SPD base, liderança, Swift e torre',
-    introLine2: 'antes dos atributos individuais das runas.',
+    introLine1: 'Compare SPD base, liderança, Swift e torre no Summoners War',
+    introLine2: 'para descobrir a vantagem antes da SPD individual das runas.',
     compareTitle: 'Compare os contestadores',
     compareCopy: 'Configure cada lado para descobrir a vantagem estrutural.',
     yourSide: 'SEU LADO',
@@ -282,12 +285,13 @@ export const ptBR: Messages = {
       'Com {advantage} SPD adicional a menos, os dois empatam em SPD de combate.',
   },
   tick: {
-    title: 'Spd Tick',
-    description: 'Calculadora de breakpoints de velocidade em Summoners War.',
+    title: 'Calculadora de SPD Tick para Summoners War',
+    description:
+      'Calcule breakpoints de SPD Tick no Summoners War e a velocidade bônus de runas para Tick 4, Tick 5 ou Tick 6 com líder, torre e Swift.',
     eyebrow: 'VELOCIDADE EM TICK',
     introLine1:
-      'Entenda os breakpoints de velocidade que importam para atingir',
-    introLine2: 'Tick 4, Tick 5 e Tick 6 com mais previsibilidade.',
+      'Calcule os breakpoints de SPD necessários no Summoners War para atingir',
+    introLine2: 'Tick 4, Tick 5 e Tick 6 com os bônus selecionados.',
     calculator: 'Calculadora por monstro',
     calculatorCopy:
       'Selecione o monstro e compare a SPD bônus (+verde) necessária para cada Tick em todas as lideranças disponíveis.',
@@ -309,9 +313,9 @@ export const ptBR: Messages = {
     unawakened: 'sem despertar',
   },
   tuning: {
-    title: 'Spd Tuning',
+    title: 'Calculadora de Spd Tuning para Summoners War',
     description:
-      'Calcule a velocidade necessária para ajustar a ordem de turno do seu time em Siege, Arena e RTA.',
+      'Ajuste seu time de Summoners War e calcule a SPD mínima das runas para manter a ordem de turno no Siege, Arena e RTA.',
     siegeContext: 'ORDEM DE ATAQUE EM SIEGE',
     arenaContext: 'ORDEM DE ATAQUE NA ARENA',
     rtaContext: 'ORDEM DE ATAQUE NO RTA',

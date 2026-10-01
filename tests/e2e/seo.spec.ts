@@ -126,3 +126,138 @@ test('página normal preserva canonical e alternativas de idioma', async ({
     `${productionOrigin}/pt/monstros`,
   );
 });
+
+test('páginas principais usam títulos e descrições focados em Summoners War', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  const pages = [
+    {
+      path: '/',
+      title: 'Summoners War Tools for Siege, SPD & Monsters · SW Help',
+    },
+    {
+      path: '/siege-counter',
+      title: 'Summoners War Siege Counter & Offense Teams · SW Help',
+    },
+    {
+      path: '/monsters',
+      title: 'Summoners War Monster Database & Catalog · SW Help',
+    },
+    {
+      path: '/speed-tuning',
+      title: 'Summoners War SPD Tuning Calculator · SW Help',
+    },
+    {
+      path: '/speed-comparison',
+      title: 'Summoners War SPD Comparison Calculator · SW Help',
+    },
+    {
+      path: '/speed-tick',
+      title: 'Summoners War SPD Tick Calculator · SW Help',
+    },
+  ];
+
+  for (const entry of pages) {
+    await page.goto(entry.path);
+    await expect(page).toHaveTitle(entry.title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      /Summoners War/,
+    );
+    await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+      'content',
+      'SW Help',
+    );
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      'content',
+      'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
+    );
+  }
+});
+
+test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  for (const path of [
+    '/siege-counter',
+    '/monsters',
+    '/speed-tuning',
+    '/speed-comparison',
+    '/speed-tick',
+  ]) {
+    await page.goto(path);
+    const faqs = page.locator('.seo-faq-item');
+    await expect(faqs).toHaveCount(10);
+    await expect(faqs.first().getByRole('heading')).not.toBeEmpty();
+    await expect(faqs.first().locator('p')).not.toBeEmpty();
+    await expect(faqs.first()).toBeVisible();
+  }
+
+  await page.goto('/pt/spd-tick');
+  await expect(page.locator('.seo-faq-item')).toHaveCount(10);
+  await expect(
+    page.getByRole('heading', {
+      name: 'Dúvidas sobre a calculadora de SPD Tick',
+    }),
+  ).toBeVisible();
+});
+
+test('dados estruturados identificam o site e os breadcrumbs localizados', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/');
+  const websiteData = await page
+    .locator('script[type="application/ld+json"]')
+    .textContent();
+  expect(JSON.parse(websiteData ?? '{}')).toMatchObject({
+    '@type': 'WebSite',
+    name: 'SW Help',
+    url: `${productionOrigin}/`,
+    inLanguage: 'en',
+  });
+
+  await page.goto('/pt/siege-counter/morris-eshir-orion');
+  const breadcrumbData = await page
+    .locator('script[type="application/ld+json"]')
+    .textContent();
+  const parsed = JSON.parse(breadcrumbData ?? '{}');
+  expect(parsed['@type']).toBe('BreadcrumbList');
+  expect(parsed.itemListElement).toHaveLength(3);
+  expect(parsed.itemListElement[0]).toMatchObject({
+    position: 1,
+    name: 'Início',
+    item: `${productionOrigin}/pt`,
+  });
+  expect(parsed.itemListElement[2].item).toBe(
+    `${productionOrigin}/pt/siege-counter/morris-eshir-orion`,
+  );
+});
+
+test('paginação e detalhes recebem metadados únicos', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/monsters/page/2');
+  await expect(page).toHaveTitle(
+    'Summoners War Monster Database & Catalog – Page 2 · SW Help',
+  );
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /Page 2 of 24\.$/,
+  );
+
+  await page.goto('/monsters/clara');
+  await expect(page).toHaveTitle(/Clara \(Fire\) – Summoners War Monster/);
+
+  await page.goto('/siege-counter/morris-eshir-orion');
+  await expect(page).toHaveTitle(
+    /Morris · Eshir · Orion Siege Counters – Summoners War/,
+  );
+});

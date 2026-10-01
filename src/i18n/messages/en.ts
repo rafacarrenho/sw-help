@@ -1,7 +1,7 @@
 export const en = {
   layout: {
     defaultDescription:
-      'Find teams to counter Siege defenses in Summoners War.',
+      'Plan Summoners War Siege teams, research monsters, and calculate SPD with free SW tools.',
     skip: 'Skip to content',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
@@ -23,28 +23,31 @@ export const en = {
     footerDisclaimer: 'Community project. Not affiliated with Com2uS.',
   },
   landing: {
-    title: 'Summoners War tools',
+    title: 'Summoners War Tools for Siege, SPD & Monsters',
     description:
-      'Plan Siege offenses, explore monsters, and compare speed with focused Summoners War tools.',
+      'Free Summoners War tools for Siege counters, monster stats, SPD tuning, speed comparison, and Tick breakpoints. Plan your next SW battle.',
     eyebrow: 'YOUR SUMMONER TOOLKIT',
     headingPrefix: 'Plan better.',
     headingAccent: 'Enter prepared.',
     intro:
-      'Practical tools to study defenses, explore monsters, and prepare turn order before the battle.',
+      'Plan Summoners War Siege offenses, research monsters, and calculate the SPD your turn order needs before battle.',
     primaryAction: 'Open Siege Counter',
     secondaryAction: 'Explore monsters',
     toolsTitle: 'Choose a tool',
     toolsCopy: 'Start with the information you need for your next battle.',
     siegeTitle: 'Siege Counter',
-    siegeCopy: 'Find registered offenses for Siege defenses.',
+    siegeCopy:
+      'Search Summoners War Siege defenses and registered offense ideas.',
     monstersTitle: 'Monster Catalog',
-    monstersCopy: 'Explore monsters, stats, skills, and leader effects.',
+    monstersCopy:
+      'Search SW monsters, base stats, skills, families, and leader effects.',
     tuningTitle: 'Spd Tuning',
-    tuningCopy: 'Prepare the turn order of your team.',
+    tuningCopy: 'Calculate the SPD needed for a tuned Summoners War team.',
     comparisonTitle: 'SPD Comparison',
-    comparisonCopy: 'Compare structural speed advantages.',
+    comparisonCopy:
+      'Compare two monsters by base SPD, leader, tower, and Swift.',
     tickTitle: 'Spd Tick',
-    tickCopy: 'Calculate speed requirements for combat ticks.',
+    tickCopy: 'Calculate rune SPD for Tick 4, Tick 5, and Tick 6 breakpoints.',
     openTool: 'Open tool',
   },
   common: {
@@ -74,10 +77,13 @@ export const en = {
     desirable: 'Preferred',
   },
   home: {
+    title: 'Summoners War Siege Counter & Offense Teams',
+    description:
+      'Search Summoners War Siege defenses and find offense ideas with suggested runes, stats, and turn order for 4-star and open towers.',
     summaryLabel: 'Catalog summary',
     eyebrow: 'PLAN. ADAPT. CONQUER.',
-    introLine1: 'A strong offense starts before the battle.',
-    introLine2: 'Find the right team for every defense.',
+    introLine1: 'Plan your Summoners War Siege offense before the battle.',
+    introLine2: 'Search the enemy defense and review possible counters.',
     defensesCatalog: 'Defenses in the catalog',
     compositions: 'COMPOSITIONS',
     countersRegistered: 'Registered counters',
@@ -105,14 +111,14 @@ export const en = {
     exampleCatalog: 'EXAMPLE CATALOG',
   },
   monsters: {
-    title: 'Monster Catalog',
+    title: 'Summoners War Monster Database & Catalog',
     description:
-      'Explore Summoners War monsters by name, family, element, and leader skill.',
+      'Search the Summoners War monster database by name, family, element, stars, and leader skill. Explore base stats, skills, and forms.',
     eyebrow: 'KNOW YOUR ALLIES',
     headingPrefix: 'Monster',
     headingAccent: 'Catalog',
     intro:
-      'Find your next leader. Explore every monster family, element, and form.',
+      'Search Summoners War monsters and compare families, elements, base stats, skills, and leader effects.',
     obtainable: 'obtainable monsters',
     updated: 'Updated on',
     explore: 'Explore monsters',
@@ -222,13 +228,15 @@ export const en = {
       'Evaluate speed, artifacts, and rune quality before choosing an offense. Suggestions do not guarantee victory.',
   },
   comparison: {
-    title: 'SPD Comparison',
-    description: 'Compare the structural speed advantage between two monsters.',
+    title: 'Summoners War SPD Comparison Calculator',
+    description:
+      'Compare two Summoners War monsters by base SPD, speed leader, tower, and Swift to calculate the structural speed and rune gap.',
     eyebrow: 'THE RACE FOR THE FIRST TURN',
     headingPrefix: 'SPD',
     headingAccent: 'Comparison',
-    introLine1: 'Compare base SPD, leader skill, Swift, and tower advantage',
-    introLine2: 'before individual rune stats.',
+    introLine1:
+      'Compare Summoners War base SPD, leader skill, Swift, and tower',
+    introLine2: 'to find the advantage before individual rune stats.',
     compareTitle: 'Compare the contenders',
     compareCopy: 'Configure each side to reveal the structural advantage.',
     yourSide: 'YOUR SIDE',
@@ -275,11 +283,12 @@ export const en = {
       'With {advantage} less additional SPD, both monsters tie in combat SPD.',
   },
   tick: {
-    title: 'SPD Tick',
-    description: 'Speed breakpoint calculator for Summoners War.',
+    title: 'Summoners War SPD Tick Calculator',
+    description:
+      'Calculate Summoners War SPD Tick breakpoints and the bonus rune speed needed for Tick 4, Tick 5, or Tick 6 with leader, tower, and Swift.',
     eyebrow: 'TICK SPEED',
-    introLine1: 'Understand the speed breakpoints that matter for reaching',
-    introLine2: 'Tick 4, Tick 5, and Tick 6 more predictably.',
+    introLine1: 'Calculate the Summoners War SPD breakpoints required to reach',
+    introLine2: 'Tick 4, Tick 5, and Tick 6 with your selected bonuses.',
     calculator: 'Monster calculator',
     calculatorCopy:
       'Select a monster and compare the required bonus SPD (+green) for each Tick across all available leader skills.',
@@ -301,9 +310,9 @@ export const en = {
     unawakened: 'unawakened',
   },
   tuning: {
-    title: 'SPD Tuning',
+    title: 'Summoners War SPD Tuning Calculator',
     description:
-      'Calculate the speed required to tune your team turn order in Siege, Arena, and RTA.',
+      'Tune your Summoners War team and calculate the minimum rune SPD required to keep turn order in Siege, Arena, and RTA.',
     siegeContext: 'SIEGE TURN ORDER',
     arenaContext: 'ARENA TURN ORDER',
     rtaContext: 'RTA TURN ORDER',

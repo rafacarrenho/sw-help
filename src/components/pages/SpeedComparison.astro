@@ -1,7 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../Icon.astro';
+import SeoContent from '../SeoContent.astro';
 import { monsterById, monsters } from '../../data/catalog.ts';
+import { seoContent } from '../../data/seo-content';
 import { elementLabelsFor } from '../../lib/monster-catalog.ts';
 import { getMessages, type Locale } from '../../i18n';
 
@@ -10,6 +12,7 @@ interface Props {
 }
 const { locale } = Astro.props;
 const messages = getMessages(locale);
+const searchContent = seoContent[locale].speedComparison;
 const elementLabels = elementLabelsFor(locale);
 
 const getUnawakenedName = (monster: (typeof monsters)[number]) => {
@@ -269,6 +272,8 @@ const sides = [
   <noscript>
     <p class="notice">{messages.comparison.noScript}</p>
   </noscript>
+
+  <SeoContent content={searchContent} locale={locale} id="speed-comparison" />
 
   <script
     id="speed-comparison-data"

@@ -4,7 +4,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(
-    page.getByText('Practical tools to study defenses', { exact: false }),
+    page.getByText('Plan Summoners War Siege offenses', { exact: false }),
   ).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
@@ -22,7 +22,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/pt');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(
-    page.getByText('Ferramentas práticas para estudar defesas', {
+    page.getByText('Planeje ofensivas de Siege', {
       exact: false,
     }),
   ).toBeVisible();

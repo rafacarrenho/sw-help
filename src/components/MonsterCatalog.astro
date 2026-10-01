@@ -2,10 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from './Icon.astro';
 import ElementIcon from './ElementIcon.astro';
+import SeoContent from './SeoContent.astro';
 import type { Element } from '../lib/types';
 import MonsterCard from './MonsterCard.astro';
 import { monsters } from '../data/catalog';
 import metadata from '../data/monsters-meta.json';
+import { seoContent } from '../data/seo-content';
 import {
   PAGE_SIZE,
   elementLabelsFor,
@@ -24,6 +26,7 @@ interface Props {
 }
 const { page = 1, locale = 'en' } = Astro.props;
 const messages = getMessages(locale);
+const searchContent = seoContent[locale].monsters;
 const elementLabels = elementLabelsFor(locale);
 const attributeLabels = attributeLabelsFor(locale);
 const leaderScopeOptions = leaderScopeOptionsFor(locale);
@@ -61,12 +64,20 @@ const clientConfig = JSON.stringify({
     noLeaderSkill: messages.monster.noLeaderSkill,
   },
 }).replaceAll('<', '\\u003c');
+const pageTitle =
+  page > 1
+    ? `${messages.monsters.title} – ${messages.monsters.page} ${page}`
+    : messages.monsters.title;
+const pageDescription =
+  page > 1
+    ? `${messages.monsters.description} ${messages.monsters.page} ${page} ${messages.monsters.of} ${totalPages}.`
+    : messages.monsters.description;
 ---
 
 <Layout
-  title={messages.monsters.title}
+  title={pageTitle}
   section="monsters"
-  description={messages.monsters.description}
+  description={pageDescription}
   locale={locale}
   routeName={page > 1 ? 'monsterPage' : 'monsters'}
   routeParams={page > 1 ? { page } : {}}
@@ -256,6 +267,9 @@ const clientConfig = JSON.stringify({
       . {messages.monsters.sourceNoteSuffix}
     </p>
   </aside>
+  {page === 1 && (
+    <SeoContent content={searchContent} locale={locale} id="monster-catalog" />
+  )}
   <script
     set:html={`window['__MONSTER_INDEX__'] = ${JSON.stringify(monsterIndex)}; window['__MONSTER_CATALOG_CONFIG__'] = ${clientConfig};`}
   ></script>

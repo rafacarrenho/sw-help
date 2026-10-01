@@ -105,7 +105,11 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
 ---
 
 <Layout
-  title={`${monster.name} · ${elementNames[monster.element]}`}
+  title={
+    locale === 'pt-BR'
+      ? `${monster.name} (${elementNames[monster.element]}) – Monstro de Summoners War`
+      : `${monster.name} (${elementNames[monster.element]}) – Summoners War Monster`
+  }
   section="monsters"
   detail
   locale={locale}
@@ -113,8 +117,8 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
   routeParams={{ id: monster.id }}
   description={
     locale === 'pt-BR'
-      ? `${monster.name}, ${elementNames[monster.element]}, ${formLabel(monster, locale)}: habilidade de líder, família e informações em Summoners War.`
-      : `${monster.name}, ${elementNames[monster.element]}, ${formLabel(monster, locale)}: leader skill, family, and Summoners War information.`
+      ? `Veja ${monster.name} de ${elementNames[monster.element]} no Summoners War: atributos base, habilidades, liderança, evolução, família e times de Siege.`
+      : `Explore ${monster.name}, the ${elementNames[monster.element]} Summoners War monster: base stats, skills, leader effect, evolution, family, and Siege teams.`
   }
 >
   <div class="detail-toolbar">
