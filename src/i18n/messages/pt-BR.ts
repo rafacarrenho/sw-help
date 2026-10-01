@@ -337,6 +337,7 @@ export const ptBR: Messages = {
     reviewFirstMonster: 'Revise primeiro o Monstro 1',
     baseRuneDetail: 'Base {base} + {runes} de runas',
     passiveDetail: ' + {passive} da passiva',
+    miriamSpeedBuffEffect: 'Amplifica o efeito do buff de SPD em 35%',
     combatSpeedDetail: '{speed} SPD de combate',
     calculationError: 'Não foi possível calcular',
   },

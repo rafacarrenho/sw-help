@@ -330,6 +330,7 @@ export const en = {
     reviewFirstMonster: 'Review Monster 1 first',
     baseRuneDetail: 'Base {base} + {runes} from runes',
     passiveDetail: ' + {passive} from passive',
+    miriamSpeedBuffEffect: 'Increases the SPD buff effect by 35%',
     combatSpeedDetail: '{speed} combat SPD',
     calculationError: 'Could not calculate',
   },

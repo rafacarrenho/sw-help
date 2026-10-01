@@ -291,6 +291,15 @@ const slots = [
               </label>
             )}
 
+            <label
+              class="speed-tuning-check speed-tuning-check--fixed"
+              data-tuning-miriam-passive
+              hidden
+            >
+              <input type="checkbox" checked disabled />
+              <span>{messages.tuning.miriamSpeedBuffEffect}</span>
+            </label>
+
             <label class="speed-tuning-check">
               <input data-tuning-swift type="checkbox" disabled />
               <span>{messages.tuning.usesSwift}</span>
@@ -361,6 +370,8 @@ const slots = [
     const CHILLING_ID = 'chilling-water-958';
     const CHILLING_SPEED_PER_BUFF = 20;
     const DEFAULT_CHILLING_INITIAL_BUFFS = 2;
+    const MIRIAM_ID = 'miriam-fire-1897';
+    const MIRIAM_SPEED_BUFF_EFFECT_INCREASE = 35;
 
     type MonsterOption = {
       id: string;
@@ -416,6 +427,7 @@ const slots = [
       target: HTMLSelectElement | null;
       artifact: HTMLElement | null;
       artifactPercent: HTMLInputElement | null;
+      miriamPassive: HTMLElement;
       result: HTMLElement;
       resultValue: HTMLElement;
       resultDetail: HTMLElement;
@@ -548,6 +560,7 @@ const slots = [
         root,
         '[data-tuning-artifact-percent]',
       ),
+      miriamPassive: query<HTMLElement>(root, '[data-tuning-miriam-passive]')!,
       result: query<HTMLElement>(root, '[data-tuning-result]')!,
       resultValue: query<HTMLElement>(root, '[data-tuning-result-value]')!,
       resultDetail: query<HTMLElement>(root, '[data-tuning-result-detail]')!,
@@ -560,6 +573,12 @@ const slots = [
       state.monster?.id === CHILLING_ID
         ? state.initialBuffs * CHILLING_SPEED_PER_BUFF
         : 0;
+    const hasActiveMiriam = () =>
+      states
+        .slice(0, activeSlotCount())
+        .some((state) => state.monster?.id === MIRIAM_ID);
+    const teamSpeedBuffIncrease = () =>
+      hasActiveMiriam() ? MIRIAM_SPEED_BUFF_EFFECT_INCREASE : 0;
 
     const closeOptions = (slotIndex: number) => {
       const slotElements = elements[slotIndex];
@@ -934,6 +953,7 @@ const slots = [
         slotElements.base.textContent = '—';
         slotElements.leader.hidden = true;
         slotElements.initialBuffs.hidden = true;
+        slotElements.miriamPassive.hidden = true;
         if (slotElements.boost) slotElements.boost.hidden = true;
         if (slotElements.speedBuff) slotElements.speedBuff.hidden = true;
         if (slotElements.effectTarget) slotElements.effectTarget.hidden = true;
@@ -975,6 +995,8 @@ const slots = [
       } else {
         state.initialBuffs = 0;
       }
+
+      slotElements.miriamPassive.hidden = monster.id !== MIRIAM_ID;
 
       const boost = monster.capabilities.atbBoost;
       const canProvideEffect = slotIndex < activeSlotCount() - 1;
@@ -1092,6 +1114,7 @@ const slots = [
         accumulatedAtbBoost: accumulatedBoost(slotIndex),
         speedBuffStartIteration: speedBuffStart(slotIndex),
         artifactSpeedIncrease: state.artifactPercent,
+        teamSpeedBuffIncrease: teamSpeedBuffIncrease(),
         baseSpeed: monster.speed,
         towerPercent: Number(towerSelect?.value ?? 15),
         leaderPercent: leaderForSlot(slotIndex),

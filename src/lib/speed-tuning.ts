@@ -70,6 +70,8 @@ export interface FollowerTuningInput {
   accumulatedAtbBoost: number;
   speedBuffStartIteration: number | null;
   artifactSpeedIncrease: number;
+  /** Team-wide amplification, such as Miriam's passive. Adds to artifact %. */
+  teamSpeedBuffIncrease?: number;
   baseSpeed: number;
   towerPercent: number;
   leaderPercent: number;
@@ -550,6 +552,27 @@ export function getSpeedTuningLeader(
 export const getSiegeSpeedLeader = (monster: Pick<Monster, 'leaderSkill'>) =>
   getSpeedTuningLeader(monster, 'siege');
 
+/**
+ * Converts the normal 30% SPD buff into the tick multiplier used in battle.
+ * Artifact and compatible team amplifiers add together before they amplify
+ * the base buff: 1 + 0.30 × (1 + (artifact + team) / 100).
+ */
+export function speedBuffMultiplier(
+  artifactSpeedIncrease: number,
+  teamSpeedBuffIncrease = 0,
+): number | null {
+  if (
+    !Number.isFinite(artifactSpeedIncrease) ||
+    !Number.isFinite(teamSpeedBuffIncrease)
+  ) {
+    return null;
+  }
+
+  const combinedEffectIncrease =
+    clamp(artifactSpeedIncrease, 0, 100) + Math.max(0, teamSpeedBuffIncrease);
+  return 1 + (SPEED_BUFF_PERCENT / 100) * (1 + combinedEffectIncrease / 100);
+}
+
 export function applicableLeaderPercent(
   leader: SpeedTuningLeader | null,
   targetElement: Element,
@@ -631,6 +654,7 @@ export function tuneFollower({
   accumulatedAtbBoost,
   speedBuffStartIteration,
   artifactSpeedIncrease,
+  teamSpeedBuffIncrease = 0,
   baseSpeed,
   towerPercent,
   leaderPercent,
@@ -645,6 +669,7 @@ export function tuneFollower({
     iteration < 1 ||
     !Number.isFinite(accumulatedAtbBoost) ||
     !Number.isFinite(artifactSpeedIncrease) ||
+    !Number.isFinite(teamSpeedBuffIncrease) ||
     !Number.isFinite(passiveSpeedBonus) ||
     !Number.isFinite(tickConstant) ||
     tickConstant <= 0
@@ -666,10 +691,11 @@ export function tuneFollower({
   ) {
     const normalTicks = speedBuffStartIteration - 1;
     const buffedTicks = iteration - normalTicks;
-    const speedModifier =
-      1 +
-      (SPEED_BUFF_PERCENT / 100) *
-        (1 + clamp(artifactSpeedIncrease, 0, 100) / 100);
+    const speedModifier = speedBuffMultiplier(
+      artifactSpeedIncrease,
+      teamSpeedBuffIncrease,
+    );
+    if (speedModifier === null) return null;
     denominator =
       tickConstant * (anchorTicks + normalTicks + buffedTicks * speedModifier);
   }

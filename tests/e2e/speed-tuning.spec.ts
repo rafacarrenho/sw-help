@@ -365,6 +365,56 @@ test('reconhece buff de SPD em área da Adriana e do Chilling', async ({
   expect(new URL(page.url()).searchParams.has('startBuffs1')).toBe(false);
 });
 
+test('amplifica o buff de SPD somente enquanto Miriam está ativa', async ({
+  page,
+}) => {
+  await page.goto('/pt/spd-tuning/');
+  const slots = page.locator('[data-tuning-slot]');
+  const firstSlot = slots.nth(0);
+  const secondSlot = slots.nth(1);
+  const thirdSlot = slots.nth(2);
+  const passiveControl = secondSlot.locator('[data-tuning-miriam-passive]');
+
+  await selectMonster(page, 1, 'miriam', 'miriam-fire-1897');
+  await expect(passiveControl).toBeVisible();
+  await expect(passiveControl).toHaveText(
+    'Amplifica o efeito do buff de SPD em 35%',
+  );
+  await expect(passiveControl.locator('input')).toBeChecked();
+  await expect(passiveControl.locator('input')).toBeDisabled();
+  expect(
+    await passiveControl.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { opacity: style.opacity, cursor: style.cursor };
+    }),
+  ).toEqual({ opacity: '1', cursor: 'default' });
+
+  await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
+  await firstSlot.locator('[data-tuning-rune-speed]').fill('200');
+  await selectMonster(page, 2, 'lushen', 'lushen');
+
+  const amplifiedSecondResult = await secondSlot
+    .locator('[data-tuning-result-value]')
+    .textContent();
+  const amplifiedThirdResult = await thirdSlot
+    .locator('[data-tuning-result-value]')
+    .textContent();
+
+  await firstSlot.locator('[data-tuning-speed-buff-toggle]').uncheck();
+  await expect(passiveControl).toBeVisible();
+  await expect(passiveControl.locator('input')).toBeChecked();
+  await expect(secondSlot.locator('[data-tuning-result-value]')).not.toHaveText(
+    amplifiedSecondResult ?? '',
+  );
+  await expect(thirdSlot.locator('[data-tuning-result-value]')).not.toHaveText(
+    amplifiedThirdResult ?? '',
+  );
+
+  await firstSlot.locator('[data-tuning-speed-buff-toggle]').check();
+  await secondSlot.getByRole('combobox').fill('');
+  await expect(passiveControl).toBeHidden();
+});
+
 test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
   page,
 }) => {
@@ -391,7 +441,7 @@ test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
     '+178 SPD',
   );
   await expect(thirdSlot.locator('[data-tuning-result-value]')).toHaveText(
-    '+182 SPD',
+    '+180 SPD',
   );
 });
 

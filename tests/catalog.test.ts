@@ -40,6 +40,7 @@ import {
   minimumRuneSpeedForCombat,
   RTA_TICK_CONSTANT,
   readSpeedTuningQueryState,
+  speedBuffMultiplier,
   tuneFollower,
   writeSpeedTuningQueryState,
   type SpeedTuningQueryMonster,
@@ -497,6 +498,11 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
 });
 
 test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
+  assert.equal(speedBuffMultiplier(0)?.toFixed(3), '1.300');
+  assert.equal(speedBuffMultiplier(0, 35)?.toFixed(3), '1.405');
+  assert.equal(speedBuffMultiplier(20)?.toFixed(3), '1.360');
+  assert.equal(speedBuffMultiplier(20, 35)?.toFixed(3), '1.465');
+
   assert.equal(
     combatSpeed({
       baseSpeed: 102,
@@ -617,6 +623,51 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
     }),
     { runeSpeed: 102, combatSpeed: 217, minimumCombatSpeed: 217 },
   );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 1,
+      accumulatedAtbBoost: 30,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 0,
+      teamSpeedBuffIncrease: 35,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 100, combatSpeed: 215, minimumCombatSpeed: 215 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 2,
+      accumulatedAtbBoost: 30,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 20,
+      teamSpeedBuffIncrease: 35,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 96, combatSpeed: 211, minimumCombatSpeed: 211 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: 300,
+      iteration: 1,
+      accumulatedAtbBoost: 0,
+      speedBuffStartIteration: null,
+      artifactSpeedIncrease: 0,
+      teamSpeedBuffIncrease: 35,
+      baseSpeed: 100,
+      towerPercent: 15,
+      leaderPercent: 0,
+      usesSwift: false,
+    }),
+    { runeSpeed: 186, combatSpeed: 301, minimumCombatSpeed: 301 },
+  );
 
   const kabillaCombatSpeed = combatSpeed({
     baseSpeed: 120,
@@ -632,13 +683,13 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
     accumulatedAtbBoost: 30,
     speedBuffStartIteration: null,
     artifactSpeedIncrease: 0,
-    baseSpeed: 103,
+    baseSpeed: 105,
     towerPercent: 15,
     leaderPercent: 19,
     usesSwift: true,
   });
   assert.deepEqual(talisman, {
-    runeSpeed: 182,
+    runeSpeed: 180,
     combatSpeed: 320,
     minimumCombatSpeed: 320,
   });
