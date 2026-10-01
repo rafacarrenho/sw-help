@@ -48,6 +48,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
 
   const catalogLink = page.getByRole('link', {
     name: 'Catálogo de Monstros',
+    exact: true,
   });
   const tooltip = page.locator('[data-nav-tooltip]');
   await catalogLink.hover();

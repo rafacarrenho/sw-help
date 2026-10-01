@@ -10,6 +10,7 @@ export const ptBR: Messages = {
     expandSidebar: 'Expandir menu lateral',
     collapseSidebar: 'Recolher menu lateral',
     homeLabel: 'SW Help, início',
+    home: 'Início',
     arsenal: 'SEU ARSENAL',
     tools: 'Ferramentas',
     monsterCatalog: 'Catálogo de Monstros',
@@ -22,6 +23,33 @@ export const ptBR: Messages = {
     portuguese: 'Português',
     footerTagline: 'Um toolkit de invocador para invocador.',
     footerDisclaimer: 'Projeto da comunidade. Sem vínculo com a Com2uS.',
+  },
+  landing: {
+    title: 'Ferramentas para Summoners War',
+    description:
+      'Planeje ofensivas de Siege, explore monstros e compare velocidade com ferramentas focadas em Summoners War.',
+    eyebrow: 'SEU TOOLKIT DE INVOCADOR',
+    headingPrefix: 'Planeje melhor.',
+    headingAccent: 'Entre preparado.',
+    intro:
+      'Ferramentas práticas para estudar defesas, explorar monstros e preparar a ordem dos turnos antes da batalha.',
+    primaryAction: 'Abrir Siege Counter',
+    secondaryAction: 'Explorar monstros',
+    toolsTitle: 'Escolha uma ferramenta',
+    toolsCopy:
+      'Comece pela informação que você precisa para a próxima batalha.',
+    siegeTitle: 'Siege Counter',
+    siegeCopy: 'Encontre ofensivas cadastradas para defesas de Siege.',
+    monstersTitle: 'Catálogo de Monstros',
+    monstersCopy:
+      'Explore monstros, atributos, habilidades e efeitos de líder.',
+    tuningTitle: 'Spd Tuning',
+    tuningCopy: 'Prepare a ordem dos turnos do seu time.',
+    comparisonTitle: 'Comparador de SPD',
+    comparisonCopy: 'Compare vantagens estruturais de velocidade.',
+    tickTitle: 'Spd Tick',
+    tickCopy: 'Calcule requisitos de velocidade para ticks de combate.',
+    openTool: 'Abrir ferramenta',
   },
   common: {
     clearSearch: 'Limpar busca',
@@ -344,9 +372,9 @@ export const ptBR: Messages = {
   notFound: {
     title: 'Página não encontrada',
     eyebrow: '404 · FORA DO MAPA',
-    heading: 'Esta defesa não está por aqui.',
-    copy: 'O endereço pode ter mudado. Explore as composições do catálogo.',
-    action: 'Voltar ao Siege Counter',
+    heading: 'Esta página está fora do mapa.',
+    copy: 'O endereço pode ter mudado. Volte ao início ou explore o catálogo.',
+    action: 'Voltar ao início',
     catalogAction: 'Explorar monstros',
   },
   taxonomy: {

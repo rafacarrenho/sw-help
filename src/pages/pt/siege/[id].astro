@@ -1,16 +1,19 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import SiegeDetail from '../../../components/pages/SiegeDetail.astro';
 import { defensesFor } from '../../../data/catalog';
+import { routePath } from '../../../i18n';
 
 export const prerender = true;
 
 export const getStaticPaths = (() =>
-  defensesFor('pt-BR').map((defense) => ({
-    params: { id: defense.id },
-    props: { defense },
+  defensesFor('pt-BR').map(({ id }) => ({
+    params: { id },
+    props: { id },
   }))) satisfies GetStaticPaths;
-const { defense } = Astro.props;
----
 
-<SiegeDetail defense={defense} locale="pt-BR" />
+const { id } = Astro.props;
+return Astro.redirect(
+  `${routePath('siege', 'pt-BR', { id })}${Astro.url.search}`,
+  301,
+);
+---

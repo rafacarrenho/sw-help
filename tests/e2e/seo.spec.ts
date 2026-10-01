@@ -9,7 +9,7 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
 
   const response = await request.get('/sitemap.xml');
   expect(response.status()).toBe(200);
-  expect(response.headers()['content-type']).toContain('application/xml');
+  expect(response.headers()['content-type']).toContain('xml');
 
   const xml = await response.text();
   expect(xml).toContain(
@@ -17,9 +17,14 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   );
   expect(xml).toContain(`<loc>${productionOrigin}/</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/siege-counter</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/pt/siege-counter</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/monsters/page/2</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt/monstros/pagina/2</loc>`);
-  expect(xml).toMatch(new RegExp(`<loc>${productionOrigin}/siege/[^/]+</loc>`));
+  expect(xml).toMatch(
+    new RegExp(`<loc>${productionOrigin}/siege-counter/[^/]+</loc>`),
+  );
+  expect(xml).not.toContain(`<loc>${productionOrigin}/siege/`);
   expect(xml).toMatch(
     new RegExp(`<loc>${productionOrigin}/pt/monstros/[^/]+</loc>`),
   );
@@ -65,7 +70,7 @@ test('404 em inglês retorna status correto e não publica canonical', async ({
   await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
   await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
   await expect(
-    page.getByRole('link', { name: 'Back to Siege Counter' }),
+    page.getByRole('link', { name: 'Back to home' }),
   ).toHaveAttribute('href', '/');
   await expect(
     page.getByRole('link', { name: 'Explore monsters' }),

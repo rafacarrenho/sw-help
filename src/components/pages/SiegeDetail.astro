@@ -44,11 +44,16 @@ const counterStatsAfterSpeed = [
   description={`${messages.siege.descriptionPrefix} ${name}.`}
   detail
   locale={locale}
+  section="siege"
   routeName="siege"
   routeParams={{ id: defense.id }}
 >
   <div class="detail-toolbar">
-    <a href={routePath('home', locale)} class="back-link" data-back-link>
+    <a
+      href={routePath('siegeCounter', locale)}
+      class="back-link"
+      data-back-link
+    >
       <span>←</span> {messages.siege.allDefenses}
     </a>
     <button
@@ -126,7 +131,11 @@ const counterStatsAfterSpeed = [
         </span>
         <h3>{messages.siege.noCounters}</h3>
         <p>{messages.siege.noCountersCopy}</p>
-        <a class="button" href={routePath('home', locale)} data-back-link>
+        <a
+          class="button"
+          href={routePath('siegeCounter', locale)}
+          data-back-link
+        >
           {messages.siege.exploreDefenses} <Icon name="arrow" size={16} />
         </a>
       </div>

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('mantém a ação de limpar visível em todas as buscas preenchidas', async ({
   page,
 }) => {
-  await page.goto('/pt');
+  await page.goto('/pt/siege-counter');
   let search = page.getByRole('searchbox');
   let clear = page.getByRole('button', { name: 'Limpar busca' });
   await expect(clear).toBeHidden();

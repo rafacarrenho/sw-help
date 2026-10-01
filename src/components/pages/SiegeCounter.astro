@@ -1,0 +1,174 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../Icon.astro';
+import DefenseCard from '../DefenseCard.astro';
+import { defensesFor, countersFor, monsters } from '../../data/catalog';
+import { getMessages, routePath, type Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = 'en' } = Astro.props;
+const messages = getMessages(locale);
+const defenses = defensesFor(locale);
+const counters = countersFor(locale);
+---
+
+<Layout
+  title="Siege Counter"
+  locale={locale}
+  routeName="siegeCounter"
+  section="siege"
+>
+  <section class="page-intro">
+    <div>
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> {messages.home.eyebrow}
+      </span>
+      <h1>
+        Siege <span>Counter</span>
+        <span class="beta-badge">BETA</span>
+      </h1>
+      <p>
+        {messages.home.introLine1}
+        <br class="mobile-break" /> {messages.home.introLine2}
+      </p>
+    </div>
+    <div class="intro-emblem" aria-hidden="true">
+      <Icon name="swords" size={66} />
+    </div>
+  </section>
+  <div class="stats-grid" aria-label={messages.home.summaryLabel}>
+    <div class="stat">
+      <span class="stat-icon amber">
+        <Icon name="shield" size={21} />
+      </span>
+      <div>
+        <strong>{defenses.length.toString().padStart(2, '0')}</strong>
+        <span>{messages.home.defensesCatalog}</span>
+      </div>
+      <span class="stat-detail">{messages.home.compositions}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon green">
+        <Icon name="swords" size={21} />
+      </span>
+      <div>
+        <strong>{counters.length.toString().padStart(2, '0')}</strong>
+        <span>{messages.home.countersRegistered}</span>
+      </div>
+      <span class="stat-detail">{messages.home.strategies}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon blue">
+        <Icon name="book" size={21} />
+      </span>
+      <div>
+        <strong>{monsters.length}</strong>
+        <span>{messages.home.monstersRegistered}</span>
+      </div>
+      <span class="stat-detail">{messages.home.bestiary}</span>
+    </div>
+  </div>
+  <section class="catalog" aria-labelledby="catalog-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="catalog-title">{messages.home.findDefense}</h2>
+        <p>{messages.home.findDefenseCopy}</p>
+      </div>
+      <span class="section-icon">
+        <Icon name="grid" size={18} />
+      </span>
+    </div>
+    <form
+      class="search-form"
+      role="search"
+      action={routePath('siegeCounter', locale)}
+      data-search-form
+      data-result-singular={messages.home.defenseFound}
+      data-result-plural={messages.home.defensesFound}
+    >
+      <div class="search-box">
+        <Icon name="search" size={20} />
+        <label class="sr-only" for="monster-search">
+          {messages.home.searchLabel}
+        </label>
+        <input
+          type="search"
+          name="q"
+          id="monster-search"
+          placeholder={messages.home.searchPlaceholder}
+          autocomplete="off"
+          maxlength="200"
+        />
+        <button
+          class="search-clear-button"
+          type="button"
+          aria-label={messages.common.clearSearch}
+          title={messages.common.clearSearch}
+          data-search-clear
+        >
+          <Icon name="close" size={16} />
+        </button>
+        <span class="search-hint">{messages.home.searchHint}</span>
+      </div>
+      <div class="filter-row">
+        <fieldset>
+          <legend class="sr-only">{messages.home.towerType}</legend>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="all" checked />
+            <span>{messages.home.allDefenses}</span>
+          </label>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="4star" />
+            <span>
+              <Icon name="tower" size={14} /> {messages.home.fourStarTower}
+            </span>
+          </label>
+          <label class="filter-chip">
+            <input type="radio" name="tower" value="open" />
+            <span>
+              <Icon name="tower" size={14} /> {messages.home.openTower}
+            </span>
+          </label>
+        </fieldset>
+        <span
+          class="result-count"
+          data-result-count
+          role="status"
+          aria-live="polite"
+        >
+          {defenses.length} {messages.home.defensesFound}
+        </span>
+      </div>
+    </form>
+    <noscript>
+      <p class="notice">{messages.home.searchNeedsJs}</p>
+    </noscript>
+    <div class="defense-grid">
+      {defenses.map((defense, index) => (
+        <DefenseCard defense={defense} index={index} locale={locale} />
+      ))}
+    </div>
+    <div class="empty-state" data-empty-state hidden>
+      <span class="empty-icon">
+        <Icon name="search" size={30} />
+      </span>
+      <h3>{messages.home.noDefense}</h3>
+      <p>{messages.home.noDefenseCopy}</p>
+      <button class="button" type="button" data-clear-filters>
+        {messages.common.clearFilters} <Icon name="arrow" size={16} />
+      </button>
+    </div>
+  </section>
+  <aside class="catalog-note">
+    <Icon name="info" size={18} />
+    <p>
+      <strong>{messages.home.noteTitle}</strong> {messages.home.noteCopy}
+    </p>
+    <span class="example-tag">{messages.home.exampleCatalog}</span>
+  </aside>
+  <script>
+    import '../../scripts/catalog';
+  </script>
+</Layout>

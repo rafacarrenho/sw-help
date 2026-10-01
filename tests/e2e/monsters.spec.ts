@@ -6,7 +6,9 @@ test('menu, filtros combinados e retorno da ficha preservam a busca', async ({
   await page.goto('/pt');
   const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
   if (await mobileMenu.isVisible()) await mobileMenu.click();
-  await page.getByRole('link', { name: 'Catálogo de Monstros' }).click();
+  await page
+    .getByRole('link', { name: 'Catálogo de Monstros', exact: true })
+    .click();
   await expect(
     page.getByRole('heading', { name: 'Catálogo de Monstros' }),
   ).toBeVisible();
@@ -203,7 +205,7 @@ test('Siege referencia o catálogo e layout permanece legível', async ({
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/pt/siege/morris-eshir-orion');
+  await page.goto('/pt/siege-counter/morris-eshir-orion');
   await page.getByRole('link', { name: 'Ver Morris no catálogo' }).click();
   await expect(page).toHaveURL(/\/pt\/monstros\/morris-wind-1020$/);
   await expect(page.locator('.monster-profile img').first()).toBeVisible();

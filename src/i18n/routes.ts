@@ -3,6 +3,7 @@ export type Locale = (typeof locales)[number];
 
 export type RouteName =
   | 'home'
+  | 'siegeCounter'
   | 'siege'
   | 'monsters'
   | 'monster'
@@ -19,7 +20,8 @@ export type RouteParams = {
 const routeTemplates: Record<Locale, Record<RouteName, string>> = {
   en: {
     home: '/',
-    siege: '/siege/:id',
+    siegeCounter: '/siege-counter',
+    siege: '/siege-counter/:id',
     monsters: '/monsters',
     monster: '/monsters/:id',
     monsterPage: '/monsters/page/:page',
@@ -29,7 +31,8 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
   },
   'pt-BR': {
     home: '/pt',
-    siege: '/pt/siege/:id',
+    siegeCounter: '/pt/siege-counter',
+    siege: '/pt/siege-counter/:id',
     monsters: '/pt/monstros',
     monster: '/pt/monstros/:id',
     monsterPage: '/pt/monstros/pagina/:page',

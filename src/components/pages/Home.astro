@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../Icon.astro';
+import {
+  getMessages,
+  routePath,
+  type Locale,
+  type RouteName,
+} from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const tools: Array<{
+  route: RouteName;
+  icon: string;
+  title: string;
+  copy: string;
+}> = [
+  {
+    route: 'siegeCounter',
+    icon: 'swords',
+    title: messages.landing.siegeTitle,
+    copy: messages.landing.siegeCopy,
+  },
+  {
+    route: 'monsters',
+    icon: 'book',
+    title: messages.landing.monstersTitle,
+    copy: messages.landing.monstersCopy,
+  },
+  {
+    route: 'speedTuning',
+    icon: 'speed',
+    title: messages.landing.tuningTitle,
+    copy: messages.landing.tuningCopy,
+  },
+  {
+    route: 'speedComparison',
+    icon: 'speed',
+    title: messages.landing.comparisonTitle,
+    copy: messages.landing.comparisonCopy,
+  },
+  {
+    route: 'speedTick',
+    icon: 'clock',
+    title: messages.landing.tickTitle,
+    copy: messages.landing.tickCopy,
+  },
+];
+---
+
+<Layout
+  title={messages.landing.title}
+  description={messages.landing.description}
+  locale={locale}
+  routeName="home"
+  section="home"
+>
+  <section class="home-hero">
+    <div class="home-hero-copy">
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> {messages.landing.eyebrow}
+      </span>
+      <h1>
+        {messages.landing.headingPrefix}
+        <span>{messages.landing.headingAccent}</span>
+      </h1>
+      <p>{messages.landing.intro}</p>
+      <div class="home-actions">
+        <a class="button" href={routePath('siegeCounter', locale)}>
+          {messages.landing.primaryAction}
+          <Icon name="arrow" size={16} />
+        </a>
+        <a class="button button-secondary" href={routePath('monsters', locale)}>
+          {messages.landing.secondaryAction}
+        </a>
+      </div>
+    </div>
+    <div class="home-emblem" aria-hidden="true">
+      <span>
+        <Icon name="swords" size={62} />
+      </span>
+      <span>
+        <Icon name="book" size={30} />
+      </span>
+      <span>
+        <Icon name="speed" size={30} />
+      </span>
+    </div>
+  </section>
+
+  <section class="home-tools" aria-labelledby="home-tools-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="home-tools-title">{messages.landing.toolsTitle}</h2>
+        <p>{messages.landing.toolsCopy}</p>
+      </div>
+      <span class="section-icon">
+        <Icon name="grid" size={18} />
+      </span>
+    </div>
+    <div class="tool-grid">
+      {tools.map((tool) => (
+        <a class="tool-card" href={routePath(tool.route, locale)}>
+          <span class="tool-card-icon">
+            <Icon name={tool.icon} size={24} />
+          </span>
+          <span class="tool-card-copy">
+            <strong>{tool.title}</strong>
+            <span>{tool.copy}</span>
+          </span>
+          <span class="tool-card-action">
+            {messages.landing.openTool} <Icon name="arrow" size={15} />
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

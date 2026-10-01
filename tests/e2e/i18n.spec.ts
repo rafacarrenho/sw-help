@@ -4,7 +4,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(
-    page.getByText('A strong offense starts before the battle.'),
+    page.getByText('Practical tools to study defenses', { exact: false }),
   ).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
@@ -22,8 +22,52 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/pt');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(
-    page.getByText('Uma boa ofensiva começa antes da batalha.'),
+    page.getByText('Ferramentas práticas para estudar defesas', {
+      exact: false,
+    }),
   ).toBeVisible();
+});
+
+test('home apresenta as ferramentas e a navegação usa a nova hierarquia', async ({
+  page,
+}) => {
+  await page.goto('/pt');
+  await expect(
+    page.getByRole('heading', { name: 'Planeje melhor. Entre preparado.' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Abrir Siege Counter' }),
+  ).toHaveAttribute('href', '/pt/siege-counter');
+  await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
+  await expect(page.locator('.breadcrumb')).toHaveText('Início');
+
+  await page.goto('/pt/siege-counter');
+  await expect(page.locator('.breadcrumb')).toContainText(
+    'InícioSiege Counter',
+  );
+  await expect(page.locator('.breadcrumb a').first()).toHaveAttribute(
+    'href',
+    '/pt',
+  );
+
+  await page.goto('/pt/siege-counter/morris-eshir-orion');
+  await expect(page.locator('.breadcrumb')).toContainText(
+    'InícioSiege CounterDefesa',
+  );
+  await expect(page.locator('.breadcrumb a').nth(1)).toHaveAttribute(
+    'href',
+    '/pt/siege-counter',
+  );
+});
+
+test('URLs antigas de defesa redirecionam para Siege Counter', async ({
+  page,
+}) => {
+  await page.goto('/siege/morris-eshir-orion');
+  await expect(page).toHaveURL(/\/siege-counter\/morris-eshir-orion$/);
+
+  await page.goto('/pt/siege/morris-eshir-orion');
+  await expect(page).toHaveURL(/\/pt\/siege-counter\/morris-eshir-orion$/);
 });
 
 test('seletor traduz o slug e preserva a query string', async ({ page }) => {
@@ -71,7 +115,7 @@ test('URLs portuguesas antigas redirecionam e o sitemap lista alternates', async
   request,
 }) => {
   await page.goto('/comparador-spd?ally=kabilla-light-430');
-  await expect(page).toHaveURL(/\/pt\/comparador-spd\?ally=kabilla-light-430$/);
+  await expect(page).toHaveURL(/\/pt\/comparador-spd$/);
 
   const response = await request.get('/sitemap.xml');
   expect(response.ok()).toBeTruthy();
