@@ -196,19 +196,6 @@ const sectionLabel =
           <Icon name="close" size={22} />
         </button>
       </div>
-      <nav aria-label={messages.layout.home}>
-        <a
-          class:list={['nav-item', { active: section === 'home' }]}
-          href={routePath('home', locale)}
-          aria-label={messages.layout.home}
-          data-nav-label={messages.layout.home}
-          aria-current={section === 'home' ? 'page' : undefined}
-        >
-          <Icon name="home" />
-          <span>{messages.layout.home}</span>
-          {section === 'home' && <span class="active-dot"></span>}
-        </a>
-      </nav>
       <div class="nav-group-label">{messages.layout.arsenal}</div>
       <nav aria-label={messages.layout.tools}>
         <a

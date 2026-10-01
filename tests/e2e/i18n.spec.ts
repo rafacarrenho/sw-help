@@ -39,6 +39,9 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
     page.getByRole('link', { name: 'Abrir Siege Counter' }),
   ).toHaveAttribute('href', '/pt/siege-counter');
   await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
+  await expect(
+    page.locator('.sidebar').getByRole('link', { name: 'Início', exact: true }),
+  ).toHaveCount(0);
   await expect(page.locator('.breadcrumb')).toHaveText('Início');
 
   await page.goto('/pt/siege-counter');
