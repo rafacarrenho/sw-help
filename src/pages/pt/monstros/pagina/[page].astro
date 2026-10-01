@@ -1,6 +1,6 @@
 ---
-import MonsterCatalog from '../../../../components/MonsterCatalog.astro';
 import { monsters } from '../../../../data/catalog';
+import { routePath } from '../../../../i18n';
 import {
   PAGE_SIZE,
   filterMonsters,
@@ -28,6 +28,8 @@ export function getStaticPaths() {
   );
 }
 const { page } = Astro.props;
+return Astro.redirect(
+  `${routePath('monsterPage', 'pt-BR', { page })}${Astro.url.search}`,
+  301,
+);
 ---
-
-<MonsterCatalog page={page} locale="pt-BR" />

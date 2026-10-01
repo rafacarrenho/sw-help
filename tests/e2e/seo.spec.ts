@@ -17,23 +17,38 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   );
   expect(xml).toContain(`<loc>${productionOrigin}/</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt</loc>`);
-  expect(xml).toContain(`<loc>${productionOrigin}/siege-counter</loc>`);
-  expect(xml).toContain(`<loc>${productionOrigin}/pt/siege-counter</loc>`);
-  expect(xml).toContain(`<loc>${productionOrigin}/monsters/page/2</loc>`);
-  expect(xml).toContain(`<loc>${productionOrigin}/pt/monstros/pagina/2</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/summoners-war</loc>`);
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/summoners-war/siege-counter</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/pt/summoners-war/siege-counter</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/summoners-war/monsters/page/2</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/pt/summoners-war/monstros/pagina/2</loc>`,
+  );
   expect(xml).toMatch(
-    new RegExp(`<loc>${productionOrigin}/siege-counter/[^/]+</loc>`),
+    new RegExp(
+      `<loc>${productionOrigin}/summoners-war/siege-counter/[^/]+</loc>`,
+    ),
   );
   expect(xml).not.toContain(`<loc>${productionOrigin}/siege/`);
   expect(xml).toMatch(
-    new RegExp(`<loc>${productionOrigin}/pt/monstros/[^/]+</loc>`),
-  );
-  expect(xml).toContain(`hreflang="en" href="${productionOrigin}/monsters"`);
-  expect(xml).toContain(
-    `hreflang="pt-BR" href="${productionOrigin}/pt/monstros"`,
+    new RegExp(
+      `<loc>${productionOrigin}/pt/summoners-war/monstros/[^/]+</loc>`,
+    ),
   );
   expect(xml).toContain(
-    `hreflang="x-default" href="${productionOrigin}/monsters"`,
+    `hreflang="en" href="${productionOrigin}/summoners-war/monsters"`,
+  );
+  expect(xml).toContain(
+    `hreflang="pt-BR" href="${productionOrigin}/pt/summoners-war/monstros"`,
+  );
+  expect(xml).toContain(
+    `hreflang="x-default" href="${productionOrigin}/summoners-war/monsters"`,
   );
 
   const locations = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
@@ -74,7 +89,7 @@ test('404 em inglês retorna status correto e não publica canonical', async ({
   ).toHaveAttribute('href', '/');
   await expect(
     page.getByRole('link', { name: 'Explore monsters' }),
-  ).toHaveAttribute('href', '/monsters');
+  ).toHaveAttribute('href', '/summoners-war/monsters');
   await expect(
     page.getByLabel('Breadcrumb').getByRole('link', { name: 'Home' }),
   ).toHaveAttribute('href', '/');
@@ -101,7 +116,7 @@ test('404 em português preserva idioma e links localizados', async ({
   ).toHaveAttribute('href', '/pt');
   await expect(
     page.getByRole('link', { name: 'Explorar monstros' }),
-  ).toHaveAttribute('href', '/pt/monstros');
+  ).toHaveAttribute('href', '/pt/summoners-war/monstros');
   await expect(
     page.getByLabel('Breadcrumb').getByRole('link', { name: 'Início' }),
   ).toHaveAttribute('href', '/pt');
@@ -112,18 +127,18 @@ test('página normal preserva canonical e alternativas de idioma', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
 
-  await page.goto('/monsters');
+  await page.goto('/summoners-war/monsters');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    `${productionOrigin}/monsters`,
+    `${productionOrigin}/summoners-war/monsters`,
   );
   await expect(page.locator('link[hreflang="en"]')).toHaveAttribute(
     'href',
-    `${productionOrigin}/monsters`,
+    `${productionOrigin}/summoners-war/monsters`,
   );
   await expect(page.locator('link[hreflang="pt-BR"]')).toHaveAttribute(
     'href',
-    `${productionOrigin}/pt/monstros`,
+    `${productionOrigin}/pt/summoners-war/monstros`,
   );
 });
 
@@ -135,26 +150,30 @@ test('páginas principais usam títulos e descrições focados em Summoners War'
   const pages = [
     {
       path: '/',
+      title: 'Free Tools and Calculators for Games · SW Help',
+    },
+    {
+      path: '/summoners-war',
       title: 'Summoners War Tools for Siege, SPD & Monsters · SW Help',
     },
     {
-      path: '/siege-counter',
+      path: '/summoners-war/siege-counter',
       title: 'Summoners War Siege Counter & Offense Teams · SW Help',
     },
     {
-      path: '/monsters',
+      path: '/summoners-war/monsters',
       title: 'Summoners War Monster Database & Catalog · SW Help',
     },
     {
-      path: '/speed-tuning',
+      path: '/summoners-war/speed-tuning',
       title: 'Summoners War SPD Tuning Calculator · SW Help',
     },
     {
-      path: '/speed-comparison',
+      path: '/summoners-war/speed-comparison',
       title: 'Summoners War SPD Comparison Calculator · SW Help',
     },
     {
-      path: '/speed-tick',
+      path: '/summoners-war/speed-tick',
       title: 'Summoners War SPD Tick Calculator · SW Help',
     },
   ];
@@ -183,11 +202,11 @@ test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
   test.skip(testInfo.project.name !== 'desktop');
 
   for (const path of [
-    '/siege-counter',
-    '/monsters',
-    '/speed-tuning',
-    '/speed-comparison',
-    '/speed-tick',
+    '/summoners-war/siege-counter',
+    '/summoners-war/monsters',
+    '/summoners-war/speed-tuning',
+    '/summoners-war/speed-comparison',
+    '/summoners-war/speed-tick',
   ]) {
     await page.goto(path);
     const faqs = page.locator('.seo-faq-item');
@@ -197,7 +216,7 @@ test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
     await expect(faqs.first()).toBeVisible();
   }
 
-  await page.goto('/pt/spd-tick');
+  await page.goto('/pt/summoners-war/spd-tick');
   await expect(page.locator('.seo-faq-item')).toHaveCount(10);
   await expect(
     page.getByRole('heading', {
@@ -222,20 +241,25 @@ test('dados estruturados identificam o site e os breadcrumbs localizados', async
     inLanguage: 'en',
   });
 
-  await page.goto('/pt/siege-counter/morris-eshir-orion');
+  await page.goto('/pt/summoners-war/siege-counter/morris-eshir-orion');
   const breadcrumbData = await page
     .locator('script[type="application/ld+json"]')
     .textContent();
   const parsed = JSON.parse(breadcrumbData ?? '{}');
   expect(parsed['@type']).toBe('BreadcrumbList');
-  expect(parsed.itemListElement).toHaveLength(3);
+  expect(parsed.itemListElement).toHaveLength(4);
   expect(parsed.itemListElement[0]).toMatchObject({
     position: 1,
     name: 'Início',
     item: `${productionOrigin}/pt`,
   });
-  expect(parsed.itemListElement[2].item).toBe(
-    `${productionOrigin}/pt/siege-counter/morris-eshir-orion`,
+  expect(parsed.itemListElement[1]).toMatchObject({
+    position: 2,
+    name: 'Summoners War',
+    item: `${productionOrigin}/pt/summoners-war`,
+  });
+  expect(parsed.itemListElement[3].item).toBe(
+    `${productionOrigin}/pt/summoners-war/siege-counter/morris-eshir-orion`,
   );
 });
 
@@ -244,7 +268,7 @@ test('paginação e detalhes recebem metadados únicos', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
 
-  await page.goto('/monsters/page/2');
+  await page.goto('/summoners-war/monsters/page/2');
   await expect(page).toHaveTitle(
     'Summoners War Monster Database & Catalog – Page 2 · SW Help',
   );
@@ -253,10 +277,10 @@ test('paginação e detalhes recebem metadados únicos', async ({
     /Page 2 of 24\.$/,
   );
 
-  await page.goto('/monsters/clara');
+  await page.goto('/summoners-war/monsters/clara');
   await expect(page).toHaveTitle(/Clara \(Fire\) – Summoners War Monster/);
 
-  await page.goto('/siege-counter/morris-eshir-orion');
+  await page.goto('/summoners-war/siege-counter/morris-eshir-orion');
   await expect(page).toHaveTitle(
     /Morris · Eshir · Orion Siege Counters – Summoners War/,
   );

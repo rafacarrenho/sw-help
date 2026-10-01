@@ -1,5 +1,8 @@
 ---
-import SpeedTuning from '../components/pages/SpeedTuning.astro';
----
+import { routePath } from '../i18n';
 
-<SpeedTuning locale="en" />
+return Astro.redirect(
+  `${routePath('speedTuning', 'en')}${Astro.url.search}`,
+  301,
+);
+---

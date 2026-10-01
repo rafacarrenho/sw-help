@@ -1,11 +1,30 @@
 import { test, expect } from '@playwright/test';
 
-test('desktop persiste a escolha entre páginas e recargas', async ({
+test('desktop alinha header, conteúdo principal e footer', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
 
   await page.goto('/pt');
+  const topbar = await page.locator('.topbar-inner').boundingBox();
+  const mainContent = await page.locator('.portal-hero').boundingBox();
+  const footer = await page.locator('.site-footer-main').boundingBox();
+
+  expect(topbar).not.toBeNull();
+  expect(mainContent).not.toBeNull();
+  expect(footer).not.toBeNull();
+  expect(Math.abs(topbar!.x - mainContent!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(topbar!.x - footer!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(topbar!.width - mainContent!.width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(topbar!.width - footer!.width)).toBeLessThanOrEqual(1);
+});
+
+test('desktop persiste a escolha entre páginas e recargas', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/pt/summoners-war');
   const sidebar = page.locator('[data-sidebar]');
   const workspace = page.locator('.workspace');
   const toggle = page.getByRole('button', { name: 'Recolher menu lateral' });
@@ -61,7 +80,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
   await expect(catalogLink).toHaveAttribute('aria-describedby', 'nav-tooltip');
 
   await catalogLink.click();
-  await expect(page).toHaveURL(/\/pt\/monstros$/);
+  await expect(page).toHaveURL(/\/pt\/summoners-war\/monstros$/);
   await expect(sidebar).toHaveCSS('width', '80px');
   await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
   expect(

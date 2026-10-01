@@ -9,9 +9,14 @@ export const ptBR: Messages = {
     closeMenu: 'Fechar menu',
     expandSidebar: 'Expandir menu lateral',
     collapseSidebar: 'Recolher menu lateral',
-    homeLabel: 'SW Help, início',
+    homeLabel: 'SW Help, início do portal',
     home: 'Início',
-    arsenal: 'SEU ARSENAL',
+    general: 'GERAL',
+    portalHome: 'Início do portal',
+    allGames: 'Todos os jogos',
+    chooseGame: 'Escolher um jogo',
+    selected: 'Selecionado',
+    gameTools: 'Ferramentas de jogos',
     tools: 'Ferramentas',
     monsterCatalog: 'Catálogo de Monstros',
     monsters: 'Monstros',
@@ -21,8 +26,28 @@ export const ptBR: Messages = {
     language: 'Idioma',
     english: 'English',
     portuguese: 'Português',
-    footerTagline: 'Um toolkit de invocador para invocador.',
-    footerDisclaimer: 'Projeto da comunidade. Sem vínculo com a Com2uS.',
+    explore: 'Explorar',
+    games: 'Jogos',
+    footerDescription:
+      'Ferramentas objetivas, referências confiáveis e calculadoras práticas organizadas por jogo para decisões melhores.',
+    copyright: '© 2026 SW Help. Todos os direitos reservados.',
+    footerDisclaimer:
+      'Projeto independente da comunidade. Nomes e marcas dos jogos pertencem aos seus respectivos proprietários.',
+  },
+  portal: {
+    title: 'Ferramentas e Calculadoras Gratuitas para Jogos',
+    description:
+      'Ferramentas, bancos de dados, counters e calculadoras grátis para jogos. Explore o toolkit de Summoners War e futuras coleções.',
+    eyebrow: 'FERRAMENTAS FEITAS PARA JOGADORES',
+    headingPrefix: 'Um portal.',
+    headingAccent: 'Todos os seus planos.',
+    intro:
+      'Encontre ferramentas objetivas, referências confiáveis e calculadoras práticas organizadas por jogo.',
+    gamesTitle: 'Escolha um jogo',
+    gamesCopy:
+      'Cada jogo tem sua própria visão geral, ferramentas, base de dados e navegação contextual.',
+    openGame: 'Abrir ferramentas de Summoners War',
+    available: 'Disponível agora',
   },
   landing: {
     title: 'Ferramentas de Summoners War: Siege, SPD e Monstros',

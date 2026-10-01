@@ -1,5 +1,5 @@
 ---
-import MonsterCatalog from '../../components/MonsterCatalog.astro';
----
+import { routePath } from '../../i18n';
 
-<MonsterCatalog locale="en" />
+return Astro.redirect(`${routePath('monsters', 'en')}${Astro.url.search}`, 301);
+---

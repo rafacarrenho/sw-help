@@ -1,5 +1,8 @@
 ---
-import SiegeCounter from '../../components/pages/SiegeCounter.astro';
----
+import { routePath } from '../../i18n';
 
-<SiegeCounter locale="en" />
+return Astro.redirect(
+  `${routePath('siegeCounter', 'en')}${Astro.url.search}`,
+  301,
+);
+---

@@ -14,10 +14,11 @@ export const GET: APIRoute = ({ site }) => {
 
   const content = `# SW Help
 
-> Free, independent Summoners War tools for Siege counters, monster research, SPD tuning, speed comparison, and combat tick breakpoints. SW Help is a community project and is not affiliated with Com2uS.
+> Free tools, databases, and calculators organized by game. Summoners War is the first available toolkit. SW Help is a community project and is not affiliated with Com2uS.
 
 ## English
 
+${link('Game tools portal', 'portalHome', 'en')}: Browse every game available on SW Help.
 ${link('Summoners War tools', 'home', 'en')}: Overview of every SW Help tool.
 ${link('Siege Counter', 'siegeCounter', 'en')}: Search registered Summoners War Siege defenses and review offense ideas.
 ${link('Monster Database', 'monsters', 'en')}: Search monster stats, skills, leader effects, and forms imported from SWARFARM.
@@ -27,6 +28,7 @@ ${link('SPD Tick Calculator', 'speedTick', 'en')}: Calculate combat tick breakpo
 
 ## Português
 
+${link('Portal de ferramentas para jogos', 'portalHome', 'pt-BR')}: Explore todos os jogos disponíveis no SW Help.
 ${link('Ferramentas de Summoners War', 'home', 'pt-BR')}: Visão geral das ferramentas do SW Help.
 ${link('Siege Counter', 'siegeCounter', 'pt-BR')}: Pesquise defesas do Cerco e consulte ideias de times para o ataque.
 ${link('Catálogo de monstros', 'monsters', 'pt-BR')}: Consulte atributos, habilidades, efeitos de líder e formas importadas do SWARFARM.

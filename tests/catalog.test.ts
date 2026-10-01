@@ -53,6 +53,7 @@ import {
   writeSpeedComparisonQueryState,
 } from '../src/lib/speed-comparison.ts';
 import { monsterById, defensesFor, countersFor } from '../src/data/catalog.ts';
+import { games } from '../src/data/games.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
 import {
   getMessages,
@@ -79,21 +80,55 @@ const defenses: DefenseBase[] = read('defenses');
 const counters: CounterBase[] = read('counters');
 
 test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
-  assert.equal(routePath('home', 'en'), '/');
-  assert.equal(routePath('home', 'pt-BR'), '/pt');
-  assert.equal(routePath('siegeCounter', 'en'), '/siege-counter');
-  assert.equal(routePath('siegeCounter', 'pt-BR'), '/pt/siege-counter');
+  assert.equal(routePath('portalHome', 'en'), '/');
+  assert.equal(routePath('portalHome', 'pt-BR'), '/pt');
+  assert.equal(routePath('home', 'en'), '/summoners-war');
+  assert.equal(routePath('home', 'pt-BR'), '/pt/summoners-war');
+  assert.equal(routePath('siegeCounter', 'en'), '/summoners-war/siege-counter');
+  assert.equal(
+    routePath('siegeCounter', 'pt-BR'),
+    '/pt/summoners-war/siege-counter',
+  );
   assert.equal(
     routePath('siege', 'en', { id: 'morris-eshir-orion' }),
-    '/siege-counter/morris-eshir-orion',
+    '/summoners-war/siege-counter/morris-eshir-orion',
   );
-  assert.equal(routePath('monsters', 'en'), '/monsters');
-  assert.equal(routePath('monsters', 'pt-BR'), '/pt/monstros');
-  assert.equal(routePath('speedComparison', 'en'), '/speed-comparison');
-  assert.equal(routePath('speedComparison', 'pt-BR'), '/pt/comparador-spd');
+  assert.equal(routePath('monsters', 'en'), '/summoners-war/monsters');
+  assert.equal(routePath('monsters', 'pt-BR'), '/pt/summoners-war/monstros');
+  assert.equal(
+    routePath('speedComparison', 'en'),
+    '/summoners-war/speed-comparison',
+  );
+  assert.equal(
+    routePath('speedComparison', 'pt-BR'),
+    '/pt/summoners-war/comparador-spd',
+  );
   assert.equal(
     routePath('monster', 'pt-BR', { id: 'nora' }),
-    '/pt/monstros/nora',
+    '/pt/summoners-war/monstros/nora',
+  );
+  assert.deepEqual(games[0].navigation[0].label, {
+    en: 'Summoners War',
+    'pt-BR': 'Summoners War',
+  });
+});
+
+test('registro de jogos mantém o menu contextual centralizado', () => {
+  assert.deepEqual(
+    games.map(({ id }) => id),
+    ['summoners-war'],
+  );
+  assert.equal(games[0].homeRoute, 'home');
+  assert.deepEqual(
+    games[0].navigation.map(({ route }) => route),
+    [
+      'home',
+      'siegeCounter',
+      'monsters',
+      'speedTuning',
+      'speedComparison',
+      'speedTick',
+    ],
   );
 });
 

@@ -1,5 +1,8 @@
 ---
-import SpeedComparison from '../../components/pages/SpeedComparison.astro';
----
+import { routePath } from '../../i18n';
 
-<SpeedComparison locale="pt-BR" />
+return Astro.redirect(
+  `${routePath('speedComparison', 'pt-BR')}${Astro.url.search}`,
+  301,
+);
+---

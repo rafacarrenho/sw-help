@@ -4,7 +4,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(
-    page.getByText('Plan Summoners War Siege offenses', { exact: false }),
+    page.getByRole('heading', { name: 'One portal. Every game plan.' }),
   ).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
@@ -22,9 +22,7 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/pt');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(
-    page.getByText('Planeje ofensivas de Siege', {
-      exact: false,
-    }),
+    page.getByRole('heading', { name: 'Um portal. Todos os seus planos.' }),
   ).toBeVisible();
 });
 
@@ -32,34 +30,76 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
   page,
 }) => {
   await page.goto('/pt');
+  await expect(page.locator('.game-card')).toHaveAttribute(
+    'href',
+    '/pt/summoners-war',
+  );
+  await expect(page.locator('.breadcrumb')).toHaveText('Início');
+  await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
+
+  const gameSelector = page.locator('[data-game-toggle]');
+  await expect(gameSelector).toBeVisible();
+  await expect(gameSelector).toHaveAttribute('aria-expanded', 'false');
+  await gameSelector.click();
+  await expect(
+    page.locator('[data-game-menu] [data-game-link]'),
+  ).toHaveAttribute('href', '/pt/summoners-war');
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Summoners War' }),
+  ).toHaveAttribute('href', '/pt/summoners-war');
+  await expect(
+    page.locator('footer').getByRole('heading', { name: 'Explorar' }),
+  ).toBeVisible();
+  await expect(
+    page.locator('footer').getByRole('heading', { name: 'Jogos' }),
+  ).toBeVisible();
+
+  await page.goto('/pt/summoners-war');
+  await expect(page.locator('[data-game-toggle]')).toHaveCount(0);
+  await expect(page.locator('.game-tag')).toContainText('Summoners War');
   await expect(
     page.getByRole('heading', { name: 'Planeje melhor. Entre preparado.' }),
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Abrir Siege Counter' }),
-  ).toHaveAttribute('href', '/pt/siege-counter');
-  await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
+  ).toHaveAttribute('href', '/pt/summoners-war/siege-counter');
   await expect(
-    page.locator('.sidebar').getByRole('link', { name: 'Início', exact: true }),
+    page.locator('.sidebar').locator('.nav-item[aria-label="Summoners War"]'),
+  ).toHaveAttribute('href', '/pt/summoners-war');
+  await expect(
+    page.locator('.sidebar .nav-item[aria-label="Início do portal"]'),
   ).toHaveCount(0);
-  await expect(page.locator('.breadcrumb')).toHaveText('Início');
-
-  await page.goto('/pt/siege-counter');
+  await expect(
+    page.locator('.sidebar .nav-item[aria-label="Todos os jogos"]'),
+  ).toHaveCount(0);
+  await expect(
+    page
+      .locator('footer')
+      .getByRole('link', { name: 'Início do portal', exact: true }),
+  ).toHaveAttribute('href', '/pt');
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Todos os jogos' }),
+  ).toHaveAttribute('href', '/pt#games');
   await expect(page.locator('.breadcrumb')).toContainText(
-    'InícioSiege Counter',
+    'InícioSummoners War',
+  );
+
+  await page.goto('/pt/summoners-war/siege-counter');
+  await expect(page.locator('.breadcrumb')).toContainText(
+    'InícioSummoners WarSiege Counter',
   );
   await expect(page.locator('.breadcrumb a').first()).toHaveAttribute(
     'href',
     '/pt',
   );
 
-  await page.goto('/pt/siege-counter/morris-eshir-orion');
+  await page.goto('/pt/summoners-war/siege-counter/morris-eshir-orion');
   await expect(page.locator('.breadcrumb')).toContainText(
-    'InícioSiege CounterDefesa',
+    'InícioSummoners WarSiege CounterDefesa',
   );
-  await expect(page.locator('.breadcrumb a').nth(1)).toHaveAttribute(
+  await expect(page.locator('.breadcrumb a').nth(2)).toHaveAttribute(
     'href',
-    '/pt/siege-counter',
+    '/pt/summoners-war/siege-counter',
   );
 });
 
@@ -67,10 +107,14 @@ test('URLs antigas de defesa redirecionam para Siege Counter', async ({
   page,
 }) => {
   await page.goto('/siege/morris-eshir-orion');
-  await expect(page).toHaveURL(/\/siege-counter\/morris-eshir-orion$/);
+  await expect(page).toHaveURL(
+    /\/summoners-war\/siege-counter\/morris-eshir-orion$/,
+  );
 
   await page.goto('/pt/siege/morris-eshir-orion');
-  await expect(page).toHaveURL(/\/pt\/siege-counter\/morris-eshir-orion$/);
+  await expect(page).toHaveURL(
+    /\/pt\/summoners-war\/siege-counter\/morris-eshir-orion$/,
+  );
 });
 
 test('dropdown de idioma abre, fecha e oferece a alternativa pelo teclado', async ({
@@ -125,33 +169,35 @@ test('dropdown permanece utilizável com a sidebar recolhida', async ({
 test('seletor traduz o slug e preserva a query string', async ({ page }) => {
   const query =
     '?ally=kabilla-light-430&allyLeader=19&enemy=triton-wind-847&enemyLeader=24';
-  await page.goto(`/speed-comparison${query}`);
+  await page.goto(`/summoners-war/speed-comparison${query}`);
 
   const portuguese = page.locator('.language-menu a[lang="pt-BR"]');
   await expect(portuguese).toHaveAttribute(
     'href',
-    `/pt/comparador-spd${query}`,
+    `/pt/summoners-war/comparador-spd${query}`,
   );
 
   await page.goto((await portuguese.getAttribute('href'))!);
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
-  await expect(page).toHaveURL(new RegExp('/pt/comparador-spd\\?ally=kabilla'));
+  await expect(page).toHaveURL(
+    new RegExp('/pt/summoners-war/comparador-spd\\?ally=kabilla'),
+  );
   await expect(page.locator('.language-menu a[lang="en"]')).toHaveAttribute(
     'href',
-    `/speed-comparison${query}`,
+    `/summoners-war/speed-comparison${query}`,
   );
 });
 
 test('seletor traduz a rota de detalhe sem traduzir dados oficiais', async ({
   page,
 }) => {
-  await page.goto('/monsters/carcano');
+  await page.goto('/summoners-war/monsters/carcano');
   await expect(page.locator('.language-menu a[lang="pt-BR"]')).toHaveAttribute(
     'href',
-    '/pt/monstros/carcano',
+    '/pt/summoners-war/monstros/carcano',
   );
 
-  await page.goto('/pt/monstros/carcano');
+  await page.goto('/pt/summoners-war/monstros/carcano');
   await expect(page.getByRole('heading', { name: 'Como obter' })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Accurate Fire' }),
@@ -168,15 +214,15 @@ test('URLs portuguesas antigas redirecionam e o sitemap lista alternates', async
   request,
 }) => {
   await page.goto('/comparador-spd?ally=kabilla-light-430');
-  await expect(page).toHaveURL(/\/pt\/comparador-spd$/);
+  await expect(page).toHaveURL(/\/pt\/summoners-war\/comparador-spd$/);
 
   const response = await request.get('/sitemap.xml');
   expect(response.ok()).toBeTruthy();
   const sitemap = await response.text();
   expect(sitemap).toContain(
-    '<loc>https://sw-help.rafabcarrenho.workers.dev/speed-comparison</loc>',
+    '<loc>https://sw-help.rafabcarrenho.workers.dev/summoners-war/speed-comparison</loc>',
   );
   expect(sitemap).toContain(
-    'hreflang="pt-BR" href="https://sw-help.rafabcarrenho.workers.dev/pt/comparador-spd"',
+    'hreflang="pt-BR" href="https://sw-help.rafabcarrenho.workers.dev/pt/summoners-war/comparador-spd"',
   );
 });

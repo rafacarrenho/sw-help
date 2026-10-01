@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../Icon.astro';
+import { games } from '../../data/games';
+import { getMessages, routePath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+---
+
+<Layout
+  title={messages.portal.title}
+  description={messages.portal.description}
+  locale={locale}
+  routeName="portalHome"
+  section="portal"
+>
+  <section class="home-hero portal-hero">
+    <div class="home-hero-copy">
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> {messages.portal.eyebrow}
+      </span>
+      <h1>
+        {messages.portal.headingPrefix}
+        <span>{messages.portal.headingAccent}</span>
+      </h1>
+      <p>{messages.portal.intro}</p>
+      <div class="home-actions">
+        <a class="button" href="#games">
+          {messages.portal.gamesTitle}
+          <Icon name="arrow" size={16} />
+        </a>
+      </div>
+    </div>
+    <div class="home-emblem portal-emblem" aria-hidden="true">
+      <span>
+        <Icon name="gamepad" size={62} />
+      </span>
+      <span>
+        <Icon name="swords" size={30} />
+      </span>
+      <span>
+        <Icon name="grid" size={30} />
+      </span>
+    </div>
+  </section>
+
+  <section class="portal-games" id="games" aria-labelledby="games-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="games-title">{messages.portal.gamesTitle}</h2>
+        <p>{messages.portal.gamesCopy}</p>
+      </div>
+      <span class="section-icon" aria-hidden="true">
+        <Icon name="gamepad" size={18} />
+      </span>
+    </div>
+    <div class="game-grid">
+      {games.map((game) => (
+        <a class="game-card" href={routePath(game.homeRoute, locale)}>
+          <span class="game-card-icon" aria-hidden="true">
+            <Icon name={game.icon} size={34} />
+          </span>
+          <span class="game-card-copy">
+            <small>{messages.portal.available}</small>
+            <strong>{game.name}</strong>
+            <span>{game.description[locale]}</span>
+          </span>
+          <span class="game-card-action">
+            {messages.portal.openGame}
+            <Icon name="arrow" size={16} />
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

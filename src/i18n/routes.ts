@@ -26,6 +26,7 @@ export const localeOptions = locales.map((locale) => ({
 }));
 
 export type RouteName =
+  | 'portalHome'
   | 'home'
   | 'siegeCounter'
   | 'siege'
@@ -43,26 +44,28 @@ export type RouteParams = {
 
 const routeTemplates: Record<Locale, Record<RouteName, string>> = {
   en: {
-    home: '/',
-    siegeCounter: '/siege-counter',
-    siege: '/siege-counter/:id',
-    monsters: '/monsters',
-    monster: '/monsters/:id',
-    monsterPage: '/monsters/page/:page',
-    speedComparison: '/speed-comparison',
-    speedTuning: '/speed-tuning',
-    speedTick: '/speed-tick',
+    portalHome: '/',
+    home: '/summoners-war',
+    siegeCounter: '/summoners-war/siege-counter',
+    siege: '/summoners-war/siege-counter/:id',
+    monsters: '/summoners-war/monsters',
+    monster: '/summoners-war/monsters/:id',
+    monsterPage: '/summoners-war/monsters/page/:page',
+    speedComparison: '/summoners-war/speed-comparison',
+    speedTuning: '/summoners-war/speed-tuning',
+    speedTick: '/summoners-war/speed-tick',
   },
   'pt-BR': {
-    home: '/pt',
-    siegeCounter: '/pt/siege-counter',
-    siege: '/pt/siege-counter/:id',
-    monsters: '/pt/monstros',
-    monster: '/pt/monstros/:id',
-    monsterPage: '/pt/monstros/pagina/:page',
-    speedComparison: '/pt/comparador-spd',
-    speedTuning: '/pt/spd-tuning',
-    speedTick: '/pt/spd-tick',
+    portalHome: '/pt',
+    home: '/pt/summoners-war',
+    siegeCounter: '/pt/summoners-war/siege-counter',
+    siege: '/pt/summoners-war/siege-counter/:id',
+    monsters: '/pt/summoners-war/monstros',
+    monster: '/pt/summoners-war/monstros/:id',
+    monsterPage: '/pt/summoners-war/monstros/pagina/:page',
+    speedComparison: '/pt/summoners-war/comparador-spd',
+    speedTuning: '/pt/summoners-war/spd-tuning',
+    speedTick: '/pt/summoners-war/spd-tick',
   },
 };
 

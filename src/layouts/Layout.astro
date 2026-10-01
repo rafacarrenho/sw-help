@@ -1,5 +1,8 @@
 ---
 import Icon from '../components/Icon.astro';
+import GameContext from '../components/GameContext.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { gameById, type GameId, type GameSection } from '../data/games';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
 import '../styles/monsters.css';
@@ -25,35 +28,37 @@ interface Props {
   routeParams?: RouteParams;
   noIndex?: boolean;
   breadcrumbLabel?: string;
-  section?:
-    | 'home'
-    | 'siege'
-    | 'monsters'
-    | 'speed-tick'
-    | 'speed-tuning'
-    | 'speed-comparison';
+  gameId?: GameId;
+  section?: 'portal' | GameSection;
 }
 const {
   title = 'SW Help',
   locale = 'en',
   detail = false,
   section = 'home',
-  routeName = section === 'siege'
-    ? 'siegeCounter'
-    : section === 'monsters'
-      ? 'monsters'
-      : section === 'speed-tick'
-        ? 'speedTick'
-        : section === 'speed-tuning'
-          ? 'speedTuning'
-          : section === 'speed-comparison'
-            ? 'speedComparison'
-            : 'home',
+  routeName = section === 'portal'
+    ? 'portalHome'
+    : section === 'siege'
+      ? 'siegeCounter'
+      : section === 'monsters'
+        ? 'monsters'
+        : section === 'speed-tick'
+          ? 'speedTick'
+          : section === 'speed-tuning'
+            ? 'speedTuning'
+            : section === 'speed-comparison'
+              ? 'speedComparison'
+              : 'home',
   routeParams = {},
   noIndex = false,
   breadcrumbLabel,
 } = Astro.props;
 const messages = getMessages(locale);
+const activeGameId =
+  routeName === 'portalHome'
+    ? undefined
+    : ((Astro.props.gameId ?? 'summoners-war') as GameId);
+const activeGame = activeGameId ? gameById.get(activeGameId) : undefined;
 const currentLanguage = localeMetadata[locale];
 const languageOptions = localeOptions.filter(
   (option) => option.locale !== locale,
@@ -62,6 +67,10 @@ const description =
   Astro.props.description ?? messages.layout.defaultDescription;
 const canonicalPath = routePath(routeName, locale, routeParams);
 const canonicalUrl = new URL(canonicalPath, Astro.site ?? Astro.url.origin);
+const portalUrl = new URL(
+  routePath('portalHome', locale),
+  Astro.site ?? Astro.url.origin,
+);
 const englishUrl = new URL(
   routePath(routeName, 'en', routeParams),
   Astro.site ?? Astro.url.origin,
@@ -105,12 +114,12 @@ const webApplicationRoutes = new Set<RouteName>([
   'speedTick',
 ]);
 
-if (routeName === 'home') {
+if (routeName === 'portalHome') {
   structuredData.push({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'SW Help',
-    alternateName: 'SW Help · Summoners War Toolkit',
+    alternateName: 'SW Help · Game Tools and Guides',
     url: canonicalUrl.href,
     description,
     inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en',
@@ -121,15 +130,26 @@ if (routeName === 'home') {
       '@type': 'ListItem',
       position: 1,
       name: messages.layout.home,
-      item: new URL(routePath('home', locale), Astro.site ?? Astro.url.origin)
-        .href,
+      item: portalUrl.href,
     },
   ];
+
+  if (activeGame && routeName !== activeGame.homeRoute) {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: breadcrumbItems.length + 1,
+      name: activeGame.name,
+      item: new URL(
+        routePath(activeGame.homeRoute, locale),
+        Astro.site ?? Astro.url.origin,
+      ).href,
+    });
+  }
 
   if (detail) {
     breadcrumbItems.push({
       '@type': 'ListItem',
-      position: 2,
+      position: breadcrumbItems.length + 1,
       name: sectionLabel,
       item: new URL(
         routePath(sectionRoute, locale),
@@ -141,7 +161,10 @@ if (routeName === 'home') {
   breadcrumbItems.push({
     '@type': 'ListItem',
     position: breadcrumbItems.length + 1,
-    name: title,
+    name:
+      activeGame && routeName === activeGame.homeRoute
+        ? activeGame.name
+        : title,
     item: canonicalUrl.href,
   });
   structuredData.push({
@@ -174,8 +197,7 @@ if (webApplicationRoutes.has(routeName)) {
     isPartOf: {
       '@type': 'WebSite',
       name: 'SW Help',
-      url: new URL(routePath('home', locale), Astro.site ?? Astro.url.origin)
-        .href,
+      url: portalUrl.href,
     },
   });
 }
@@ -261,7 +283,7 @@ const serializedStructuredData = JSON.stringify(
         <Icon name="menu" size={22} />
       </button>
       <a
-        href={routePath('home', locale)}
+        href={routePath('portalHome', locale)}
         class="mobile-brand"
         aria-label={messages.layout.homeLabel}
       >
@@ -277,7 +299,7 @@ const serializedStructuredData = JSON.stringify(
     <aside class="sidebar" id="app-sidebar" data-sidebar>
       <div class="sidebar-header">
         <a
-          href={routePath('home', locale)}
+          href={routePath('portalHome', locale)}
           class="brand"
           aria-label={messages.layout.homeLabel}
         >
@@ -286,7 +308,7 @@ const serializedStructuredData = JSON.stringify(
           </span>
           <span class="brand-copy">
             SW<span class="brand-help">HELP</span>
-            <small>SUMMONERS WAR TOOLKIT</small>
+            <small>GAME TOOLS &amp; GUIDES</small>
           </span>
         </a>
         <button
@@ -309,64 +331,30 @@ const serializedStructuredData = JSON.stringify(
           <Icon name="close" size={22} />
         </button>
       </div>
-      <div class="nav-group-label">{messages.layout.arsenal}</div>
-      <nav aria-label={messages.layout.tools}>
-        <a
-          class:list={['nav-item', { active: section === 'siege' }]}
-          href={routePath('siegeCounter', locale)}
-          aria-label="Siege Counter"
-          data-nav-label="Siege Counter"
-          aria-current={section === 'siege' && !detail ? 'page' : undefined}
+      {activeGame && (
+        <nav
+          class="game-navigation"
+          aria-label={`${activeGame.name} · ${messages.layout.tools}`}
         >
-          <Icon name="swords" />
-          <span>Siege Counter</span>
-          {section === 'siege' && <span class="active-dot"></span>}
-        </a>
-        <a
-          class:list={['nav-item', { active: section === 'monsters' }]}
-          href={routePath('monsters', locale)}
-          aria-label={messages.layout.monsterCatalog}
-          data-nav-label={messages.layout.monsterCatalog}
-          aria-current={section === 'monsters' && !detail ? 'page' : undefined}
-        >
-          <Icon name="book" />
-          <span>{messages.layout.monsterCatalog}</span>
-          {section === 'monsters' && <span class="active-dot"></span>}
-        </a>
-        <a
-          class:list={['nav-item', { active: section === 'speed-tuning' }]}
-          href={routePath('speedTuning', locale)}
-          aria-label="Spd Tuning"
-          data-nav-label="Spd Tuning"
-          aria-current={section === 'speed-tuning' ? 'page' : undefined}
-        >
-          <Icon name="speed" />
-          <span>Spd Tuning</span>
-          {section === 'speed-tuning' && <span class="active-dot"></span>}
-        </a>
-        <a
-          class:list={['nav-item', { active: section === 'speed-comparison' }]}
-          href={routePath('speedComparison', locale)}
-          aria-label={messages.layout.speedComparison}
-          data-nav-label={messages.layout.speedComparison}
-          aria-current={section === 'speed-comparison' ? 'page' : undefined}
-        >
-          <Icon name="speed" />
-          <span>{messages.layout.speedComparison}</span>
-          {section === 'speed-comparison' && <span class="active-dot"></span>}
-        </a>
-        <a
-          class:list={['nav-item', { active: section === 'speed-tick' }]}
-          href={routePath('speedTick', locale)}
-          aria-label="Spd Tick"
-          data-nav-label="Spd Tick"
-          aria-current={section === 'speed-tick' ? 'page' : undefined}
-        >
-          <Icon name="clock" />
-          <span>Spd Tick</span>
-          {section === 'speed-tick' && <span class="active-dot"></span>}
-        </a>
-      </nav>
+          {activeGame.navigation.map((item) => {
+            const isActive = section === item.section;
+            const isCurrentPage = isActive && !detail;
+            return (
+              <a
+                class:list={['nav-item', { active: isActive }]}
+                href={routePath(item.route, locale)}
+                aria-label={item.label[locale]}
+                data-nav-label={item.label[locale]}
+                aria-current={isCurrentPage ? 'page' : undefined}
+              >
+                <Icon name={item.icon} />
+                <span>{item.label[locale]}</span>
+                {isActive && <span class="active-dot"></span>}
+              </a>
+            );
+          })}
+        </nav>
+      )}
       <div class="sidebar-bottom">
         <nav
           class="language-switcher"
@@ -427,9 +415,6 @@ const serializedStructuredData = JSON.stringify(
             </div>
           </div>
         </nav>
-        <span class="version">
-          SW HELP <span>v0.1</span>
-        </span>
       </div>
     </aside>
     <button
@@ -449,53 +434,82 @@ const serializedStructuredData = JSON.stringify(
     ></div>
     <div class="workspace">
       <header class="topbar">
-        <div class="breadcrumb" aria-label="Breadcrumb">
-          {breadcrumbLabel ? (
-            <>
-              <a href={routePath('home', locale)}>{messages.layout.home}</a>
-              <Icon name="chevron" size={13} />
-              <span aria-current="page">{breadcrumbLabel}</span>
-            </>
-          ) : section === 'home' ? (
-            <span aria-current="page">{messages.layout.home}</span>
-          ) : (
-            <>
-              <a href={routePath('home', locale)}>{messages.layout.home}</a>
-              <Icon name="chevron" size={13} />
-              {detail ? (
-                <>
-                  <a href={routePath(sectionRoute, locale)}>{sectionLabel}</a>
-                  <Icon name="chevron" size={13} />
-                  <span class="breadcrumb-detail" aria-current="page">
-                    {section === 'monsters'
-                      ? messages.layout.monster
-                      : messages.layout.defense}
-                  </span>
-                </>
-              ) : (
-                <span aria-current="page">{sectionLabel}</span>
-              )}
-            </>
-          )}
+        <div class="topbar-inner">
+          <div class="breadcrumb" aria-label="Breadcrumb">
+            {breadcrumbLabel ? (
+              <>
+                <a href={routePath('portalHome', locale)}>
+                  {messages.layout.home}
+                </a>
+                <Icon name="chevron" size={13} />
+                {activeGame && (
+                  <>
+                    <a href={routePath(activeGame.homeRoute, locale)}>
+                      {activeGame.name}
+                    </a>
+                    <Icon name="chevron" size={13} />
+                  </>
+                )}
+                <span aria-current="page">{breadcrumbLabel}</span>
+              </>
+            ) : routeName === 'portalHome' ? (
+              <span aria-current="page">{messages.layout.home}</span>
+            ) : section === 'home' ? (
+              <>
+                <a href={routePath('portalHome', locale)}>
+                  {messages.layout.home}
+                </a>
+                <Icon name="chevron" size={13} />
+                <span aria-current="page">
+                  {activeGame?.name ?? messages.layout.gameTools}
+                </span>
+              </>
+            ) : (
+              <>
+                <a href={routePath('portalHome', locale)}>
+                  {messages.layout.home}
+                </a>
+                <Icon name="chevron" size={13} />
+                {activeGame && (
+                  <>
+                    <a href={routePath(activeGame.homeRoute, locale)}>
+                      {activeGame.name}
+                    </a>
+                    <Icon name="chevron" size={13} />
+                  </>
+                )}
+                {detail ? (
+                  <>
+                    <a href={routePath(sectionRoute, locale)}>{sectionLabel}</a>
+                    <Icon name="chevron" size={13} />
+                    <span class="breadcrumb-detail" aria-current="page">
+                      {section === 'monsters'
+                        ? messages.layout.monster
+                        : messages.layout.defense}
+                    </span>
+                  </>
+                ) : (
+                  <span aria-current="page">{sectionLabel}</span>
+                )}
+              </>
+            )}
+          </div>
+          <GameContext
+            locale={locale}
+            activeGame={activeGame}
+            forceSelector={routeName === 'portalHome'}
+          />
         </div>
-        <span class="game-tag">
-          <span class="status-dot"></span> Summoners War
-        </span>
       </header>
       <main id="main">
         <slot />
       </main>
-      <footer>
-        <span>
-          SW Help <span class="footer-dot">·</span>{' '}
-          {messages.layout.footerTagline}
-        </span>
-        <span>{messages.layout.footerDisclaimer}</span>
-      </footer>
+      <SiteFooter locale={locale} />
     </div>
     <noscript>
       <style>
-        .language-menu {
+        .language-menu,
+        .game-menu {
           position: static !important;
           display: grid !important;
           margin-top: 8px;
@@ -540,6 +554,12 @@ const serializedStructuredData = JSON.stringify(
       const languageLinks = Array.from(
         document.querySelectorAll<HTMLAnchorElement>('[data-language-link]'),
       );
+      const gameRoot = document.querySelector<HTMLElement>('[data-game-root]');
+      const gameToggle =
+        document.querySelector<HTMLButtonElement>('[data-game-toggle]');
+      const gameLinks = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>('[data-game-link]'),
+      );
       const desktopToggle = document.querySelector<HTMLButtonElement>(
         '[data-desktop-sidebar-toggle]',
       );
@@ -578,6 +598,24 @@ const serializedStructuredData = JSON.stringify(
       let mobileOpen = false;
       let tooltipOwner: HTMLElement | null = null;
 
+      const closeGameMenu = (restoreFocus = false) => {
+        if (!gameRoot || !gameToggle) return;
+        gameRoot.removeAttribute('data-game-open');
+        gameToggle.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) gameToggle.focus();
+      };
+
+      const openGameMenu = (focusFirstOption = false) => {
+        if (!gameRoot || !gameToggle) return;
+        closeLanguageMenu();
+        hideNavTooltip();
+        gameRoot.setAttribute('data-game-open', '');
+        gameToggle.setAttribute('aria-expanded', 'true');
+        if (focusFirstOption) {
+          window.requestAnimationFrame(() => gameLinks[0]?.focus());
+        }
+      };
+
       const closeLanguageMenu = (restoreFocus = false) => {
         if (!languageRoot || !languageToggle) return;
         languageRoot.removeAttribute('data-language-open');
@@ -587,6 +625,7 @@ const serializedStructuredData = JSON.stringify(
 
       const openLanguageMenu = (focusFirstOption = false) => {
         if (!languageRoot || !languageToggle) return;
+        closeGameMenu();
         hideNavTooltip();
         languageRoot.setAttribute('data-language-open', '');
         languageToggle.setAttribute('aria-expanded', 'true');
@@ -629,6 +668,7 @@ const serializedStructuredData = JSON.stringify(
         if (!sidebar || !desktopToggle || !mobileToggle) return;
 
         closeLanguageMenu();
+        closeGameMenu();
 
         if (mobileMedia.matches) {
           document.documentElement.classList.remove('nav-collapsed');
@@ -694,6 +734,33 @@ const serializedStructuredData = JSON.stringify(
       mobileToggle?.addEventListener('click', openMobileNavigation);
       mobileClose?.addEventListener('click', () => closeMobileNavigation());
       backdrop?.addEventListener('click', () => closeMobileNavigation());
+      gameToggle?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (gameRoot?.hasAttribute('data-game-open')) {
+          closeGameMenu();
+        } else {
+          openGameMenu();
+        }
+      });
+      gameToggle?.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowDown') return;
+        event.preventDefault();
+        openGameMenu(true);
+      });
+      gameRoot?.addEventListener('keydown', (event) => {
+        if (
+          event.key !== 'Escape' ||
+          !gameRoot.hasAttribute('data-game-open')
+        ) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        closeGameMenu(true);
+      });
+      gameLinks.forEach((link) => {
+        link.addEventListener('click', () => closeGameMenu());
+      });
       languageToggle?.addEventListener('click', (event) => {
         event.stopPropagation();
         if (languageRoot?.hasAttribute('data-language-open')) {
@@ -722,6 +789,9 @@ const serializedStructuredData = JSON.stringify(
         link.addEventListener('click', () => closeLanguageMenu());
       });
       document.addEventListener('pointerdown', (event) => {
+        if (!gameRoot?.contains(event.target as Node)) {
+          closeGameMenu();
+        }
         if (!languageRoot?.contains(event.target as Node)) {
           closeLanguageMenu();
         }

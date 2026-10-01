@@ -1,0 +1,67 @@
+---
+import type { GameDefinition } from '../data/games';
+import { games } from '../data/games';
+import { getMessages, routePath, type Locale } from '../i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+  activeGame?: GameDefinition;
+  forceSelector?: boolean;
+}
+
+const { locale, activeGame, forceSelector = false } = Astro.props;
+const messages = getMessages(locale);
+const registeredGames: readonly GameDefinition[] = games;
+const showSelector = forceSelector || registeredGames.length > 1;
+---
+
+{showSelector ? (
+  <div class="game-switcher topbar-game-switcher" data-game-root>
+    <button
+      class="game-toggle"
+      type="button"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="game-menu"
+      aria-label={messages.layout.chooseGame}
+      data-game-toggle
+    >
+      <span class="status-dot" />
+      <strong>{activeGame?.name ?? messages.layout.chooseGame}</strong>
+      <Icon name="chevron" size={13} class="game-chevron" />
+    </button>
+    <div
+      class="game-menu"
+      id="game-menu"
+      role="menu"
+      aria-label={messages.layout.chooseGame}
+      data-game-menu
+    >
+      {registeredGames.map((game) => (
+        <a
+          class:list={['game-option', { selected: activeGame?.id === game.id }]}
+          href={routePath(game.homeRoute, locale)}
+          role="menuitem"
+          data-game-link
+        >
+          <span class="game-option-icon" aria-hidden="true">
+            <Icon name={game.icon} size={18} />
+          </span>
+          <span>
+            <strong>{game.name}</strong>
+            <small>{game.shortName}</small>
+          </span>
+          {activeGame?.id === game.id && (
+            <span class="game-selected">{messages.layout.selected}</span>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+) : (
+  <span class="game-tag">
+    <span class="status-dot" />
+    {activeGame?.name ?? messages.layout.gameTools}
+  </span>
+)}

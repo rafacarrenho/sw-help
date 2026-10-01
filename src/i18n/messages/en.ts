@@ -7,9 +7,14 @@ export const en = {
     closeMenu: 'Close menu',
     expandSidebar: 'Expand sidebar',
     collapseSidebar: 'Collapse sidebar',
-    homeLabel: 'SW Help, home',
+    homeLabel: 'SW Help, portal home',
     home: 'Home',
-    arsenal: 'YOUR ARSENAL',
+    general: 'GENERAL',
+    portalHome: 'Portal home',
+    allGames: 'All games',
+    chooseGame: 'Choose a game',
+    selected: 'Selected',
+    gameTools: 'Game tools',
     tools: 'Tools',
     monsterCatalog: 'Monster Catalog',
     monsters: 'Monsters',
@@ -19,8 +24,28 @@ export const en = {
     language: 'Language',
     english: 'English',
     portuguese: 'Português',
-    footerTagline: 'A summoner-to-summoner toolkit.',
-    footerDisclaimer: 'Community project. Not affiliated with Com2uS.',
+    explore: 'Explore',
+    games: 'Games',
+    footerDescription:
+      'Focused tools, reliable references, and practical calculators organized by game and built for better decisions.',
+    copyright: '© 2026 SW Help. All rights reserved.',
+    footerDisclaimer:
+      'Independent community project. Game names and trademarks belong to their respective owners.',
+  },
+  portal: {
+    title: 'Free Tools and Calculators for Games',
+    description:
+      'Free tools, databases, counters, and calculators for games. Explore the Summoners War toolkit and future game collections.',
+    eyebrow: 'TOOLS BUILT FOR PLAYERS',
+    headingPrefix: 'One portal.',
+    headingAccent: 'Every game plan.',
+    intro:
+      'Find focused tools, reliable references, and practical calculators organized by game.',
+    gamesTitle: 'Choose a game',
+    gamesCopy:
+      'Each game has its own overview, tools, database, and contextual navigation.',
+    openGame: 'Open Summoners War tools',
+    available: 'Available now',
   },
   landing: {
     title: 'Summoners War Tools for Siege, SPD & Monsters',

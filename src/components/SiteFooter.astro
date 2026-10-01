@@ -1,0 +1,60 @@
+---
+import { games, type GameDefinition } from '../data/games';
+import { getMessages, routePath, type Locale } from '../i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const registeredGames: readonly GameDefinition[] = games;
+---
+
+<footer class="site-footer">
+  <div class="site-footer-main">
+    <div class="site-footer-brand">
+      <a
+        class="site-footer-logo"
+        href={routePath('portalHome', locale)}
+        aria-label={messages.layout.homeLabel}
+      >
+        <span class="site-footer-symbol" aria-hidden="true">
+          <Icon name="swords" size={23} />
+        </span>
+        <span>
+          SW<span>HELP</span>
+        </span>
+      </a>
+      <p>{messages.layout.footerDescription}</p>
+    </div>
+
+    <div class="site-footer-links">
+      <section aria-labelledby="footer-explore-title">
+        <h2 id="footer-explore-title">{messages.layout.explore}</h2>
+        <nav aria-label={messages.layout.explore}>
+          <a href={routePath('portalHome', locale)}>
+            {messages.layout.portalHome}
+          </a>
+          <a href={`${routePath('portalHome', locale)}#games`}>
+            {messages.layout.allGames}
+          </a>
+        </nav>
+      </section>
+      <section aria-labelledby="footer-games-title">
+        <h2 id="footer-games-title">{messages.layout.games}</h2>
+        <nav aria-label={messages.layout.games}>
+          {registeredGames.map((game) => (
+            <a href={routePath(game.homeRoute, locale)}>{game.name}</a>
+          ))}
+        </nav>
+      </section>
+    </div>
+  </div>
+
+  <div class="site-footer-bottom">
+    <span>{messages.layout.copyright}</span>
+    <span>{messages.layout.footerDisclaimer}</span>
+  </div>
+</footer>

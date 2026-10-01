@@ -1,5 +1,8 @@
 ---
-import SpeedTick from '../../components/pages/SpeedTick.astro';
----
+import { routePath } from '../../i18n';
 
-<SpeedTick locale="pt-BR" />
+return Astro.redirect(
+  `${routePath('speedTick', 'pt-BR')}${Astro.url.search}`,
+  301,
+);
+---

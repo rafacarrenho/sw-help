@@ -47,7 +47,7 @@ function loadIndex() {
   if (embedded) {
     return Promise.resolve(embedded);
   }
-  return (indexPromise ??= fetch('/monstros/index.json')
+  return (indexPromise ??= fetch('/summoners-war/monsters/index.json')
     .then((response) => {
       if (!response.ok) throw new Error('Índice indisponível');
       return response.json() as Promise<MonsterSummary[]>;

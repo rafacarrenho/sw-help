@@ -17,6 +17,7 @@ const totalMonsterPages = Math.ceil(
 );
 
 const entries: Entry[] = [
+  { route: 'portalHome' },
   { route: 'home' },
   { route: 'siegeCounter' },
   { route: 'monsters' },

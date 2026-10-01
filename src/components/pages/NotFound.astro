@@ -15,6 +15,8 @@ const messages = getMessages(locale);
   title={messages.notFound.title}
   description={messages.notFound.copy}
   locale={locale}
+  routeName="portalHome"
+  section="portal"
   breadcrumbLabel="404"
   noIndex
 >
@@ -23,7 +25,7 @@ const messages = getMessages(locale);
     <h1>{messages.notFound.heading}</h1>
     <p>{messages.notFound.copy}</p>
     <div class="not-found-actions">
-      <a class="button" href={routePath('home', locale)}>
+      <a class="button" href={routePath('portalHome', locale)}>
         {messages.notFound.action} <Icon name="arrow" size={16} />
       </a>
       <a class="button button-secondary" href={routePath('monsters', locale)}>
