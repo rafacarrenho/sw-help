@@ -26,10 +26,10 @@ URL becomes `/siege/:id`. Route helpers, internal links, redirects, canonical
 metadata, language alternatives, tests, and the sitemap will use the same
 format.
 
-Cloudflare Workers Static Assets will serve `dist` through a `wrangler.toml`
+Cloudflare Workers Static Assets will serve `dist` through a `wrangler.jsonc`
 configuration. Its HTML handling will normalize alternate HTML paths to the
 generated file URL, while `not_found_handling = "404-page"` will serve the
-generated `404.html` with HTTP status 404 for unknown production URLs.
+nearest generated `404.html` with HTTP status 404 for unknown production URLs.
 
 ## Sitemap
 
@@ -55,12 +55,17 @@ not be invented because the project has no reliable source for those values.
 
 ## 404 Page and Metadata
 
-Astro's `404.astro` route will generate the static `404.html` used for unknown
-URLs. Astro development and preview will display that custom page without a
-trailing-slash mismatch screen, and Cloudflare Static Assets will return it
-with HTTP status 404 in production. Because a single static fallback cannot
-inspect the original request path, the page will use the default English
-locale, matching Luabify's static fallback behavior.
+The 404 presentation will live in a shared component. Astro's root `404.astro`
+route will generate the English `404.html`, while a Portuguese route will
+generate `pt/404.html`. Cloudflare Static Assets resolves an unknown URL to the
+nearest ancestor `404.html`, so `/pt/...` receives the Portuguese page and
+other unknown paths receive the English page, both with HTTP status 404.
+
+During Astro development, the root 404 route will infer Portuguese from the
+requested `/pt` path. This keeps local development consistent even though the
+production locale selection is performed by Cloudflare's nearest-404 lookup.
+Both variants retain the requested URL and render translated recovery links to
+their own locale.
 
 The page will emit `noindex,follow`. The shared layout will omit canonical,
 Open Graph URL, and language-alternate links whenever `noIndex` is enabled.
@@ -82,10 +87,11 @@ Automated coverage will verify that:
   with reciprocal language alternatives;
 - representative dynamic and paginated URLs are included;
 - aliases, API routes, query strings, and the `/404` route are absent;
-- an unknown URL without a trailing slash renders the custom page with status
-  404 and `noindex,follow` in preview and through Workers Static Assets;
+- English and Portuguese unknown URLs without a trailing slash render the
+  corresponding localized page with status 404 and `noindex,follow` in local
+  development and through Workers Static Assets;
 - 404 output has no canonical or `hreflang` links and exposes recovery actions
-  to the English home and catalog;
+  to the home and catalog in the active locale;
 - a normal page still exposes canonical and alternate links.
 
 The completed implementation will be validated with `pnpm test`, `pnpm build`,
