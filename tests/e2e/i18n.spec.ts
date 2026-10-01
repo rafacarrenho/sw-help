@@ -73,12 +73,61 @@ test('URLs antigas de defesa redirecionam para Siege Counter', async ({
   await expect(page).toHaveURL(/\/pt\/siege-counter\/morris-eshir-orion$/);
 });
 
+test('dropdown de idioma abre, fecha e oferece a alternativa pelo teclado', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/');
+
+  if (testInfo.project.name === 'mobile') {
+    await page.getByRole('button', { name: 'Open menu' }).click();
+  }
+
+  const toggle = page.locator('[data-language-toggle]');
+  const menu = page.locator('[data-language-menu]');
+  const portuguese = menu.getByRole('menuitem', { name: /Português/ });
+
+  await expect(toggle).toContainText('English');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(menu).toBeHidden();
+
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(menu).toBeVisible();
+  await expect(portuguese).toHaveAttribute('href', '/pt');
+
+  await page.keyboard.press('Escape');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toBeFocused();
+
+  await toggle.press('ArrowDown');
+  await expect(menu).toBeVisible();
+  await expect(portuguese).toBeFocused();
+});
+
+test('dropdown permanece utilizável com a sidebar recolhida', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Collapse sidebar' }).click();
+
+  const toggle = page.locator('[data-language-toggle]');
+  await expect(page.locator('.language-current')).toBeHidden();
+  await toggle.click();
+
+  await expect(page.locator('[data-language-menu]')).toBeVisible();
+  await expect(page.locator('[data-nav-tooltip]')).not.toHaveClass(
+    /is-visible/,
+  );
+});
+
 test('seletor traduz o slug e preserva a query string', async ({ page }) => {
   const query =
     '?ally=kabilla-light-430&allyLeader=19&enemy=triton-wind-847&enemyLeader=24';
   await page.goto(`/speed-comparison${query}`);
 
-  const portuguese = page.locator('.language-options a[lang="pt-BR"]');
+  const portuguese = page.locator('.language-menu a[lang="pt-BR"]');
   await expect(portuguese).toHaveAttribute(
     'href',
     `/pt/comparador-spd${query}`,
@@ -87,7 +136,7 @@ test('seletor traduz o slug e preserva a query string', async ({ page }) => {
   await page.goto((await portuguese.getAttribute('href'))!);
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(page).toHaveURL(new RegExp('/pt/comparador-spd\\?ally=kabilla'));
-  await expect(page.locator('.language-options a[lang="en"]')).toHaveAttribute(
+  await expect(page.locator('.language-menu a[lang="en"]')).toHaveAttribute(
     'href',
     `/speed-comparison${query}`,
   );
@@ -97,9 +146,10 @@ test('seletor traduz a rota de detalhe sem traduzir dados oficiais', async ({
   page,
 }) => {
   await page.goto('/monsters/carcano');
-  await expect(
-    page.locator('.language-options a[lang="pt-BR"]'),
-  ).toHaveAttribute('href', '/pt/monstros/carcano');
+  await expect(page.locator('.language-menu a[lang="pt-BR"]')).toHaveAttribute(
+    'href',
+    '/pt/monstros/carcano',
+  );
 
   await page.goto('/pt/monstros/carcano');
   await expect(page.getByRole('heading', { name: 'Como obter' })).toBeVisible();

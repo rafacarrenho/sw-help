@@ -8,6 +8,8 @@ import '../styles/speed-tuning.css';
 import '../styles/speed-comparison.css';
 import {
   getMessages,
+  localeMetadata,
+  localeOptions,
   localizedHref,
   routePath,
   type Locale,
@@ -52,6 +54,10 @@ const {
   breadcrumbLabel,
 } = Astro.props;
 const messages = getMessages(locale);
+const currentLanguage = localeMetadata[locale];
+const languageOptions = localeOptions.filter(
+  (option) => option.locale !== locale,
+);
 const description =
   Astro.props.description ?? messages.layout.defaultDescription;
 const canonicalPath = routePath(routeName, locale, routeParams);
@@ -257,35 +263,63 @@ const sectionLabel =
         </a>
       </nav>
       <div class="sidebar-bottom">
-        <nav class="language-switcher" aria-label={messages.layout.language}>
+        <nav
+          class="language-switcher"
+          aria-label={messages.layout.language}
+          data-language-root
+        >
           <span class="language-switcher-label">
             <Icon name="globe" size={18} />
             <span>{messages.layout.language}</span>
           </span>
-          <div class="language-options">
-            <a
-              href={localizedHref(routeName, 'en', routeParams, languageSearch)}
-              lang="en"
-              data-language-link
-              aria-current={locale === 'en' ? 'page' : undefined}
-              data-nav-label={messages.layout.english}
+          <div class="language-control">
+            <button
+              class="language-toggle"
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              aria-controls="language-menu"
+              data-language-toggle
+              data-nav-label={`${messages.layout.language}: ${currentLanguage.label}`}
             >
-              EN
-            </a>
-            <a
-              href={localizedHref(
-                routeName,
-                'pt-BR',
-                routeParams,
-                languageSearch,
-              )}
-              lang="pt-BR"
-              data-language-link
-              aria-current={locale === 'pt-BR' ? 'page' : undefined}
-              data-nav-label={messages.layout.portuguese}
+              <span class="language-flag" aria-hidden="true">
+                {currentLanguage.flag}
+              </span>
+              <span class="language-current" lang={locale}>
+                {currentLanguage.label}
+              </span>
+              <Icon name="chevron" size={14} class="language-chevron" />
+            </button>
+            <div
+              class="language-menu"
+              id="language-menu"
+              role="menu"
+              aria-label={messages.layout.language}
+              data-language-menu
             >
-              PT
-            </a>
+              {languageOptions.map((option) => (
+                <a
+                  class="language-option"
+                  href={localizedHref(
+                    routeName,
+                    option.locale,
+                    routeParams,
+                    languageSearch,
+                  )}
+                  lang={option.locale}
+                  role="menuitem"
+                  data-language-link
+                >
+                  <span class="language-flag" aria-hidden="true">
+                    {option.flag}
+                  </span>
+                  <span>{option.label}</span>
+                  <span class="language-abbreviation" aria-hidden="true">
+                    {option.abbreviation}
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </nav>
         <span class="version">
@@ -356,6 +390,11 @@ const sectionLabel =
     </div>
     <noscript>
       <style>
+        .language-menu {
+          position: static !important;
+          display: grid !important;
+          margin-top: 8px;
+        }
         @media (max-width: 760px) {
           .mobile-header,
           .sidebar-backdrop,
@@ -387,6 +426,15 @@ const sectionLabel =
       }
 
       const sidebar = document.querySelector<HTMLElement>('[data-sidebar]');
+      const languageRoot = document.querySelector<HTMLElement>(
+        '[data-language-root]',
+      );
+      const languageToggle = document.querySelector<HTMLButtonElement>(
+        '[data-language-toggle]',
+      );
+      const languageLinks = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>('[data-language-link]'),
+      );
       const desktopToggle = document.querySelector<HTMLButtonElement>(
         '[data-desktop-sidebar-toggle]',
       );
@@ -425,6 +473,23 @@ const sectionLabel =
       let mobileOpen = false;
       let tooltipOwner: HTMLElement | null = null;
 
+      const closeLanguageMenu = (restoreFocus = false) => {
+        if (!languageRoot || !languageToggle) return;
+        languageRoot.removeAttribute('data-language-open');
+        languageToggle.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) languageToggle.focus();
+      };
+
+      const openLanguageMenu = (focusFirstOption = false) => {
+        if (!languageRoot || !languageToggle) return;
+        hideNavTooltip();
+        languageRoot.setAttribute('data-language-open', '');
+        languageToggle.setAttribute('aria-expanded', 'true');
+        if (focusFirstOption) {
+          window.requestAnimationFrame(() => languageLinks[0]?.focus());
+        }
+      };
+
       const hideNavTooltip = (owner?: HTMLElement) => {
         if (!navTooltip || (owner && tooltipOwner !== owner)) return;
         tooltipOwner?.removeAttribute('aria-describedby');
@@ -457,6 +522,8 @@ const sectionLabel =
 
       const syncNavigation = () => {
         if (!sidebar || !desktopToggle || !mobileToggle) return;
+
+        closeLanguageMenu();
 
         if (mobileMedia.matches) {
           document.documentElement.classList.remove('nav-collapsed');
@@ -522,6 +589,38 @@ const sectionLabel =
       mobileToggle?.addEventListener('click', openMobileNavigation);
       mobileClose?.addEventListener('click', () => closeMobileNavigation());
       backdrop?.addEventListener('click', () => closeMobileNavigation());
+      languageToggle?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (languageRoot?.hasAttribute('data-language-open')) {
+          closeLanguageMenu();
+        } else {
+          openLanguageMenu();
+        }
+      });
+      languageToggle?.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowDown') return;
+        event.preventDefault();
+        openLanguageMenu(true);
+      });
+      languageRoot?.addEventListener('keydown', (event) => {
+        if (
+          event.key !== 'Escape' ||
+          !languageRoot.hasAttribute('data-language-open')
+        ) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        closeLanguageMenu(true);
+      });
+      languageLinks.forEach((link) => {
+        link.addEventListener('click', () => closeLanguageMenu());
+      });
+      document.addEventListener('pointerdown', (event) => {
+        if (!languageRoot?.contains(event.target as Node)) {
+          closeLanguageMenu();
+        }
+      });
       sidebar?.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
         link.addEventListener('click', () => closeMobileNavigation(false));
       });

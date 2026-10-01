@@ -54,7 +54,13 @@ import {
 } from '../src/lib/speed-comparison.ts';
 import { monsterById, defensesFor, countersFor } from '../src/data/catalog.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
-import { getMessages, routePath } from '../src/i18n/index.ts';
+import {
+  getMessages,
+  localeMetadata,
+  localeOptions,
+  locales,
+  routePath,
+} from '../src/i18n/index.ts';
 import type {
   Monster,
   MonsterSkill,
@@ -111,6 +117,19 @@ test('conteúdo editorial tem cobertura em inglês e português', () => {
   );
   assert.equal(getMessages('en').layout.language, 'Language');
   assert.equal(getMessages('pt-BR').layout.language, 'Idioma');
+});
+
+test('todos os locales possuem metadados para o seletor de idioma', () => {
+  assert.deepEqual(
+    localeOptions.map(({ locale }) => locale),
+    [...locales],
+  );
+
+  for (const locale of locales) {
+    assert.ok(localeMetadata[locale].label);
+    assert.ok(localeMetadata[locale].flag);
+    assert.match(localeMetadata[locale].abbreviation, /^[A-Z]{2,3}$/);
+  }
 });
 
 test('Comparador de SPD descobre todas as lideranças sem filtrar conteúdo', () => {

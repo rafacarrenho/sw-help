@@ -1,6 +1,30 @@
 export const locales = ['en', 'pt-BR'] as const;
 export type Locale = (typeof locales)[number];
 
+export interface LocaleMetadata {
+  label: string;
+  flag: string;
+  abbreviation: string;
+}
+
+export const localeMetadata: Record<Locale, LocaleMetadata> = {
+  en: {
+    label: 'English',
+    flag: '🇺🇸',
+    abbreviation: 'EN',
+  },
+  'pt-BR': {
+    label: 'Português',
+    flag: '🇧🇷',
+    abbreviation: 'PT',
+  },
+};
+
+export const localeOptions = locales.map((locale) => ({
+  locale,
+  ...localeMetadata[locale],
+}));
+
 export type RouteName =
   | 'home'
   | 'siegeCounter'
