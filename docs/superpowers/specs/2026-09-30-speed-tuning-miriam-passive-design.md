@@ -109,10 +109,16 @@ não cria um novo caminho de aplicação nem altera a escolha de alvos.
 Não haverá controle manual: a passiva é inerente à Miriam e será aplicada
 automaticamente quando as condições forem atendidas.
 
-Quando Miriam estiver em um slot ativo, a página exibirá uma indicação curta e
-localizada informando que sua passiva de `+35% no efeito do buff de SPD` está
-sendo considerada. A indicação não afirmará que todos os monstros estão mais
-rápidos; ela deixará explícito que o efeito depende de um buff de SPD ativo.
+O card da Miriam exibirá a passiva junto aos demais controles do monstro, no
+mesmo padrão visual de `Usa Swift`. O checkbox aparecerá sempre marcado e
+bloqueado, sem opção de desmarcá-lo, com o texto `Amplifica o efeito do buff de
+SPD em 35%`. Apesar de o indicador estar sempre presente no card da Miriam, a
+amplificação só participa do cálculo durante os ticks em que o alvo estiver sob
+buff de SPD.
+
+Não haverá um aviso separado abaixo da equipe: manter a informação dentro do
+card associa visualmente a regra à Miriam e evita misturá-la com a nota geral do
+modo de jogo.
 
 Nenhum parâmetro novo será adicionado à URL. A presença da Miriam já é
 persistida pelo parâmetro do monstro (`m1`, `m2`, `m3` ou `m4`), e o estado dos
@@ -153,7 +159,8 @@ Os testes end-to-end cobrirão:
 - desativação do buff removendo o efeito da passiva;
 - remoção da Miriam restaurando o cálculo normal;
 - quarto slot contado em Arena/RTA e ignorado em Siege;
-- indicação visual nos idiomas inglês e português;
+- controle marcado e bloqueado apenas no card da Miriam, nos idiomas inglês e
+  português;
 - preservação correta da composição em URL compartilhável.
 
 Após a implementação, executar `pnpm test`, `pnpm build` e, com o build gerado,
