@@ -80,6 +80,20 @@ const skills: MonsterSkill[] = read('skills');
 const defenses: DefenseBase[] = read('defenses');
 const counters: CounterBase[] = read('counters');
 
+test('cabeçalhos estáticos endurecem a entrega em produção', () => {
+  const headers = readFileSync(
+    new URL('../public/_headers', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(headers, /Content-Security-Policy:/);
+  assert.match(headers, /frame-ancestors 'none'/);
+  assert.match(headers, /X-Content-Type-Options: nosniff/);
+  assert.match(headers, /X-Frame-Options: DENY/);
+  assert.match(headers, /\/_astro\/\*/);
+  assert.match(headers, /max-age=31536000, immutable/);
+});
+
 test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
   assert.equal(routePath('portalHome', 'en'), '/');
   assert.equal(routePath('portalHome', 'pt-BR'), '/pt');

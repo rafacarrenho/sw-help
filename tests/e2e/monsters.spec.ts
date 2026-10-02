@@ -42,12 +42,14 @@ test('menu, filtros combinados e retorno da ficha preservam a busca', async ({
 
 test('paginação, histórico, líder e estado vazio', async ({ page }) => {
   await page.goto('/pt/summoners-war/monstros');
+  await expect(page.locator('[data-page-prev]')).toHaveCount(0);
   const firstName = await page
     .locator('[data-monster-card]')
     .first()
     .textContent();
   await page.getByRole('link', { name: 'Próxima' }).click();
   await expect(page).toHaveURL(/\/pagina\/2$/);
+  await expect(page.getByRole('link', { name: 'Anterior' })).toBeVisible();
   await expect(page.locator('[data-monster-card]').first()).not.toHaveText(
     firstName!,
   );
@@ -91,9 +93,7 @@ test('catálogo inglês localiza os elementos e não aponta além da última pá
   );
 
   await page.goto('/summoners-war/monsters/page/24');
-  expect(
-    await page.locator('[data-page-next]').getAttribute('href'),
-  ).toBeNull();
+  await expect(page.locator('[data-page-next]')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Previous' })).toBeVisible();
 });
 

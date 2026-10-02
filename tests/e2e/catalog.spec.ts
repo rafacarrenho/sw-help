@@ -25,9 +25,7 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   await page.getByLabel('Torre 4★', { exact: true }).check();
   await expect(page.locator('[data-defense-card]:visible')).toHaveCount(2);
   await expect(page).toHaveURL(/tower=4star/);
-  await page
-    .getByRole('link', { name: 'Ver counters de Morris · Trevor · Figaro' })
-    .click();
+  await page.getByRole('link', { name: /Morris.*Trevor.*Figaro/ }).click();
   await expect(page.locator('.counter-card')).toHaveCount(4);
   await page.getByRole('link', { name: 'Todas as defesas' }).click();
   await expect(page.getByRole('searchbox')).toHaveValue('MORRIS, trevor');
@@ -204,9 +202,7 @@ test('catálogo e detalhes são navegáveis sem JavaScript', async ({
   const page = await context.newPage();
   await page.goto(`${baseURL}/pt/summoners-war/siege-counter`);
   await expect(page.locator('[data-defense-card]')).toHaveCount(6);
-  await page
-    .getByRole('link', { name: 'Ver counters de Morris · Eshir · Orion' })
-    .click();
+  await page.getByRole('link', { name: /Morris.*Eshir.*Orion/ }).click();
   await expect(page.locator('.counter-card')).toHaveCount(4);
   await context.close();
 });

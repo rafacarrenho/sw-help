@@ -26,6 +26,16 @@ accessibility and interface fixes without redesigning the application.
 - Re-run a production dependency audit after the update and document any
   remaining transitive findings.
 
+### Compatibility decision discovered during implementation
+
+`@astrojs/check` 0.9.10, the latest stable release, explicitly rejects
+TypeScript 7.0 and supports TypeScript 5 or 6. No stable compatible replacement
+is currently published; Astro's suggested TypeScript 7 path is experimental
+and requires TypeScript 7.1 or newer. Production validation therefore keeps
+TypeScript 6.0.3, the latest stable supported version, until the stable Astro
+checker adds TypeScript 7 support. All other direct dependencies remain on
+their latest stable releases.
+
 ## Accessibility
 
 - Remove accessible-name overrides from brand, monster-card, and defense-card

@@ -7,12 +7,13 @@ import {
   leaderScopeText,
   leaderSkillIcon,
 } from '../lib/monster-catalog';
-import { routePath, type Locale } from '../i18n';
+import { getMessages, routePath, type Locale } from '../i18n';
 interface Props {
   monster: MonsterSummary;
   locale?: Locale;
 }
 const { monster, locale = 'pt-BR' } = Astro.props;
+const messages = getMessages(locale);
 const leaderIcon = leaderSkillIcon(monster.leaderSkill);
 const leaderScope = leaderScopeText(monster.leaderSkill, locale);
 ---
@@ -21,7 +22,6 @@ const leaderScope = leaderScopeText(monster.leaderSkill, locale);
   class="bestiary-card"
   href={routePath('monster', locale, { id: monster.id })}
   data-monster-card
-  aria-label={`${locale === 'pt-BR' ? 'Ver' : 'View'} ${monster.name}, ${formLabel(monster, locale)}`}
 >
   <div class="bestiary-card-top">
     <span
@@ -33,7 +33,7 @@ const leaderScope = leaderScopeText(monster.leaderSkill, locale);
         },
       ]}
       data-stars
-      aria-label={`${monster.naturalStars} estrelas naturais`}
+      aria-label={`${monster.naturalStars} ${messages.monsters.naturalStars.toLowerCase()}`}
     >
       {'★'.repeat(monster.naturalStars)}
     </span>

@@ -16,7 +16,8 @@ Este é um projeto pessoal de Rafael Carrenho.
 
 - Usar pnpm para instalar dependências e executar os comandos do projeto.
 - Site Astro estático, inteiramente frontend.
-- Prioridade atual: Siege Counter. Spd Tuning e Spd Tick ficam desabilitados.
+- Todas as ferramentas publicadas estão ativas e habilitadas, incluindo Siege
+  Counter, Spd Tuning, Spd Comparison e Spd Tick.
 - Manter defesas, counters e monstros nos arquivos de `src/data/`.
 - Em defesas e counters de Siege, `team[0]` é sempre o líder e aparece à esquerda.
   Não usar um campo separado para escolher outro líder.

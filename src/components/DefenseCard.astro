@@ -1,6 +1,6 @@
 ---
 import type { Defense } from '../lib/types';
-import { getCounters, searchText, teamName } from '../data/catalog';
+import { getCounters, searchText } from '../data/catalog';
 import Team from './Team.astro';
 import Icon from './Icon.astro';
 import { getMessages, routePath, type Locale } from '../i18n';
@@ -20,11 +20,7 @@ const count = getCounters(defense.id).length;
   data-search={searchText(defense)}
   data-tower={defense.tower}
 >
-  <a
-    class="defense-link"
-    href={routePath('siege', locale, { id: defense.id })}
-    aria-label={`${locale === 'pt-BR' ? 'Ver counters de' : 'View counters for'} ${teamName(defense.team)}`}
-  >
+  <a class="defense-link" href={routePath('siege', locale, { id: defense.id })}>
     <div class="card-top">
       <span
         class={`tower-badge ${defense.tower === '4star' ? 'four-star' : ''}`}

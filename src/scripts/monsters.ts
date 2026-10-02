@@ -19,8 +19,8 @@ const error = root.querySelector<HTMLElement>('[data-monster-error]')!;
 const pagination = root.querySelector<HTMLElement>(
   '[data-monster-pagination]',
 )!;
-const prev = root.querySelector<HTMLAnchorElement>('[data-page-prev]')!;
-const next = root.querySelector<HTMLAnchorElement>('[data-page-next]')!;
+const prevSlot = root.querySelector<HTMLElement>('[data-page-prev-slot]')!;
+const nextSlot = root.querySelector<HTMLElement>('[data-page-next-slot]')!;
 const template = grid
   .querySelector<HTMLElement>('[data-monster-card]')!
   .cloneNode(true) as HTMLElement;
@@ -83,6 +83,29 @@ function pageHref(page: number, params: URLSearchParams) {
   }
   return catalogPageUrl(page, locale);
 }
+function renderPageLink(
+  slot: HTMLElement,
+  direction: -1 | 1,
+  targetPage: number | undefined,
+  params: URLSearchParams,
+) {
+  if (!targetPage) {
+    slot.replaceChildren();
+    return;
+  }
+  const link = document.createElement('a');
+  link.className = 'button button-secondary';
+  link.href = pageHref(targetPage, params);
+  link.dataset.pageDelta = String(direction);
+  if (direction === -1) {
+    link.dataset.pagePrev = '';
+    link.textContent = `← ${messages.previous}`;
+  } else {
+    link.dataset.pageNext = '';
+    link.textContent = `${messages.next} →`;
+  }
+  slot.replaceChildren(link);
+}
 function setDetailLinks() {
   const params = parameters();
   if (currentPage > 1) params.set('page', String(currentPage));
@@ -95,10 +118,6 @@ function renderCard(monster: MonsterSummary, params: URLSearchParams) {
   const card = template.cloneNode(true) as HTMLAnchorElement;
   card.href = routePath('monster', locale, { id: monster.id });
   card.search = params.toString();
-  card.setAttribute(
-    'aria-label',
-    `${messages.view} ${monster.name}, ${monster.awakenLevel === 2 ? messages.secondAwakening : ''}`,
-  );
   card.querySelector('.monster')!.className =
     `monster monster--${monster.element}`;
   card.querySelector('.monster-name')!.textContent = monster.name;
@@ -202,12 +221,18 @@ async function update(
     count.textContent = `${matches.length.toLocaleString(locale === 'pt-BR' ? 'pt-BR' : 'en-US')} ${messages.results} · ${messages.page} ${currentPage} ${messages.of} ${pages}`;
     root.querySelector('[data-page-label]')!.textContent =
       `${messages.page} ${currentPage} ${messages.of} ${pages}`;
-    prev.hidden = currentPage === 1;
-    next.hidden = currentPage === pages;
-    if (currentPage === 1) prev.removeAttribute('href');
-    else prev.href = pageHref(currentPage - 1, params);
-    if (currentPage === pages) next.removeAttribute('href');
-    else next.href = pageHref(currentPage + 1, params);
+    renderPageLink(
+      prevSlot,
+      -1,
+      currentPage > 1 ? currentPage - 1 : undefined,
+      params,
+    );
+    renderPageLink(
+      nextSlot,
+      1,
+      currentPage < pages ? currentPage + 1 : undefined,
+      params,
+    );
     if (historyMode !== 'none')
       history[historyMode === 'push' ? 'pushState' : 'replaceState'](
         null,
@@ -273,17 +298,16 @@ root.querySelectorAll('[data-reset-monsters]').forEach((button) =>
 root
   .querySelector('[data-retry-monsters]')!
   .addEventListener('click', () => void update());
-for (const [link, delta] of [
-  [prev, -1],
-  [next, 1],
-] as const)
-  link.addEventListener('click', (event) => {
-    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
-      return;
-    event.preventDefault();
-    clearTimeout(debounce);
-    void update(currentPage + delta, 'push', true);
-  });
+pagination.addEventListener('click', (event) => {
+  const link = (event.target as Element).closest<HTMLAnchorElement>(
+    '[data-page-delta]',
+  );
+  if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
+    return;
+  event.preventDefault();
+  clearTimeout(debounce);
+  void update(currentPage + Number(link.dataset.pageDelta), 'push', true);
+});
 window.addEventListener('popstate', restore);
 if (location.search) restore();
 else if (parameters().size) void update();
