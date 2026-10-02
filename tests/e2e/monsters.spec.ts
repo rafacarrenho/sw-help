@@ -82,6 +82,21 @@ test('paginação, histórico, líder e estado vazio', async ({ page }) => {
   await expect(page.getByRole('searchbox')).toBeFocused();
 });
 
+test('catálogo inglês localiza os elementos e não aponta além da última página', async ({
+  page,
+}) => {
+  await page.goto('/summoners-war/monsters');
+  await expect(page.getByRole('combobox', { name: 'Element' })).toHaveText(
+    /Fire.*Water.*Wind.*Light.*Dark/s,
+  );
+
+  await page.goto('/summoners-war/monsters/page/24');
+  expect(
+    await page.locator('[data-page-next]').getAttribute('href'),
+  ).toBeNull();
+  await expect(page.getByRole('link', { name: 'Previous' })).toBeVisible();
+});
+
 test('filtra pelo conteúdo da habilidade de líder e preserva a seleção', async ({
   page,
 }) => {
@@ -239,12 +254,17 @@ test('ficha exibe atributos, habilidades originais e formas de obtenção', asyn
     page.getByRole('heading', { name: 'Accurate Fire' }),
   ).toBeVisible();
   await expect(
-    page.getByText(
-      'Attacks the enemy to inflict damage that ignores all beneficial effects that reduce damage taken.',
-    ),
-  ).toBeVisible();
+    page.getByRole('heading', { name: 'Accurate Fire' }),
+  ).toHaveAttribute('lang', 'en');
+  const importedDescription = page.getByText(
+    'Attacks the enemy to inflict damage that ignores all beneficial effects that reduce damage taken.',
+  );
+  await expect(importedDescription).toBeVisible();
+  await expect(importedDescription).toHaveAttribute('lang', 'en');
   await expect(page.getByRole('heading', { name: 'Como obter' })).toBeVisible();
-  await expect(page.getByText('Fire Scroll', { exact: true })).toBeVisible();
+  const importedSource = page.getByText('Fire Scroll', { exact: true });
+  await expect(importedSource).toBeVisible();
+  await expect(importedSource).toHaveAttribute('lang', 'en');
   await expect(page.locator('[data-leader-icon]')).toHaveAttribute(
     'src',
     '/leader-skills/attack-speed.png',

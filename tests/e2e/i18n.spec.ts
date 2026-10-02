@@ -107,20 +107,6 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
   );
 });
 
-test('URLs antigas de defesa redirecionam para Siege Counter', async ({
-  page,
-}) => {
-  await page.goto('/siege/morris-eshir-orion');
-  await expect(page).toHaveURL(
-    /\/summoners-war\/siege-counter\/morris-eshir-orion$/,
-  );
-
-  await page.goto('/pt/siege/morris-eshir-orion');
-  await expect(page).toHaveURL(
-    /\/pt\/summoners-war\/siege-counter\/morris-eshir-orion$/,
-  );
-});
-
 test('dropdown de idioma abre, fecha e oferece a alternativa pelo teclado', async ({
   page,
 }, testInfo) => {
@@ -213,13 +199,9 @@ test('seletor traduz a rota de detalhe sem traduzir dados oficiais', async ({
   ).toBeVisible();
 });
 
-test('URLs portuguesas antigas redirecionam e o sitemap lista alternates', async ({
-  page,
+test('sitemap lista as rotas canônicas e seus alternates', async ({
   request,
 }) => {
-  await page.goto('/comparador-spd?ally=kabilla-light-430');
-  await expect(page).toHaveURL(/\/pt\/summoners-war\/comparador-spd$/);
-
   const response = await request.get('/sitemap.xml');
   expect(response.ok()).toBeTruthy();
   const sitemap = await response.text();

@@ -204,8 +204,10 @@ async function update(
       `${messages.page} ${currentPage} ${messages.of} ${pages}`;
     prev.hidden = currentPage === 1;
     next.hidden = currentPage === pages;
-    prev.href = pageHref(currentPage - 1, params);
-    next.href = pageHref(currentPage + 1, params);
+    if (currentPage === 1) prev.removeAttribute('href');
+    else prev.href = pageHref(currentPage - 1, params);
+    if (currentPage === pages) next.removeAttribute('href');
+    else next.href = pageHref(currentPage + 1, params);
     if (historyMode !== 'none')
       history[historyMode === 'push' ? 'pushState' : 'replaceState'](
         null,

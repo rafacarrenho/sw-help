@@ -26,4 +26,3 @@ A importação deve continuar falhando antes de alterar o catálogo quando houve
 - Executar novamente a importação completa.
 - Revisar o diff para identificar as mudanças trazidas pelo update.
 - Executar `pnpm test` e `pnpm build`.
-

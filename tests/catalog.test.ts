@@ -9,6 +9,7 @@ import {
   requiredCounterSpeed,
 } from '../src/lib/counter-stats.ts';
 import {
+  catalogElementOptionsFor,
   filterMonsters,
   readMonsterFilters,
   leaderBonusText,
@@ -111,6 +112,23 @@ test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
     en: 'Summoners War',
     'pt-BR': 'Summoners War',
   });
+});
+
+test('opções de elemento acompanham o idioma do catálogo', () => {
+  assert.deepEqual(catalogElementOptionsFor('en'), [
+    ['fire', 'Fire'],
+    ['water', 'Water'],
+    ['wind', 'Wind'],
+    ['light', 'Light'],
+    ['dark', 'Dark'],
+  ]);
+  assert.deepEqual(catalogElementOptionsFor('pt-BR'), [
+    ['fire', 'Fogo'],
+    ['water', 'Água'],
+    ['wind', 'Vento'],
+    ['light', 'Luz'],
+    ['dark', 'Trevas'],
+  ]);
 });
 
 test('registro de jogos mantém o menu contextual centralizado', () => {

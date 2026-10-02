@@ -25,18 +25,18 @@ instrução e tabela.
 A tabela terá quatro colunas. A primeira identifica cada linha e as outras três
 representam os monstros da ofensiva:
 
-| Status | Monstro 1 | Monstro 2 | Monstro 3 |
-| ------ | --------- | --------- | --------- |
-| Seq.   | valor     | valor     | valor     |
-| Runa   | sets      | sets      | sets      |
-| HP     | meta      | meta      | meta      |
-| ATK    | meta      | meta      | meta      |
-| DEF    | meta      | meta      | meta      |
+| Status | Monstro 1            | Monstro 2            | Monstro 3            |
+| ------ | -------------------- | -------------------- | -------------------- |
+| Seq.   | valor                | valor                | valor                |
+| Runa   | sets                 | sets                 | sets                 |
+| HP     | meta                 | meta                 | meta                 |
+| ATK    | meta                 | meta                 | meta                 |
+| DEF    | meta                 | meta                 | meta                 |
 | SPD    | Tick e SPD adicional | Tick e SPD adicional | Tick e SPD adicional |
-| CR     | meta      | meta      | meta      |
-| CD     | meta      | meta      | meta      |
-| RES    | meta      | meta      | meta      |
-| ACC    | meta      | meta      | meta      |
+| CR     | meta                 | meta                 | meta                 |
+| CD     | meta                 | meta                 | meta                 |
+| RES    | meta                 | meta                 | meta                 |
+| ACC    | meta                 | meta                 | meta                 |
 
 Cada cabeçalho de monstro exibirá retrato e nome. A ordem das colunas seguirá a
 ordem de ataque quando ela estiver cadastrada; caso contrário, seguirá a ordem

@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .astro/
-package-lock.json
+pnpm-lock.yaml
+src/data/monsters.json
+src/data/skills.json
 test-results/
 playwright-report/

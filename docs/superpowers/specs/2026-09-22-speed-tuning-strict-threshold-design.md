@@ -41,4 +41,3 @@ ele continuará usando a SPD de combate segura calculada para o monstro seguinte
 - Adicionar uma regressão explícita para Kabilla, Gemini e Talisman.
 - Confirmar no fluxo E2E que a página exibe `+178 SPD` e `+182 SPD` para o caso.
 - Executar `pnpm test`, `pnpm build` e `pnpm test:e2e`.
-

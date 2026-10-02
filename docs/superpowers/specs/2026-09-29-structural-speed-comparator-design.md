@@ -112,9 +112,9 @@ O resultado aparecerá após os cards e terá:
 - SPD estrutural calculada dos dois lados;
 - diferença em destaque, por exemplo `Vantagem de 20 SPD`;
 - consequência prática, por exemplo `Adriana pode ter até 19 SPD adicional a
-  menos e ainda agir primeiro`;
+menos e ainda agir primeiro`;
 - linha de empate, por exemplo `Com 20 SPD adicional a menos, as velocidades
-  empatam`.
+empatam`.
 
 Enquanto um dos lados estiver vazio, o resultado mostrará uma orientação para
 selecionar os dois monstros, sem números parciais apresentados como conclusão.

@@ -38,16 +38,16 @@ baseado em navegador, cookie ou `localStorage`.
 
 Mapa inicial de rotas:
 
-| Inglês | Português brasileiro |
-| --- | --- |
-| `/` | `/pt/` |
-| `/siege/:id/` | `/pt/siege/:id/` |
-| `/monsters/` | `/pt/monstros/` |
-| `/monsters/:id/` | `/pt/monstros/:id/` |
+| Inglês                  | Português brasileiro         |
+| ----------------------- | ---------------------------- |
+| `/`                     | `/pt/`                       |
+| `/siege/:id/`           | `/pt/siege/:id/`             |
+| `/monsters/`            | `/pt/monstros/`              |
+| `/monsters/:id/`        | `/pt/monstros/:id/`          |
 | `/monsters/page/:page/` | `/pt/monstros/pagina/:page/` |
-| `/speed-comparison/` | `/pt/comparador-spd/` |
-| `/speed-tuning/` | `/pt/spd-tuning/` |
-| `/speed-tick/` | `/pt/spd-tick/` |
+| `/speed-comparison/`    | `/pt/comparador-spd/`        |
+| `/speed-tuning/`        | `/pt/spd-tuning/`            |
+| `/speed-tick/`          | `/pt/spd-tick/`              |
 
 IDs de monstros e defesas serão iguais em todos os idiomas. Query parameters
 também continuarão independentes de idioma e serão preservados ao usar o

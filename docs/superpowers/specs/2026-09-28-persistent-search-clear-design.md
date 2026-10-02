@@ -50,4 +50,3 @@ Nos seletores de monstro, ficará alinhado verticalmente no lado direito.
 
 Não serão alterados algoritmos de busca, opções dos seletores, filtros,
 cálculos de SPD ou a aparência de botões de reset completos.
-

@@ -15,7 +15,7 @@ import {
   filterMonsters,
   readMonsterFilters,
   catalogPageUrl,
-  catalogElementOptions,
+  catalogElementOptionsFor,
   leaderScopeOptionsFor,
   toMonsterSummary,
 } from '../lib/monster-catalog';
@@ -28,6 +28,7 @@ const { page = 1, locale = 'en' } = Astro.props;
 const messages = getMessages(locale);
 const searchContent = seoContent[locale].monsters;
 const elementLabels = elementLabelsFor(locale);
+const catalogElementOptions = catalogElementOptionsFor(locale);
 const attributeLabels = attributeLabelsFor(locale);
 const leaderScopeOptions = leaderScopeOptionsFor(locale);
 const monsterIndex = monsters.map(toMonsterSummary);
@@ -238,7 +239,7 @@ const pageDescription =
     >
       <a
         class="button button-secondary"
-        href={catalogPageUrl(page - 1, locale)}
+        href={page > 1 ? catalogPageUrl(page - 1, locale) : undefined}
         data-page-prev
         hidden={page === 1}
       >
@@ -249,7 +250,7 @@ const pageDescription =
       </span>
       <a
         class="button button-secondary"
-        href={catalogPageUrl(page + 1, locale)}
+        href={page < totalPages ? catalogPageUrl(page + 1, locale) : undefined}
         data-page-next
         hidden={page === totalPages}
       >

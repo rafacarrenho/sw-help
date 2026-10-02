@@ -80,9 +80,11 @@ export function elementLabelsFor(locale: Locale): Record<string, string> {
     pure: common.pure,
   };
 }
-export const catalogElementOptions = Object.entries(elementLabels).filter(
-  ([element]) => element !== 'pure',
-);
+const catalogElements = ['fire', 'water', 'wind', 'light', 'dark'] as const;
+export function catalogElementOptionsFor(locale: Locale) {
+  const labels = elementLabelsFor(locale);
+  return catalogElements.map((element) => [element, labels[element]] as const);
+}
 export const attributeLabels: Record<string, string> = {
   'Attack Power': 'ATQ',
   Defense: 'DEF',
@@ -288,10 +290,7 @@ export function readMonsterFilters(params: URLSearchParams): MonsterFilters {
   const availability = hasLegacyFormOverride ? 'obtainable' : rawAvailability;
   return {
     q: (params.get('q') ?? '').slice(0, 200),
-    element: allowed(
-      'element',
-      catalogElementOptions.map(([element]) => element),
-    ),
+    element: allowed('element', [...catalogElements]),
     stars: allowed('stars', ['1', '2', '3', '4', '5']),
     leader: allowed('leader', ['any', 'none', ...Object.keys(attributeLabels)]),
     leaderScope: allowed(

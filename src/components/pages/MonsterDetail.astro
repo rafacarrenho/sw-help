@@ -102,6 +102,7 @@ const catalogPath = routePath('monsters', locale);
 const catalogPageTemplate = routePath('monsterPage', locale, {
   page: '__PAGE__',
 });
+const importedContentLanguage = locale === 'pt-BR' ? 'en' : undefined;
 ---
 
 <Layout
@@ -278,7 +279,7 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
                 <span class="monster-skill-slot">S{skill.slot}</span>
               )}
               <div>
-                <h3>{skill.name}</h3>
+                <h3 lang={importedContentLanguage}>{skill.name}</h3>
                 <div class="monster-skill-tags">
                   {skill.passive && <span>{messages.monster.passive}</span>}
                   {skill.aoe && <span>{messages.monster.area}</span>}
@@ -301,20 +302,33 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
               </div>
             </div>
             {skill.description && (
-              <p class="monster-skill-description">{skill.description}</p>
+              <p
+                class="monster-skill-description"
+                lang={importedContentLanguage}
+              >
+                {skill.description}
+              </p>
             )}
             {skill.effects.length > 0 && (
               <ul class="monster-skill-effects">
                 {skill.effects.map((effect) => (
                   <li>
-                    <strong>{effect.name}</strong>
+                    <strong lang={importedContentLanguage}>
+                      {effect.name}
+                    </strong>
                     {effect.chance > 0 && (
                       <span>
                         {effect.chance}% {messages.monster.chance}
                       </span>
                     )}
-                    {effect.description && <p>{effect.description}</p>}
-                    {effect.note && <small>{effect.note}</small>}
+                    {effect.description && (
+                      <p lang={importedContentLanguage}>{effect.description}</p>
+                    )}
+                    {effect.note && (
+                      <small lang={importedContentLanguage}>
+                        {effect.note}
+                      </small>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -355,7 +369,7 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
                   {skill.levelProgress.map((progress, index) => (
                     <li>
                       <span aria-hidden="true">{index + 1}</span>
-                      <p>{progress}</p>
+                      <p lang={importedContentLanguage}>{progress}</p>
                     </li>
                   ))}
                 </ol>
@@ -382,8 +396,10 @@ const catalogPageTemplate = routePath('monsterPage', locale, {
         {monster.sources!.map((source) => (
           <li>
             <div>
-              <strong>{source.name}</strong>
-              {source.description && <p>{source.description}</p>}
+              <strong lang={importedContentLanguage}>{source.name}</strong>
+              {source.description && (
+                <p lang={importedContentLanguage}>{source.description}</p>
+              )}
             </div>
             {source.farmable && (
               <span class="farmable-tag">{messages.monster.farmable}</span>

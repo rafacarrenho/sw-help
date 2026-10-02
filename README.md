@@ -1,14 +1,13 @@
 # SW Help
 
-Toolkit de Summoners War em **Astro + TypeScript**, com saída estática e foco
-inicial no **Siege Counter**. Não usa backend, banco de dados, login ou APIs em
-tempo de execução. Spd Tuning e Spd Tick permanecem desabilitados no menu.
+Toolkit bilíngue de Summoners War em **Astro + TypeScript**, com saída estática
+e prioridade atual no **Siege Counter**. O site também oferece catálogo de
+monstros, Spd Tuning, Comparador de SPD e Spd Tick. Não usa backend, banco de
+dados, login ou APIs em tempo de execução.
 
 ## Executar
 
 Use Node.js 22.12+ (Node 24 recomendado para os testes TypeScript).
-
-Com pnpm:
 
 ```sh
 pnpm install
@@ -18,22 +17,15 @@ pnpm dev
 O `pnpm-workspace.yaml` autoriza o script de instalação do `esbuild`, necessário
 ao Astro. Mantenha `allowBuilds.esbuild: true` ao reinstalar as dependências.
 
-Alternativamente, com npm:
-
-```sh
-npm install
-npm run dev
-```
-
 Abra `http://localhost:4321`. Para produção:
 
 ```sh
-npm run build
-npm run preview
+pnpm build
+pnpm preview
 ```
 
-Publique a pasta `dist/` em qualquer hospedagem de arquivos estáticos. Não é
-necessário adapter. O projeto pressupõe publicação na raiz do domínio.
+O deploy atual usa Cloudflare Workers Static Assets, configurado em
+`wrangler.jsonc`.
 
 ## O que está pronto
 
@@ -47,6 +39,9 @@ necessário adapter. O projeto pressupõe publicação na raiz do domínio.
 - Estados sem resultados, sem counters e página 404.
 - Interface responsiva, navegação por teclado e catálogo legível sem JavaScript.
 - Retratos e fontes locais; falha de imagem usa iniciais como fallback.
+- Spd Tuning para Siege, Arena e RTA, com estado compartilhável na URL.
+- Comparador estrutural de SPD e calculadora de breakpoints de Tick.
+- Interface e rotas canônicas em inglês e português.
 
 ## Conteúdo inicial
 
@@ -114,15 +109,16 @@ src/
   scripts/          Busca e filtros no navegador
   styles/           Estilos e breakpoints
 public/monsters/    Retratos locais
+scripts/            Importação e manutenção de dados
 tests/             Testes do catálogo e fluxos no navegador
 ```
 
 ## Verificação
 
 ```sh
-npm test          # busca e integridade do catálogo
-npm run build    # tipos Astro/TypeScript e geração estática
-npm run test:e2e # fluxos em desktop e viewport mobile (rode o build antes)
+pnpm test      # busca e integridade do catálogo
+pnpm build     # tipos Astro/TypeScript e geração estática
+pnpm test:e2e  # fluxos em desktop e viewport mobile (rode o build antes)
 ```
 
 Os testes de navegador usam Playwright com o Google Chrome instalado
@@ -147,7 +143,7 @@ não substitui uma verificação em um dispositivo físico com Safari.
 - Fonte DM Sans distribuída localmente por
   [Fontsource](https://fontsource.org/fonts/dm-sans), sob a licença OFL incluída
   no pacote.
-- A futura ferramenta Spd Tick tem como referência o
+- A ferramenta Spd Tick tem como referência o
   [calculador indicado no briefing](https://00peanuts.pages.dev/apps/sw-tick-calculator/).
 
 Referências de implementação: [instalação do Astro](https://docs.astro.build/en/install-and-setup/)
