@@ -10,16 +10,15 @@ optimizing the monster catalog payload in this iteration.
 
 ## Scope
 
-### Permanent redirects
+### Canonical-only routing
 
-- Add `public/_redirects` for Cloudflare Workers Static Assets.
-- Replace the legacy English and Portuguese catalog, Siege, and SPD tool URLs
-  with real HTTP 301 redirects to the current canonical routes.
-- Use ordered wildcard and placeholder rules so query strings remain usable and
-  the redirect file stays below Cloudflare's dynamic-rule limit.
-- Remove the Astro pages whose only purpose is generating meta-refresh redirect
-  documents.
-- Keep all current canonical pages unchanged.
+- Keep the Astro pages whose only purpose was generating meta-refresh redirect
+  documents removed.
+- Do not generate Cloudflare redirect rules for routes that were never
+  published.
+- Remove the redirect generator, its build hook, documentation, and tests.
+- Keep all current canonical pages unchanged. Requests to unpublished legacy
+  paths may return the normal 404 response.
 
 ### Catalog pagination
 
@@ -79,8 +78,8 @@ catalog's runtime data flow and offline/error behavior.
 
 - Extend unit or E2E coverage for localized element options.
 - Verify that the last catalog pages do not expose a next-page link.
-- Verify representative legacy routes return HTTP 301 and preserve their
-  destination paths and query strings under Wrangler.
+- Verify representative unpublished legacy routes return 404 instead of being
+  included in the generated site.
 - Run `pnpm test`, `pnpm build`, and `pnpm test:e2e`.
 - Run `pnpm format:check`; generated or imported files may be added to
   `.prettierignore` only when formatting them would create noisy data-only
@@ -90,8 +89,7 @@ catalog's runtime data flow and offline/error behavior.
 
 ## Success criteria
 
-- Legacy URLs return real HTTP 301 responses in the production-equivalent
-  Wrangler server.
+- No redirect artifact or redirect-only Astro page is generated.
 - Canonical routes, sitemap entries, hreflang links, and 404 behavior remain
   unchanged.
 - No generated catalog page links to page 25.
