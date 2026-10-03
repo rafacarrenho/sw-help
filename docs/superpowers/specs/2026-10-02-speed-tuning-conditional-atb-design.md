@@ -4,7 +4,8 @@
 
 Evitar que o Spd Tuning aplique automaticamente boosts de ATB que podem não
 acontecer, sem criar exceções por monstro e sem adicionar um seletor de
-habilidade.
+habilidade. Quando um monstro possuir mais de uma habilidade válida de aumento
+de ATB para aliados, a ferramenta representará a de menor percentual.
 
 Boosts fixos e garantidos continuarão ativos por padrão. Boosts condicionais
 continuarão disponíveis para edição, mas partirão de um valor conservador e
@@ -61,15 +62,21 @@ recebido.
 O valor continua editável de 0% a 100%. Informar 0% desativa o efeito no
 cálculo, como ocorre atualmente.
 
-## Habilidades que enchem a barra
+## Monstros com mais de um boost
 
-Habilidades cujo efeito detectado enche 100% da barra serão excluídas
-genericamente das capacidades do Spd Tuning. Elas não serão apresentadas como
-boost configurável e não participarão da escolha da habilidade representativa
-do monstro.
+Habilidades que enchem 100% da barra continuarão disponíveis. Quando forem o
+único boost válido do monstro, serão apresentadas normalmente com 100% como
+valor inicial, desde que sejam fixas e garantidas.
 
-Com isso, monstros com outra habilidade de boost poderão continuar expondo
-essa outra habilidade. Não haverá seletor de habilidade nesta alteração.
+Quando houver duas ou mais habilidades válidas de aumento de ATB para aliados,
+a capacidade representativa será a de menor percentual. Em caso de empate,
+será mantida a primeira habilidade na ordem do catálogo do monstro. Só depois
+dessa escolha serão aplicadas as regras de valor inicial e de efeito
+condicional.
+
+Assim, Yeonhong será representada por Blade Fan, de 15%, em vez de Charge
+Vitality, de 100%. Como Blade Fan depende da remoção de efeitos benéficos, o
+campo começará em 0%. Não haverá seletor de habilidade nesta alteração.
 
 ## Interface e estado compartilhável
 
@@ -103,7 +110,9 @@ Os testes unitários cobrirão:
 - Mihyang como boost condicional iniciado em 0%;
 - Woonsa e Wedjat como condicionais iniciados em 10%;
 - Ragdoll com intensidade de 10% e padrão 0%;
-- exclusão de habilidades que enchem 100% da barra;
+- manutenção de uma habilidade garantida de 100% quando ela for o único boost
+  válido do monstro;
+- escolha do menor boost de Yeonhong e aplicação do padrão condicional de 0%;
 - preservação e restauração dos valores manuais pela URL.
 
 O teste end-to-end do Spd Tuning confirmará que o rótulo condicional aparece
