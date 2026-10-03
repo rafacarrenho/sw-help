@@ -470,6 +470,45 @@ test('aplica limite estrito no tuning de Kabilla, Gemini e Talisman', async ({
   );
 });
 
+test('preserva a ordem por efeitos sem igualar a SPD de combate', async ({
+  page,
+}) => {
+  await page.goto('/pt/summoners-war/spd-tuning');
+  await selectMonster(page, 0, 'kroa', 'kroa-dark-980');
+  await selectMonster(page, 1, 'tirsa', 'tirsa-wind-2430');
+  await selectMonster(page, 2, 'mihyang', 'mihyang-water-613');
+
+  const slots = page.locator('[data-tuning-slot]');
+  const firstSlot = slots.nth(0);
+  const secondSlot = slots.nth(1);
+  const thirdSlot = slots.nth(2);
+
+  await firstSlot.locator('[data-tuning-rune-speed]').fill('229');
+  await firstSlot.locator('[data-tuning-boost-percent]').fill('15');
+  await firstSlot.locator('[data-tuning-target]').selectOption('1');
+  await firstSlot.locator('[data-tuning-speed-buff-toggle]').check();
+  await firstSlot.getByLabel('Usa Swift').check();
+  await secondSlot.getByLabel('Usa Swift').check();
+  await thirdSlot.getByLabel('Usa Swift').check();
+  await thirdSlot.locator('[data-tuning-leader-toggle]').check();
+
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '401 SPD',
+  );
+  await expect(secondSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '+165 SPD',
+  );
+  await expect(secondSlot.locator('[data-tuning-result-detail]')).toHaveText(
+    '338 SPD de combate',
+  );
+  await expect(thirdSlot.locator('[data-tuning-result-value]')).toHaveText(
+    '+221 SPD',
+  );
+  await expect(thirdSlot.locator('[data-tuning-result-detail]')).toHaveText(
+    '365 SPD de combate',
+  );
+});
+
 test('compartilha, restaura e normaliza o time pela URL', async ({ page }) => {
   await page.goto(
     '/pt/summoners-war/spd-tuning?utm_source=share&tower=10&m1=bernard-wind-1579&r1=200&boost1=0&m2=gemini-light-657&artifact2=12&swift2=1&leader=2&m3=talisman-light-1680&artifact3=20#resultado',

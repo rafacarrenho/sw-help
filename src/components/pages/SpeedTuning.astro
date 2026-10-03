@@ -361,6 +361,7 @@ const slots = [
       applicableLeaderPercent,
       combatSpeed,
       DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+      followerTurnProgress,
       isSpeedLeaderValidForMode,
       minimumRuneSpeedForCombat,
       readSpeedTuningQueryState,
@@ -845,11 +846,14 @@ const slots = [
           })()),
       );
 
-    const accumulatedBoost = (targetIndex: number) => {
+    const accumulatedBoost = (
+      targetIndex: number,
+      providerLimit = targetIndex,
+    ) => {
       let total = 0;
       for (
         let providerIndex = 0;
-        providerIndex < targetIndex;
+        providerIndex < Math.min(targetIndex, providerLimit);
         providerIndex += 1
       ) {
         const provider = states[providerIndex];
@@ -869,10 +873,13 @@ const slots = [
       return total;
     };
 
-    const speedBuffStart = (targetIndex: number) => {
+    const speedBuffStart = (
+      targetIndex: number,
+      providerLimit = targetIndex,
+    ) => {
       for (
         let providerIndex = 0;
-        providerIndex < targetIndex;
+        providerIndex < Math.min(targetIndex, providerLimit);
         providerIndex += 1
       ) {
         const provider = states[providerIndex];
@@ -1173,6 +1180,27 @@ const slots = [
           };
     };
 
+    const turnProgress = (
+      slotIndex: number,
+      combatSpeedValue: number,
+      iteration: number,
+      providerLimit: number,
+      anchorCombatSpeed: number,
+    ) => {
+      const state = states[slotIndex];
+      if (!state?.monster) return null;
+      return followerTurnProgress({
+        anchorCombatSpeed,
+        combatSpeed: combatSpeedValue,
+        iteration,
+        accumulatedAtbBoost: accumulatedBoost(slotIndex, providerLimit),
+        speedBuffStartIteration: speedBuffStart(slotIndex, providerLimit),
+        artifactSpeedIncrease: state.artifactPercent,
+        teamSpeedBuffIncrease: teamSpeedBuffIncrease(),
+        tickConstant: SPEED_TUNING_MODE_CONFIG[currentMode].tickConstant,
+      });
+    };
+
     const renderResults = () => {
       const slotCount = activeSlotCount();
       const anchor = states[0];
@@ -1251,10 +1279,43 @@ const slots = [
       ) {
         const current = followerResults[slotIndex];
         const next = followerResults[slotIndex + 1];
-        if (current && next && current.combatSpeed < next.combatSpeed) {
+        if (!current || !next) continue;
+
+        const nextProgress = turnProgress(
+          slotIndex + 1,
+          next.combatSpeed,
+          slotIndex,
+          slotIndex,
+          anchorCombatSpeed,
+        );
+        let requiredCombatSpeed = current.combatSpeed;
+        let currentProgress = turnProgress(
+          slotIndex,
+          requiredCombatSpeed,
+          slotIndex,
+          slotIndex,
+          anchorCombatSpeed,
+        );
+        if (currentProgress === null || nextProgress === null) continue;
+
+        while (currentProgress + 1e-12 < nextProgress) {
+          requiredCombatSpeed += 1;
+          currentProgress = turnProgress(
+            slotIndex,
+            requiredCombatSpeed,
+            slotIndex,
+            slotIndex,
+            anchorCombatSpeed,
+          );
+          if (currentProgress === null) break;
+        }
+        if (
+          currentProgress !== null &&
+          requiredCombatSpeed > current.combatSpeed
+        ) {
           followerResults[slotIndex] = raiseFollowerToCombatSpeed(
             slotIndex,
-            next.combatSpeed,
+            requiredCombatSpeed,
           );
         }
       }

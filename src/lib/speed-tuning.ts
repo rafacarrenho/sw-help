@@ -85,6 +85,18 @@ export interface FollowerTuningInput {
   tickConstant?: number;
 }
 
+export interface FollowerTurnProgressInput {
+  anchorCombatSpeed: number;
+  combatSpeed: number;
+  iteration: number;
+  accumulatedAtbBoost: number;
+  speedBuffStartIteration: number | null;
+  artifactSpeedIncrease: number;
+  /** Team-wide amplification, such as Miriam's passive. Adds to artifact %. */
+  teamSpeedBuffIncrease?: number;
+  tickConstant?: number;
+}
+
 export interface FollowerTuningResult {
   runeSpeed: number;
   combatSpeed: number;
@@ -662,6 +674,81 @@ export function minimumRuneSpeedForCombat(
   return candidate;
 }
 
+function followerProgressWindow({
+  anchorCombatSpeed,
+  iteration,
+  accumulatedAtbBoost,
+  speedBuffStartIteration,
+  artifactSpeedIncrease,
+  teamSpeedBuffIncrease = 0,
+  tickConstant = SIEGE_TICK_CONSTANT,
+}: Omit<FollowerTurnProgressInput, 'combatSpeed'>): {
+  denominator: number;
+  normalizedBoost: number;
+} | null {
+  if (
+    !Number.isFinite(anchorCombatSpeed) ||
+    anchorCombatSpeed <= 0 ||
+    !Number.isInteger(iteration) ||
+    iteration < 1 ||
+    !Number.isFinite(accumulatedAtbBoost) ||
+    !Number.isFinite(artifactSpeedIncrease) ||
+    !Number.isFinite(teamSpeedBuffIncrease) ||
+    !Number.isFinite(tickConstant) ||
+    tickConstant <= 0
+  ) {
+    return null;
+  }
+
+  const anchorTicks = Math.ceil(1 / (anchorCombatSpeed * tickConstant));
+  const normalizedBoost = Math.max(0, accumulatedAtbBoost) / 100;
+  let denominator = tickConstant * (anchorTicks + iteration);
+  if (
+    speedBuffStartIteration !== null &&
+    speedBuffStartIteration >= 1 &&
+    speedBuffStartIteration <= iteration
+  ) {
+    const normalTicks = speedBuffStartIteration - 1;
+    const buffedTicks = iteration - normalTicks;
+    const speedModifier = speedBuffMultiplier(
+      artifactSpeedIncrease,
+      teamSpeedBuffIncrease,
+    );
+    if (speedModifier === null) return null;
+    denominator =
+      tickConstant * (anchorTicks + normalTicks + buffedTicks * speedModifier);
+  }
+
+  return Number.isFinite(denominator) && denominator > 0
+    ? { denominator, normalizedBoost }
+    : null;
+}
+
+export function followerTurnProgress({
+  anchorCombatSpeed,
+  combatSpeed,
+  iteration,
+  accumulatedAtbBoost,
+  speedBuffStartIteration,
+  artifactSpeedIncrease,
+  teamSpeedBuffIncrease = 0,
+  tickConstant = SIEGE_TICK_CONSTANT,
+}: FollowerTurnProgressInput): number | null {
+  if (!Number.isFinite(combatSpeed) || combatSpeed <= 0) return null;
+  const window = followerProgressWindow({
+    anchorCombatSpeed,
+    iteration,
+    accumulatedAtbBoost,
+    speedBuffStartIteration,
+    artifactSpeedIncrease,
+    teamSpeedBuffIncrease,
+    tickConstant,
+  });
+  return window
+    ? combatSpeed * window.denominator + window.normalizedBoost
+    : null;
+}
+
 export function tuneFollower({
   anchorCombatSpeed,
   iteration,
@@ -691,34 +778,25 @@ export function tuneFollower({
     return null;
   }
 
+  const window = followerProgressWindow({
+    anchorCombatSpeed,
+    iteration,
+    accumulatedAtbBoost,
+    speedBuffStartIteration,
+    artifactSpeedIncrease,
+    teamSpeedBuffIncrease,
+    tickConstant,
+  });
+  if (!window) return null;
+
   const anchorTicks = Math.ceil(1 / (anchorCombatSpeed * tickConstant));
-  const normalizedBoost = Math.max(0, accumulatedAtbBoost) / 100;
   const numerator =
     anchorCombatSpeed * tickConstant * (anchorTicks + iteration) -
-    normalizedBoost;
-
-  let denominator = tickConstant * (anchorTicks + iteration);
-  if (
-    speedBuffStartIteration !== null &&
-    speedBuffStartIteration >= 1 &&
-    speedBuffStartIteration <= iteration
-  ) {
-    const normalTicks = speedBuffStartIteration - 1;
-    const buffedTicks = iteration - normalTicks;
-    const speedModifier = speedBuffMultiplier(
-      artifactSpeedIncrease,
-      teamSpeedBuffIncrease,
-    );
-    if (speedModifier === null) return null;
-    denominator =
-      tickConstant * (anchorTicks + normalTicks + buffedTicks * speedModifier);
-  }
-
-  if (!Number.isFinite(denominator) || denominator <= 0) return null;
+    window.normalizedBoost;
 
   const minimumCombatSpeed = Math.max(
     1,
-    Math.floor(numerator / denominator) + 1,
+    Math.floor(numerator / window.denominator) + 1,
   );
   const runeSpeed = minimumRuneSpeedForCombat(minimumCombatSpeed, {
     baseSpeed,

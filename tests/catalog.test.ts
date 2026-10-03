@@ -35,6 +35,7 @@ import {
   ARENA_TICK_CONSTANT,
   combatSpeed,
   DEFAULT_SPEED_TUNING_TOWER_PERCENT,
+  followerTurnProgress,
   getSiegeSpeedLeader,
   getSpeedTuningLeader,
   getSpeedTuningCapabilities,
@@ -864,6 +865,79 @@ test('Speed Tuning calcula SPD de combate e seguidores com boosts', () => {
     }),
     178,
   );
+
+  const kroaCombatSpeed = combatSpeed({
+    baseSpeed: 120,
+    runeSpeed: 229,
+    towerPercent: 15,
+    leaderPercent: 28,
+    usesSwift: true,
+  });
+  assert.equal(kroaCombatSpeed, 401);
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: kroaCombatSpeed!,
+      iteration: 1,
+      accumulatedAtbBoost: 15,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 0,
+      baseSpeed: 121,
+      towerPercent: 15,
+      leaderPercent: 28,
+      usesSwift: true,
+    }),
+    { runeSpeed: 165, combatSpeed: 338, minimumCombatSpeed: 338 },
+  );
+  assert.deepEqual(
+    tuneFollower({
+      anchorCombatSpeed: kroaCombatSpeed!,
+      iteration: 2,
+      accumulatedAtbBoost: 0,
+      speedBuffStartIteration: 1,
+      artifactSpeedIncrease: 0,
+      baseSpeed: 101,
+      towerPercent: 15,
+      leaderPercent: 28,
+      usesSwift: true,
+    }),
+    { runeSpeed: 221, combatSpeed: 365, minimumCombatSpeed: 365 },
+  );
+
+  const tirsaProgress = followerTurnProgress({
+    anchorCombatSpeed: kroaCombatSpeed!,
+    combatSpeed: 338,
+    iteration: 1,
+    accumulatedAtbBoost: 15,
+    speedBuffStartIteration: 1,
+    artifactSpeedIncrease: 0,
+  });
+  const mihyangProgress = followerTurnProgress({
+    anchorCombatSpeed: kroaCombatSpeed!,
+    combatSpeed: 365,
+    iteration: 1,
+    accumulatedAtbBoost: 0,
+    speedBuffStartIteration: 1,
+    artifactSpeedIncrease: 0,
+  });
+  assert.ok(tirsaProgress! > mihyangProgress!);
+
+  const geminiProgress = followerTurnProgress({
+    anchorCombatSpeed: 391,
+    combatSpeed: 306,
+    iteration: 1,
+    accumulatedAtbBoost: 30,
+    speedBuffStartIteration: null,
+    artifactSpeedIncrease: 0,
+  });
+  const talismanProgress = followerTurnProgress({
+    anchorCombatSpeed: 391,
+    combatSpeed: 320,
+    iteration: 1,
+    accumulatedAtbBoost: 30,
+    speedBuffStartIteration: null,
+    artifactSpeedIncrease: 0,
+  });
+  assert.ok(geminiProgress! < talismanProgress!);
 });
 
 test('Speed Tuning usa ticks de Arena e RTA nas quatro posições', () => {

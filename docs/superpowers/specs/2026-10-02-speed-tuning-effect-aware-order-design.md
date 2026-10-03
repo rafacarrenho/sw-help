@@ -17,18 +17,20 @@ artificialmente para 365 SPD de combate, exibindo +192 SPD.
 
 ## Decisão
 
-Os resultados exibidos serão os resultados diretos de `tuneFollower`. A
-função já incorpora a posição do seguidor por meio de `iteration` e considera
-os boosts e buffs acumulados aplicáveis. A interface não fará uma segunda
-normalização baseada apenas na comparação entre SPDs de combate.
+Cada posição continuará sendo calculada inicialmente por `tuneFollower`, que
+incorpora `iteration` e os boosts e buffs acumulados aplicáveis. A preservação
+da ordem deixará de comparar apenas as SPDs de combate e passará a comparar o
+progresso de barra dos dois seguidores no instante em que o primeiro deles
+deve agir.
 
-Serão removidos de `SpeedTuning.astro`:
+Essa comparação considerará somente efeitos aplicados por monstros que já
+agiram naquele instante. Se o primeiro seguidor estiver atrás, sua SPD será
+elevada até igualar ou superar o progresso do próximo. Se uma SPD menor for
+compensada por um boost ou buff mais favorável, ela será preservada.
 
-- o helper `raiseFollowerToCombatSpeed`;
-- o laço reverso que eleva a SPD de um seguidor para igualar a SPD do próximo.
-
-A fórmula de `tuneFollower`, o cálculo da SPD de combate e as regras de alcance
-dos efeitos permanecerão inalterados. Não haverá exceções por monstro.
+O cálculo do progresso compartilhará a mesma janela de ticks usada por
+`tuneFollower`. A fórmula da SPD de combate e as regras de alcance dos efeitos
+permanecerão inalteradas. Não haverá exceções por monstro.
 
 ## Validação
 
@@ -42,7 +44,9 @@ Uma regressão unitária reproduzirá os valores intermediários do cenário:
 
 Uma regressão end-to-end configurará a mesma equipe e confirmará que a página
 exibe +165 SPD para Tirsa e +221 SPD para Mihyang. A suíte existente continuará
-cobrindo cenários sem efeitos diferentes e os modos Siege, Arena e RTA.
+cobrindo cenários sem efeitos diferentes e os modos Siege, Arena e RTA. O caso
+Kabilla, Gemini e Talisman continuará exigindo +178 SPD para Gemini porque os
+dois seguidores recebem o mesmo boost e a ordem depende da SPD de combate.
 
 A validação final executará `pnpm test`, `pnpm build` e `pnpm test:e2e` após a
 geração do build.
