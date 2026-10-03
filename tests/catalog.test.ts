@@ -481,6 +481,8 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
     {
       atbBoost: {
         percent: 30,
+        defaultPercent: 30,
+        conditional: false,
         scope: 'team',
         skillId: 418,
         skillName: 'Tailwind',
@@ -497,6 +499,8 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
       .atbBoost,
     {
       percent: 100,
+      defaultPercent: 100,
+      conditional: false,
       scope: 'single',
       skillId: 81,
       skillName: 'Resurge',
@@ -506,10 +510,12 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
     getSpeedTuningCapabilities(monsterById.get('dova-light-981')!, skillById),
     {
       atbBoost: {
-        percent: 100,
+        percent: 15,
+        defaultPercent: 15,
+        conditional: false,
         scope: 'single',
-        skillId: 1429,
-        skillName: "Rabbit's Agility",
+        skillId: 1426,
+        skillName: 'Breeze',
       },
       speedBuff: {
         scope: 'single',
@@ -551,9 +557,73 @@ test('Speed Tuning normaliza boosts, buffs e lideranças de Siege', () => {
     ).atbBoost,
     {
       percent: 30,
+      defaultPercent: 30,
+      conditional: false,
       scope: 'team',
       skillId: 2221,
       skillName: 'Mobilize',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('mihyang-water-613')!, skillById)
+      .atbBoost,
+    {
+      percent: 15,
+      defaultPercent: 0,
+      conditional: true,
+      scope: 'team',
+      skillId: 3997,
+      skillName: 'Blade Fan',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(
+      monsterById.get('yeonhong-light-721')!,
+      skillById,
+    ).atbBoost,
+    {
+      percent: 15,
+      defaultPercent: 0,
+      conditional: true,
+      scope: 'team',
+      skillId: 925,
+      skillName: 'Blade Fan',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('woonsa-dark-786')!, skillById)
+      .atbBoost,
+    {
+      percent: 20,
+      defaultPercent: 10,
+      conditional: true,
+      scope: 'team',
+      skillId: 1200,
+      skillName: 'Inhale Magic',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('wedjat-light-931')!, skillById)
+      .atbBoost,
+    {
+      percent: 30,
+      defaultPercent: 10,
+      conditional: true,
+      scope: 'team',
+      skillId: 1355,
+      skillName: 'Duty of the Monarch(Passive)',
+    },
+  );
+  assert.deepEqual(
+    getSpeedTuningCapabilities(monsterById.get('ragdoll-dark-770')!, skillById)
+      .atbBoost,
+    {
+      percent: 10,
+      defaultPercent: 0,
+      conditional: true,
+      scope: 'team',
+      skillId: 1098,
+      skillName: 'Tooth For a Tooth (Passive)',
     },
   );
 
@@ -1022,6 +1092,57 @@ test('query params do Speed Tuning normalizam valores inválidos e padrões', ()
       queryMonsters,
     ).toString(),
     'm1=bernard&m2=konamiya',
+  );
+});
+
+test('query params do Speed Tuning usam padrões conservadores de boost', () => {
+  const queryMonsters = new Map<string, SpeedTuningQueryMonster>([
+    [
+      'mihyang',
+      {
+        defaultBoostPercent: 0,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'woonsa',
+      {
+        defaultBoostPercent: 10,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+    [
+      'follower',
+      {
+        defaultBoostPercent: null,
+        defaultInitialBuffs: null,
+        hasSpeedBuff: false,
+        hasTargetEffect: false,
+        leaderAmount: null,
+      },
+    ],
+  ]);
+  const params = new URLSearchParams('m1=mihyang&m2=woonsa&m3=follower');
+  const defaults = readSpeedTuningQueryState(params, queryMonsters);
+
+  assert.equal(defaults.slots[0]?.boostPercent, 0);
+  assert.equal(defaults.slots[1]?.boostPercent, 10);
+  assert.equal(
+    writeSpeedTuningQueryState(params, defaults, queryMonsters).toString(),
+    params.toString(),
+  );
+
+  defaults.slots[0]!.boostPercent = 15;
+  defaults.slots[1]!.boostPercent = 20;
+  assert.equal(
+    writeSpeedTuningQueryState(params, defaults, queryMonsters).toString(),
+    'm1=mihyang&boost1=15&m2=woonsa&boost2=20&m3=follower',
   );
 });
 

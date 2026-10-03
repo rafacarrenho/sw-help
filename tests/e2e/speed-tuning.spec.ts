@@ -210,6 +210,31 @@ test('monta um time de Siege e calcula a SPD mínima com boost e buff', async ({
   expect(errors).toEqual([]);
 });
 
+test('identifica boost de ATB condicional e usa padrão conservador', async ({
+  page,
+}) => {
+  await page.goto('/pt/summoners-war/spd-tuning');
+  const firstSlot = page.locator('[data-tuning-slot]').nth(0);
+  const conditionalLabel = firstSlot.locator('[data-tuning-boost-conditional]');
+
+  await selectMonster(page, 0, 'bernard', 'bernard-wind-1579');
+  await expect(conditionalLabel).toBeHidden();
+  await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
+    '30',
+  );
+
+  await selectMonster(page, 0, 'mihyang', 'mihyang-water-613');
+  await expect(conditionalLabel).toBeVisible();
+  await expect(conditionalLabel).toHaveText(/Condicional/);
+  await expect(firstSlot.locator('[data-tuning-boost-percent]')).toHaveValue(
+    '',
+  );
+
+  await firstSlot.locator('[data-tuning-boost-percent]').fill('15');
+  await expect(conditionalLabel).toBeVisible();
+  expect(new URL(page.url()).searchParams.get('boost1')).toBe('15');
+});
+
 test('aplica boost de alvo único e mantém somente uma liderança ativa', async ({
   page,
 }) => {

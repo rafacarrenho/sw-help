@@ -374,6 +374,7 @@ export const en = {
     initialBuffs: 'Initial buffs',
     buffs: 'buffs',
     atbBoost: 'ATB Boost (%)',
+    conditional: 'Conditional',
     effectTarget: 'Effect target',
     useSpeedBuff: 'Use SPD buff',
     speedIncreaseEffect: 'SPD increasing effect (%)',

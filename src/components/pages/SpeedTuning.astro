@@ -253,7 +253,13 @@ const slots = [
             {index < slots.length - 1 && (
               <>
                 <label class="speed-tuning-field" data-tuning-boost hidden>
-                  <span>{messages.tuning.atbBoost}</span>
+                  <span>
+                    {messages.tuning.atbBoost}
+                    <span data-tuning-boost-conditional hidden>
+                      {' · '}
+                      {messages.tuning.conditional}
+                    </span>
+                  </span>
                   <input
                     data-tuning-boost-percent
                     type="number"
@@ -364,6 +370,7 @@ const slots = [
       tuneFollower,
       writeSpeedTuningQueryState,
       type FollowerTuningResult,
+      type SpeedTuningAtbEffect,
       type SpeedTuningEffect,
       type SpeedTuningLeader,
       type SpeedTuningMode,
@@ -389,7 +396,7 @@ const slots = [
       image: string | null;
       leader: SpeedTuningLeader | null;
       capabilities: {
-        atbBoost: SpeedTuningEffect | null;
+        atbBoost: SpeedTuningAtbEffect | null;
         speedBuff: SpeedTuningEffect | null;
       };
     };
@@ -425,6 +432,7 @@ const slots = [
       initialBuffs: HTMLElement;
       initialBuffsSelect: HTMLSelectElement;
       boost: HTMLElement | null;
+      boostConditional: HTMLElement | null;
       boostPercent: HTMLInputElement | null;
       speedBuff: HTMLElement | null;
       speedBuffToggle: HTMLInputElement | null;
@@ -464,7 +472,8 @@ const slots = [
       sortedMonsters.map((monster) => [
         monster.id,
         {
-          defaultBoostPercent: monster.capabilities.atbBoost?.percent ?? null,
+          defaultBoostPercent:
+            monster.capabilities.atbBoost?.defaultPercent ?? null,
           defaultInitialBuffs:
             monster.id === CHILLING_ID ? DEFAULT_CHILLING_INITIAL_BUFFS : null,
           hasSpeedBuff: Boolean(monster.capabilities.speedBuff),
@@ -549,6 +558,10 @@ const slots = [
         '[data-tuning-initial-buffs-select]',
       )!,
       boost: query<HTMLElement>(root, '[data-tuning-boost]'),
+      boostConditional: query<HTMLElement>(
+        root,
+        '[data-tuning-boost-conditional]',
+      ),
       boostPercent: query<HTMLInputElement>(
         root,
         '[data-tuning-boost-percent]',
@@ -695,7 +708,7 @@ const slots = [
       state.monster = monster;
       state.initialBuffs =
         monster.id === CHILLING_ID ? DEFAULT_CHILLING_INITIAL_BUFFS : 0;
-      state.boostPercent = monster.capabilities.atbBoost?.percent ?? 0;
+      state.boostPercent = monster.capabilities.atbBoost?.defaultPercent ?? 0;
       state.speedBuffEnabled = Boolean(monster.capabilities.speedBuff);
       if (validLeader(monster.leader)) activateBestAvailableLeader(slotIndex);
       slotElements.search.value = monster.name;
@@ -1007,6 +1020,9 @@ const slots = [
       const canProvideEffect = slotIndex < activeSlotCount() - 1;
       if (slotElements.boost) {
         slotElements.boost.hidden = !boost || !canProvideEffect;
+      }
+      if (slotElements.boostConditional) {
+        slotElements.boostConditional.hidden = !boost?.conditional;
       }
       if (slotElements.boostPercent) {
         slotElements.boostPercent.value = displayNumber(state.boostPercent);

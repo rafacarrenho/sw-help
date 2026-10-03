@@ -378,6 +378,7 @@ export const ptBR: Messages = {
     initialBuffs: 'Buffs iniciais',
     buffs: 'buffs',
     atbBoost: 'Boost de ATB (%)',
+    conditional: 'Condicional',
     effectTarget: 'Alvo do efeito',
     useSpeedBuff: 'Usar buff de SPD',
     speedIncreaseEffect: 'Efeito de aumento de SPD (%)',

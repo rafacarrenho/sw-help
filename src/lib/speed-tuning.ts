@@ -38,14 +38,19 @@ export const SPEED_TUNING_MODE_CONFIG = {
 >;
 
 export interface SpeedTuningEffect {
-  percent?: number;
   scope: SpeedTuningTargetScope;
   skillId: number;
   skillName: string;
 }
 
+export interface SpeedTuningAtbEffect extends SpeedTuningEffect {
+  percent: number;
+  defaultPercent: number;
+  conditional: boolean;
+}
+
 export interface SpeedTuningCapabilities {
-  atbBoost: SpeedTuningEffect | null;
+  atbBoost: SpeedTuningAtbEffect | null;
   speedBuff: SpeedTuningEffect | null;
 }
 
@@ -408,6 +413,7 @@ function inferAtbScope(skill: MonsterSkill): SpeedTuningTargetScope | null {
   const describesOneAlly = [
     /(?:fills?|increases?|recovers?|balances?|switches?)[^.]{0,55}attack bars? of (?:the )?(?:target )?ally/,
     /(?:fills?|increases?|recovers?)[^.]{0,55}(?:an ally|ally target|target ally)(?:'s)? attack bars?/,
+    /attack bars? of (?:an )?ally target/,
     /(?:the |target )?ally's attack bars? (?:is|will be|by)/,
     /attack bars? of the ally with/,
     /attack bars? of the affected ally/,
@@ -456,7 +462,7 @@ function skillHasEffect(skill: MonsterSkill, name: string) {
   return skill.effects.some((effect) => effect.name === name);
 }
 
-function atbEffectForSkill(skill: MonsterSkill): SpeedTuningEffect | null {
+function atbEffectForSkill(skill: MonsterSkill): SpeedTuningAtbEffect | null {
   const override = speedTuningSkillOverrides[skill.id];
   if (override?.excludeAtb || !skillHasEffect(skill, 'Increase ATB')) {
     return null;
@@ -477,9 +483,17 @@ function atbEffectForSkill(skill: MonsterSkill): SpeedTuningEffect | null {
     0,
     100,
   );
+  const conditional = override?.conditionalAtb ?? skill.passive;
+  const defaultPercent = clamp(
+    override?.defaultAtbBoost ?? (conditional ? 0 : percent),
+    0,
+    100,
+  );
 
   return {
     percent,
+    defaultPercent,
+    conditional,
     scope,
     skillId: skill.id,
     skillName: skill.name,
@@ -517,8 +531,8 @@ export function getSpeedTuningCapabilities(
 
   const atbBoost = relevantSkills
     .map(atbEffectForSkill)
-    .filter((effect): effect is SpeedTuningEffect => Boolean(effect))
-    .sort((first, second) => (second.percent ?? 0) - (first.percent ?? 0))[0];
+    .filter((effect): effect is SpeedTuningAtbEffect => Boolean(effect))
+    .sort((first, second) => first.percent - second.percent)[0];
   const speedBuff = relevantSkills
     .map(speedBuffEffectForSkill)
     .filter((effect): effect is SpeedTuningEffect => Boolean(effect))

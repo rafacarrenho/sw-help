@@ -37,8 +37,9 @@ As habilidades ativas inicialmente classificadas como condicionais serão:
 - Cutting Magic, de Lisa, Emma e Sylvia;
 - Fiery Dance, de Colleen;
 - Purifying Mediation, de Neriope e Arella;
-- Sword of Justice, de Agrenia e Theonia;
-- Judgment Storm, de Driana.
+- Sword of Justice, de Neriope, Agrenia, Driana, Arella e Theonia;
+- Fallen Blossoms, de Chasun;
+- Attack! Heal!, de Chichi and Friends.
 
 Essa lista será registrada por IDs de habilidade, não pelos nomes acima.
 
