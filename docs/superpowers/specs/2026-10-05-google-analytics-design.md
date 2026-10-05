@@ -15,8 +15,12 @@ Help, following the production-only loading pattern already used by Luabify.
   using the layout receive the same integration.
 - Read the measurement ID from the public build-time environment variable
   `PUBLIC_GOOGLE_ANALYTICS_ID`.
-- Configure the production environment with `G-QTMVTJP8FE`; the measurement ID
-  is public and is not treated as a secret.
+- Configure `G-QTMVTJP8FE` as the public schema default so regular production
+  builds work without separate deployment state while still allowing an
+  environment override. The measurement ID is public and is not treated as a
+  secret.
+- Extend the existing Content Security Policy with the non-advertising Google
+  Analytics script, image, and connection endpoints.
 
 ## Runtime behavior
 
@@ -32,8 +36,8 @@ Help, following the production-only loading pattern already used by Luabify.
 ## Scope
 
 The change covers the shared Analytics loader, its inclusion in the global
-layout, the public environment configuration, and automated verification of the
-generated production HTML.
+layout, the public environment configuration, the required CSP directives, and
+automated verification of the generated production HTML.
 
 ## Out of scope
 
@@ -46,10 +50,8 @@ generated production HTML.
 ## Validation
 
 - Run `pnpm test`.
-- Run a production build with `PUBLIC_GOOGLE_ANALYTICS_ID=G-QTMVTJP8FE` and
-  confirm the generated HTML contains the loader once per page.
-- Run `pnpm build` to verify the normal build remains valid when the environment
-  variable is absent.
+- Run `pnpm build` and confirm the generated HTML contains the loader once per
+  page using the configured default.
 - Run `pnpm test:e2e` after generating the production build because the change
   affects the global page layout.
 

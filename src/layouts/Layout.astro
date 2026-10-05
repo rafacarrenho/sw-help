@@ -2,6 +2,7 @@
 import Icon from '../components/Icon.astro';
 import GameContext from '../components/GameContext.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ThirdPartyScripts from '../components/ThirdPartyScripts.astro';
 import { gameById, type GameId, type GameSection } from '../data/games';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
@@ -245,6 +246,7 @@ const serializedStructuredData = JSON.stringify(
     <meta name="twitter:description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{documentTitle}</title>
+    <ThirdPartyScripts placement="head" />
     {!noIndex && (
       <script
         type="application/ld+json"

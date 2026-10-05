@@ -91,6 +91,8 @@ test('cabeçalhos estáticos endurecem a entrega em produção', () => {
   assert.match(headers, /frame-ancestors 'none'/);
   assert.match(headers, /X-Content-Type-Options: nosniff/);
   assert.match(headers, /X-Frame-Options: DENY/);
+  assert.match(headers, /script-src[^;]+https:\/\/www\.googletagmanager\.com/);
+  assert.match(headers, /connect-src[^;]+https:\/\/\*\.google-analytics\.com/);
   assert.match(headers, /\/_astro\/\*/);
   assert.match(headers, /max-age=31536000, immutable/);
 });

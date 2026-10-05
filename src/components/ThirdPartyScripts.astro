@@ -1,0 +1,36 @@
+---
+import { PUBLIC_GOOGLE_ANALYTICS_ID } from 'astro:env/client';
+
+interface Props {
+  placement: 'head' | 'body';
+}
+
+const { placement } = Astro.props;
+const isProduction = import.meta.env.PROD;
+---
+
+{isProduction && placement === 'head' && PUBLIC_GOOGLE_ANALYTICS_ID && <script
+  define:vars={{ gaMeasurementId: PUBLIC_GOOGLE_ANALYTICS_ID }}
+>
+  if (!document.querySelector('script[data-sw-help-ga]')) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.dataset.swHelpGa = 'true';
+    const gaBaseUrl = [
+      'https:',
+      '',
+      'www.googletagmanager.com',
+      'gtag',
+      'js',
+    ].join('/');
+    script.src = `${gaBaseUrl}?id=${encodeURIComponent(gaMeasurementId)}`;
+    document.head.append(script);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', gaMeasurementId, { anonymize_ip: true });
+  }
+</script>}
