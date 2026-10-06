@@ -27,8 +27,11 @@ explicit choice before navigating.
 
 - While no preference exists, background scrolling and pointer interaction are
   blocked.
+- When the first layer appears, keyboard focus starts on `Accept all`, the
+  primary action. Leaving focus unset was rejected because the surface is modal
+  and the background is unavailable to keyboard users.
 - Keyboard focus is contained within the first-layer notice. `Tab` and
-  `Shift+Tab` cycle between its two actions.
+  `Shift+Tab` cycle through its privacy-policy link and two actions.
 - `Escape` does not dismiss the first layer because doing so would restore an
   undecided, interactive page.
 - Opening settings transfers focus into the modal. Closing settings without a
