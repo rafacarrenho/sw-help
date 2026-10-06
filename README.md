@@ -1,4 +1,4 @@
-# SW Help
+# PlayerDojo
 
 Toolkit bilíngue de Summoners War em **Astro + TypeScript**, com saída estática
 e prioridade atual no **Siege Counter**. O site também oferece catálogo de
@@ -26,6 +26,10 @@ pnpm preview
 
 O deploy atual usa Cloudflare Workers Static Assets, configurado em
 `wrangler.jsonc`.
+
+O domínio canônico de produção é `https://www.playerdojo.com`. Configure o
+domínio raiz `https://playerdojo.com` no provedor para redirecionar com status
+301 ou 308 para o host com `www`, preservando caminho e query string.
 
 ## O que está pronto
 

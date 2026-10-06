@@ -34,7 +34,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
     home: {
       heading: 'Summoners War tools for planning every turn',
       intro: [
-        'SW Help brings focused Summoners War tools into one place: search Siege counters, research monster stats and skills, compare SPD, tune a team, and calculate combat tick breakpoints.',
+        'PlayerDojo brings focused Summoners War tools into one place: search Siege counters, research monster stats and skills, compare SPD, tune a team, and calculate combat tick breakpoints.',
         'Use each calculator as a planning aid, then confirm runes, artifacts, passives, and the battle situation in game. The tools explain what they include so you can make an informed decision before investing resources or entering a fight.',
       ],
       relatedHeading: 'Start with a Summoners War tool',
@@ -175,7 +175,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'Where does the Summoners War monster data come from?',
           answer:
-            'The catalog imports monster and skill information from SWARFARM and displays the import date. Portraits and game characters belong to Com2uS; SW Help is an independent community project.',
+            'The catalog imports monster and skill information from SWARFARM and displays the import date. Portraits and game characters belong to Com2uS; PlayerDojo is an independent community project.',
         },
       ],
       relatedHeading: 'Use monster data in a calculator',
@@ -396,7 +396,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
     home: {
       heading: 'Ferramentas de Summoners War para planejar cada turno',
       intro: [
-        'O SW Help reúne ferramentas focadas em Summoners War: encontre counters de Siege, pesquise atributos e habilidades de monstros, compare SPD, ajuste a ordem do time e calcule breakpoints de Tick.',
+        'O PlayerDojo reúne ferramentas focadas em Summoners War: encontre counters de Siege, pesquise atributos e habilidades de monstros, compare SPD, ajuste a ordem do time e calcule breakpoints de Tick.',
         'Use cada calculadora para planejar e depois confirme no jogo as runas, os artefatos, as passivas e a situação da batalha. Cada ferramenta explica o que entra no cálculo para apoiar uma decisão consciente.',
       ],
       relatedHeading: 'Comece por uma ferramenta de Summoners War',
@@ -538,7 +538,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'De onde vêm os dados dos monstros de Summoners War?',
           answer:
-            'O catálogo importa informações de monstros e habilidades do SWARFARM e exibe a data da importação. Retratos e personagens pertencem à Com2uS; o SW Help é um projeto independente da comunidade.',
+            'O catálogo importa informações de monstros e habilidades do SWARFARM e exibe a data da importação. Retratos e personagens pertencem à Com2uS; o PlayerDojo é um projeto independente da comunidade.',
         },
       ],
       relatedHeading: 'Use os dados em uma calculadora',

@@ -1,7 +1,7 @@
 import { defineConfig, envField } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://sw-help.rafabcarrenho.workers.dev',
+  site: 'https://www.playerdojo.com',
   output: 'static',
   build: {
     format: 'file',

@@ -3,6 +3,7 @@ import Icon from '../components/Icon.astro';
 import GameContext from '../components/GameContext.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ThirdPartyScripts from '../components/ThirdPartyScripts.astro';
+import { SITE_NAME, SITE_TAGLINE } from '../config/site';
 import { gameById, type GameId, type GameSection } from '../data/games';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
@@ -33,7 +34,7 @@ interface Props {
   section?: 'portal' | GameSection;
 }
 const {
-  title = 'SW Help',
+  title = SITE_NAME,
   locale = 'en',
   detail = false,
   section = 'home',
@@ -105,7 +106,7 @@ const sectionLabel =
           : section === 'siege'
             ? 'Siege Counter'
             : messages.layout.home;
-const documentTitle = title === 'SW Help' ? title : `${title} · SW Help`;
+const documentTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
 const structuredData: Record<string, unknown>[] = [];
 const webApplicationRoutes = new Set<RouteName>([
   'siegeCounter',
@@ -119,8 +120,8 @@ if (routeName === 'portalHome') {
   structuredData.push({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'SW Help',
-    alternateName: 'SW Help · Game Tools and Guides',
+    name: SITE_NAME,
+    alternateName: `${SITE_NAME} · ${SITE_TAGLINE}`,
     url: canonicalUrl.href,
     description,
     inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en',
@@ -197,7 +198,7 @@ if (webApplicationRoutes.has(routeName)) {
     },
     isPartOf: {
       '@type': 'WebSite',
-      name: 'SW Help',
+      name: SITE_NAME,
       url: portalUrl.href,
     },
   });
@@ -226,7 +227,7 @@ const serializedStructuredData = JSON.stringify(
     <meta property="og:title" content={documentTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="SW Help" />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
     <meta
       property="og:locale:alternate"
@@ -257,7 +258,8 @@ const serializedStructuredData = JSON.stringify(
       try {
         if (
           window.matchMedia('(min-width: 761px)').matches &&
-          window.localStorage.getItem('sw-help:sidebar-collapsed') === 'true'
+          (window.localStorage.getItem('playerdojo:sidebar-collapsed') ??
+            window.localStorage.getItem('sw-help:sidebar-collapsed')) === 'true'
         ) {
           document.documentElement.classList.add('nav-collapsed');
         }
@@ -284,24 +286,32 @@ const serializedStructuredData = JSON.stringify(
       >
         <Icon name="menu" size={22} />
       </button>
-      <a href={routePath('portalHome', locale)} class="mobile-brand">
+      <a
+        href={routePath('portalHome', locale)}
+        class="mobile-brand"
+        aria-label={messages.layout.homeLabel}
+      >
         <span class="brand-symbol">
           <Icon name="swords" size={21} />
         </span>
         <span>
-          SW<span class="brand-help">HELP</span>
+          Player<span class="brand-accent">Dojo</span>
         </span>
       </a>
       <span class="mobile-header-spacer" aria-hidden="true"></span>
     </header>
     <aside class="sidebar" id="app-sidebar" data-sidebar>
       <div class="sidebar-header">
-        <a href={routePath('portalHome', locale)} class="brand">
+        <a
+          href={routePath('portalHome', locale)}
+          class="brand"
+          aria-label={messages.layout.homeLabel}
+        >
           <span class="brand-symbol">
             <Icon name="swords" size={23} />
           </span>
           <span class="brand-copy">
-            SW<span class="brand-help">HELP</span>
+            Player<span class="brand-accent">Dojo</span>
             <small>GAME TOOLS &amp; GUIDES</small>
           </span>
         </a>
@@ -571,10 +581,22 @@ const serializedStructuredData = JSON.stringify(
         document.querySelectorAll<HTMLElement>('[data-nav-label]');
       const mobileMedia = window.matchMedia('(max-width: 760px)');
       const navigationMessages = document.body.dataset;
-      const navigationStorageKey = 'sw-help:sidebar-collapsed';
+      const navigationStorageKey = 'playerdojo:sidebar-collapsed';
+      const legacyNavigationStorageKey = 'sw-help:sidebar-collapsed';
       const readDesktopPreference = () => {
         try {
-          return window.localStorage.getItem(navigationStorageKey) === 'true';
+          const currentPreference =
+            window.localStorage.getItem(navigationStorageKey);
+          if (currentPreference !== null) return currentPreference === 'true';
+
+          const legacyPreference = window.localStorage.getItem(
+            legacyNavigationStorageKey,
+          );
+          if (legacyPreference !== null) {
+            window.localStorage.setItem(navigationStorageKey, legacyPreference);
+            window.localStorage.removeItem(legacyNavigationStorageKey);
+          }
+          return legacyPreference === 'true';
         } catch {
           return false;
         }

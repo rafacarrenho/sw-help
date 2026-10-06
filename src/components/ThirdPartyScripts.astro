@@ -12,10 +12,10 @@ const isProduction = import.meta.env.PROD;
 {isProduction && placement === 'head' && PUBLIC_GOOGLE_ANALYTICS_ID && <script
   define:vars={{ gaMeasurementId: PUBLIC_GOOGLE_ANALYTICS_ID }}
 >
-  if (!document.querySelector('script[data-sw-help-ga]')) {
+  if (!document.querySelector('script[data-playerdojo-ga]')) {
     const script = document.createElement('script');
     script.async = true;
-    script.dataset.swHelpGa = 'true';
+    script.dataset.playerdojoGa = 'true';
     const gaBaseUrl = [
       'https:',
       '',

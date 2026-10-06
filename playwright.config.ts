@@ -17,7 +17,7 @@ export default defineConfig({
   ],
   webServer: {
     command:
-      'WRANGLER_LOG_PATH=/tmp/sw-help-wrangler.log pnpm exec wrangler dev --config wrangler.jsonc --ip 127.0.0.1 --port 4321 --log-level error',
+      'WRANGLER_LOG_PATH=/tmp/playerdojo-wrangler.log pnpm exec wrangler dev --config wrangler.jsonc --ip 127.0.0.1 --port 4321 --log-level error',
     url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
   },

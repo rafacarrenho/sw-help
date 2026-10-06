@@ -9,7 +9,7 @@ export const ptBR: Messages = {
     closeMenu: 'Fechar menu',
     expandSidebar: 'Expandir menu lateral',
     collapseSidebar: 'Recolher menu lateral',
-    homeLabel: 'SW Help, início do portal',
+    homeLabel: 'PlayerDojo, início do portal',
     home: 'Início',
     general: 'GERAL',
     portalHome: 'Início do portal',
@@ -30,7 +30,7 @@ export const ptBR: Messages = {
     games: 'Jogos',
     footerDescription:
       'Ferramentas objetivas, referências confiáveis e calculadoras práticas organizadas por jogo para decisões melhores.',
-    copyright: '© 2026 SW Help. Todos os direitos reservados.',
+    copyright: '© 2026 PlayerDojo. Todos os direitos reservados.',
     footerDisclaimer:
       'Projeto independente da comunidade. Nomes e marcas dos jogos pertencem aos seus respectivos proprietários.',
   },

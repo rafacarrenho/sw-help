@@ -16,7 +16,7 @@ test('production pages initialize Google Analytics once', async ({ page }) => {
   await expect
     .poll(() => googleTagRequests)
     .toEqual(['https://www.googletagmanager.com/gtag/js?id=G-QTMVTJP8FE']);
-  await expect(page.locator('script[data-sw-help-ga]')).toHaveCount(1);
+  await expect(page.locator('script[data-playerdojo-ga]')).toHaveCount(1);
 
   const analyticsConfig = await page.evaluate(() => {
     const analyticsWindow = window as typeof window & {

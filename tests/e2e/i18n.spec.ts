@@ -8,15 +8,15 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   ).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'https://sw-help.rafabcarrenho.workers.dev/',
+    'https://www.playerdojo.com/',
   );
   await expect(page.locator('link[hreflang="en"]')).toHaveAttribute(
     'href',
-    'https://sw-help.rafabcarrenho.workers.dev/',
+    'https://www.playerdojo.com/',
   );
   await expect(page.locator('link[hreflang="pt-BR"]')).toHaveAttribute(
     'href',
-    'https://sw-help.rafabcarrenho.workers.dev/pt',
+    'https://www.playerdojo.com/pt',
   );
 
   await page.goto('/pt');
@@ -36,6 +36,12 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
   );
   await expect(page.locator('.breadcrumb')).toHaveText('Início');
   await expect(page.locator('.sidebar .brand')).toHaveAttribute('href', '/pt');
+  await expect(page.locator('.sidebar .brand')).toHaveAttribute(
+    'aria-label',
+    'PlayerDojo, início do portal',
+  );
+  await expect(page.locator('.sidebar .brand')).toContainText('PlayerDojo');
+  await expect(page.locator('.site-footer-logo')).toContainText('PlayerDojo');
 
   if (testInfo.project.name === 'mobile') {
     await page.getByRole('button', { name: 'Abrir menu' }).click();
@@ -206,9 +212,9 @@ test('sitemap lista as rotas canônicas e seus alternates', async ({
   expect(response.ok()).toBeTruthy();
   const sitemap = await response.text();
   expect(sitemap).toContain(
-    '<loc>https://sw-help.rafabcarrenho.workers.dev/summoners-war/speed-comparison</loc>',
+    '<loc>https://www.playerdojo.com/summoners-war/speed-comparison</loc>',
   );
   expect(sitemap).toContain(
-    'hreflang="pt-BR" href="https://sw-help.rafabcarrenho.workers.dev/pt/summoners-war/comparador-spd"',
+    'hreflang="pt-BR" href="https://www.playerdojo.com/pt/summoners-war/comparador-spd"',
   );
 });

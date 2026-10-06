@@ -109,7 +109,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
   await expect(page.locator('html')).toHaveClass(/nav-collapsed/);
   expect(
     await page.evaluate(() =>
-      window.localStorage.getItem('sw-help:sidebar-collapsed'),
+      window.localStorage.getItem('playerdojo:sidebar-collapsed'),
     ),
   ).toBe('true');
 
@@ -119,7 +119,7 @@ test('desktop persiste a escolha entre páginas e recargas', async ({
   await expect(page.locator('html')).not.toHaveClass(/nav-collapsed/);
   expect(
     await page.evaluate(() =>
-      window.localStorage.getItem('sw-help:sidebar-collapsed'),
+      window.localStorage.getItem('playerdojo:sidebar-collapsed'),
     ),
   ).toBe('false');
 });
@@ -139,6 +139,16 @@ test('mobile abre como drawer e fecha por Escape e backdrop', async ({
   const backdrop = page.locator('[data-sidebar-backdrop]');
 
   await expect(sidebar).toHaveAttribute('aria-hidden', 'true');
+  expect(
+    await page.evaluate(() =>
+      window.localStorage.getItem('playerdojo:sidebar-collapsed'),
+    ),
+  ).toBe('true');
+  expect(
+    await page.evaluate(() =>
+      window.localStorage.getItem('sw-help:sidebar-collapsed'),
+    ),
+  ).toBeNull();
   await expect(page.locator('body')).not.toHaveClass(/mobile-nav-open/);
   const openButtonBox = await openButton.boundingBox();
   const mobileBrandBox = await mobileBrand.boundingBox();

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const productionOrigin = 'https://sw-help.rafabcarrenho.workers.dev';
+const productionOrigin = 'https://www.playerdojo.com';
 
 test('sitemap lista somente URLs canônicas com alternativas de idioma', async ({
   request,
@@ -76,7 +76,7 @@ test('404 em inglês retorna status correto e não publica canonical', async ({
 
   const response = await page.goto('/sitemfdf');
   expect(response?.status()).toBe(404);
-  await expect(page).toHaveTitle('Page not found · SW Help');
+  await expect(page).toHaveTitle('Page not found · PlayerDojo');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     'content',
     'noindex,follow',
@@ -102,7 +102,7 @@ test('404 em português preserva idioma e links localizados', async ({
 
   const response = await page.goto('/pt/pagina-inexistente');
   expect(response?.status()).toBe(404);
-  await expect(page).toHaveTitle('Página não encontrada · SW Help');
+  await expect(page).toHaveTitle('Página não encontrada · PlayerDojo');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     'content',
@@ -150,31 +150,31 @@ test('páginas principais usam títulos e descrições focados em Summoners War'
   const pages = [
     {
       path: '/',
-      title: 'Free Tools and Calculators for Games · SW Help',
+      title: 'Free Tools and Calculators for Games · PlayerDojo',
     },
     {
       path: '/summoners-war',
-      title: 'Summoners War Tools for Siege, SPD & Monsters · SW Help',
+      title: 'Summoners War Tools for Siege, SPD & Monsters · PlayerDojo',
     },
     {
       path: '/summoners-war/siege-counter',
-      title: 'Summoners War Siege Counter & Offense Teams · SW Help',
+      title: 'Summoners War Siege Counter & Offense Teams · PlayerDojo',
     },
     {
       path: '/summoners-war/monsters',
-      title: 'Summoners War Monster Database & Catalog · SW Help',
+      title: 'Summoners War Monster Database & Catalog · PlayerDojo',
     },
     {
       path: '/summoners-war/speed-tuning',
-      title: 'Summoners War SPD Tuning Calculator · SW Help',
+      title: 'Summoners War SPD Tuning Calculator · PlayerDojo',
     },
     {
       path: '/summoners-war/speed-comparison',
-      title: 'Summoners War SPD Comparison Calculator · SW Help',
+      title: 'Summoners War SPD Comparison Calculator · PlayerDojo',
     },
     {
       path: '/summoners-war/speed-tick',
-      title: 'Summoners War SPD Tick Calculator · SW Help',
+      title: 'Summoners War SPD Tick Calculator · PlayerDojo',
     },
   ];
 
@@ -187,7 +187,7 @@ test('páginas principais usam títulos e descrições focados em Summoners War'
     );
     await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
       'content',
-      'SW Help',
+      'PlayerDojo',
     );
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       'content',
@@ -236,7 +236,7 @@ test('dados estruturados identificam o site e os breadcrumbs localizados', async
     .textContent();
   expect(JSON.parse(websiteData ?? '{}')).toMatchObject({
     '@type': 'WebSite',
-    name: 'SW Help',
+    name: 'PlayerDojo',
     url: `${productionOrigin}/`,
     inLanguage: 'en',
   });
@@ -270,7 +270,7 @@ test('paginação e detalhes recebem metadados únicos', async ({
 
   await page.goto('/summoners-war/monsters/page/2');
   await expect(page).toHaveTitle(
-    'Summoners War Monster Database & Catalog – Page 2 · SW Help',
+    'Summoners War Monster Database & Catalog – Page 2 · PlayerDojo',
   );
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',

@@ -7,7 +7,7 @@ export const en = {
     closeMenu: 'Close menu',
     expandSidebar: 'Expand sidebar',
     collapseSidebar: 'Collapse sidebar',
-    homeLabel: 'SW Help, portal home',
+    homeLabel: 'PlayerDojo, portal home',
     home: 'Home',
     general: 'GENERAL',
     portalHome: 'Portal home',
@@ -28,7 +28,7 @@ export const en = {
     games: 'Games',
     footerDescription:
       'Focused tools, reliable references, and practical calculators organized by game and built for better decisions.',
-    copyright: '© 2026 SW Help. All rights reserved.',
+    copyright: '© 2026 PlayerDojo. All rights reserved.',
     footerDisclaimer:
       'Independent community project. Game names and trademarks belong to their respective owners.',
   },

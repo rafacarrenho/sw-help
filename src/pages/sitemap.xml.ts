@@ -6,6 +6,7 @@ import {
   readMonsterFilters,
 } from '../lib/monster-catalog';
 import { routePath, type RouteName, type RouteParams } from '../i18n/index.ts';
+import { SITE_ORIGIN } from '../config/site';
 
 export const prerender = true;
 
@@ -45,7 +46,7 @@ const escapeXml = (value: string) =>
   });
 
 export const GET: APIRoute = ({ site }) => {
-  const origin = site ?? new URL('https://sw-help.rafabcarrenho.workers.dev');
+  const origin = site ?? new URL(SITE_ORIGIN);
   const absolute = (path: string) => new URL(path, origin).href;
   const urls = entries.flatMap(({ route, params = {} }) => {
     const english = absolute(routePath(route, 'en', params));

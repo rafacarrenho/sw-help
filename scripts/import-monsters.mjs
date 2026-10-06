@@ -20,7 +20,7 @@ async function request(url, binary = false) {
       const response = await fetch(url, {
         headers: {
           Accept: binary ? 'image/png' : 'application/json',
-          'User-Agent': 'SW-Help catalog importer',
+          'User-Agent': 'PlayerDojo catalog importer',
         },
         signal: AbortSignal.timeout(60000),
       });
