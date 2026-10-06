@@ -1,0 +1,366 @@
+---
+import Icon from './Icon.astro';
+import { getMessages, routePath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+---
+
+<div class="privacy-choice-layer" data-privacy-choice-layer hidden>
+  <section
+    class="privacy-notice"
+    data-privacy-notice
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="privacy-notice-title"
+  >
+    <div class="privacy-notice-copy">
+      <strong id="privacy-notice-title">{messages.consent.noticeTitle}</strong>
+      <p>
+        {messages.consent.noticeCopy} {messages.consent.privacyPrefix}{' '}
+        <a href={routePath('privacy', locale)}>
+          {messages.consent.privacyLink}
+        </a>
+        .
+      </p>
+    </div>
+    <div class="privacy-notice-actions">
+      <button
+        type="button"
+        class="button button-secondary"
+        data-consent-open-settings
+      >
+        {messages.consent.settings}
+      </button>
+      <button type="button" class="button" data-consent-accept-all>
+        {messages.consent.acceptAll}
+      </button>
+    </div>
+  </section>
+</div>
+
+<div class="privacy-modal-backdrop" data-privacy-modal-backdrop hidden>
+  <section
+    class="privacy-modal"
+    data-privacy-modal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="privacy-modal-title"
+    aria-describedby="privacy-modal-description"
+    tabindex="-1"
+  >
+    <header class="privacy-modal-header">
+      <span class="privacy-modal-brand" aria-label="PlayerDojo">
+        <span aria-hidden="true">
+          <Icon name="swords" size={24} />
+        </span>
+        Player<span>Dojo</span>
+      </span>
+      <button
+        type="button"
+        class="privacy-modal-close"
+        data-consent-close-settings
+        aria-label={messages.consent.closeSettings}
+      >
+        <Icon name="close" size={23} />
+      </button>
+    </header>
+
+    <div class="privacy-modal-scroll">
+      <div class="privacy-modal-intro">
+        <h2 id="privacy-modal-title">{messages.consent.settingsTitle}</h2>
+        <p id="privacy-modal-description">{messages.consent.settingsCopy}</p>
+        <a href={routePath('privacy', locale)}>
+          {messages.consent.privacyLink}
+        </a>
+        <button type="button" class="button" data-consent-modal-accept-all>
+          {messages.consent.acceptAll}
+        </button>
+      </div>
+
+      <section
+        class="privacy-categories"
+        aria-labelledby="privacy-categories-title"
+      >
+        <h3 id="privacy-categories-title">
+          {messages.consent.categoriesTitle}
+        </h3>
+
+        <div class="privacy-category">
+          <div>
+            <strong>{messages.consent.necessaryTitle}</strong>
+            <p>{messages.consent.necessaryCopy}</p>
+          </div>
+          <span class="privacy-always-active">
+            {messages.consent.alwaysActive}
+          </span>
+        </div>
+
+        <label class="privacy-category privacy-category-toggle">
+          <span>
+            <strong>{messages.consent.advertisingTitle}</strong>
+            <small>{messages.consent.advertisingCopy}</small>
+          </span>
+          <input type="checkbox" role="switch" data-consent-personalized-ads />
+        </label>
+
+        <label class="privacy-category privacy-category-toggle">
+          <span>
+            <strong>{messages.consent.analyticsTitle}</strong>
+            <small>{messages.consent.analyticsCopy}</small>
+          </span>
+          <input type="checkbox" role="switch" data-consent-analytics />
+        </label>
+      </section>
+    </div>
+
+    <footer class="privacy-modal-actions">
+      <button
+        type="button"
+        class="button button-secondary"
+        data-consent-essential-only
+      >
+        {messages.consent.essentialOnly}
+      </button>
+      <button type="button" class="button" data-consent-confirm>
+        {messages.consent.confirmChoices}
+      </button>
+    </footer>
+  </section>
+</div>
+
+<p
+  class="sr-only"
+  data-consent-status
+  data-all-status={messages.consent.allStatus}
+  data-essential-status={messages.consent.essentialStatus}
+  data-custom-status={messages.consent.customStatus}
+  aria-live="polite"
+></p>
+
+<script>
+  import {
+    createPrivacyPreferences,
+    LEGACY_ANALYTICS_KEY,
+    parsePrivacyPreferences,
+    PRIVACY_PREFERENCES_EVENT,
+    PRIVACY_PREFERENCES_KEY,
+    readLegacyAnalyticsChoice,
+    type PrivacyPreferences,
+  } from '../scripts/privacy-preferences';
+
+  const choiceLayer = document.querySelector<HTMLElement>(
+    '[data-privacy-choice-layer]',
+  );
+  const notice = document.querySelector<HTMLElement>('[data-privacy-notice]');
+  const backdrop = document.querySelector<HTMLElement>(
+    '[data-privacy-modal-backdrop]',
+  );
+  const modal = document.querySelector<HTMLElement>('[data-privacy-modal]');
+  const status = document.querySelector<HTMLElement>('[data-consent-status]');
+  const advertisingToggle = document.querySelector<HTMLInputElement>(
+    '[data-consent-personalized-ads]',
+  );
+  const analyticsToggle = document.querySelector<HTMLInputElement>(
+    '[data-consent-analytics]',
+  );
+  const noticeSettingsButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-open-settings]',
+  );
+  const noticeAcceptAllButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-accept-all]',
+  );
+  const modalAcceptAllButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-modal-accept-all]',
+  );
+  const essentialOnlyButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-essential-only]',
+  );
+  const confirmButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-confirm]',
+  );
+  const closeButton = document.querySelector<HTMLButtonElement>(
+    '[data-consent-close-settings]',
+  );
+
+  let currentPreferences: PrivacyPreferences | null = null;
+  let previouslyFocused: HTMLElement | null = null;
+
+  const readPreferences = (): PrivacyPreferences | null => {
+    try {
+      return parsePrivacyPreferences(
+        window.localStorage.getItem(PRIVACY_PREFERENCES_KEY),
+      );
+    } catch {
+      return null;
+    }
+  };
+
+  const readLegacyAnalyticsDefault = () => {
+    try {
+      return readLegacyAnalyticsChoice(
+        window.localStorage.getItem(LEGACY_ANALYTICS_KEY),
+      );
+    } catch {
+      return false;
+    }
+  };
+
+  const syncForm = () => {
+    if (advertisingToggle) {
+      advertisingToggle.checked = currentPreferences?.personalizedAds ?? false;
+    }
+    if (analyticsToggle) {
+      analyticsToggle.checked =
+        currentPreferences?.analytics ?? readLegacyAnalyticsDefault();
+    }
+  };
+
+  const focusableElements = (container: HTMLElement | null) => {
+    if (!container) return [];
+    return Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => !element.hidden);
+  };
+
+  const setChoiceRequired = (required: boolean, focusNotice = false) => {
+    if (choiceLayer) choiceLayer.hidden = !required;
+    document.body.classList.toggle('privacy-choice-required', required);
+    if (required && focusNotice) {
+      window.requestAnimationFrame(() => noticeAcceptAllButton?.focus());
+    }
+  };
+
+  const trapFocus = (
+    event: KeyboardEvent,
+    container: HTMLElement | null,
+    fallback: HTMLElement | null,
+  ) => {
+    const elements = focusableElements(container);
+    if (elements.length === 0) {
+      event.preventDefault();
+      fallback?.focus();
+      return;
+    }
+
+    const first = elements[0];
+    const last = elements[elements.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  };
+
+  const openSettings = () => {
+    if (!backdrop || !modal) return;
+    previouslyFocused =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    currentPreferences = readPreferences();
+    syncForm();
+    setChoiceRequired(false);
+    backdrop.hidden = false;
+    document.body.classList.add('privacy-modal-open');
+    window.requestAnimationFrame(() => closeButton?.focus());
+  };
+
+  const closeSettings = () => {
+    if (!backdrop) return;
+    backdrop.hidden = true;
+    document.body.classList.remove('privacy-modal-open');
+    currentPreferences = readPreferences();
+    setChoiceRequired(currentPreferences === null);
+    previouslyFocused?.focus();
+    previouslyFocused = null;
+  };
+
+  const savePreferences = (
+    analytics: boolean,
+    personalizedAds: boolean,
+    message: 'all' | 'essential' | 'custom',
+  ) => {
+    const preferences = createPrivacyPreferences(analytics, personalizedAds);
+    currentPreferences = preferences;
+
+    try {
+      window.localStorage.setItem(
+        PRIVACY_PREFERENCES_KEY,
+        JSON.stringify(preferences),
+      );
+      window.localStorage.removeItem(LEGACY_ANALYTICS_KEY);
+    } catch {}
+
+    window.dispatchEvent(
+      new CustomEvent(PRIVACY_PREFERENCES_EVENT, { detail: preferences }),
+    );
+    if (status) {
+      status.textContent =
+        message === 'all'
+          ? (status.dataset.allStatus ?? '')
+          : message === 'essential'
+            ? (status.dataset.essentialStatus ?? '')
+            : (status.dataset.customStatus ?? '');
+    }
+    setChoiceRequired(false);
+    if (backdrop) backdrop.hidden = true;
+    document.body.classList.remove('privacy-modal-open');
+    previouslyFocused?.focus();
+    previouslyFocused = null;
+  };
+
+  currentPreferences = readPreferences();
+  syncForm();
+  setChoiceRequired(currentPreferences === null, currentPreferences === null);
+
+  noticeSettingsButton?.addEventListener('click', openSettings);
+  noticeAcceptAllButton?.addEventListener('click', () =>
+    savePreferences(true, true, 'all'),
+  );
+  modalAcceptAllButton?.addEventListener('click', () =>
+    savePreferences(true, true, 'all'),
+  );
+  essentialOnlyButton?.addEventListener('click', () =>
+    savePreferences(false, false, 'essential'),
+  );
+  confirmButton?.addEventListener('click', () =>
+    savePreferences(
+      analyticsToggle?.checked ?? false,
+      advertisingToggle?.checked ?? false,
+      'custom',
+    ),
+  );
+  closeButton?.addEventListener('click', closeSettings);
+  backdrop?.addEventListener('click', (event) => {
+    if (event.target === backdrop) closeSettings();
+  });
+  window.addEventListener('playerdojo:open-consent', openSettings);
+
+  document.addEventListener('keydown', (event) => {
+    if (backdrop && !backdrop.hidden) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeSettings();
+        return;
+      }
+      if (event.key === 'Tab') trapFocus(event, modal, modal);
+      return;
+    }
+
+    if (!choiceLayer || choiceLayer.hidden) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === 'Tab') trapFocus(event, notice, noticeAcceptAllButton);
+  });
+</script>

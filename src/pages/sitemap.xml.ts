@@ -19,6 +19,10 @@ const totalMonsterPages = Math.ceil(
 
 const entries: Entry[] = [
   { route: 'portalHome' },
+  { route: 'about' },
+  { route: 'contact' },
+  { route: 'privacy' },
+  { route: 'terms' },
   { route: 'home' },
   { route: 'siegeCounter' },
   { route: 'monsters' },

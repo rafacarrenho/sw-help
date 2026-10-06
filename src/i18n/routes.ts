@@ -27,6 +27,10 @@ export const localeOptions = locales.map((locale) => ({
 
 export type RouteName =
   | 'portalHome'
+  | 'about'
+  | 'contact'
+  | 'privacy'
+  | 'terms'
   | 'home'
   | 'siegeCounter'
   | 'siege'
@@ -45,6 +49,10 @@ export type RouteParams = {
 const routeTemplates: Record<Locale, Record<RouteName, string>> = {
   en: {
     portalHome: '/',
+    about: '/about',
+    contact: '/contact',
+    privacy: '/privacy',
+    terms: '/terms',
     home: '/summoners-war',
     siegeCounter: '/summoners-war/siege-counter',
     siege: '/summoners-war/siege-counter/:id',
@@ -57,6 +65,10 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
   },
   'pt-BR': {
     portalHome: '/pt',
+    about: '/pt/sobre',
+    contact: '/pt/contato',
+    privacy: '/pt/privacidade',
+    terms: '/pt/termos',
     home: '/pt/summoners-war',
     siegeCounter: '/pt/summoners-war/siege-counter',
     siege: '/pt/summoners-war/siege-counter/:id',

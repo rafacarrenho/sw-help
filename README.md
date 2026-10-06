@@ -31,6 +31,33 @@ O domínio canônico de produção é `https://www.playerdojo.com`. Configure o
 domínio raiz `https://playerdojo.com` no provedor para redirecionar com status
 301 ou 308 para o host com `www`, preservando caminho e query string.
 
+## Publicidade Adsterra
+
+O layout reserva um banner Adsterra em todas as páginas. O tag permanece
+desativado enquanto a chave e a URL oficiais não forem informadas no ambiente
+de build:
+
+```sh
+PUBLIC_ADSTERRA_BANNER_KEY="chave-fornecida-pela-adsterra"
+PUBLIC_ADSTERRA_BANNER_SCRIPT_URL="https://dominio-oficial/invoke.js"
+PUBLIC_ADSTERRA_BANNER_WIDTH="728"
+PUBLIC_ADSTERRA_BANNER_HEIGHT="90"
+```
+
+O modo personalizado é carregado somente depois da escolha correspondente no
+painel de privacidade. Se a Adsterra fornecer e documentar um tag contextual
+sem armazenamento ou identificadores não essenciais, configure-o separadamente:
+
+```sh
+PUBLIC_ADSTERRA_CONTEXTUAL_KEY="chave-contextual-oficial"
+PUBLIC_ADSTERRA_CONTEXTUAL_SCRIPT_URL="https://dominio-oficial/invoke.js"
+```
+
+As variáveis são públicas e incorporadas ao HTML no build. Use somente o código
+do placement criado no painel da conta; não invente chaves nem copie tags de
+outros sites. Depois de configurar, gere o site novamente e valide o anúncio em
+produção.
+
 ## O que está pronto
 
 - Catálogo de defesas com busca por nomes ou aliases, em qualquer ordem.

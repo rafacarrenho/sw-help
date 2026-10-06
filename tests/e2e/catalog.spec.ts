@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   page,

@@ -64,6 +64,12 @@ import {
   locales,
   routePath,
 } from '../src/i18n/index.ts';
+import {
+  createPrivacyPreferences,
+  parsePrivacyPreferences,
+  readLegacyAnalyticsChoice,
+  selectAdvertisingMode,
+} from '../src/scripts/privacy-preferences.ts';
 import type {
   Monster,
   MonsterSkill,
@@ -80,6 +86,29 @@ const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
 const defenses: DefenseBase[] = read('defenses');
 const counters: CounterBase[] = read('counters');
+
+test('preferências de privacidade validam versão e selecionam o modo de anúncio', () => {
+  const updatedAt = new Date('2026-10-06T12:00:00.000Z');
+  const contextual = createPrivacyPreferences(false, false, updatedAt);
+  const personalized = createPrivacyPreferences(true, true, updatedAt);
+
+  assert.deepEqual(
+    parsePrivacyPreferences(JSON.stringify(contextual)),
+    contextual,
+  );
+  assert.equal(parsePrivacyPreferences('{invalid'), null);
+  assert.equal(
+    parsePrivacyPreferences(JSON.stringify({ ...contextual, version: 2 })),
+    null,
+  );
+  assert.equal(selectAdvertisingMode(null, false, true), 'blocked');
+  assert.equal(selectAdvertisingMode(null, true, true), 'contextual');
+  assert.equal(selectAdvertisingMode(contextual, true, true), 'contextual');
+  assert.equal(selectAdvertisingMode(personalized, true, true), 'personalized');
+  assert.equal(selectAdvertisingMode(personalized, true, false), 'blocked');
+  assert.equal(readLegacyAnalyticsChoice('accepted'), true);
+  assert.equal(readLegacyAnalyticsChoice('declined'), false);
+});
 
 test('cabeçalhos estáticos endurecem a entrega em produção', () => {
   const headers = readFileSync(

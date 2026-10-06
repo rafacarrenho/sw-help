@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">PlayerDojo — Game Tools &amp; Guides</title>
+  <desc id="description">PlayerDojo crossed-swords symbol and wordmark over a dark gold strategy-grid background.</desc>
+  <defs>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101215" stop-opacity=".36" />
+      <stop offset=".54" stop-color="#101215" stop-opacity=".5" />
+      <stop offset="1" stop-color="#101215" stop-opacity=".8" />
+    </linearGradient>
+    <radialGradient id="focus" cx="50%" cy="44%" r="56%">
+      <stop offset="0" stop-color="#101215" stop-opacity=".18" />
+      <stop offset=".58" stop-color="#101215" stop-opacity=".48" />
+      <stop offset="1" stop-color="#101215" stop-opacity=".76" />
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".55" />
+    </filter>
+  </defs>
+
+  <image x="0" y="0" width="1200" height="630" preserveAspectRatio="xMidYMid slice" xlink:href="playerdojo-social-background.png" />
+  <rect width="1200" height="630" fill="url(#shade)" />
+  <rect width="1200" height="630" fill="url(#focus)" />
+  <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#e9ba77" stroke-opacity=".24" />
+
+  <g filter="url(#shadow)">
+    <g transform="translate(210 235) rotate(-4 48 48)">
+      <rect width="96" height="96" rx="24" fill="#e9ba77" />
+      <g transform="scale(2)" fill="none" stroke="#171819" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m11 11 26 26m0-26L11 37M10 30l8 8m12-28h8v8M10 10v8l8-8h-8Zm20 20 8 8" />
+      </g>
+    </g>
+
+    <text x="334" y="298" fill="#f4f2ed" font-family="DM Sans, Arial, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">
+      Player<tspan fill="#e9ba77" font-weight="400">Dojo</tspan>
+    </text>
+    <text x="338" y="344" fill="#c8c3b8" font-family="DM Sans, Arial, sans-serif" font-size="23" font-weight="600" letter-spacing="5.5">
+      GAME TOOLS &amp; GUIDES
+    </text>
+  </g>
+
+  <line x1="338" y1="375" x2="855" y2="375" stroke="#e9ba77" stroke-opacity=".48" />
+  <circle cx="868" cy="375" r="4" fill="#e9ba77" />
+</svg>

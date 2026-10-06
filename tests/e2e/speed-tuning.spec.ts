@@ -1,4 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 const selectMonster = async (
   page: Page,

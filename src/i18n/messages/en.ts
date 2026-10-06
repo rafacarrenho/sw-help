@@ -26,11 +26,52 @@ export const en = {
     portuguese: 'Português',
     explore: 'Explore',
     games: 'Games',
+    information: 'Information',
+    about: 'About',
+    contact: 'Contact',
+    privacy: 'Privacy',
+    terms: 'Terms',
+    cookieSettings: 'Cookie settings',
     footerDescription:
       'Focused tools, reliable references, and practical calculators organized by game and built for better decisions.',
     copyright: '© 2026 PlayerDojo. All rights reserved.',
     footerDisclaimer:
       'Independent community project. Game names and trademarks belong to their respective owners.',
+  },
+  consent: {
+    label: 'Privacy and advertising preferences',
+    noticeTitle: 'Our use of cookies and other technologies',
+    noticeCopy:
+      'PlayerDojo and its service providers use browser storage to deliver advertising, understand site usage, and improve your experience.',
+    settings: 'Cookie settings',
+    acceptAll: 'Accept all',
+    settingsTitle: 'Manage privacy preferences',
+    settingsCopy:
+      'Choose how optional technologies may be used. Disabling a category can change the advertising and measurement available on the site.',
+    categoriesTitle: 'Manage consent preferences',
+    necessaryTitle: 'Strictly necessary',
+    necessaryCopy:
+      'Stores your privacy and interface choices required for the site to operate as expected.',
+    alwaysActive: 'Always active',
+    advertisingTitle: 'Personalized advertising',
+    advertisingCopy:
+      'Allows Adsterra to use the approved advertising tag for personalized ad delivery.',
+    analyticsTitle: 'Analytics',
+    analyticsCopy:
+      'Google Analytics helps us understand which tools are useful and remains off unless selected.',
+    essentialOnly: 'Essential only',
+    confirmChoices: 'Confirm my choices',
+    closeSettings: 'Close privacy settings',
+    privacyPrefix: 'Learn more in our',
+    privacyLink: 'Privacy Policy',
+    allStatus: 'All optional technologies accepted.',
+    essentialStatus: 'Only essential technologies enabled.',
+    customStatus: 'Privacy preferences saved.',
+  },
+  ads: {
+    label: 'Advertisement',
+    frameTitle: 'Adsterra advertisement',
+    unavailable: 'Advertising is temporarily unavailable.',
   },
   portal: {
     title: 'Free Tools and Calculators for Games',

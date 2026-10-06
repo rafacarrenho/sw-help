@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 test('menu, filtros combinados e retorno da ficha preservam a busca', async ({
   page,

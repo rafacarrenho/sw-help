@@ -1,0 +1,85 @@
+---
+import Icon from '../Icon.astro';
+import Layout from '../../layouts/Layout.astro';
+import {
+  institutionalContent,
+  type InstitutionalPageId,
+} from '../../data/institutional-content';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  page: InstitutionalPageId;
+}
+
+const { locale, page } = Astro.props;
+const content = institutionalContent[locale][page];
+const emailSubject =
+  locale === 'pt-BR' ? 'Contato pelo PlayerDojo' : 'PlayerDojo contact';
+---
+
+<Layout
+  title={content.title}
+  description={content.description}
+  locale={locale}
+  routeName={content.route}
+  section="portal"
+  breadcrumbLabel={content.title}
+>
+  <article class="institutional-page">
+    <header class="institutional-hero">
+      <span class="eyebrow">
+        <span class="eyebrow-mark"></span> {content.eyebrow}
+      </span>
+      <h1>{content.heading}</h1>
+      <p>{content.intro}</p>
+      {content.updated && <small>{content.updated}</small>}
+    </header>
+
+    {content.email && (
+      <a
+        class="institutional-contact-card"
+        href={`mailto:${content.email}?subject=${encodeURIComponent(emailSubject)}`}
+      >
+        <span aria-hidden="true">
+          <Icon name="link" size={21} />
+        </span>
+        <span>
+          <small>
+            {locale === 'pt-BR' ? 'E-mail público' : 'Public email'}
+          </small>
+          <strong>{content.email}</strong>
+        </span>
+        <Icon name="arrow" size={18} />
+      </a>
+    )}
+
+    <div class="institutional-sections">
+      {content.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+          {section.items && (
+            <ul>
+              {section.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+          {section.resources && (
+            <div class="institutional-resources">
+              {section.resources.map((resource) => (
+                <a href={resource.href} rel="noreferrer">
+                  {resource.label}
+                  <Icon name="arrow" size={15} />
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+  </article>
+</Layout>

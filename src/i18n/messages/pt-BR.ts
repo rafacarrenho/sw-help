@@ -28,11 +28,52 @@ export const ptBR: Messages = {
     portuguese: 'Português',
     explore: 'Explorar',
     games: 'Jogos',
+    information: 'Informações',
+    about: 'Sobre',
+    contact: 'Contato',
+    privacy: 'Privacidade',
+    terms: 'Termos',
+    cookieSettings: 'Preferências de cookies',
     footerDescription:
       'Ferramentas objetivas, referências confiáveis e calculadoras práticas organizadas por jogo para decisões melhores.',
     copyright: '© 2026 PlayerDojo. Todos os direitos reservados.',
     footerDisclaimer:
       'Projeto independente da comunidade. Nomes e marcas dos jogos pertencem aos seus respectivos proprietários.',
+  },
+  consent: {
+    label: 'Preferências de privacidade e publicidade',
+    noticeTitle: 'Nosso uso de cookies e outras tecnologias',
+    noticeCopy:
+      'O PlayerDojo e seus provedores usam armazenamento do navegador para entregar publicidade, entender o uso do site e melhorar sua experiência.',
+    settings: 'Configurar cookies',
+    acceptAll: 'Aceitar tudo',
+    settingsTitle: 'Gerenciar preferências de privacidade',
+    settingsCopy:
+      'Escolha como as tecnologias opcionais podem ser utilizadas. Desativar uma categoria pode alterar a publicidade e a medição disponíveis no site.',
+    categoriesTitle: 'Gerenciar preferências de consentimento',
+    necessaryTitle: 'Estritamente necessários',
+    necessaryCopy:
+      'Armazena suas escolhas de privacidade e interface necessárias para o funcionamento esperado do site.',
+    alwaysActive: 'Sempre ativo',
+    advertisingTitle: 'Publicidade personalizada',
+    advertisingCopy:
+      'Permite que a Adsterra utilize o tag publicitário aprovado para entregar anúncios personalizados.',
+    analyticsTitle: 'Analytics',
+    analyticsCopy:
+      'O Google Analytics ajuda a entender quais ferramentas são úteis e permanece desativado se não for selecionado.',
+    essentialOnly: 'Somente necessários',
+    confirmChoices: 'Confirmar minhas escolhas',
+    closeSettings: 'Fechar preferências de privacidade',
+    privacyPrefix: 'Saiba mais em nossa',
+    privacyLink: 'Política de Privacidade',
+    allStatus: 'Todas as tecnologias opcionais foram aceitas.',
+    essentialStatus: 'Somente as tecnologias necessárias estão ativas.',
+    customStatus: 'Preferências de privacidade salvas.',
+  },
+  ads: {
+    label: 'Publicidade',
+    frameTitle: 'Anúncio da Adsterra',
+    unavailable: 'A publicidade está temporariamente indisponível.',
   },
   portal: {
     title: 'Ferramentas e Calculadoras Gratuitas para Jogos',

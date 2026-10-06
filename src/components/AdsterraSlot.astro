@@ -1,0 +1,237 @@
+---
+import {
+  PUBLIC_ADSTERRA_BANNER_HEIGHT,
+  PUBLIC_ADSTERRA_BANNER_KEY,
+  PUBLIC_ADSTERRA_BANNER_SCRIPT_URL,
+  PUBLIC_ADSTERRA_BANNER_WIDTH,
+  PUBLIC_ADSTERRA_CONTEXTUAL_KEY,
+  PUBLIC_ADSTERRA_CONTEXTUAL_SCRIPT_URL,
+} from 'astro:env/client';
+import { getMessages, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const personalizedConfigured = Boolean(
+  PUBLIC_ADSTERRA_BANNER_KEY && PUBLIC_ADSTERRA_BANNER_SCRIPT_URL,
+);
+const contextualConfigured = Boolean(
+  PUBLIC_ADSTERRA_CONTEXTUAL_KEY && PUBLIC_ADSTERRA_CONTEXTUAL_SCRIPT_URL,
+);
+---
+
+<aside
+  class="adsterra-slot"
+  data-adsterra-slot
+  data-personalized-key={PUBLIC_ADSTERRA_BANNER_KEY}
+  data-personalized-script-url={PUBLIC_ADSTERRA_BANNER_SCRIPT_URL}
+  data-contextual-key={PUBLIC_ADSTERRA_CONTEXTUAL_KEY}
+  data-contextual-script-url={PUBLIC_ADSTERRA_CONTEXTUAL_SCRIPT_URL}
+  data-banner-width={PUBLIC_ADSTERRA_BANNER_WIDTH}
+  data-banner-height={PUBLIC_ADSTERRA_BANNER_HEIGHT}
+  data-personalized-configured={String(personalizedConfigured)}
+  data-contextual-configured={String(contextualConfigured)}
+  data-frame-title={messages.ads.frameTitle}
+  data-error-copy={messages.ads.unavailable}
+  aria-label={messages.ads.label}
+  hidden
+>
+  <span class="adsterra-label">{messages.ads.label}</span>
+  <div class="adsterra-mount" data-adsterra-mount></div>
+  <p class="adsterra-status" data-adsterra-status hidden></p>
+</aside>
+
+<script>
+  import {
+    parsePrivacyPreferences,
+    PRIVACY_PREFERENCES_EVENT,
+    PRIVACY_PREFERENCES_KEY,
+    selectAdvertisingMode,
+    type PrivacyPreferences,
+  } from '../scripts/privacy-preferences';
+
+  interface AdsterraMessage {
+    source: 'playerdojo-adsterra';
+    state: 'loaded' | 'error';
+  }
+
+  const slots = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-adsterra-slot]'),
+  );
+  const timers = new WeakMap<HTMLElement, number>();
+
+  const readPreferences = (): PrivacyPreferences | null => {
+    try {
+      return parsePrivacyPreferences(
+        window.localStorage.getItem(PRIVACY_PREFERENCES_KEY),
+      );
+    } catch {
+      return null;
+    }
+  };
+
+  const safeHttpsUrl = (value: string | undefined) => {
+    if (!value) return null;
+    try {
+      const url = new URL(value, window.location.href);
+      return url.protocol === 'https:' ? url.href : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const positiveInteger = (value: string | undefined, fallback: number) => {
+    const parsed = Number.parseInt(value ?? '', 10);
+    return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+  };
+
+  const clearSlot = (slot: HTMLElement) => {
+    const timer = timers.get(slot);
+    if (timer) window.clearTimeout(timer);
+    timers.delete(slot);
+    slot.querySelector('[data-adsterra-mount]')?.replaceChildren();
+    slot.dataset.adsterraMode = 'blocked';
+    slot.hidden = true;
+    slot.removeAttribute('aria-busy');
+  };
+
+  const showFailure = (slot: HTMLElement) => {
+    const status = slot.querySelector<HTMLElement>('[data-adsterra-status]');
+    slot.querySelector('[data-adsterra-mount]')?.replaceChildren();
+    if (status) {
+      status.textContent = slot.dataset.errorCopy ?? '';
+      status.hidden = false;
+    }
+    slot.removeAttribute('aria-busy');
+    slot.dataset.adsterraState = 'error';
+  };
+
+  const renderSlot = (
+    slot: HTMLElement,
+    preferences: PrivacyPreferences | null,
+  ) => {
+    const contextualConfigured =
+      slot.dataset.contextualConfigured === 'true' ||
+      Boolean(slot.dataset.contextualKey && slot.dataset.contextualScriptUrl);
+    const personalizedConfigured =
+      slot.dataset.personalizedConfigured === 'true' ||
+      Boolean(
+        slot.dataset.personalizedKey && slot.dataset.personalizedScriptUrl,
+      );
+    const mode = selectAdvertisingMode(
+      preferences,
+      contextualConfigured,
+      personalizedConfigured,
+    );
+
+    if (mode === 'blocked') {
+      clearSlot(slot);
+      return;
+    }
+
+    if (
+      slot.dataset.adsterraMode === mode &&
+      slot.querySelector('iframe[data-adsterra-frame]')
+    ) {
+      return;
+    }
+
+    const key =
+      mode === 'personalized'
+        ? slot.dataset.personalizedKey
+        : slot.dataset.contextualKey;
+    const scriptUrl = safeHttpsUrl(
+      mode === 'personalized'
+        ? slot.dataset.personalizedScriptUrl
+        : slot.dataset.contextualScriptUrl,
+    );
+    if (!key || !scriptUrl) {
+      clearSlot(slot);
+      return;
+    }
+
+    const mount = slot.querySelector<HTMLElement>('[data-adsterra-mount]');
+    const status = slot.querySelector<HTMLElement>('[data-adsterra-status]');
+    if (!mount) return;
+
+    const width = positiveInteger(slot.dataset.bannerWidth, 728);
+    const height = positiveInteger(slot.dataset.bannerHeight, 90);
+    const options = JSON.stringify({
+      key,
+      format: 'iframe',
+      height,
+      width,
+      params: {},
+    }).replaceAll('<', '\\u003c');
+    const encodedScriptUrl = scriptUrl
+      .replaceAll('&', '&amp;')
+      .replaceAll('"', '&quot;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+
+    const frame = document.createElement('iframe');
+    frame.dataset.adsterraFrame = 'true';
+    frame.title = slot.dataset.frameTitle ?? 'Advertisement';
+    frame.width = String(width);
+    frame.height = String(height);
+    frame.loading = 'eager';
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    frame.setAttribute(
+      'sandbox',
+      'allow-forms allow-popups allow-popups-to-escape-sandbox allow-scripts allow-top-navigation-by-user-activation',
+    );
+    frame.srcdoc = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:transparent;overflow:hidden}</style></head><body><script>window.atOptions=${options};<\/script><script src="${encodedScriptUrl}" onload="parent.postMessage({source:'playerdojo-adsterra',state:'loaded'},'*')" onerror="parent.postMessage({source:'playerdojo-adsterra',state:'error'},'*')"><\/script></body></html>`;
+
+    const previousTimer = timers.get(slot);
+    if (previousTimer) window.clearTimeout(previousTimer);
+    mount.replaceChildren(frame);
+    if (status) status.hidden = true;
+    slot.hidden = false;
+    slot.dataset.adsterraMode = mode;
+    slot.dataset.adsterraState = 'loading';
+    slot.setAttribute('aria-busy', 'true');
+    timers.set(
+      slot,
+      window.setTimeout(() => showFailure(slot), 12_000),
+    );
+  };
+
+  window.addEventListener('message', (event: MessageEvent<AdsterraMessage>) => {
+    if (
+      event.data?.source !== 'playerdojo-adsterra' ||
+      (event.data.state !== 'loaded' && event.data.state !== 'error')
+    ) {
+      return;
+    }
+
+    const slot = slots.find((candidate) => {
+      const frame = candidate.querySelector<HTMLIFrameElement>(
+        'iframe[data-adsterra-frame]',
+      );
+      return frame?.contentWindow === event.source;
+    });
+    if (!slot) return;
+
+    const timer = timers.get(slot);
+    if (timer) window.clearTimeout(timer);
+    timers.delete(slot);
+    if (event.data.state === 'error') {
+      showFailure(slot);
+      return;
+    }
+    slot.removeAttribute('aria-busy');
+    slot.dataset.adsterraState = 'loaded';
+  });
+
+  const renderAll = (preferences: PrivacyPreferences | null) => {
+    slots.forEach((slot) => renderSlot(slot, preferences));
+  };
+
+  renderAll(readPreferences());
+  window.addEventListener(PRIVACY_PREFERENCES_EVENT, (event) => {
+    renderAll((event as CustomEvent<PrivacyPreferences>).detail ?? null);
+  });
+</script>

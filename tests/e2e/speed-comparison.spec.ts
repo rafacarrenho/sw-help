@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 const allyCard = (page: import('@playwright/test').Page) =>
   page.locator('[data-comparison-side="ally"]');

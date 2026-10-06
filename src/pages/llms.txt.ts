@@ -20,6 +20,8 @@ export const GET: APIRoute = ({ site }) => {
 ## English
 
 ${link('Game tools portal', 'portalHome', 'en')}: Browse every game available on ${SITE_NAME}.
+${link('About PlayerDojo', 'about', 'en')}: Learn how the independent community project builds and documents its tools.
+${link('Privacy Policy', 'privacy', 'en')}: Review analytics, browser storage, and privacy choices.
 ${link('Summoners War tools', 'home', 'en')}: Overview of every ${SITE_NAME} tool.
 ${link('Siege Counter', 'siegeCounter', 'en')}: Search registered Summoners War Siege defenses and review offense ideas.
 ${link('Monster Database', 'monsters', 'en')}: Search monster stats, skills, leader effects, and forms imported from SWARFARM.
@@ -30,6 +32,8 @@ ${link('SPD Tick Calculator', 'speedTick', 'en')}: Calculate combat tick breakpo
 ## Português
 
 ${link('Portal de ferramentas para jogos', 'portalHome', 'pt-BR')}: Explore todos os jogos disponíveis no ${SITE_NAME}.
+${link('Sobre o PlayerDojo', 'about', 'pt-BR')}: Conheça o projeto independente e como suas ferramentas são documentadas.
+${link('Política de Privacidade', 'privacy', 'pt-BR')}: Consulte informações sobre analytics, armazenamento local e escolhas de privacidade.
 ${link('Ferramentas de Summoners War', 'home', 'pt-BR')}: Visão geral das ferramentas do ${SITE_NAME}.
 ${link('Siege Counter', 'siegeCounter', 'pt-BR')}: Pesquise defesas do Cerco e consulte ideias de times para o ataque.
 ${link('Catálogo de monstros', 'monsters', 'pt-BR')}: Consulte atributos, habilidades, efeitos de líder e formas importadas do SWARFARM.

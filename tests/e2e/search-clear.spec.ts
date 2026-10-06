@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 test('mantém a ação de limpar visível em todas as buscas preenchidas', async ({
   page,

@@ -13,6 +13,36 @@ export default defineConfig({
         access: 'public',
         default: 'G-QTMVTJP8FE',
       }),
+      PUBLIC_ADSTERRA_BANNER_KEY: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '',
+      }),
+      PUBLIC_ADSTERRA_BANNER_SCRIPT_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '',
+      }),
+      PUBLIC_ADSTERRA_CONTEXTUAL_KEY: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '',
+      }),
+      PUBLIC_ADSTERRA_CONTEXTUAL_SCRIPT_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '',
+      }),
+      PUBLIC_ADSTERRA_BANNER_WIDTH: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '728',
+      }),
+      PUBLIC_ADSTERRA_BANNER_HEIGHT: envField.string({
+        context: 'client',
+        access: 'public',
+        default: '90',
+      }),
     },
   },
   i18n: {

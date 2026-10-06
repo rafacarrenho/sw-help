@@ -6,31 +6,122 @@ interface Props {
 }
 
 const { placement } = Astro.props;
-const isProduction = import.meta.env.PROD;
+const config = JSON.stringify({
+  googleAnalyticsId: import.meta.env.PROD ? PUBLIC_GOOGLE_ANALYTICS_ID : '',
+}).replaceAll('<', '\\u003c');
 ---
 
-{isProduction && placement === 'head' && PUBLIC_GOOGLE_ANALYTICS_ID && <script
-  define:vars={{ gaMeasurementId: PUBLIC_GOOGLE_ANALYTICS_ID }}
->
-  if (!document.querySelector('script[data-playerdojo-ga]')) {
+{placement === 'head' && (
+  <script
+    id="playerdojo-third-party-config"
+    type="application/json"
+    set:html={config}
+  ></script>
+)}
+
+{placement === 'head' && <script>
+  import {
+    parsePrivacyPreferences,
+    PRIVACY_PREFERENCES_EVENT,
+    PRIVACY_PREFERENCES_KEY,
+    type PrivacyPreferences,
+  } from '../scripts/privacy-preferences';
+
+  interface ThirdPartyConfig {
+    googleAnalyticsId: string;
+  }
+
+  interface AnalyticsWindow extends Window {
+    dataLayer?: IArguments[];
+    gtag?: (...args: unknown[]) => void;
+    [key: `ga-disable-${string}`]: boolean | undefined;
+  }
+
+  const configElement = document.querySelector<HTMLScriptElement>(
+    '#playerdojo-third-party-config',
+  );
+  let thirdPartyConfig: ThirdPartyConfig = { googleAnalyticsId: '' };
+  try {
+    thirdPartyConfig = JSON.parse(
+      configElement?.textContent ?? '{}',
+    ) as ThirdPartyConfig;
+  } catch {}
+
+  const gaMeasurementId = thirdPartyConfig.googleAnalyticsId;
+  const analyticsWindow = window as unknown as AnalyticsWindow;
+  const analyticsDisableKey = `ga-disable-${gaMeasurementId}` as const;
+
+  const removeAnalyticsCookies = () => {
+    if (!gaMeasurementId) return;
+    analyticsWindow[analyticsDisableKey] = true;
+    analyticsWindow.gtag?.('consent', 'update', {
+      analytics_storage: 'denied',
+    });
+
+    const hostParts = window.location.hostname.split('.');
+    const domains = ['', window.location.hostname];
+    if (hostParts.length > 2) {
+      domains.push(`.${hostParts.slice(-2).join('.')}`);
+    }
+
+    document.cookie.split(';').forEach((cookie) => {
+      const cookieName = cookie.split('=')[0]?.trim();
+      if (
+        !cookieName ||
+        (cookieName !== '_ga' && !cookieName.startsWith('_ga_'))
+      ) {
+        return;
+      }
+
+      domains.forEach((domain) => {
+        const domainPart = domain ? `; Domain=${domain}` : '';
+        document.cookie = `${cookieName}=; Max-Age=0; Path=/${domainPart}; SameSite=Lax`;
+      });
+    });
+  };
+
+  const loadAnalytics = () => {
+    if (!gaMeasurementId) return;
+    analyticsWindow[analyticsDisableKey] = false;
+    analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+    analyticsWindow.gtag = function gtag() {
+      analyticsWindow.dataLayer?.push(arguments);
+    };
+    analyticsWindow.gtag('consent', 'update', {
+      analytics_storage: 'granted',
+    });
+
+    if (document.querySelector('script[data-playerdojo-ga]')) {
+      analyticsWindow.gtag('config', gaMeasurementId, {
+        anonymize_ip: true,
+      });
+      return;
+    }
+
+    analyticsWindow.gtag('js', new Date());
+    analyticsWindow.gtag('config', gaMeasurementId, { anonymize_ip: true });
+
     const script = document.createElement('script');
     script.async = true;
     script.dataset.playerdojoGa = 'true';
-    const gaBaseUrl = [
-      'https:',
-      '',
-      'www.googletagmanager.com',
-      'gtag',
-      'js',
-    ].join('/');
-    script.src = `${gaBaseUrl}?id=${encodeURIComponent(gaMeasurementId)}`;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`;
     document.head.append(script);
+  };
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag() {
-      window.dataLayer.push(arguments);
-    };
-    window.gtag('js', new Date());
-    window.gtag('config', gaMeasurementId, { anonymize_ip: true });
-  }
+  const applyPreferences = (preferences: PrivacyPreferences | null) => {
+    if (preferences?.analytics) loadAnalytics();
+    else removeAnalyticsCookies();
+  };
+
+  let storedPreferences: PrivacyPreferences | null = null;
+  try {
+    storedPreferences = parsePrivacyPreferences(
+      window.localStorage.getItem(PRIVACY_PREFERENCES_KEY),
+    );
+  } catch {}
+  applyPreferences(storedPreferences);
+
+  window.addEventListener(PRIVACY_PREFERENCES_EVENT, (event) => {
+    applyPreferences((event as CustomEvent<PrivacyPreferences>).detail ?? null);
+  });
 </script>}

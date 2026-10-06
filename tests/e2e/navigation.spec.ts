@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 test('desktop alinha header, conteúdo principal e footer', async ({
   page,

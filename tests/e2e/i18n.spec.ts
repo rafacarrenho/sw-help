@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
   await page.goto('/');
@@ -63,6 +68,21 @@ test('home apresenta as ferramentas e a navegação usa a nova hierarquia', asyn
   await expect(
     page.locator('footer').getByRole('heading', { name: 'Jogos' }),
   ).toBeVisible();
+  await expect(
+    page.locator('footer').getByRole('heading', { name: 'Informações' }),
+  ).toBeVisible();
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Sobre', exact: true }),
+  ).toHaveAttribute('href', '/pt/sobre');
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Contato', exact: true }),
+  ).toHaveAttribute('href', '/pt/contato');
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Privacidade' }),
+  ).toHaveAttribute('href', '/pt/privacidade');
+  await expect(
+    page.locator('footer').getByRole('link', { name: 'Termos' }),
+  ).toHaveAttribute('href', '/pt/termos');
 
   await page.goto('/pt/summoners-war');
   await expect(page.locator('[data-game-toggle]')).toHaveCount(0);

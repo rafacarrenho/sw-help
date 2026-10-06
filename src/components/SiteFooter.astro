@@ -50,6 +50,22 @@ const registeredGames: readonly GameDefinition[] = games;
           ))}
         </nav>
       </section>
+      <section aria-labelledby="footer-information-title">
+        <h2 id="footer-information-title">{messages.layout.information}</h2>
+        <nav aria-label={messages.layout.information}>
+          <a href={routePath('about', locale)}>{messages.layout.about}</a>
+          <a href={routePath('contact', locale)}>{messages.layout.contact}</a>
+          <a href={routePath('privacy', locale)}>{messages.layout.privacy}</a>
+          <a href={routePath('terms', locale)}>{messages.layout.terms}</a>
+          <button
+            type="button"
+            class="site-footer-link-button"
+            data-open-consent
+          >
+            {messages.layout.cookieSettings}
+          </button>
+        </nav>
+      </section>
     </div>
   </div>
 
@@ -58,3 +74,13 @@ const registeredGames: readonly GameDefinition[] = games;
     <span>{messages.layout.footerDisclaimer}</span>
   </div>
 </footer>
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-open-consent]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        window.dispatchEvent(new Event('playerdojo:open-consent'));
+      });
+    });
+</script>

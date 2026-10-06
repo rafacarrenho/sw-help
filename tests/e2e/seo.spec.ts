@@ -17,6 +17,14 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   );
   expect(xml).toContain(`<loc>${productionOrigin}/</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/about</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/pt/sobre</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/contact</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/pt/contato</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/privacy</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/pt/privacidade</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/terms</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/pt/termos</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/summoners-war</loc>`);
   expect(xml).toContain(
     `<loc>${productionOrigin}/summoners-war/siege-counter</loc>`,
@@ -142,6 +150,113 @@ test('página normal preserva canonical e alternativas de idioma', async ({
   );
 });
 
+test('páginas institucionais são localizadas, canônicas e não identificam o mantenedor', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  const pages = [
+    {
+      path: '/about',
+      heading: 'Tools built to help players decide with confidence.',
+      canonical: `${productionOrigin}/about`,
+      alternate: `${productionOrigin}/pt/sobre`,
+    },
+    {
+      path: '/contact',
+      heading: 'Questions, corrections, and useful feedback are welcome.',
+      canonical: `${productionOrigin}/contact`,
+      alternate: `${productionOrigin}/pt/contato`,
+    },
+    {
+      path: '/privacy',
+      heading: 'Clear choices and limited data collection.',
+      canonical: `${productionOrigin}/privacy`,
+      alternate: `${productionOrigin}/pt/privacidade`,
+    },
+    {
+      path: '/terms',
+      heading: 'Use PlayerDojo as a planning aid.',
+      canonical: `${productionOrigin}/terms`,
+      alternate: `${productionOrigin}/pt/termos`,
+    },
+  ];
+
+  for (const entry of pages) {
+    await page.goto(entry.path);
+    await expect(
+      page.getByRole('heading', { name: entry.heading }),
+    ).toBeVisible();
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      entry.canonical,
+    );
+    await expect(page.locator('link[hreflang="pt-BR"]')).toHaveAttribute(
+      'href',
+      entry.alternate,
+    );
+    await expect(page.locator('body')).not.toContainText('Rafael Carrenho');
+  }
+
+  await page.goto('/pt/privacidade');
+  await expect(
+    page.getByRole('heading', {
+      name: 'Escolhas claras e coleta limitada de dados.',
+    }),
+  ).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+  await expect(page.locator('link[hreflang="en"]')).toHaveAttribute(
+    'href',
+    `${productionOrigin}/privacy`,
+  );
+});
+
+test('metadados sociais e ícones publicam os assets PlayerDojo', async ({
+  page,
+  request,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  await page.goto('/');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    `${productionOrigin}/images/social/playerdojo-social.png`,
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    'content',
+    '1200',
+  );
+  await expect(
+    page.locator('meta[property="og:image:height"]'),
+  ).toHaveAttribute('content', '630');
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    'content',
+    'summary_large_image',
+  );
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+    'content',
+    `${productionOrigin}/images/social/playerdojo-social.png`,
+  );
+  await expect(page.locator('link[rel="icon"][sizes="48x48"]')).toHaveAttribute(
+    'href',
+    '/favicon-48.png',
+  );
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+    'href',
+    '/apple-touch-icon.png',
+  );
+
+  for (const asset of [
+    '/images/social/playerdojo-social.png',
+    '/favicon-48.png',
+    '/apple-touch-icon.png',
+    '/icon-192.png',
+    '/icon-512.png',
+  ]) {
+    expect((await request.get(asset)).status()).toBe(200);
+  }
+});
+
 test('páginas principais usam títulos e descrições focados em Summoners War', async ({
   page,
 }, testInfo) => {
@@ -234,7 +349,24 @@ test('dados estruturados identificam o site e os breadcrumbs localizados', async
   const websiteData = await page
     .locator('script[type="application/ld+json"]')
     .textContent();
-  expect(JSON.parse(websiteData ?? '{}')).toMatchObject({
+  const homeStructuredData = JSON.parse(websiteData ?? '[]');
+  expect(homeStructuredData).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        '@type': 'WebSite',
+        name: 'PlayerDojo',
+        url: `${productionOrigin}/`,
+        inLanguage: 'en',
+      }),
+      expect.objectContaining({
+        '@type': 'Organization',
+        name: 'PlayerDojo',
+        url: `${productionOrigin}/`,
+        logo: `${productionOrigin}/icon-512.png`,
+      }),
+    ]),
+  );
+  expect(homeStructuredData[0]).toMatchObject({
     '@type': 'WebSite',
     name: 'PlayerDojo',
     url: `${productionOrigin}/`,

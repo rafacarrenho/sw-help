@@ -3,7 +3,9 @@ import Icon from '../components/Icon.astro';
 import GameContext from '../components/GameContext.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ThirdPartyScripts from '../components/ThirdPartyScripts.astro';
-import { SITE_NAME, SITE_TAGLINE } from '../config/site';
+import PrivacyConsent from '../components/PrivacyConsent.astro';
+import AdsterraSlot from '../components/AdsterraSlot.astro';
+import { SITE_NAME, SITE_ORIGIN, SITE_TAGLINE } from '../config/site';
 import { gameById, type GameId, type GameSection } from '../data/games';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
@@ -56,10 +58,16 @@ const {
   breadcrumbLabel,
 } = Astro.props;
 const messages = getMessages(locale);
-const activeGameId =
-  routeName === 'portalHome'
-    ? undefined
-    : ((Astro.props.gameId ?? 'summoners-war') as GameId);
+const portalRoutes = new Set<RouteName>([
+  'portalHome',
+  'about',
+  'contact',
+  'privacy',
+  'terms',
+]);
+const activeGameId = portalRoutes.has(routeName)
+  ? undefined
+  : ((Astro.props.gameId ?? 'summoners-war') as GameId);
 const activeGame = activeGameId ? gameById.get(activeGameId) : undefined;
 const currentLanguage = localeMetadata[locale];
 const languageOptions = localeOptions.filter(
@@ -73,6 +81,12 @@ const portalUrl = new URL(
   routePath('portalHome', locale),
   Astro.site ?? Astro.url.origin,
 );
+const siteOrigin = Astro.site ?? new URL(SITE_ORIGIN);
+const socialImageUrl = new URL(
+  '/images/social/playerdojo-social.png',
+  siteOrigin,
+);
+const organizationLogoUrl = new URL('/icon-512.png', siteOrigin);
 const englishUrl = new URL(
   routePath(routeName, 'en', routeParams),
   Astro.site ?? Astro.url.origin,
@@ -125,6 +139,14 @@ if (routeName === 'portalHome') {
     url: canonicalUrl.href,
     description,
     inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en',
+  });
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: new URL('/', siteOrigin).href,
+    logo: organizationLogoUrl.href,
+    description: messages.layout.footerDescription,
   });
 } else {
   const breadcrumbItems = [
@@ -228,6 +250,11 @@ const serializedStructuredData = JSON.stringify(
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PlayerDojo — Game Tools & Guides" />
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
     <meta
       property="og:locale:alternate"
@@ -242,10 +269,16 @@ const serializedStructuredData = JSON.stringify(
         <link rel="alternate" hreflang="x-default" href={englishUrl} />
       </>
     )}
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={documentTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content="PlayerDojo — Game Tools & Guides" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <title>{documentTitle}</title>
     <ThirdPartyScripts placement="head" />
     {!noIndex && (
@@ -504,7 +537,9 @@ const serializedStructuredData = JSON.stringify(
           <GameContext locale={locale} activeGame={activeGame} />
         </div>
       </header>
+      <PrivacyConsent locale={locale} />
       <main id="main">
+        <AdsterraSlot locale={locale} />
         <slot />
       </main>
       <SiteFooter locale={locale} />

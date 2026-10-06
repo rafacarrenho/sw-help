@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { seedEssentialPrivacyPreferences } from './helpers/privacy';
+
+test.beforeEach(async ({ page }) => {
+  await seedEssentialPrivacyPreferences(page);
+});
 
 const leaderPercentages = [0, 10, 15, 16, 17, 19, 20, 21, 23, 24, 28, 30, 33];
 
