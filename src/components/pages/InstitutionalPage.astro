@@ -6,6 +6,7 @@ import {
   type InstitutionalPageId,
 } from '../../data/institutional-content';
 import type { Locale } from '../../i18n';
+import { localeCopy } from '../../i18n/copy';
 
 interface Props {
   locale: Locale;
@@ -14,8 +15,8 @@ interface Props {
 
 const { locale, page } = Astro.props;
 const content = institutionalContent[locale][page];
-const emailSubject =
-  locale === 'pt-BR' ? 'Contato pelo PlayerDojo' : 'PlayerDojo contact';
+const localCopy = localeCopy(locale);
+const emailSubject = localCopy.contactSubject;
 ---
 
 <Layout
@@ -45,9 +46,7 @@ const emailSubject =
           <Icon name="link" size={21} />
         </span>
         <span>
-          <small>
-            {locale === 'pt-BR' ? 'E-mail público' : 'Public email'}
-          </small>
+          <small>{localCopy.publicEmail}</small>
           <strong>{content.email}</strong>
         </span>
         <Icon name="arrow" size={18} />

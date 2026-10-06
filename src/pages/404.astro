@@ -1,10 +1,10 @@
 ---
 import NotFound from '../components/pages/NotFound.astro';
+import { isLocale, type Locale } from '../i18n';
 
-const locale =
-  Astro.url.pathname === '/pt' || Astro.url.pathname.startsWith('/pt/')
-    ? 'pt-BR'
-    : 'en';
+const prefix = Astro.url.pathname.split('/')[1];
+const locale: Locale =
+  prefix === 'pt' ? 'pt-BR' : isLocale(prefix) ? prefix : 'en';
 ---
 
 <NotFound locale={locale} />

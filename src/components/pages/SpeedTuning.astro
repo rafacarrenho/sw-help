@@ -449,7 +449,7 @@ const slots = [
 
     const dataNode = document.getElementById('speed-tuning-data');
     const data = JSON.parse(dataNode?.textContent ?? '{"monsters":[]}') as {
-      locale: 'en' | 'pt-BR';
+      locale: 'en' | 'pt-BR' | 'es' | 'fr' | 'de';
       messages: Record<string, string>;
       monsters: MonsterOption[];
     };
@@ -1329,9 +1329,9 @@ const slots = [
                   messages.selectMonster || 'Select Monster {number}',
                   { number: slotIndex + 1 },
                 )
-              : locale === 'pt-BR'
-                ? `Selecione primeiro o Monstro ${firstMissingIndex + 1}`
-                : `Select Monster ${firstMissingIndex + 1} first`,
+              : (
+                  messages.selectFirstMonster || 'Select Monster 1 first'
+                ).replace('1', String(firstMissingIndex + 1)),
           );
           continue;
         }

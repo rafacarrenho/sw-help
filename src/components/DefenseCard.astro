@@ -4,6 +4,7 @@ import { getCounters, searchText } from '../data/catalog';
 import Team from './Team.astro';
 import Icon from './Icon.astro';
 import { getMessages, routePath, type Locale } from '../i18n';
+import { localeCopy } from '../i18n/copy';
 interface Props {
   defense: Defense;
   index: number;
@@ -11,6 +12,7 @@ interface Props {
 }
 const { defense, index, locale = 'pt-BR' } = Astro.props;
 const messages = getMessages(locale);
+const localCopy = localeCopy(locale);
 const count = getCounters(defense.id).length;
 ---
 
@@ -36,11 +38,11 @@ const count = getCounters(defense.id).length;
     <div class="card-bottom">
       <span>
         <Icon name="swords" size={15} />
-        <strong>{count}</strong> {count === 1 ? 'counter' : 'counters'}
+        <strong>{count}</strong>{' '}
+        {count === 1 ? localCopy.counter : localCopy.counters}
       </span>
       <span class="card-cta">
-        {locale === 'pt-BR' ? 'Ver defesa' : 'View defense'}{' '}
-        <Icon name="arrow" size={16} />
+        {localCopy.viewDefense} <Icon name="arrow" size={16} />
       </span>
     </div>
   </a>

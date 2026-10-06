@@ -28,22 +28,22 @@ Google Analytics e Adsterra depois que cada idioma tiver tempo para ser indexado
 
 ## Lista priorizada
 
-| Ordem | Idioma | Código recomendado | Estado | Motivo principal |
-| ---: | --- | --- | --- | --- |
-| 1 | Espanhol neutro | `es` | Aprovado para implementação | Maior expansão potencial de audiência e boa lacuna de ferramentas localizadas. |
-| 2 | Francês | `fr` | Aprovado para implementação | Comunidade diretamente observável forte e geografias de boa monetização. |
-| 3 | Alemão | `de` | Aprovado para implementação | Comunidade relevante, concorrência moderada e alto potencial de receita por visitante. |
-| 4 | Chinês tradicional | `zh-Hant` | Segunda fase | Taiwan e Hong Kong combinam comunidade, busca aberta e boa monetização. |
-| 5 | Tailandês | `th` | Segunda fase | Comunidade mobile e sinal favorável na monetização da Adsterra. |
-| 6 | Russo | `ru` | Segunda fase, focada em tráfego | Comunidade forte, mas monetização e mercado publicitário menos previsíveis. |
-| 7 | Japonês | `ja` | Validar com dados próprios | Mercado de jogos valioso, porém localização exigente e forte concorrência local. |
-| 8 | Indonésio | `id` | Experimento futuro | Grande audiência mobile e sinal favorável na Adsterra, com pouco sinal direto na Steam. |
-| 9 | Turco | `tr` | Aguardar | Comunidade menor que os candidatos prioritários. |
-| 10 | Italiano | `it` | Aguardar | Bom mercado publicitário, mas pouco sinal direto para Summoners War. |
-| 11 | Vietnamita | `vi` | Aguardar | Mercado mobile relevante, ainda sem evidência suficiente para superar os candidatos acima. |
-| 12 | Coreano | `ko` | Aguardar | Mercado valioso, porém com ecossistema de busca e concorrência próprios. |
-| 13 | Chinês simplificado | `zh-Hans` | Aguardar estratégia própria | Exige distribuição, indexação e operação específicas para a China continental. |
-| 14 | Árabe | `ar` | Aguardar | Não houve sinal direto suficiente na amostra utilizada. |
+| Ordem | Idioma              | Código recomendado | Estado                          | Motivo principal                                                                           |
+| ----: | ------------------- | ------------------ | ------------------------------- | ------------------------------------------------------------------------------------------ |
+|     1 | Espanhol neutro     | `es`               | Implementado                    | Maior expansão potencial de audiência e boa lacuna de ferramentas localizadas.             |
+|     2 | Francês             | `fr`               | Implementado                    | Comunidade diretamente observável forte e geografias de boa monetização.                   |
+|     3 | Alemão              | `de`               | Implementado                    | Comunidade relevante, concorrência moderada e alto potencial de receita por visitante.     |
+|     4 | Chinês tradicional  | `zh-Hant`          | Segunda fase                    | Taiwan e Hong Kong combinam comunidade, busca aberta e boa monetização.                    |
+|     5 | Tailandês           | `th`               | Segunda fase                    | Comunidade mobile e sinal favorável na monetização da Adsterra.                            |
+|     6 | Russo               | `ru`               | Segunda fase, focada em tráfego | Comunidade forte, mas monetização e mercado publicitário menos previsíveis.                |
+|     7 | Japonês             | `ja`               | Validar com dados próprios      | Mercado de jogos valioso, porém localização exigente e forte concorrência local.           |
+|     8 | Indonésio           | `id`               | Experimento futuro              | Grande audiência mobile e sinal favorável na Adsterra, com pouco sinal direto na Steam.    |
+|     9 | Turco               | `tr`               | Aguardar                        | Comunidade menor que os candidatos prioritários.                                           |
+|    10 | Italiano            | `it`               | Aguardar                        | Bom mercado publicitário, mas pouco sinal direto para Summoners War.                       |
+|    11 | Vietnamita          | `vi`               | Aguardar                        | Mercado mobile relevante, ainda sem evidência suficiente para superar os candidatos acima. |
+|    12 | Coreano             | `ko`               | Aguardar                        | Mercado valioso, porém com ecossistema de busca e concorrência próprios.                   |
+|    13 | Chinês simplificado | `zh-Hans`          | Aguardar estratégia própria     | Exige distribuição, indexação e operação específicas para a China continental.             |
+|    14 | Árabe               | `ar`               | Aguardar                        | Não houve sinal direto suficiente na amostra utilizada.                                    |
 
 ## Evidências quantitativas de comunidade
 
@@ -51,21 +51,21 @@ A API pública de avaliações da Steam foi consultada por idioma em 6 de outubr
 de 2026. A amostra representa apenas usuários da Steam e pode subestimar mercados
 predominantemente mobile.
 
-| Idioma | Avaliações observadas |
-| --- | ---: |
-| Francês | 1.101 |
-| Alemão | 867 |
-| Espanhol da Espanha + América Latina | 839 |
-| Chinês simplificado + tradicional | 772 |
-| Russo | 677 |
-| Tailandês | 329 |
-| Turco | 128 |
-| Italiano | 46 |
-| Japonês | 39 |
-| Vietnamita | 38 |
-| Indonésio | 20 |
-| Coreano | 3 |
-| Árabe | 0 |
+| Idioma                               | Avaliações observadas |
+| ------------------------------------ | --------------------: |
+| Francês                              |                 1.101 |
+| Alemão                               |                   867 |
+| Espanhol da Espanha + América Latina |                   839 |
+| Chinês simplificado + tradicional    |                   772 |
+| Russo                                |                   677 |
+| Tailandês                            |                   329 |
+| Turco                                |                   128 |
+| Italiano                             |                    46 |
+| Japonês                              |                    39 |
+| Vietnamita                           |                    38 |
+| Indonésio                            |                    20 |
+| Coreano                              |                     3 |
+| Árabe                                |                     0 |
 
 ## Estratégia aprovada
 
@@ -90,6 +90,6 @@ predominantemente mobile.
 
 ## Histórico de execução
 
-| Data | Idioma | Ação | Resultado |
-| --- | --- | --- | --- |
-| 2026-10-06 | `es`, `fr`, `de` | Implementação aprovada | Em andamento |
+| Data       | Idioma           | Ação                                      | Resultado               |
+| ---------- | ---------------- | ----------------------------------------- | ----------------------- |
+| 2026-10-06 | `es`, `fr`, `de` | Localização completa, rotas, SEO e testes | Implementado e validado |

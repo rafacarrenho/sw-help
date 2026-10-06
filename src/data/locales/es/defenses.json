@@ -1,0 +1,26 @@
+{
+  "morris-eshir-orion": {
+    "label": "Presión y control",
+    "description": "El daño a un solo objetivo, el control y la recuperación mantienen la presión."
+  },
+  "morris-trevor-figaro": {
+    "label": "Daño explosivo versátil",
+    "description": "El daño concentrado y una fuerte presión posterior definen esta defensa."
+  },
+  "morris-orion-trevor": {
+    "label": "Control y presión",
+    "description": "Una composición equilibrada con apoyo, control y mucho daño posterior."
+  },
+  "solveig-vigor-cichlid": {
+    "label": "Recuperación y presión",
+    "description": "El apoyo, el daño continuo y la resistencia ayudan a esta defensa a mantenerse firme."
+  },
+  "solveig-cichlid-molly": {
+    "label": "Presión en cadena",
+    "description": "La presión constante y el daño posterior fiable mantienen activa la defensa."
+  },
+  "solveig-iris-hraesvelg": {
+    "label": "Presión y control",
+    "description": "El daño continuo, el apoyo y el control presionan al equipo rival de forma constante."
+  }
+}

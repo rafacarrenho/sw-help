@@ -12,6 +12,7 @@ import {
 } from '../../lib/counter-stats';
 import type { Defense } from '../../lib/types';
 import { getMessages, routePath, type Locale } from '../../i18n';
+import { localeCopy } from '../../i18n/copy';
 
 interface Props {
   defense: Defense;
@@ -19,13 +20,14 @@ interface Props {
 }
 const { defense, locale } = Astro.props;
 const messages = getMessages(locale);
+const localCopy = localeCopy(locale);
 const counters = getCountersFor(defense.id, locale);
 const name = teamName(defense.team);
 const leader = monsterById.get(defense.team[0])!;
 const counterStatsBeforeSpeed = [
   { label: 'HP', title: messages.common.health, key: 'hp' },
   {
-    label: locale === 'pt-BR' ? 'ATK' : 'ATK',
+    label: 'ATK',
     title: messages.common.attack,
     key: 'attack',
   },
@@ -40,16 +42,8 @@ const counterStatsAfterSpeed = [
 ---
 
 <Layout
-  title={
-    locale === 'pt-BR'
-      ? `Counters para ${name} no Siege – Summoners War`
-      : `${name} Siege Counters – Summoners War`
-  }
-  description={
-    locale === 'pt-BR'
-      ? `Veja counters cadastrados para a defesa ${name} no Siege de Summoners War, com composições de ofensiva, runas, atributos e sequência.`
-      : `Find registered Summoners War Siege counters for the ${name} defense, including offense teams, suggested runes, stats, and turn sequence.`
-  }
+  title={localCopy.siegeTitle(name)}
+  description={localCopy.siegeDescription(name)}
   detail
   locale={locale}
   section="siege"

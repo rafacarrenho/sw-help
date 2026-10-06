@@ -1,4 +1,4 @@
-export const locales = ['en', 'pt-BR'] as const;
+export const locales = ['en', 'pt-BR', 'es', 'fr', 'de'] as const;
 export type Locale = (typeof locales)[number];
 
 export interface LocaleMetadata {
@@ -17,6 +17,21 @@ export const localeMetadata: Record<Locale, LocaleMetadata> = {
     label: 'Português',
     flag: '🇧🇷',
     abbreviation: 'PT',
+  },
+  es: {
+    label: 'Español',
+    flag: '🇪🇸',
+    abbreviation: 'ES',
+  },
+  fr: {
+    label: 'Français',
+    flag: '🇫🇷',
+    abbreviation: 'FR',
+  },
+  de: {
+    label: 'Deutsch',
+    flag: '🇩🇪',
+    abbreviation: 'DE',
   },
 };
 
@@ -79,6 +94,54 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedTuning: '/pt/summoners-war/spd-tuning',
     speedTick: '/pt/summoners-war/spd-tick',
   },
+  es: {
+    portalHome: '/es',
+    about: '/es/acerca-de',
+    contact: '/es/contacto',
+    privacy: '/es/privacidad',
+    terms: '/es/terminos',
+    home: '/es/summoners-war',
+    siegeCounter: '/es/summoners-war/siege-counter',
+    siege: '/es/summoners-war/siege-counter/:id',
+    monsters: '/es/summoners-war/monstruos',
+    monster: '/es/summoners-war/monstruos/:id',
+    monsterPage: '/es/summoners-war/monstruos/pagina/:page',
+    speedComparison: '/es/summoners-war/comparador-spd',
+    speedTuning: '/es/summoners-war/spd-tuning',
+    speedTick: '/es/summoners-war/spd-tick',
+  },
+  fr: {
+    portalHome: '/fr',
+    about: '/fr/a-propos',
+    contact: '/fr/contact',
+    privacy: '/fr/confidentialite',
+    terms: '/fr/conditions',
+    home: '/fr/summoners-war',
+    siegeCounter: '/fr/summoners-war/siege-counter',
+    siege: '/fr/summoners-war/siege-counter/:id',
+    monsters: '/fr/summoners-war/monstres',
+    monster: '/fr/summoners-war/monstres/:id',
+    monsterPage: '/fr/summoners-war/monstres/page/:page',
+    speedComparison: '/fr/summoners-war/comparateur-vit',
+    speedTuning: '/fr/summoners-war/spd-tuning',
+    speedTick: '/fr/summoners-war/spd-tick',
+  },
+  de: {
+    portalHome: '/de',
+    about: '/de/ueber-uns',
+    contact: '/de/kontakt',
+    privacy: '/de/datenschutz',
+    terms: '/de/bedingungen',
+    home: '/de/summoners-war',
+    siegeCounter: '/de/summoners-war/siege-counter',
+    siege: '/de/summoners-war/siege-counter/:id',
+    monsters: '/de/summoners-war/monster',
+    monster: '/de/summoners-war/monster/:id',
+    monsterPage: '/de/summoners-war/monster/seite/:page',
+    speedComparison: '/de/summoners-war/ges-vergleich',
+    speedTuning: '/de/summoners-war/spd-tuning',
+    speedTick: '/de/summoners-war/spd-tick',
+  },
 };
 
 export function isLocale(value: unknown): value is Locale {
@@ -86,7 +149,14 @@ export function isLocale(value: unknown): value is Locale {
 }
 
 export function localePath(locale: Locale): string {
-  return locale === 'en' ? '' : '/pt';
+  const paths: Record<Locale, string> = {
+    en: '',
+    'pt-BR': '/pt',
+    es: '/es',
+    fr: '/fr',
+    de: '/de',
+  };
+  return paths[locale];
 }
 
 export function routePath(

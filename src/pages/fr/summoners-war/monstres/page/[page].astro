@@ -1,0 +1,32 @@
+---
+import MonsterCatalog from '../../../../../components/MonsterCatalog.astro';
+import { monsters } from '../../../../../data/catalog';
+import {
+  PAGE_SIZE,
+  filterMonsters,
+  readMonsterFilters,
+} from '../../../../../lib/monster-catalog';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return Array.from(
+    {
+      length:
+        Math.ceil(
+          filterMonsters(
+            monsters,
+            readMonsterFilters(new URLSearchParams()),
+            'fr',
+          ).length / PAGE_SIZE,
+        ) - 1,
+    },
+    (_, index) => ({
+      params: { page: String(index + 2) },
+      props: { page: index + 2 },
+    }),
+  );
+}
+const { page } = Astro.props;
+---
+
+<MonsterCatalog page={page} locale="fr" />

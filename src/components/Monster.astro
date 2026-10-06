@@ -3,6 +3,7 @@ import { monsterById } from '../data/catalog';
 import ElementIcon from './ElementIcon.astro';
 import { leaderSkillIcon, leaderText } from '../lib/monster-catalog';
 import { getMessages, routePath, type Locale } from '../i18n';
+import { localeCopy } from '../i18n/copy';
 interface Props {
   id: string;
   leader?: boolean;
@@ -11,6 +12,7 @@ interface Props {
 }
 const { id, leader = false, linked = false, locale = 'pt-BR' } = Astro.props;
 const messages = getMessages(locale);
+const localCopy = localeCopy(locale);
 const monster = monsterById.get(id)!;
 const leaderIcon = leader ? leaderSkillIcon(monster.leaderSkill) : null;
 const Tag = linked ? 'a' : 'div';
@@ -19,13 +21,7 @@ const Tag = linked ? 'a' : 'div';
 <Tag
   class={`monster monster--${monster.element}`}
   href={linked ? routePath('monster', locale, { id }) : undefined}
-  aria-label={
-    linked
-      ? locale === 'pt-BR'
-        ? `Ver ${monster.name} no catálogo`
-        : `View ${monster.name} in the catalog`
-      : undefined
-  }
+  aria-label={linked ? localCopy.viewCatalog(monster.name) : undefined}
 >
   <div class="monster-portrait">
     <span class="monster-fallback" aria-hidden="true">
@@ -38,10 +34,10 @@ const Tag = linked ? 'a' : 'div';
       <img
         class="leader-marker"
         src={leaderIcon}
-        alt={locale === 'pt-BR' ? 'Líder da composição' : 'Team leader'}
+        alt={localCopy.teamLeader}
         width="32"
         height="32"
-        title={`${locale === 'pt-BR' ? 'Líder da composição' : 'Team leader'} · ${leaderText(monster.leaderSkill, locale)}`}
+        title={`${localCopy.teamLeader} · ${leaderText(monster.leaderSkill, locale)}`}
         data-team-leader-icon
       />
     )}

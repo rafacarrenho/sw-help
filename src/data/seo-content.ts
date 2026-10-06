@@ -1,4 +1,5 @@
 import type { Locale, RouteName } from '../i18n';
+import { seoContentDe, seoContentEs, seoContentFr } from './seo-content-extra';
 
 export interface SeoFaq {
   question: string;
@@ -758,4 +759,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
       ],
     },
   },
+  es: seoContentEs,
+  fr: seoContentFr,
+  de: seoContentDe,
 };

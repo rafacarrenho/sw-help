@@ -20,12 +20,14 @@ import {
   toMonsterSummary,
 } from '../lib/monster-catalog';
 import { getMessages, numberLocale, routePath, type Locale } from '../i18n';
+import { localeCopy } from '../i18n/copy';
 interface Props {
   page?: number;
   locale?: Locale;
 }
 const { page = 1, locale = 'en' } = Astro.props;
 const messages = getMessages(locale);
+const localCopy = localeCopy(locale);
 const searchContent = seoContent[locale].monsters;
 const elementLabels = elementLabelsFor(locale);
 const catalogElementOptions = catalogElementOptionsFor(locale);
@@ -54,12 +56,8 @@ const clientConfig = JSON.stringify({
     results: messages.monsters.results,
     page: messages.monsters.page,
     of: messages.monsters.of,
-    searching:
-      locale === 'pt-BR' ? 'Buscando monstros…' : 'Searching monsters…',
-    searchUnavailable:
-      locale === 'pt-BR'
-        ? 'Busca indisponível. Você pode tentar novamente.'
-        : 'Search unavailable. You can try again.',
+    searching: localCopy.searching,
+    searchUnavailable: localCopy.searchUnavailable,
     previous: messages.monsters.previous,
     next: messages.monsters.next,
     secondAwakening: messages.monster.secondAwakening,

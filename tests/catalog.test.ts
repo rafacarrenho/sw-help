@@ -62,6 +62,7 @@ import {
   localeMetadata,
   localeOptions,
   locales,
+  numberLocale,
   routePath,
 } from '../src/i18n/index.ts';
 import {
@@ -126,9 +127,12 @@ test('cabeçalhos estáticos endurecem a entrega em produção', () => {
   assert.match(headers, /max-age=31536000, immutable/);
 });
 
-test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
+test('rotas localizadas cobrem os cinco idiomas e preservam os slugs técnicos', () => {
   assert.equal(routePath('portalHome', 'en'), '/');
   assert.equal(routePath('portalHome', 'pt-BR'), '/pt');
+  assert.equal(routePath('portalHome', 'es'), '/es');
+  assert.equal(routePath('portalHome', 'fr'), '/fr');
+  assert.equal(routePath('portalHome', 'de'), '/de');
   assert.equal(routePath('home', 'en'), '/summoners-war');
   assert.equal(routePath('home', 'pt-BR'), '/pt/summoners-war');
   assert.equal(routePath('siegeCounter', 'en'), '/summoners-war/siege-counter');
@@ -142,6 +146,9 @@ test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
   );
   assert.equal(routePath('monsters', 'en'), '/summoners-war/monsters');
   assert.equal(routePath('monsters', 'pt-BR'), '/pt/summoners-war/monstros');
+  assert.equal(routePath('monsters', 'es'), '/es/summoners-war/monstruos');
+  assert.equal(routePath('monsters', 'fr'), '/fr/summoners-war/monstres');
+  assert.equal(routePath('monsters', 'de'), '/de/summoners-war/monster');
   assert.equal(
     routePath('speedComparison', 'en'),
     '/summoners-war/speed-comparison',
@@ -154,10 +161,26 @@ test('rotas localizadas mantêm inglês na raiz e português sob /pt', () => {
     routePath('monster', 'pt-BR', { id: 'nora' }),
     '/pt/summoners-war/monstros/nora',
   );
-  assert.deepEqual(games[0].navigation[0].label, {
-    en: 'Summoners War',
-    'pt-BR': 'Summoners War',
-  });
+  assert.equal(
+    routePath('monsterPage', 'de', { page: 2 }),
+    '/de/summoners-war/monster/seite/2',
+  );
+  assert.equal(
+    routePath('speedComparison', 'es'),
+    '/es/summoners-war/comparador-spd',
+  );
+  assert.equal(
+    routePath('speedComparison', 'fr'),
+    '/fr/summoners-war/comparateur-vit',
+  );
+  assert.equal(
+    routePath('speedComparison', 'de'),
+    '/de/summoners-war/ges-vergleich',
+  );
+  assert.deepEqual(
+    games[0].navigation[0].label,
+    Object.fromEntries(locales.map((locale) => [locale, 'Summoners War'])),
+  );
 });
 
 test('opções de elemento acompanham o idioma do catálogo', () => {
@@ -196,26 +219,38 @@ test('registro de jogos mantém o menu contextual centralizado', () => {
   );
 });
 
-test('conteúdo editorial tem cobertura em inglês e português', () => {
+test('conteúdo editorial e mensagens têm cobertura nos cinco idiomas', () => {
   const englishDefenses = defensesFor('en');
   const portugueseDefenses = defensesFor('pt-BR');
-  const englishCounters = countersFor('en');
-  const portugueseCounters = countersFor('pt-BR');
 
-  assert.equal(englishDefenses.length, defenses.length);
-  assert.equal(portugueseDefenses.length, defenses.length);
-  assert.equal(englishCounters.length, counters.length);
-  assert.equal(portugueseCounters.length, counters.length);
+  for (const locale of locales) {
+    assert.equal(defensesFor(locale).length, defenses.length);
+    assert.equal(countersFor(locale).length, counters.length);
+    assert.ok(getMessages(locale).layout.language);
+    assert.ok(getMessages(locale).portal.headingPrefix);
+    assert.ok(getMessages(locale).notFound.title);
+  }
   assert.notEqual(
     englishDefenses[0].description,
     portugueseDefenses[0].description,
   );
   assert.notEqual(
-    englishCounters[0].instruction,
-    portugueseCounters[0].instruction,
+    countersFor('en')[0].instruction,
+    countersFor('pt-BR')[0].instruction,
   );
   assert.equal(getMessages('en').layout.language, 'Language');
   assert.equal(getMessages('pt-BR').layout.language, 'Idioma');
+  assert.equal(getMessages('es').layout.language, 'Idioma');
+  assert.equal(getMessages('fr').layout.language, 'Langue');
+  assert.equal(getMessages('de').layout.language, 'Sprache');
+});
+
+test('formatação numérica acompanha cada locale publicado', () => {
+  assert.equal(numberLocale('en'), 'en-US');
+  assert.equal(numberLocale('pt-BR'), 'pt-BR');
+  assert.equal(numberLocale('es'), 'es');
+  assert.equal(numberLocale('fr'), 'fr-FR');
+  assert.equal(numberLocale('de'), 'de-DE');
 });
 
 test('todos os locales possuem metadados para o seletor de idioma', () => {

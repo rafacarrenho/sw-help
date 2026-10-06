@@ -17,6 +17,9 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   );
   expect(xml).toContain(`<loc>${productionOrigin}/</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/es</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/fr</loc>`);
+  expect(xml).toContain(`<loc>${productionOrigin}/de</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/about</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt/sobre</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/contact</loc>`);
@@ -38,6 +41,15 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   expect(xml).toContain(
     `<loc>${productionOrigin}/pt/summoners-war/monstros/pagina/2</loc>`,
   );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/es/summoners-war/monstruos/pagina/2</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/fr/summoners-war/monstres/page/2</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/de/summoners-war/monster/seite/2</loc>`,
+  );
   expect(xml).toMatch(
     new RegExp(
       `<loc>${productionOrigin}/summoners-war/siege-counter/[^/]+</loc>`,
@@ -54,6 +66,15 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   );
   expect(xml).toContain(
     `hreflang="pt-BR" href="${productionOrigin}/pt/summoners-war/monstros"`,
+  );
+  expect(xml).toContain(
+    `hreflang="es" href="${productionOrigin}/es/summoners-war/monstruos"`,
+  );
+  expect(xml).toContain(
+    `hreflang="fr" href="${productionOrigin}/fr/summoners-war/monstres"`,
+  );
+  expect(xml).toContain(
+    `hreflang="de" href="${productionOrigin}/de/summoners-war/monster"`,
   );
   expect(xml).toContain(
     `hreflang="x-default" href="${productionOrigin}/summoners-war/monsters"`,
@@ -130,6 +151,42 @@ test('404 em português preserva idioma e links localizados', async ({
   ).toHaveAttribute('href', '/pt');
 });
 
+test('404 preserva espanhol, francês e alemão', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+
+  const localizedPages = [
+    {
+      path: '/es/pagina-inexistente',
+      locale: 'es',
+      title: 'Página no encontrada · PlayerDojo',
+      home: '/es',
+    },
+    {
+      path: '/fr/page-inexistante',
+      locale: 'fr',
+      title: 'Page introuvable · PlayerDojo',
+      home: '/fr',
+    },
+    {
+      path: '/de/unbekannte-seite',
+      locale: 'de',
+      title: 'Seite nicht gefunden · PlayerDojo',
+      home: '/de',
+    },
+  ];
+
+  for (const entry of localizedPages) {
+    const response = await page.goto(entry.path);
+    expect(response?.status()).toBe(404);
+    await expect(page).toHaveTitle(entry.title);
+    await expect(page.locator('html')).toHaveAttribute('lang', entry.locale);
+    await expect(page.locator('.not-found-actions a').first()).toHaveAttribute(
+      'href',
+      entry.home,
+    );
+  }
+});
+
 test('página normal preserva canonical e alternativas de idioma', async ({
   page,
 }, testInfo) => {
@@ -147,6 +204,18 @@ test('página normal preserva canonical e alternativas de idioma', async ({
   await expect(page.locator('link[hreflang="pt-BR"]')).toHaveAttribute(
     'href',
     `${productionOrigin}/pt/summoners-war/monstros`,
+  );
+  await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
+    'href',
+    `${productionOrigin}/es/summoners-war/monstruos`,
+  );
+  await expect(page.locator('link[hreflang="fr"]')).toHaveAttribute(
+    'href',
+    `${productionOrigin}/fr/summoners-war/monstres`,
+  );
+  await expect(page.locator('link[hreflang="de"]')).toHaveAttribute(
+    'href',
+    `${productionOrigin}/de/summoners-war/monster`,
   );
 });
 

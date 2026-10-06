@@ -1,0 +1,15 @@
+---
+import MonsterDetail from '../../../../components/pages/MonsterDetail.astro';
+import { monsters } from '../../../../data/catalog';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return monsters.map((monster) => ({
+    params: { id: monster.id },
+    props: { monster },
+  }));
+}
+const { monster } = Astro.props;
+---
+
+<MonsterDetail monster={monster} locale="fr" />

@@ -1,0 +1,26 @@
+{
+  "morris-eshir-orion": {
+    "label": "Druck und Kontrolle",
+    "description": "Einzelzielschaden, Kontrolle und Durchhaltevermögen halten den Druck aufrecht."
+  },
+  "morris-trevor-figaro": {
+    "label": "Vielseitiger Burst",
+    "description": "Fokussierter Schaden und starker Folgedruck prägen diese Verteidigung."
+  },
+  "morris-orion-trevor": {
+    "label": "Kontrolle und Druck",
+    "description": "Eine ausgewogene Komposition mit Support, Kontrolle und starkem Folgeschaden."
+  },
+  "solveig-vigor-cichlid": {
+    "label": "Ausdauer und Druck",
+    "description": "Support, kontinuierlicher Schaden und Widerstandskraft helfen dieser Verteidigung standzuhalten."
+  },
+  "solveig-cichlid-molly": {
+    "label": "Kettendruck",
+    "description": "Konstanter Druck und zuverlässiger Folgeschaden halten die Verteidigung in Bewegung."
+  },
+  "solveig-iris-hraesvelg": {
+    "label": "Druck und Kontrolle",
+    "description": "Kontinuierlicher Schaden, Support und Kontrolle setzen das gegnerische Team stetig unter Druck."
+  }
+}

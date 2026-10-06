@@ -97,8 +97,15 @@ export const attributeLabels: Record<string, string> = {
 };
 export function attributeLabelsFor(locale: Locale): Record<string, string> {
   const { common } = getMessages(locale);
+  const attackLabels: Record<Locale, string> = {
+    en: 'ATK',
+    'pt-BR': 'ATQ',
+    es: 'ATK',
+    fr: 'ATQ',
+    de: 'ANG',
+  };
   return {
-    'Attack Power': locale === 'pt-BR' ? 'ATQ' : 'ATK',
+    'Attack Power': attackLabels[locale],
     Defense: 'DEF',
     HP: 'HP',
     'Attack Speed': 'SPD',
@@ -234,11 +241,17 @@ export function leaderScopeText(
 ): string | null {
   if (!skill) return null;
   const labels = elementLabelsFor(locale);
-  return skill.element
-    ? locale === 'pt-BR'
-      ? `${getMessages(locale).taxonomy.elementAllies} ${labels[skill.element]}`
-      : `${labels[skill.element]} ${getMessages(locale).taxonomy.elementAllies}`
-    : (areaLabelsFor(locale)[skill.area] ?? skill.area);
+  if (!skill.element) return areaLabelsFor(locale)[skill.area] ?? skill.area;
+  const element = labels[skill.element];
+  const allies = getMessages(locale).taxonomy.elementAllies;
+  const elementScope: Record<Locale, string> = {
+    en: `${element} ${allies}`,
+    'pt-BR': `${allies} ${element}`,
+    es: `${allies} de ${element}`,
+    fr: `${allies} ${element}`,
+    de: `${element}-${allies}`,
+  };
+  return elementScope[locale];
 }
 export function leaderText(
   skill: Monster['leaderSkill'],

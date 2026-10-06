@@ -21,6 +21,7 @@ import {
 } from '../../lib/monster-catalog';
 import type { Monster } from '../../lib/types';
 import { getMessages, numberLocale, routePath, type Locale } from '../../i18n';
+import { localeCopy } from '../../i18n/copy';
 
 interface Props {
   monster: Monster;
@@ -28,6 +29,7 @@ interface Props {
 }
 const { monster, locale } = Astro.props;
 const messages = getMessages(locale);
+const localCopy = localeCopy(locale);
 const elementNames = elementLabelsFor(locale);
 const archetypeLabels = archetypeLabelsFor(locale);
 const leaderIcon = leaderSkillIcon(monster.leaderSkill);
@@ -102,25 +104,20 @@ const catalogPath = routePath('monsters', locale);
 const catalogPageTemplate = routePath('monsterPage', locale, {
   page: '__PAGE__',
 });
-const importedContentLanguage = locale === 'pt-BR' ? 'en' : undefined;
+const importedContentLanguage = locale === 'en' ? undefined : 'en';
 ---
 
 <Layout
-  title={
-    locale === 'pt-BR'
-      ? `${monster.name} (${elementNames[monster.element]}) – Monstro de Summoners War`
-      : `${monster.name} (${elementNames[monster.element]}) – Summoners War Monster`
-  }
+  title={localCopy.monsterTitle(monster.name, elementNames[monster.element])}
   section="monsters"
   detail
   locale={locale}
   routeName="monster"
   routeParams={{ id: monster.id }}
-  description={
-    locale === 'pt-BR'
-      ? `Veja ${monster.name} de ${elementNames[monster.element]} no Summoners War: atributos base, habilidades, liderança, evolução, família e times de Siege.`
-      : `Explore ${monster.name}, the ${elementNames[monster.element]} Summoners War monster: base stats, skills, leader effect, evolution, family, and Siege teams.`
-  }
+  description={localCopy.monsterDescription(
+    monster.name,
+    elementNames[monster.element],
+  )}
 >
   <div class="detail-toolbar">
     <a

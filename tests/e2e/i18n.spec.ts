@@ -23,6 +23,18 @@ test('inglês ocupa a raiz e português fica sob /pt', async ({ page }) => {
     'href',
     'https://www.playerdojo.com/pt',
   );
+  await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
+    'href',
+    'https://www.playerdojo.com/es',
+  );
+  await expect(page.locator('link[hreflang="fr"]')).toHaveAttribute(
+    'href',
+    'https://www.playerdojo.com/fr',
+  );
+  await expect(page.locator('link[hreflang="de"]')).toHaveAttribute(
+    'href',
+    'https://www.playerdojo.com/de',
+  );
 
   await page.goto('/pt');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
@@ -145,6 +157,9 @@ test('dropdown de idioma abre, fecha e oferece a alternativa pelo teclado', asyn
   const toggle = page.locator('[data-language-toggle]');
   const menu = page.locator('[data-language-menu]');
   const portuguese = menu.getByRole('menuitem', { name: /Português/ });
+  const spanish = menu.getByRole('menuitem', { name: /Español/ });
+  const french = menu.getByRole('menuitem', { name: /Français/ });
+  const german = menu.getByRole('menuitem', { name: /Deutsch/ });
 
   await expect(toggle).toContainText('English');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
@@ -154,6 +169,9 @@ test('dropdown de idioma abre, fecha e oferece a alternativa pelo teclado', asyn
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await expect(menu).toBeVisible();
   await expect(portuguese).toHaveAttribute('href', '/pt');
+  await expect(spanish).toHaveAttribute('href', '/es');
+  await expect(french).toHaveAttribute('href', '/fr');
+  await expect(german).toHaveAttribute('href', '/de');
 
   await page.keyboard.press('Escape');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
@@ -192,6 +210,18 @@ test('seletor traduz o slug e preserva a query string', async ({ page }) => {
     'href',
     `/pt/summoners-war/comparador-spd${query}`,
   );
+  await expect(page.locator('.language-menu a[lang="es"]')).toHaveAttribute(
+    'href',
+    `/es/summoners-war/comparador-spd${query}`,
+  );
+  await expect(page.locator('.language-menu a[lang="fr"]')).toHaveAttribute(
+    'href',
+    `/fr/summoners-war/comparateur-vit${query}`,
+  );
+  await expect(page.locator('.language-menu a[lang="de"]')).toHaveAttribute(
+    'href',
+    `/de/summoners-war/ges-vergleich${query}`,
+  );
 
   await page.goto((await portuguese.getAttribute('href'))!);
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
@@ -223,6 +253,54 @@ test('seletor traduz a rota de detalhe sem traduzir dados oficiais', async ({
       'Attacks the enemy to inflict damage that ignores all beneficial effects that reduce damage taken.',
     ),
   ).toBeVisible();
+});
+
+test('espanhol, francês e alemão publicam ferramentas e detalhes localizados', async ({
+  page,
+}) => {
+  const locales = [
+    {
+      locale: 'es',
+      home: '/es/summoners-war',
+      heading: 'Planifica mejor.',
+      monster: '/es/summoners-war/monstruos/carcano',
+      skills: 'Habilidades',
+    },
+    {
+      locale: 'fr',
+      home: '/fr/summoners-war',
+      heading: 'Planifiez mieux.',
+      monster: '/fr/summoners-war/monstres/carcano',
+      skills: 'Compétences',
+    },
+    {
+      locale: 'de',
+      home: '/de/summoners-war',
+      heading: 'Besser planen.',
+      monster: '/de/summoners-war/monster/carcano',
+      skills: 'Fähigkeiten',
+    },
+  ];
+
+  for (const entry of locales) {
+    await page.goto(entry.home);
+    await expect(page.locator('html')).toHaveAttribute('lang', entry.locale);
+    await expect(page.locator('h1')).toContainText(entry.heading);
+
+    await page.goto(entry.monster);
+    await expect(page.locator('html')).toHaveAttribute('lang', entry.locale);
+    await expect(
+      page.getByRole('heading', { name: entry.skills }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Accurate Fire' }),
+    ).toHaveAttribute('lang', 'en');
+    await expect(
+      page.getByText(
+        'Attacks the enemy to inflict damage that ignores all beneficial effects that reduce damage taken.',
+      ),
+    ).toHaveAttribute('lang', 'en');
+  }
 });
 
 test('sitemap lista as rotas canônicas e seus alternates', async ({

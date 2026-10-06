@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { SITE_NAME, SITE_ORIGIN } from '../config/site';
-import { routePath } from '../i18n';
+import { routePath, type Locale } from '../i18n';
 
 export const prerender = true;
 
@@ -10,7 +10,7 @@ export const GET: APIRoute = ({ site }) => {
   const link = (
     label: string,
     route: Parameters<typeof routePath>[0],
-    locale: 'en' | 'pt-BR',
+    locale: Locale,
   ) => `- [${label}](${absolute(routePath(route, locale))})`;
 
   const content = `# ${SITE_NAME}
@@ -40,6 +40,42 @@ ${link('Catálogo de monstros', 'monsters', 'pt-BR')}: Consulte atributos, habil
 ${link('SPD Tuning', 'speedTuning', 'pt-BR')}: Planeje a ordem de turno considerando líder de velocidade, torre e efeitos de combate.
 ${link('Comparador de SPD', 'speedComparison', 'pt-BR')}: Compare dois monstros e estime a SPD adicional necessária para jogar primeiro.
 ${link('Calculadora de Tick de SPD', 'speedTick', 'pt-BR')}: Calcule breakpoints de Tick considerando SPD base, runas, torre, líder e Swift.
+
+## Español
+
+${link('Portal de herramientas para juegos', 'portalHome', 'es')}: Explora todos los juegos disponibles en ${SITE_NAME}.
+${link('Acerca de PlayerDojo', 'about', 'es')}: Conoce el proyecto independiente y cómo se documentan sus herramientas.
+${link('Política de privacidad', 'privacy', 'es')}: Consulta información sobre analytics, almacenamiento y privacidad.
+${link('Herramientas de Summoners War', 'home', 'es')}: Resumen de las herramientas de ${SITE_NAME}.
+${link('Siege Counter', 'siegeCounter', 'es')}: Busca defensas de Siege y consulta ideas de ofensiva.
+${link('Catálogo de monstruos', 'monsters', 'es')}: Consulta estadísticas, habilidades y formas importadas de SWARFARM.
+${link('Spd Tuning', 'speedTuning', 'es')}: Planifica el orden de turnos con líderes, torre y efectos de combate.
+${link('Comparador de SPD', 'speedComparison', 'es')}: Compara dos monstruos y estima la SPD adicional necesaria.
+${link('Calculadora de Spd Tick', 'speedTick', 'es')}: Calcula breakpoints según SPD base, runas, torre, líder y Swift.
+
+## Français
+
+${link('Portail des outils de jeu', 'portalHome', 'fr')}: Découvrez tous les jeux disponibles sur ${SITE_NAME}.
+${link('À propos de PlayerDojo', 'about', 'fr')}: Découvrez le projet indépendant et sa documentation.
+${link('Politique de confidentialité', 'privacy', 'fr')}: Consultez les informations sur analytics, stockage et confidentialité.
+${link('Outils Summoners War', 'home', 'fr')}: Vue d’ensemble des outils ${SITE_NAME}.
+${link('Siege Counter', 'siegeCounter', 'fr')}: Recherchez des défenses de siège et des idées d’offense.
+${link('Catalogue de monstres', 'monsters', 'fr')}: Consultez statistiques, compétences et formes importées de SWARFARM.
+${link('Spd Tuning', 'speedTuning', 'fr')}: Planifiez l’ordre de jeu avec leaders, tour et effets de combat.
+${link('Comparateur de VIT', 'speedComparison', 'fr')}: Comparez deux monstres et estimez la VIT supplémentaire nécessaire.
+${link('Calculateur Spd Tick', 'speedTick', 'fr')}: Calculez les seuils selon la VIT de base, les runes, la tour, le leader et Swift.
+
+## Deutsch
+
+${link('Portal für Spieltools', 'portalHome', 'de')}: Entdecke alle auf ${SITE_NAME} verfügbaren Spiele.
+${link('Über PlayerDojo', 'about', 'de')}: Erfahre mehr über das unabhängige Projekt und seine Dokumentation.
+${link('Datenschutzerklärung', 'privacy', 'de')}: Lies Informationen zu Analytics, Browserspeicher und Datenschutz.
+${link('Summoners-War-Tools', 'home', 'de')}: Übersicht aller ${SITE_NAME}-Tools.
+${link('Siege Counter', 'siegeCounter', 'de')}: Suche Belagerungsverteidigungen und Angriffsideen.
+${link('Monsterkatalog', 'monsters', 'de')}: Sieh Werte, Skills und aus SWARFARM importierte Formen nach.
+${link('Spd Tuning', 'speedTuning', 'de')}: Plane Zugreihenfolgen mit Leadern, Turm und Kampfeffekten.
+${link('GES-Vergleich', 'speedComparison', 'de')}: Vergleiche zwei Monster und schätze die nötige zusätzliche GES.
+${link('Spd Tick Rechner', 'speedTick', 'de')}: Berechne Schwellen aus Basis-GES, Runen, Turm, Leader und Swift.
 
 ## Discovery
 

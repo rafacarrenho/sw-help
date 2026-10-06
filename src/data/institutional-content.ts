@@ -1,4 +1,9 @@
 import type { Locale, RouteName } from '../i18n';
+import {
+  institutionalContentDe,
+  institutionalContentEs,
+  institutionalContentFr,
+} from './institutional-content-extra';
 
 export type InstitutionalPageId = 'about' | 'contact' | 'privacy' | 'terms';
 
@@ -412,4 +417,7 @@ export const institutionalContent: InstitutionalContent = {
       ],
     },
   },
+  es: institutionalContentEs,
+  fr: institutionalContentFr,
+  de: institutionalContentDe,
 };

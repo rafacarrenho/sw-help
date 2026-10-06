@@ -5,7 +5,12 @@ import {
   filterMonsters,
   readMonsterFilters,
 } from '../lib/monster-catalog';
-import { routePath, type RouteName, type RouteParams } from '../i18n/index.ts';
+import {
+  locales,
+  routePath,
+  type RouteName,
+  type RouteParams,
+} from '../i18n/index.ts';
 import { SITE_ORIGIN } from '../config/site';
 
 export const prerender = true;
@@ -53,14 +58,20 @@ export const GET: APIRoute = ({ site }) => {
   const origin = site ?? new URL(SITE_ORIGIN);
   const absolute = (path: string) => new URL(path, origin).href;
   const urls = entries.flatMap(({ route, params = {} }) => {
-    const english = absolute(routePath(route, 'en', params));
-    const portuguese = absolute(routePath(route, 'pt-BR', params));
-    const alternates = `
-      <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(english)}" />
-      <xhtml:link rel="alternate" hreflang="pt-BR" href="${escapeXml(portuguese)}" />
+    const localized = locales.map((locale) => ({
+      locale,
+      location: absolute(routePath(route, locale, params)),
+    }));
+    const english = localized.find(({ locale }) => locale === 'en')!.location;
+    const alternates = `${localized
+      .map(
+        ({ locale, location }) => `
+      <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(location)}" />`,
+      )
+      .join('')}
       <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(english)}" />`;
-    return [english, portuguese].map(
-      (location) => `  <url>
+    return localized.map(
+      ({ location }) => `  <url>
     <loc>${escapeXml(location)}</loc>${alternates}
   </url>`,
     );

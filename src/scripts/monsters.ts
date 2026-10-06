@@ -218,7 +218,7 @@ async function update(
     );
     empty.hidden = matches.length > 0;
     pagination.hidden = matches.length === 0;
-    count.textContent = `${matches.length.toLocaleString(locale === 'pt-BR' ? 'pt-BR' : 'en-US')} ${messages.results} · ${messages.page} ${currentPage} ${messages.of} ${pages}`;
+    count.textContent = `${matches.length.toLocaleString(locale)} ${messages.results} · ${messages.page} ${currentPage} ${messages.of} ${pages}`;
     root.querySelector('[data-page-label]')!.textContent =
       `${messages.page} ${currentPage} ${messages.of} ${pages}`;
     renderPageLink(

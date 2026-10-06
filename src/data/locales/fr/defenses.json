@@ -1,0 +1,26 @@
+{
+  "morris-eshir-orion": {
+    "label": "Pression et contrôle",
+    "description": "Les dégâts monocibles, le contrôle et le maintien entretiennent la pression."
+  },
+  "morris-trevor-figaro": {
+    "label": "Burst polyvalent",
+    "description": "Les dégâts ciblés et une forte pression de suivi définissent cette défense."
+  },
+  "morris-orion-trevor": {
+    "label": "Contrôle et pression",
+    "description": "Une composition équilibrée avec support, contrôle et puissants dégâts de suivi."
+  },
+  "solveig-vigor-cichlid": {
+    "label": "Maintien et pression",
+    "description": "Le support, les dégâts continus et la résistance aident cette défense à tenir."
+  },
+  "solveig-cichlid-molly": {
+    "label": "Pression en chaîne",
+    "description": "Une pression constante et des dégâts de suivi fiables maintiennent la défense active."
+  },
+  "solveig-iris-hraesvelg": {
+    "label": "Pression et contrôle",
+    "description": "Les dégâts continus, le support et le contrôle exercent une pression régulière sur l’adversaire."
+  }
+}
