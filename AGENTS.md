@@ -19,6 +19,9 @@ Este é um projeto pessoal de Rafael Carrenho.
 - Todas as ferramentas publicadas estão ativas e habilitadas, incluindo Siege
   Counter, Spd Tuning, Spd Comparison e Spd Tick.
 - Manter defesas, counters e monstros nos arquivos de `src/data/`.
+- Em todos os idiomas, manter em inglês os nomes e as descrições de habilidades
+  importados do SWARFARM. Traduzir apenas o conteúdo próprio do PlayerDojo e
+  marcar os trechos importados com `lang="en"` quando necessário.
 - Em defesas e counters de Siege, `team[0]` é sempre o líder e aparece à esquerda.
   Não usar um campo separado para escolher outro líder.
 - Nos cards do catálogo, focar nos monstros e seus nomes, sem títulos ou descrições
