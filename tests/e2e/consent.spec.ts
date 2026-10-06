@@ -21,14 +21,21 @@ test('primeira camada abre configurações sem salvar uma escolha', async ({
   await expect(
     notice.getByRole('button', { name: 'Accept all' }),
   ).toBeFocused();
-  await expect(page.locator('body')).toHaveClass(/privacy-choice-required/);
-  await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
+  expect(
+    await page
+      .locator('body')
+      .evaluate((element) => getComputedStyle(element).overflow !== 'hidden'),
+  ).toBe(true);
   expect(
     await layer.evaluate((element) => {
       const hit = document.elementFromPoint(window.innerWidth - 2, 2);
       return hit === element || (hit !== null && element.contains(hit));
     }),
-  ).toBe(true);
+  ).toBe(false);
+
+  await page.getByRole('link', { name: 'Choose a game' }).click();
+  await expect(page).toHaveURL(/#games$/);
+  await expect(notice).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(layer).toBeVisible();
@@ -71,7 +78,6 @@ test('aceitar tudo ativa as duas categorias opcionais', async ({ page }) => {
   ).toMatchObject({ analytics: true, personalizedAds: true });
   await expect(page.locator('[data-privacy-choice-layer]')).toBeHidden();
   await expect(page.locator('[data-privacy-notice]')).toBeHidden();
-  await expect(page.locator('body')).not.toHaveClass(/privacy-choice-required/);
 });
 
 test('rodapé abre o modal com escolhas atuais e fechar não altera dados', async ({
@@ -123,18 +129,19 @@ test('modal mantém o foco dentro das configurações', async ({ page }) => {
   await expect(close).toBeFocused();
 });
 
-test('primeira camada mantém o foco dentro das escolhas obrigatórias', async ({
+test('primeira camada permite continuar a navegação por teclado', async ({
   page,
 }) => {
   await page.goto('/');
 
   const notice = page.locator('[data-privacy-notice]');
-  const privacyLink = notice.getByRole('link', { name: 'Privacy Policy' });
   const acceptAll = notice.getByRole('button', { name: 'Accept all' });
 
-  await privacyLink.focus();
-  await page.keyboard.press('Shift+Tab');
   await expect(acceptAll).toBeFocused();
   await page.keyboard.press('Tab');
-  await expect(privacyLink).toBeFocused();
+  expect(
+    await notice.evaluate(
+      (element) => !element.contains(document.activeElement),
+    ),
+  ).toBe(true);
 });

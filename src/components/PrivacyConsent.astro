@@ -14,8 +14,6 @@ const messages = getMessages(locale);
   <section
     class="privacy-notice"
     data-privacy-notice
-    role="dialog"
-    aria-modal="true"
     aria-labelledby="privacy-notice-title"
   >
     <div class="privacy-notice-copy">
@@ -156,7 +154,6 @@ const messages = getMessages(locale);
   const choiceLayer = document.querySelector<HTMLElement>(
     '[data-privacy-choice-layer]',
   );
-  const notice = document.querySelector<HTMLElement>('[data-privacy-notice]');
   const backdrop = document.querySelector<HTMLElement>(
     '[data-privacy-modal-backdrop]',
   );
@@ -231,7 +228,6 @@ const messages = getMessages(locale);
 
   const setChoiceRequired = (required: boolean, focusNotice = false) => {
     if (choiceLayer) choiceLayer.hidden = !required;
-    document.body.classList.toggle('privacy-choice-required', required);
     if (required && focusNotice) {
       window.requestAnimationFrame(() => noticeAcceptAllButton?.focus());
     }
@@ -355,12 +351,5 @@ const messages = getMessages(locale);
       if (event.key === 'Tab') trapFocus(event, modal, modal);
       return;
     }
-
-    if (!choiceLayer || choiceLayer.hidden) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      return;
-    }
-    if (event.key === 'Tab') trapFocus(event, notice, noticeAcceptAllButton);
   });
 </script>

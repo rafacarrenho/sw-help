@@ -1804,11 +1804,9 @@ input[type='search']:placeholder-shown + .search-clear-button {
 .privacy-choice-layer {
   position: fixed;
   z-index: 100;
-  inset: 0;
-  display: grid;
-  align-items: end;
-  background: #050607a6;
-  backdrop-filter: blur(3px);
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 .privacy-notice {
   position: relative;
@@ -1851,7 +1849,6 @@ input[type='search']:placeholder-shown + .search-clear-button {
   white-space: nowrap;
   font-size: var(--text-sm);
 }
-body.privacy-choice-required,
 body.privacy-modal-open {
   overflow: hidden;
 }
