@@ -283,6 +283,7 @@ export const ptBR: Messages = {
     exploreDefenses: 'Explorar outras defesas',
     offense: 'OFENSIVA',
     howToPlay: 'Como jogar',
+    killOrder: 'Ordem de eliminação',
     sources: 'Fontes',
     suggestedBuild: 'Configuração sugerida',
     offenseBuild: 'Configuração da ofensiva',

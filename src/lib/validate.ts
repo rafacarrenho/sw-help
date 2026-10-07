@@ -3,11 +3,99 @@ import type {
   MonsterSkill,
   DefenseBase,
   CounterBase,
+  CounterDefinition,
 } from './types.ts';
 import { counterStatNames } from './counter-stats.ts';
 import { getTickBreakpoint } from './speed-tick.ts';
 
 const counterStatKeys = new Set<string>(counterStatNames);
+
+export function validateCounterDefinitions(
+  monsters: Monster[],
+  defenses: DefenseBase[],
+  definitions: CounterDefinition[],
+): void {
+  const fail = (message: string): never => {
+    throw new Error(`Configuração de counter inválida: ${message}`);
+  };
+  const monsterIds = new Set(monsters.map(({ id }) => id));
+  const defenseMap = new Map(defenses.map((defense) => [defense.id, defense]));
+  const definitionIds = definitions.map(({ id }) => id);
+
+  if (new Set(definitionIds).size !== definitionIds.length)
+    fail('IDs genéricos duplicados.');
+  if (definitionIds.some((id) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)))
+    fail('ID genérico inválido.');
+
+  for (const definition of definitions) {
+    if (
+      !Array.isArray(definition.team) ||
+      definition.team.length !== 3 ||
+      new Set(definition.team).size !== 3 ||
+      definition.team.some((id) => !monsterIds.has(id))
+    )
+      fail(`equipe de ${definition.id}.`);
+    if (!Array.isArray(definition.matchups) || definition.matchups.length === 0)
+      fail(`confrontos de ${definition.id}.`);
+
+    const matchupIds = definition.matchups.map(({ defenseId }) => defenseId);
+    if (new Set(matchupIds).size !== matchupIds.length)
+      fail(`defesas duplicadas em ${definition.id}.`);
+
+    for (const matchup of definition.matchups) {
+      const defense = defenseMap.get(matchup.defenseId);
+      if (!defense)
+        fail(`defesa ${matchup.defenseId} de ${definition.id} não existe.`);
+
+      if (
+        matchup.killOrder !== undefined &&
+        (!Array.isArray(matchup.killOrder) ||
+          matchup.killOrder.length !== defense!.team.length ||
+          new Set(matchup.killOrder).size !== matchup.killOrder.length ||
+          matchup.killOrder.some((id) => !defense!.team.includes(id)))
+      )
+        fail(`ordem de eliminação de ${definition.id}.${matchup.defenseId}.`);
+
+      const runeOverrides = matchup.overrides?.runes;
+      if (runeOverrides !== undefined) {
+        if (!Array.isArray(runeOverrides))
+          fail(`overrides de runa de ${definition.id}.${matchup.defenseId}.`);
+        const runeMonsterIds = runeOverrides.map(({ monsterId }) => monsterId);
+        if (
+          new Set(runeMonsterIds).size !== runeMonsterIds.length ||
+          runeMonsterIds.some((id) => !definition.team.includes(id))
+        )
+          fail(`overrides de runa de ${definition.id}.${matchup.defenseId}.`);
+
+        for (const rune of runeOverrides) {
+          if (rune.sets !== undefined && !rune.sets.trim())
+            fail(`sets de runa de ${definition.id}.${matchup.defenseId}.`);
+          if (
+            rune.stats !== undefined &&
+            (typeof rune.stats !== 'object' ||
+              rune.stats === null ||
+              Object.entries(rune.stats).some(
+                ([key, value]) =>
+                  !counterStatKeys.has(key) ||
+                  (value !== null && (!Number.isInteger(value) || value < 0)),
+              ))
+          )
+            fail(`atributos de runa de ${definition.id}.${matchup.defenseId}.`);
+          if (
+            rune.preferredStats !== undefined &&
+            (!Array.isArray(rune.preferredStats) ||
+              new Set(rune.preferredStats).size !==
+                rune.preferredStats.length ||
+              rune.preferredStats.some((stat) => !counterStatKeys.has(stat)))
+          )
+            fail(
+              `atributos preferidos de ${definition.id}.${matchup.defenseId}.`,
+            );
+        }
+      }
+    }
+  }
+}
 
 export function validateCatalog(
   monsters: Monster[],
@@ -183,6 +271,8 @@ export function validateCatalog(
       fail(`ordem de turnos de ${counter.id}.`);
     if (
       !Array.isArray(counter.runes) ||
+      new Set(counter.runes.map(({ monsterId }) => monsterId)).size !==
+        counter.runes.length ||
       counter.runes.some(
         (rune) =>
           !counter.team.includes(rune.monsterId) ||
@@ -217,5 +307,13 @@ export function validateCatalog(
       )
     )
       fail(`fontes de ${counter.id}.`);
+    if (
+      counter.killOrder !== undefined &&
+      (!Array.isArray(counter.killOrder) ||
+        counter.killOrder.length !== defense!.team.length ||
+        new Set(counter.killOrder).size !== counter.killOrder.length ||
+        counter.killOrder.some((id) => !defense!.team.includes(id)))
+    )
+      fail(`ordem de eliminação de ${counter.id}.`);
   }
 }

@@ -288,6 +288,7 @@ export const de: Messages = {
     exploreDefenses: 'Andere Verteidigungen entdecken',
     offense: 'ANGRIFF',
     howToPlay: 'Spielweise',
+    killOrder: 'Eliminierungsreihenfolge',
     sources: 'Quellen',
     suggestedBuild: 'Empfohlener Build',
     offenseBuild: 'Angriffs-Build',

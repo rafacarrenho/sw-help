@@ -1,7 +1,6 @@
 [
   {
     "id": "mimirr-elucia-loren",
-    "defenseId": "morris-eshir-orion",
     "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
     "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
     "runes": [
@@ -19,11 +18,15 @@
       }
     ],
     "sources": [],
-    "tick": 5
+    "tick": 5,
+    "matchups": [
+      { "defenseId": "morris-eshir-orion" },
+      { "defenseId": "morris-trevor-figaro" },
+      { "defenseId": "morris-orion-trevor" }
+    ]
   },
   {
     "id": "platy-shihwa-iona",
-    "defenseId": "morris-eshir-orion",
     "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
     "runes": [
@@ -58,11 +61,21 @@
       }
     ],
     "sources": [],
-    "tick": 5
+    "tick": 5,
+    "matchups": [
+      { "defenseId": "morris-eshir-orion" },
+      {
+        "defenseId": "morris-trevor-figaro",
+        "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
+      },
+      { "defenseId": "morris-orion-trevor" },
+      { "defenseId": "solveig-vigor-cichlid" },
+      { "defenseId": "solveig-cichlid-molly" },
+      { "defenseId": "solveig-iris-hraesvelg" }
+    ]
   },
   {
     "id": "platy-shihwa-betta",
-    "defenseId": "morris-eshir-orion",
     "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
     "runes": [
@@ -97,11 +110,21 @@
       }
     ],
     "sources": [],
-    "tick": 5
+    "tick": 5,
+    "matchups": [
+      { "defenseId": "morris-eshir-orion" },
+      {
+        "defenseId": "morris-trevor-figaro",
+        "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
+      },
+      { "defenseId": "morris-orion-trevor" },
+      { "defenseId": "solveig-vigor-cichlid" },
+      { "defenseId": "solveig-cichlid-molly" },
+      { "defenseId": "solveig-iris-hraesvelg" }
+    ]
   },
   {
     "id": "betta-shihwa-iona",
-    "defenseId": "morris-eshir-orion",
     "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
     "runes": [
@@ -135,630 +158,17 @@
       }
     ],
     "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "mimirr-elucia-loren-morris-trevor-figaro",
-    "defenseId": "morris-trevor-figaro",
-    "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
-    "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
-    "runes": [
+    "tick": 5,
+    "matchups": [
+      { "defenseId": "morris-eshir-orion" },
       {
-        "monsterId": "mimirr-light-655",
-        "sets": "Violent / Will"
+        "defenseId": "morris-trevor-figaro",
+        "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
       },
-      {
-        "monsterId": "elucia-water-1281",
-        "sets": "Violent / Will"
-      },
-      {
-        "monsterId": "loren-light-410",
-        "sets": "Violent / Will"
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-iona-morris-trevor-figaro",
-    "defenseId": "morris-trevor-figaro",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-betta-morris-trevor-figaro",
-    "defenseId": "morris-trevor-figaro",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "betta-shihwa-iona-morris-trevor-figaro",
-    "defenseId": "morris-trevor-figaro",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "mimirr-elucia-loren-morris-orion-trevor",
-    "defenseId": "morris-orion-trevor",
-    "team": ["mimirr-light-655", "loren-light-410", "elucia-water-1281"],
-    "turnOrder": ["loren-light-410", "elucia-water-1281", "mimirr-light-655"],
-    "runes": [
-      {
-        "monsterId": "mimirr-light-655",
-        "sets": "Violent / Will"
-      },
-      {
-        "monsterId": "elucia-water-1281",
-        "sets": "Violent / Will"
-      },
-      {
-        "monsterId": "loren-light-410",
-        "sets": "Violent / Will"
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-iona-morris-orion-trevor",
-    "defenseId": "morris-orion-trevor",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-betta-morris-orion-trevor",
-    "defenseId": "morris-orion-trevor",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "betta-shihwa-iona-morris-orion-trevor",
-    "defenseId": "morris-orion-trevor",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-iona-solveig-vigor-cichlid",
-    "defenseId": "solveig-vigor-cichlid",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-betta-solveig-vigor-cichlid",
-    "defenseId": "solveig-vigor-cichlid",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "betta-shihwa-iona-solveig-vigor-cichlid",
-    "defenseId": "solveig-vigor-cichlid",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-iona-solveig-cichlid-molly",
-    "defenseId": "solveig-cichlid-molly",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-betta-solveig-cichlid-molly",
-    "defenseId": "solveig-cichlid-molly",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "betta-shihwa-iona-solveig-cichlid-molly",
-    "defenseId": "solveig-cichlid-molly",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-iona-solveig-iris-hraesvelg",
-    "defenseId": "solveig-iris-hraesvelg",
-    "team": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "platy-shihwa-betta-solveig-iris-hraesvelg",
-    "defenseId": "solveig-iris-hraesvelg",
-    "team": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "turnOrder": ["platy-fire-835", "shihwa-fire-244", "betta-dark-839"],
-    "runes": [
-      {
-        "monsterId": "platy-fire-835",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
-  },
-  {
-    "id": "betta-shihwa-iona-solveig-iris-hraesvelg",
-    "defenseId": "solveig-iris-hraesvelg",
-    "team": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "turnOrder": ["betta-dark-839", "shihwa-fire-244", "iona-light-661"],
-    "runes": [
-      {
-        "monsterId": "betta-dark-839",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      },
-      {
-        "monsterId": "shihwa-fire-244",
-        "sets": "Violent / Destroy",
-        "stats": {
-          "hp": 20000,
-          "attack": 1000,
-          "defense": 700
-        },
-        "preferredStats": ["accuracy"]
-      },
-      {
-        "monsterId": "iona-light-661",
-        "sets": "Violent / Will",
-        "stats": {
-          "hp": 30000,
-          "defense": 700,
-          "resistance": 100
-        }
-      }
-    ],
-    "sources": [],
-    "tick": 5
+      { "defenseId": "morris-orion-trevor" },
+      { "defenseId": "solveig-vigor-cichlid" },
+      { "defenseId": "solveig-cichlid-molly" },
+      { "defenseId": "solveig-iris-hraesvelg" }
+    ]
   }
 ]

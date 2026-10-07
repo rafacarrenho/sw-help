@@ -1,23 +1,23 @@
 {
-  "mimirr-elucia-loren": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
-  "platy-shihwa-iona": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "mimirr-elucia-loren-morris-trevor-figaro": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
-  "platy-shihwa-iona-morris-trevor-figaro": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta-morris-trevor-figaro": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona-morris-trevor-figaro": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "mimirr-elucia-loren-morris-orion-trevor": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza.",
-  "platy-shihwa-iona-morris-orion-trevor": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta-morris-orion-trevor": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona-morris-orion-trevor": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-iona-solveig-vigor-cichlid": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta-solveig-vigor-cichlid": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona-solveig-vigor-cichlid": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-iona-solveig-cichlid-molly": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta-solveig-cichlid-molly": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona-solveig-cichlid-molly": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-iona-solveig-iris-hraesvelg": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "platy-shihwa-betta-solveig-iris-hraesvelg": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
-  "betta-shihwa-iona-solveig-iris-hraesvelg": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização."
+  "mimirr-elucia-loren": {
+    "instruction": "Loren controla a barra e reduz a DEF; Elucia sustenta o time e Mimirr finaliza."
+  },
+  "platy-shihwa-iona": {
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+    }
+  },
+  "platy-shihwa-betta": {
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+    }
+  },
+  "betta-shihwa-iona": {
+    "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+    }
+  }
 }

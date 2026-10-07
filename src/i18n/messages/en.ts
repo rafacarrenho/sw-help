@@ -282,6 +282,7 @@ export const en = {
     exploreDefenses: 'Explore other defenses',
     offense: 'OFFENSE',
     howToPlay: 'How to play',
+    killOrder: 'Kill order',
     sources: 'Sources',
     suggestedBuild: 'Suggested build',
     offenseBuild: 'Offense build',

@@ -17,16 +17,26 @@ import type {
   DefenseBase,
   DefenseCopy,
   Counter,
-  CounterBase,
+  CounterCopy,
+  CounterDefinition,
 } from '../lib/types.ts';
-import { validateCatalog } from '../lib/validate.ts';
+import {
+  validateCatalog,
+  validateCounterDefinitions,
+} from '../lib/validate.ts';
+import {
+  localizeCounters,
+  resolveCounterDefinitions,
+  validateCounterCopyCoverage,
+} from '../lib/counter-config.ts';
 import { elementLabels, isFinalMonster } from '../lib/monster-catalog.ts';
 import { locales, type Locale } from '../i18n/index.ts';
 
 export const allMonsters = monsterData as Monster[];
 export const monsters = allMonsters.filter(isFinalMonster);
 const defenseBases = defenseData as DefenseBase[];
-const counterBases = counterData as CounterBase[];
+const counterDefinitions = counterData as CounterDefinition[];
+const counterBases = resolveCounterDefinitions(counterDefinitions);
 const defenseCopy: Record<Locale, Record<string, DefenseCopy>> = {
   en: defenseCopyEn,
   'pt-BR': defenseCopyPt,
@@ -34,7 +44,7 @@ const defenseCopy: Record<Locale, Record<string, DefenseCopy>> = {
   fr: defenseCopyFr,
   de: defenseCopyDe,
 };
-const counterCopy: Record<Locale, Record<string, string>> = {
+const counterCopy: Record<Locale, Record<string, CounterCopy>> = {
   en: counterCopyEn,
   'pt-BR': counterCopyPt,
   es: counterCopyEs,
@@ -45,20 +55,12 @@ const counterCopy: Record<Locale, Record<string, string>> = {
 function assertLocalizedCoverage() {
   for (const locale of locales) {
     const defenseIds = new Set(defenseBases.map(({ id }) => id));
-    const counterIds = new Set(counterBases.map(({ id }) => id));
     const localizedDefenseIds = Object.keys(defenseCopy[locale]);
-    const localizedCounterIds = Object.keys(counterCopy[locale]);
     if (
       localizedDefenseIds.length !== defenseIds.size ||
       localizedDefenseIds.some((id) => !defenseIds.has(id))
     ) {
       throw new Error(`Invalid localized defenses for ${locale}.`);
-    }
-    if (
-      localizedCounterIds.length !== counterIds.size ||
-      localizedCounterIds.some((id) => !counterIds.has(id))
-    ) {
-      throw new Error(`Invalid localized counters for ${locale}.`);
     }
   }
 }
@@ -71,13 +73,12 @@ export function defensesFor(locale: Locale): Defense[] {
 }
 
 export function countersFor(locale: Locale): Counter[] {
-  return counterBases.map((counter) => ({
-    ...counter,
-    instruction: counterCopy[locale][counter.id],
-  }));
+  return localizeCounters(counterBases, counterCopy[locale]);
 }
 
 assertLocalizedCoverage();
+validateCounterCopyCoverage(counterDefinitions, counterCopy, 'en');
+validateCounterDefinitions(allMonsters, defenseBases, counterDefinitions);
 export const defenses = defensesFor('pt-BR');
 export const counters = countersFor('pt-BR');
 validateCatalog(allMonsters, defenses, counters);

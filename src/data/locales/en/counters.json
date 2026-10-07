@@ -1,23 +1,23 @@
 {
-  "mimirr-elucia-loren": "Loren controls the Attack Bar and decreases DEF; Elucia sustains the team and Mimirr finishes the target.",
-  "platy-shihwa-iona": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "mimirr-elucia-loren-morris-trevor-figaro": "Loren controls the Attack Bar and decreases DEF; Elucia sustains the team and Mimirr finishes the target.",
-  "platy-shihwa-iona-morris-trevor-figaro": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta-morris-trevor-figaro": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona-morris-trevor-figaro": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "mimirr-elucia-loren-morris-orion-trevor": "Loren controls the Attack Bar and decreases DEF; Elucia sustains the team and Mimirr finishes the target.",
-  "platy-shihwa-iona-morris-orion-trevor": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta-morris-orion-trevor": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona-morris-orion-trevor": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-iona-solveig-vigor-cichlid": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta-solveig-vigor-cichlid": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona-solveig-vigor-cichlid": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-iona-solveig-cichlid-molly": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta-solveig-cichlid-molly": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona-solveig-cichlid-molly": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-iona-solveig-iris-hraesvelg": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "platy-shihwa-betta-solveig-iris-hraesvelg": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
-  "betta-shihwa-iona-solveig-iris-hraesvelg": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish."
+  "mimirr-elucia-loren": {
+    "instruction": "Loren controls the Attack Bar and decreases DEF; Elucia sustains the team and Mimirr finishes the target."
+  },
+  "platy-shihwa-iona": {
+    "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
+    "matchups": {
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+    }
+  },
+  "platy-shihwa-betta": {
+    "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
+    "matchups": {
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+    }
+  },
+  "betta-shihwa-iona": {
+    "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
+    "matchups": {
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+    }
+  }
 }

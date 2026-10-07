@@ -173,7 +173,7 @@ const counterStatsAfterSpeed = [
         });
 
         return (
-          <article class="counter-card">
+          <article class="counter-card" data-counter-id={counter.counterId}>
             <div class="counter-summary">
               <div class="counter-composition">
                 <div class="counter-label">
@@ -189,6 +189,50 @@ const counterStatsAfterSpeed = [
                   <h3>{messages.siege.howToPlay}</h3>
                   <p>{counter.instruction}</p>
                 </div>
+                {counter.killOrder && (
+                  <div class="counter-kill-order">
+                    <h4>{messages.siege.killOrder}</h4>
+                    <div class="counter-kill-order-sequence">
+                      {counter.killOrder.map((id, killIndex) => {
+                        const target = monsterById.get(id)!;
+                        return (
+                          <>
+                            {killIndex > 0 && (
+                              <span
+                                class="counter-kill-order-arrow"
+                                aria-hidden="true"
+                              >
+                                →
+                              </span>
+                            )}
+                            <div
+                              class="counter-kill-order-step"
+                              data-kill-order-monster={id}
+                            >
+                              {target.image ? (
+                                <img
+                                  src={target.image}
+                                  alt={target.name}
+                                  width="64"
+                                  height="64"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <span
+                                  class="counter-kill-order-fallback"
+                                  role="img"
+                                  aria-label={target.name}
+                                >
+                                  {target.name.slice(0, 2)}
+                                </span>
+                              )}
+                            </div>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 {counter.sources.length > 0 && (
                   <div class="source-list">
                     <h4>{messages.siege.sources}</h4>

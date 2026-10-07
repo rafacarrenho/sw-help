@@ -290,6 +290,7 @@ export const fr: Messages = {
     exploreDefenses: 'Explorer d’autres défenses',
     offense: 'OFFENSE',
     howToPlay: 'Comment jouer',
+    killOrder: 'Ordre d’élimination',
     sources: 'Sources',
     suggestedBuild: 'Build conseillé',
     offenseBuild: 'Build de l’offense',

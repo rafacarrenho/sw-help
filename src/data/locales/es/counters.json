@@ -1,23 +1,23 @@
 {
-  "mimirr-elucia-loren": "Loren controla la barra de ataque y reduce la DEF; Elucia mantiene al equipo y Mimirr remata al objetivo.",
-  "platy-shihwa-iona": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "mimirr-elucia-loren-morris-trevor-figaro": "Loren controla la barra de ataque y reduce la DEF; Elucia mantiene al equipo y Mimirr remata al objetivo.",
-  "platy-shihwa-iona-morris-trevor-figaro": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta-morris-trevor-figaro": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona-morris-trevor-figaro": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "mimirr-elucia-loren-morris-orion-trevor": "Loren controla la barra de ataque y reduce la DEF; Elucia mantiene al equipo y Mimirr remata al objetivo.",
-  "platy-shihwa-iona-morris-orion-trevor": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta-morris-orion-trevor": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona-morris-orion-trevor": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-iona-solveig-vigor-cichlid": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta-solveig-vigor-cichlid": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona-solveig-vigor-cichlid": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-iona-solveig-cichlid-molly": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta-solveig-cichlid-molly": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona-solveig-cichlid-molly": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-iona-solveig-iris-hraesvelg": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "platy-shihwa-betta-solveig-iris-hraesvelg": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
-  "betta-shihwa-iona-solveig-iris-hraesvelg": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final."
+  "mimirr-elucia-loren": {
+    "instruction": "Loren controla la barra de ataque y reduce la DEF; Elucia mantiene al equipo y Mimirr remata al objetivo."
+  },
+  "platy-shihwa-iona": {
+    "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+    }
+  },
+  "platy-shihwa-betta": {
+    "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+    }
+  },
+  "betta-shihwa-iona": {
+    "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
+    "matchups": {
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+    }
+  }
 }

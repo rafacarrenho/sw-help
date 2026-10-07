@@ -1,23 +1,23 @@
 {
-  "mimirr-elucia-loren": "Loren contrôle la jauge d’attaque et réduit la DEF ; Elucia maintient l’équipe et Mimirr achève la cible.",
-  "platy-shihwa-iona": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "mimirr-elucia-loren-morris-trevor-figaro": "Loren contrôle la jauge d’attaque et réduit la DEF ; Elucia maintient l’équipe et Mimirr achève la cible.",
-  "platy-shihwa-iona-morris-trevor-figaro": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta-morris-trevor-figaro": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona-morris-trevor-figaro": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "mimirr-elucia-loren-morris-orion-trevor": "Loren contrôle la jauge d’attaque et réduit la DEF ; Elucia maintient l’équipe et Mimirr achève la cible.",
-  "platy-shihwa-iona-morris-orion-trevor": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta-morris-orion-trevor": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona-morris-orion-trevor": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-iona-solveig-vigor-cichlid": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta-solveig-vigor-cichlid": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona-solveig-vigor-cichlid": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-iona-solveig-cichlid-molly": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta-solveig-cichlid-molly": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona-solveig-cichlid-molly": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-iona-solveig-iris-hraesvelg": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "platy-shihwa-betta-solveig-iris-hraesvelg": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
-  "betta-shihwa-iona-solveig-iris-hraesvelg": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin."
+  "mimirr-elucia-loren": {
+    "instruction": "Loren contrôle la jauge d’attaque et réduit la DEF ; Elucia maintient l’équipe et Mimirr achève la cible."
+  },
+  "platy-shihwa-iona": {
+    "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
+    "matchups": {
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+    }
+  },
+  "platy-shihwa-betta": {
+    "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
+    "matchups": {
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+    }
+  },
+  "betta-shihwa-iona": {
+    "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
+    "matchups": {
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+    }
+  }
 }

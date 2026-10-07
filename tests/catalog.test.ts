@@ -1,7 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { validateCatalog } from '../src/lib/validate.ts';
+import {
+  validateCatalog,
+  validateCounterDefinitions,
+} from '../src/lib/validate.ts';
+import {
+  resolveCounterDefinitions,
+  validateCounterCopyCoverage,
+} from '../src/lib/counter-config.ts';
 import { matchesSearch } from '../src/lib/search.ts';
 import {
   formatCounterSpeed,
@@ -54,7 +61,12 @@ import {
   structuralSpeed,
   writeSpeedComparisonQueryState,
 } from '../src/lib/speed-comparison.ts';
-import { monsterById, defensesFor, countersFor } from '../src/data/catalog.ts';
+import {
+  monsterById,
+  defensesFor,
+  countersFor,
+  getCountersFor,
+} from '../src/data/catalog.ts';
 import { games } from '../src/data/games.ts';
 import { skillById } from '../src/data/skill-catalog.ts';
 import {
@@ -78,6 +90,7 @@ import type {
   DefenseBase,
   Counter,
   CounterBase,
+  CounterDefinition,
 } from '../src/lib/types.ts';
 
 const read = (name: string) =>
@@ -87,7 +100,133 @@ const read = (name: string) =>
 const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
 const defenses: DefenseBase[] = read('defenses');
-const counters: CounterBase[] = read('counters');
+const counterDefinitions: CounterDefinition[] = read('counters');
+const counters: CounterBase[] = resolveCounterDefinitions(counterDefinitions);
+
+test('resolve counters genéricos e aplica overrides isolados por defesa', () => {
+  const generic = structuredClone(counterDefinitions[1]);
+  const targetMatchup = generic.matchups.find(
+    ({ defenseId }) => defenseId === 'morris-trevor-figaro',
+  )!;
+  targetMatchup.overrides = {
+    turnOrder: ['shihwa-fire-244', 'platy-fire-835', 'iona-light-661'],
+    runes: [
+      {
+        monsterId: 'shihwa-fire-244',
+        sets: 'Swift / Will',
+        stats: { hp: null, attack: 1200, critRate: 100 },
+        preferredStats: [],
+      },
+    ],
+    tick: 6,
+    sources: [{ title: 'Teste', url: 'https://example.com/counter' }],
+  };
+
+  const resolved = resolveCounterDefinitions([generic]);
+  const customized = resolved.find(
+    ({ defenseId }) => defenseId === 'morris-trevor-figaro',
+  )!;
+  const inherited = resolved.find(
+    ({ defenseId }) => defenseId === 'morris-eshir-orion',
+  )!;
+  const customizedShihwa = customized.runes.find(
+    ({ monsterId }) => monsterId === 'shihwa-fire-244',
+  )!;
+  const inheritedShihwa = inherited.runes.find(
+    ({ monsterId }) => monsterId === 'shihwa-fire-244',
+  )!;
+
+  assert.equal(customized.counterId, 'platy-shihwa-iona');
+  assert.equal(customized.id, 'platy-shihwa-iona-morris-trevor-figaro');
+  assert.deepEqual(customized.turnOrder, targetMatchup.overrides.turnOrder);
+  assert.equal(customized.tick, 6);
+  assert.deepEqual(customized.sources, targetMatchup.overrides.sources);
+  assert.equal(customizedShihwa.sets, 'Swift / Will');
+  assert.deepEqual(customizedShihwa.stats, {
+    attack: 1200,
+    defense: 700,
+    critRate: 100,
+  });
+  assert.deepEqual(customizedShihwa.preferredStats, []);
+  assert.equal(inherited.tick, 5);
+  assert.equal(inheritedShihwa.sets, 'Violent / Destroy');
+  assert.deepEqual(inheritedShihwa.stats, {
+    hp: 20000,
+    attack: 1000,
+    defense: 700,
+  });
+  assert.equal(counterDefinitions[1].runes[1].sets, 'Violent / Destroy');
+});
+
+test('mantém 21 confrontos e usa instrução e Kill order específicos', () => {
+  assert.equal(counterDefinitions.length, 4);
+  assert.equal(counters.length, 21);
+
+  const specific = getCountersFor('morris-trevor-figaro', 'pt-BR').find(
+    ({ counterId }) => counterId === 'platy-shihwa-iona',
+  )!;
+  const generic = getCountersFor('morris-eshir-orion', 'pt-BR').find(
+    ({ counterId }) => counterId === 'platy-shihwa-iona',
+  )!;
+
+  assert.match(specific.instruction, /Trevor controlado.*Morris/);
+  assert.deepEqual(specific.killOrder, [
+    'morris-wind-1020',
+    'figaro-light-663',
+    'trevor-fire-894',
+  ]);
+  assert.match(generic.instruction, /alvo principal/);
+  assert.equal(generic.killOrder, undefined);
+  assert.deepEqual(specific.runes, generic.runes);
+});
+
+test('valida confrontos, Kill order, overrides e cobertura localizada', () => {
+  assert.doesNotThrow(() =>
+    validateCounterDefinitions(monsters, defenses, counterDefinitions),
+  );
+
+  const invalidKillOrder = structuredClone(counterDefinitions);
+  invalidKillOrder[1].matchups[1].killOrder = [
+    'morris-wind-1020',
+    'figaro-light-663',
+    'orion-water-589',
+  ];
+  assert.throws(
+    () => validateCounterDefinitions(monsters, defenses, invalidKillOrder),
+    /ordem de eliminação/,
+  );
+
+  const invalidRuneOverride = structuredClone(counterDefinitions);
+  invalidRuneOverride[1].matchups[0].overrides = {
+    runes: [{ monsterId: 'orion-water-589', sets: 'Swift / Will' }],
+  };
+  assert.throws(
+    () => validateCounterDefinitions(monsters, defenses, invalidRuneOverride),
+    /overrides de runa/,
+  );
+
+  const definition = [
+    {
+      ...structuredClone(counterDefinitions[0]),
+      matchups: [{ defenseId: 'morris-eshir-orion' }],
+    },
+  ];
+  const copies = {
+    en: {
+      'mimirr-elucia-loren': {
+        instruction: 'Generic',
+        matchups: { 'morris-eshir-orion': 'Specific' },
+      },
+    },
+    es: {
+      'mimirr-elucia-loren': { instruction: 'Genérica' },
+    },
+  };
+  assert.throws(
+    () => validateCounterCopyCoverage(definition, copies, 'en'),
+    /do not match en/,
+  );
+});
 
 test('exige paridade e preenchimento das FAQs com a matriz inglesa', () => {
   const faq = (question: string, answer = 'Resposta') => ({

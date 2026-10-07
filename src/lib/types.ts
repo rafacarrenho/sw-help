@@ -90,18 +90,51 @@ export interface CounterStats {
   accuracy?: number;
 }
 export type CounterStatName = keyof CounterStats;
-export interface CounterBase {
-  id: string;
-  defenseId: string;
+export interface CounterRune {
+  monsterId: string;
+  sets: string;
+  stats?: CounterStats;
+  preferredStats?: CounterStatName[];
+}
+export type CounterStatsOverride = Partial<
+  Record<CounterStatName, number | null>
+>;
+export interface CounterRuneOverride {
+  monsterId: string;
+  sets?: string;
+  stats?: CounterStatsOverride;
+  preferredStats?: CounterStatName[];
+}
+export interface CounterConfiguration {
   team: string[];
   turnOrder: string[];
-  runes: {
-    monsterId: string;
-    sets: string;
-    stats?: CounterStats;
-    preferredStats?: CounterStatName[];
-  }[];
+  runes: CounterRune[];
   tick: number;
   sources: { title: string; url: string }[];
+}
+export interface CounterMatchupOverrides {
+  turnOrder?: string[];
+  runes?: CounterRuneOverride[];
+  tick?: number;
+  sources?: { title: string; url: string }[];
+}
+export interface CounterMatchup {
+  defenseId: string;
+  killOrder?: string[];
+  overrides?: CounterMatchupOverrides;
+}
+export interface CounterDefinition extends CounterConfiguration {
+  id: string;
+  matchups: CounterMatchup[];
+}
+export interface CounterBase extends CounterConfiguration {
+  id: string;
+  counterId: string;
+  defenseId: string;
+  killOrder?: string[];
+}
+export interface CounterCopy {
+  instruction: string;
+  matchups?: Record<string, string>;
 }
 export type Counter = CounterBase & { instruction: string };
