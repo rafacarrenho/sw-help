@@ -171,12 +171,14 @@ test('rotas localizadas cobrem os cinco idiomas e preservam os slugs técnicos',
   );
   assert.equal(
     routePath('speedComparison', 'fr'),
-    '/fr/summoners-war/comparateur-vit',
+    '/fr/summoners-war/comparateur-spd',
   );
   assert.equal(
     routePath('speedComparison', 'de'),
-    '/de/summoners-war/ges-vergleich',
+    '/de/summoners-war/spd-vergleich',
   );
+  assert.equal(routePath('terms', 'fr'), '/fr/conditions-utilisation');
+  assert.equal(routePath('terms', 'de'), '/de/nutzungsbedingungen');
   assert.deepEqual(
     games[0].navigation[0].label,
     Object.fromEntries(locales.map((locale) => [locale, 'Summoners War'])),

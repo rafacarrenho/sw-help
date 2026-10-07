@@ -216,11 +216,11 @@ test('seletor traduz o slug e preserva a query string', async ({ page }) => {
   );
   await expect(page.locator('.language-menu a[lang="fr"]')).toHaveAttribute(
     'href',
-    `/fr/summoners-war/comparateur-vit${query}`,
+    `/fr/summoners-war/comparateur-spd${query}`,
   );
   await expect(page.locator('.language-menu a[lang="de"]')).toHaveAttribute(
     'href',
-    `/de/summoners-war/ges-vergleich${query}`,
+    `/de/summoners-war/spd-vergleich${query}`,
   );
 
   await page.goto((await portuguese.getAttribute('href'))!);

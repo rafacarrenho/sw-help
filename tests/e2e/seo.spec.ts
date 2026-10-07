@@ -28,12 +28,24 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
   expect(xml).toContain(`<loc>${productionOrigin}/pt/privacidade</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/terms</loc>`);
   expect(xml).toContain(`<loc>${productionOrigin}/pt/termos</loc>`);
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/fr/conditions-utilisation</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/de/nutzungsbedingungen</loc>`,
+  );
   expect(xml).toContain(`<loc>${productionOrigin}/summoners-war</loc>`);
   expect(xml).toContain(
     `<loc>${productionOrigin}/summoners-war/siege-counter</loc>`,
   );
   expect(xml).toContain(
     `<loc>${productionOrigin}/pt/summoners-war/siege-counter</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/fr/summoners-war/comparateur-spd</loc>`,
+  );
+  expect(xml).toContain(
+    `<loc>${productionOrigin}/de/summoners-war/spd-vergleich</loc>`,
   );
   expect(xml).toContain(
     `<loc>${productionOrigin}/summoners-war/monsters/page/2</loc>`,
@@ -56,6 +68,14 @@ test('sitemap lista somente URLs canônicas com alternativas de idioma', async (
     ),
   );
   expect(xml).not.toContain(`<loc>${productionOrigin}/siege/`);
+  expect(xml).not.toContain(`<loc>${productionOrigin}/fr/conditions</loc>`);
+  expect(xml).not.toContain(`<loc>${productionOrigin}/de/bedingungen</loc>`);
+  expect(xml).not.toContain(
+    `<loc>${productionOrigin}/fr/summoners-war/comparateur-vit</loc>`,
+  );
+  expect(xml).not.toContain(
+    `<loc>${productionOrigin}/de/summoners-war/ges-vergleich</loc>`,
+  );
   expect(xml).toMatch(
     new RegExp(
       `<loc>${productionOrigin}/pt/summoners-war/monstros/[^/]+</loc>`,
