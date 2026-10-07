@@ -405,13 +405,35 @@ test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
 
-  for (const path of [
+  const localizedToolPaths = [
     '/summoners-war/siege-counter',
     '/summoners-war/monsters',
     '/summoners-war/speed-tuning',
     '/summoners-war/speed-comparison',
     '/summoners-war/speed-tick',
-  ]) {
+    '/pt/summoners-war/siege-counter',
+    '/pt/summoners-war/monstros',
+    '/pt/summoners-war/spd-tuning',
+    '/pt/summoners-war/comparador-spd',
+    '/pt/summoners-war/spd-tick',
+    '/es/summoners-war/siege-counter',
+    '/es/summoners-war/monstruos',
+    '/es/summoners-war/spd-tuning',
+    '/es/summoners-war/comparador-spd',
+    '/es/summoners-war/spd-tick',
+    '/fr/summoners-war/siege-counter',
+    '/fr/summoners-war/monstres',
+    '/fr/summoners-war/spd-tuning',
+    '/fr/summoners-war/comparateur-spd',
+    '/fr/summoners-war/spd-tick',
+    '/de/summoners-war/siege-counter',
+    '/de/summoners-war/monster',
+    '/de/summoners-war/spd-tuning',
+    '/de/summoners-war/spd-vergleich',
+    '/de/summoners-war/spd-tick',
+  ];
+
+  for (const path of localizedToolPaths) {
     await page.goto(path);
     const faqs = page.locator('.seo-faq-item');
     await expect(faqs).toHaveCount(10);
@@ -419,14 +441,6 @@ test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
     await expect(faqs.first().locator('p')).not.toBeEmpty();
     await expect(faqs.first()).toBeVisible();
   }
-
-  await page.goto('/pt/summoners-war/spd-tick');
-  await expect(page.locator('.seo-faq-item')).toHaveCount(10);
-  await expect(
-    page.getByRole('heading', {
-      name: 'Dúvidas sobre a calculadora de SPD Tick',
-    }),
-  ).toBeVisible();
 });
 
 test('dados estruturados identificam o site e os breadcrumbs localizados', async ({

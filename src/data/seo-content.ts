@@ -1,4 +1,5 @@
 import type { Locale, RouteName } from '../i18n';
+import { validateSeoFaqParity } from '../lib/validate-seo';
 import { seoContentDe, seoContentEs, seoContentFr } from './seo-content-extra';
 
 export interface SeoFaq {
@@ -763,3 +764,13 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
   fr: seoContentFr,
   de: seoContentDe,
 };
+
+const seoFaqPageNames = [
+  'siegeCounter',
+  'monsters',
+  'speedTuning',
+  'speedComparison',
+  'speedTick',
+] as const;
+
+validateSeoFaqParity(seoContent, seoFaqPageNames, 'en');

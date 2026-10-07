@@ -71,6 +71,7 @@ import {
   readLegacyAnalyticsChoice,
   selectAdvertisingMode,
 } from '../src/scripts/privacy-preferences.ts';
+import { validateSeoFaqParity } from '../src/lib/validate-seo.ts';
 import type {
   Monster,
   MonsterSkill,
@@ -87,6 +88,40 @@ const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
 const defenses: DefenseBase[] = read('defenses');
 const counters: CounterBase[] = read('counters');
+
+test('exige paridade e preenchimento das FAQs com a matriz inglesa', () => {
+  const faq = (question: string, answer = 'Resposta') => ({
+    question,
+    answer,
+  });
+  const valid = {
+    en: { tool: { faqs: [faq('One'), faq('Two')] } },
+    es: { tool: { faqs: [faq('Uno'), faq('Dos')] } },
+  };
+
+  assert.doesNotThrow(() => validateSeoFaqParity(valid, ['tool'], 'en'));
+  assert.throws(
+    () =>
+      validateSeoFaqParity(
+        { ...valid, es: { tool: { faqs: [faq('Uno')] } } },
+        ['tool'],
+        'en',
+      ),
+    /possui 1 entradas.*possui 2/,
+  );
+  assert.throws(
+    () =>
+      validateSeoFaqParity(
+        {
+          ...valid,
+          es: { tool: { faqs: [faq('Uno'), faq('Dos', ' ')] } },
+        },
+        ['tool'],
+        'en',
+      ),
+    /pergunta ou resposta vazia.*posição 2/,
+  );
+});
 
 test('preferências de privacidade validam versão e selecionam o modo de anúncio', () => {
   const updatedAt = new Date('2026-10-06T12:00:00.000Z');
