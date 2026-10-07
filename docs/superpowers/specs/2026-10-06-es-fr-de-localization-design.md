@@ -42,6 +42,19 @@ Os termos técnicos reconhecidos internacionalmente `siege-counter`,
 `spd-tuning` e `spd-tick` serão preservados para manter consistência, links
 previsíveis e vocabulário conhecido pela comunidade.
 
+Antes do lançamento, os slugs de comparação e termos legais serão estabilizados
+com palavras mais descritivas e com `SPD` como sigla comum da comunidade:
+
+- francês: `/fr/conditions-utilisation` e
+  `/fr/summoners-war/comparateur-spd`;
+- alemão: `/de/nutzungsbedingungen` e
+  `/de/summoners-war/spd-vergleich`.
+
+As versões anteriores `/fr/conditions`, `/fr/summoners-war/comparateur-vit`,
+`/de/bedingungen` e `/de/summoners-war/ges-vergleich` não receberão redirects,
+pois ainda não foram publicadas. Assim, apenas as URLs definitivas entrarão no
+sitemap, nos canonicals e nos alternates.
+
 ## Superfície de páginas
 
 Cada novo locale terá páginas estáticas equivalentes para:
