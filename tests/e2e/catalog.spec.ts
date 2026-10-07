@@ -54,51 +54,78 @@ test('estado vazio permite limpar busca e filtro', async ({ page }) => {
 test('counter específico mostra estratégia e ordem de eliminação da defesa', async ({
   page,
 }) => {
-  await page.goto('/pt/summoners-war/siege-counter/morris-trevor-figaro');
-
   const shihwaCounters = [
     'platy-shihwa-iona',
     'platy-shihwa-betta',
     'betta-shihwa-iona',
   ];
-  const expectedKillOrder = [
-    'morris-wind-1020',
-    'figaro-light-663',
-    'trevor-fire-894',
+  const matchupCases = [
+    {
+      defenseId: 'morris-trevor-figaro',
+      instruction:
+        'Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris.',
+      killOrder: ['morris-wind-1020', 'figaro-light-663', 'trevor-fire-894'],
+    },
+    {
+      defenseId: 'morris-orion-trevor',
+      instruction:
+        'Mantenha Trevor controlado com o sleep de Shihwa. Elimine Orion primeiro, depois Morris',
+      killOrder: ['orion-water-589', 'morris-wind-1020', 'trevor-fire-894'],
+    },
+    {
+      defenseId: 'solveig-vigor-cichlid',
+      instruction:
+        'Mantenha Vigor controlado com o sleep de Shihwa. Elimine Cichlid primeiro, depois Vigor',
+      killOrder: ['cichlid-wind-837', 'vigor', 'solveig-fire-2193'],
+    },
+    {
+      defenseId: 'solveig-cichlid-molly',
+      instruction:
+        'Mantenha Cichlid sob controle com o sleep de Shihwa. Elimine Solveig primeiro, depois Cichlid',
+      killOrder: ['solveig-fire-2193', 'cichlid-wind-837', 'molly-light-838'],
+    },
+    {
+      defenseId: 'solveig-iris-hraesvelg',
+      instruction:
+        'Mantenha Iris sob controle com o sleep de Shihwa. Elimine Hraesvelg primeiro, depois Iris',
+      killOrder: ['hraesvelg-wind-520', 'iris-light-858', 'solveig-fire-2193'],
+    },
   ];
 
-  for (const counterId of shihwaCounters) {
-    const counter = page.locator(
-      `.counter-card[data-counter-id="${counterId}"]`,
-    );
-    await expect(counter).toHaveCount(1);
-    await expect(counter.locator('.counter-instruction p')).toContainText(
-      'Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris.',
-    );
-    await expect(
-      counter.getByRole('heading', { name: 'Ordem de eliminação' }),
-    ).toBeVisible();
-    await expect(counter.locator('[data-kill-order-monster]')).toHaveCount(3);
-    expect(
-      await counter
-        .locator('[data-kill-order-monster]')
-        .evaluateAll((targets) =>
-          targets.map((target) =>
-            target.getAttribute('data-kill-order-monster'),
+  for (const matchup of matchupCases) {
+    await page.goto(`/pt/summoners-war/siege-counter/${matchup.defenseId}`);
+
+    for (const counterId of shihwaCounters) {
+      const counter = page.locator(
+        `.counter-card[data-counter-id="${counterId}"]`,
+      );
+      await expect(counter).toHaveCount(1);
+      await expect(counter.locator('.counter-instruction p')).toContainText(
+        matchup.instruction,
+      );
+      await expect(
+        counter.getByRole('heading', { name: 'Ordem de eliminação' }),
+      ).toBeVisible();
+      await expect(counter.locator('[data-kill-order-monster]')).toHaveCount(3);
+      expect(
+        await counter
+          .locator('[data-kill-order-monster]')
+          .evaluateAll((targets) =>
+            targets.map((target) =>
+              target.getAttribute('data-kill-order-monster'),
+            ),
           ),
-        ),
-    ).toEqual(expectedKillOrder);
-    expect(
-      await counter
-        .locator('.counter-kill-order-sequence')
-        .evaluate((sequence) => sequence.scrollWidth <= sequence.clientWidth),
-    ).toBeTruthy();
+      ).toEqual(matchup.killOrder);
+      expect(
+        await counter
+          .locator('.counter-kill-order-sequence')
+          .evaluate((sequence) => sequence.scrollWidth <= sequence.clientWidth),
+      ).toBeTruthy();
+    }
   }
 
-  const genericCounter = page.locator(
-    '.counter-card[data-counter-id="mimirr-elucia-loren"]',
-  );
-  await expect(genericCounter.locator('.counter-kill-order')).toHaveCount(0);
+  await page.goto('/pt/summoners-war/siege-counter/morris-eshir-orion');
+  await expect(page.locator('.counter-kill-order')).toHaveCount(0);
 
   const inheritedBuild = page
     .locator('.counter-card[data-counter-id="platy-shihwa-iona"]')

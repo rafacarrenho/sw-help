@@ -5,19 +5,31 @@
   "platy-shihwa-iona": {
     "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
     "matchups": {
-      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "morris-orion-trevor": "Gardez Trevor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Orion, puis Morris, et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-vigor-cichlid": "Gardez Vigor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Cichlid, puis Vigor, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-cichlid-molly": "Gardez Cichlid sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Solveig, puis Cichlid, et gardez Molly pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-iris-hraesvelg": "Gardez Iris sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Hraesvelg, puis Iris, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
     }
   },
   "platy-shihwa-betta": {
     "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
     "matchups": {
-      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "morris-orion-trevor": "Gardez Trevor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Orion, puis Morris, et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-vigor-cichlid": "Gardez Vigor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Cichlid, puis Vigor, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-cichlid-molly": "Gardez Cichlid sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Solveig, puis Cichlid, et gardez Molly pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-iris-hraesvelg": "Gardez Iris sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Hraesvelg, puis Iris, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
     }
   },
   "betta-shihwa-iona": {
     "instruction": "Utilisez Shihwa pour éliminer la cible principale ; les deux réanimateurs maintiennent l’équipe jusqu’à la fin.",
     "matchups": {
-      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
+      "morris-trevor-figaro": "Gardez Trevor endormi grâce à Shihwa pendant que vous concentrez les attaques sur Morris. Après avoir éliminé Morris, éliminez Figaro et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "morris-orion-trevor": "Gardez Trevor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Orion, puis Morris, et gardez Trevor pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-vigor-cichlid": "Gardez Vigor sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Cichlid, puis Vigor, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-cichlid-molly": "Gardez Cichlid sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Solveig, puis Cichlid, et gardez Molly pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat.",
+      "solveig-iris-hraesvelg": "Gardez Iris sous contrôle grâce au sommeil de Shihwa. Éliminez d’abord Hraesvelg, puis Iris, et gardez Solveig pour la fin. Utilisez les deux réanimateurs pour maintenir l’équipe pendant tout le combat."
     }
   }
 }

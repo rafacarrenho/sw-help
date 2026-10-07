@@ -162,22 +162,58 @@ test('mantém 21 confrontos e usa instrução e Kill order específicos', () => 
   assert.equal(counterDefinitions.length, 4);
   assert.equal(counters.length, 21);
 
-  const specific = getCountersFor('morris-trevor-figaro', 'pt-BR').find(
-    ({ counterId }) => counterId === 'platy-shihwa-iona',
-  )!;
-  const generic = getCountersFor('morris-eshir-orion', 'pt-BR').find(
-    ({ counterId }) => counterId === 'platy-shihwa-iona',
-  )!;
+  const genericByCounter = new Map(
+    getCountersFor('morris-eshir-orion', 'pt-BR')
+      .filter(({ team }) => team.includes('shihwa-fire-244'))
+      .map((counter) => [counter.counterId, counter]),
+  );
+  const specificCases = [
+    {
+      defenseId: 'morris-trevor-figaro',
+      instruction: /Trevor controlado.*Morris/,
+      killOrder: ['morris-wind-1020', 'figaro-light-663', 'trevor-fire-894'],
+    },
+    {
+      defenseId: 'morris-orion-trevor',
+      instruction: /Trevor controlado.*Orion primeiro.*Morris/,
+      killOrder: ['orion-water-589', 'morris-wind-1020', 'trevor-fire-894'],
+    },
+    {
+      defenseId: 'solveig-vigor-cichlid',
+      instruction: /Vigor controlado.*Cichlid primeiro.*Vigor/,
+      killOrder: ['cichlid-wind-837', 'vigor', 'solveig-fire-2193'],
+    },
+    {
+      defenseId: 'solveig-cichlid-molly',
+      instruction: /Cichlid sob controle.*Solveig primeiro.*Cichlid/,
+      killOrder: ['solveig-fire-2193', 'cichlid-wind-837', 'molly-light-838'],
+    },
+    {
+      defenseId: 'solveig-iris-hraesvelg',
+      instruction: /Iris sob controle.*Hraesvelg primeiro.*Iris/,
+      killOrder: ['hraesvelg-wind-520', 'iris-light-858', 'solveig-fire-2193'],
+    },
+  ];
 
-  assert.match(specific.instruction, /Trevor controlado.*Morris/);
-  assert.deepEqual(specific.killOrder, [
-    'morris-wind-1020',
-    'figaro-light-663',
-    'trevor-fire-894',
-  ]);
-  assert.match(generic.instruction, /alvo principal/);
-  assert.equal(generic.killOrder, undefined);
-  assert.deepEqual(specific.runes, generic.runes);
+  for (const specificCase of specificCases) {
+    const shihwaCounters = getCountersFor(
+      specificCase.defenseId,
+      'pt-BR',
+    ).filter(({ team }) => team.includes('shihwa-fire-244'));
+    assert.equal(shihwaCounters.length, 3);
+
+    for (const specific of shihwaCounters) {
+      const generic = genericByCounter.get(specific.counterId)!;
+      assert.match(specific.instruction, specificCase.instruction);
+      assert.deepEqual(specific.killOrder, specificCase.killOrder);
+      assert.deepEqual(specific.runes, generic.runes);
+    }
+  }
+
+  for (const generic of genericByCounter.values()) {
+    assert.match(generic.instruction, /alvo principal/);
+    assert.equal(generic.killOrder, undefined);
+  }
 });
 
 test('valida confrontos, Kill order, overrides e cobertura localizada', () => {

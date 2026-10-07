@@ -5,19 +5,31 @@
   "platy-shihwa-iona": {
     "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
     "matchups": {
-      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "morris-orion-trevor": "Keep Trevor controlled with Shihwa's sleep. Eliminate Orion first, then Morris, and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-vigor-cichlid": "Keep Vigor controlled with Shihwa's sleep. Eliminate Cichlid first, then Vigor, and leave Solveig for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-cichlid-molly": "Keep Cichlid controlled with Shihwa's sleep. Eliminate Solveig first, then Cichlid, and leave Molly for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-iris-hraesvelg": "Keep Iris controlled with Shihwa's sleep. Eliminate Hraesvelg first, then Iris, and leave Solveig for last. Use both revivers to sustain the team throughout the fight."
     }
   },
   "platy-shihwa-betta": {
     "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
     "matchups": {
-      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "morris-orion-trevor": "Keep Trevor controlled with Shihwa's sleep. Eliminate Orion first, then Morris, and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-vigor-cichlid": "Keep Vigor controlled with Shihwa's sleep. Eliminate Cichlid first, then Vigor, and leave Solveig for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-cichlid-molly": "Keep Cichlid controlled with Shihwa's sleep. Eliminate Solveig first, then Cichlid, and leave Molly for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-iris-hraesvelg": "Keep Iris controlled with Shihwa's sleep. Eliminate Hraesvelg first, then Iris, and leave Solveig for last. Use both revivers to sustain the team throughout the fight."
     }
   },
   "betta-shihwa-iona": {
     "instruction": "Use Shihwa to eliminate the main target; both revivers sustain the team until the finish.",
     "matchups": {
-      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight."
+      "morris-trevor-figaro": "Keep Trevor controlled with Shihwa's sleep while focusing Morris. After Morris is defeated, eliminate Figaro and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "morris-orion-trevor": "Keep Trevor controlled with Shihwa's sleep. Eliminate Orion first, then Morris, and leave Trevor for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-vigor-cichlid": "Keep Vigor controlled with Shihwa's sleep. Eliminate Cichlid first, then Vigor, and leave Solveig for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-cichlid-molly": "Keep Cichlid controlled with Shihwa's sleep. Eliminate Solveig first, then Cichlid, and leave Molly for last. Use both revivers to sustain the team throughout the fight.",
+      "solveig-iris-hraesvelg": "Keep Iris controlled with Shihwa's sleep. Eliminate Hraesvelg first, then Iris, and leave Solveig for last. Use both revivers to sustain the team throughout the fight."
     }
   }
 }

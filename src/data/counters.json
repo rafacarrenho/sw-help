@@ -68,10 +68,30 @@
         "defenseId": "morris-trevor-figaro",
         "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
       },
-      { "defenseId": "morris-orion-trevor" },
-      { "defenseId": "solveig-vigor-cichlid" },
-      { "defenseId": "solveig-cichlid-molly" },
-      { "defenseId": "solveig-iris-hraesvelg" }
+      {
+        "defenseId": "morris-orion-trevor",
+        "killOrder": ["orion-water-589", "morris-wind-1020", "trevor-fire-894"]
+      },
+      {
+        "defenseId": "solveig-vigor-cichlid",
+        "killOrder": ["cichlid-wind-837", "vigor", "solveig-fire-2193"]
+      },
+      {
+        "defenseId": "solveig-cichlid-molly",
+        "killOrder": [
+          "solveig-fire-2193",
+          "cichlid-wind-837",
+          "molly-light-838"
+        ]
+      },
+      {
+        "defenseId": "solveig-iris-hraesvelg",
+        "killOrder": [
+          "hraesvelg-wind-520",
+          "iris-light-858",
+          "solveig-fire-2193"
+        ]
+      }
     ]
   },
   {
@@ -117,10 +137,30 @@
         "defenseId": "morris-trevor-figaro",
         "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
       },
-      { "defenseId": "morris-orion-trevor" },
-      { "defenseId": "solveig-vigor-cichlid" },
-      { "defenseId": "solveig-cichlid-molly" },
-      { "defenseId": "solveig-iris-hraesvelg" }
+      {
+        "defenseId": "morris-orion-trevor",
+        "killOrder": ["orion-water-589", "morris-wind-1020", "trevor-fire-894"]
+      },
+      {
+        "defenseId": "solveig-vigor-cichlid",
+        "killOrder": ["cichlid-wind-837", "vigor", "solveig-fire-2193"]
+      },
+      {
+        "defenseId": "solveig-cichlid-molly",
+        "killOrder": [
+          "solveig-fire-2193",
+          "cichlid-wind-837",
+          "molly-light-838"
+        ]
+      },
+      {
+        "defenseId": "solveig-iris-hraesvelg",
+        "killOrder": [
+          "hraesvelg-wind-520",
+          "iris-light-858",
+          "solveig-fire-2193"
+        ]
+      }
     ]
   },
   {
@@ -165,10 +205,30 @@
         "defenseId": "morris-trevor-figaro",
         "killOrder": ["morris-wind-1020", "figaro-light-663", "trevor-fire-894"]
       },
-      { "defenseId": "morris-orion-trevor" },
-      { "defenseId": "solveig-vigor-cichlid" },
-      { "defenseId": "solveig-cichlid-molly" },
-      { "defenseId": "solveig-iris-hraesvelg" }
+      {
+        "defenseId": "morris-orion-trevor",
+        "killOrder": ["orion-water-589", "morris-wind-1020", "trevor-fire-894"]
+      },
+      {
+        "defenseId": "solveig-vigor-cichlid",
+        "killOrder": ["cichlid-wind-837", "vigor", "solveig-fire-2193"]
+      },
+      {
+        "defenseId": "solveig-cichlid-molly",
+        "killOrder": [
+          "solveig-fire-2193",
+          "cichlid-wind-837",
+          "molly-light-838"
+        ]
+      },
+      {
+        "defenseId": "solveig-iris-hraesvelg",
+        "killOrder": [
+          "hraesvelg-wind-520",
+          "iris-light-858",
+          "solveig-fire-2193"
+        ]
+      }
     ]
   }
 ]

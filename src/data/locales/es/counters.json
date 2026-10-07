@@ -5,19 +5,31 @@
   "platy-shihwa-iona": {
     "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
     "matchups": {
-      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "morris-orion-trevor": "Mantén a Trevor controlado con el sueño de Shihwa. Elimina primero a Orion, después a Morris y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-vigor-cichlid": "Mantén a Vigor controlado con el sueño de Shihwa. Elimina primero a Cichlid, después a Vigor y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-cichlid-molly": "Mantén a Cichlid bajo control con el sueño de Shihwa. Elimina primero a Solveig, después a Cichlid y deja a Molly para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-iris-hraesvelg": "Mantén a Iris bajo control con el sueño de Shihwa. Elimina primero a Hraesvelg, después a Iris y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
     }
   },
   "platy-shihwa-betta": {
     "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
     "matchups": {
-      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "morris-orion-trevor": "Mantén a Trevor controlado con el sueño de Shihwa. Elimina primero a Orion, después a Morris y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-vigor-cichlid": "Mantén a Vigor controlado con el sueño de Shihwa. Elimina primero a Cichlid, después a Vigor y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-cichlid-molly": "Mantén a Cichlid bajo control con el sueño de Shihwa. Elimina primero a Solveig, después a Cichlid y deja a Molly para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-iris-hraesvelg": "Mantén a Iris bajo control con el sueño de Shihwa. Elimina primero a Hraesvelg, después a Iris y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
     }
   },
   "betta-shihwa-iona": {
     "instruction": "Usa a Shihwa para eliminar al objetivo principal; ambas revividoras mantienen al equipo hasta el final.",
     "matchups": {
-      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
+      "morris-trevor-figaro": "Mantén a Trevor controlado con el sueño de Shihwa mientras concentras el ataque en Morris. Después de eliminar a Morris, acaba con Figaro y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "morris-orion-trevor": "Mantén a Trevor controlado con el sueño de Shihwa. Elimina primero a Orion, después a Morris y deja a Trevor para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-vigor-cichlid": "Mantén a Vigor controlado con el sueño de Shihwa. Elimina primero a Cichlid, después a Vigor y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-cichlid-molly": "Mantén a Cichlid bajo control con el sueño de Shihwa. Elimina primero a Solveig, después a Cichlid y deja a Molly para el final. Usa a las dos revividoras para sostener al equipo durante el combate.",
+      "solveig-iris-hraesvelg": "Mantén a Iris bajo control con el sueño de Shihwa. Elimina primero a Hraesvelg, después a Iris y deja a Solveig para el final. Usa a las dos revividoras para sostener al equipo durante el combate."
     }
   }
 }

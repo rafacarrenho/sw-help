@@ -5,19 +5,31 @@
   "platy-shihwa-iona": {
     "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "matchups": {
-      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "morris-orion-trevor": "Mantenha Trevor controlado com o sleep de Shihwa. Elimine Orion primeiro, depois Morris e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-vigor-cichlid": "Mantenha Vigor controlado com o sleep de Shihwa. Elimine Cichlid primeiro, depois Vigor e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-cichlid-molly": "Mantenha Cichlid sob controle com o sleep de Shihwa. Elimine Solveig primeiro, depois Cichlid e deixe Molly por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-iris-hraesvelg": "Mantenha Iris sob controle com o sleep de Shihwa. Elimine Hraesvelg primeiro, depois Iris e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta."
     }
   },
   "platy-shihwa-betta": {
     "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "matchups": {
-      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "morris-orion-trevor": "Mantenha Trevor controlado com o sleep de Shihwa. Elimine Orion primeiro, depois Morris e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-vigor-cichlid": "Mantenha Vigor controlado com o sleep de Shihwa. Elimine Cichlid primeiro, depois Vigor e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-cichlid-molly": "Mantenha Cichlid sob controle com o sleep de Shihwa. Elimine Solveig primeiro, depois Cichlid e deixe Molly por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-iris-hraesvelg": "Mantenha Iris sob controle com o sleep de Shihwa. Elimine Hraesvelg primeiro, depois Iris e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta."
     }
   },
   "betta-shihwa-iona": {
     "instruction": "Use Shihwa para eliminar o alvo principal; os dois revivers sustentam o time até a finalização.",
     "matchups": {
-      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta."
+      "morris-trevor-figaro": "Mantenha Trevor controlado com o sleep de Shihwa enquanto foca Morris. Depois de eliminar Morris, mate Figaro e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "morris-orion-trevor": "Mantenha Trevor controlado com o sleep de Shihwa. Elimine Orion primeiro, depois Morris e deixe Trevor por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-vigor-cichlid": "Mantenha Vigor controlado com o sleep de Shihwa. Elimine Cichlid primeiro, depois Vigor e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-cichlid-molly": "Mantenha Cichlid sob controle com o sleep de Shihwa. Elimine Solveig primeiro, depois Cichlid e deixe Molly por último. Use os dois revivers para sustentar o time durante a luta.",
+      "solveig-iris-hraesvelg": "Mantenha Iris sob controle com o sleep de Shihwa. Elimine Hraesvelg primeiro, depois Iris e deixe Solveig por último. Use os dois revivers para sustentar o time durante a luta."
     }
   }
 }

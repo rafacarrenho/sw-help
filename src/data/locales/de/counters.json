@@ -5,19 +5,31 @@
   "platy-shihwa-iona": {
     "instruction": "Nutze Shihwa, um das Hauptziel auszuschalten; beide Wiederbeleber halten das Team bis zum Abschluss am Leben.",
     "matchups": {
-      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
+      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "morris-orion-trevor": "Halte Trevor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Orion, dann Morris aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-vigor-cichlid": "Halte Vigor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Cichlid, dann Vigor aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-cichlid-molly": "Halte Cichlid mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Solveig, dann Cichlid aus und hebe Molly bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-iris-hraesvelg": "Halte Iris mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Hraesvelg, dann Iris aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
     }
   },
   "platy-shihwa-betta": {
     "instruction": "Nutze Shihwa, um das Hauptziel auszuschalten; beide Wiederbeleber halten das Team bis zum Abschluss am Leben.",
     "matchups": {
-      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
+      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "morris-orion-trevor": "Halte Trevor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Orion, dann Morris aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-vigor-cichlid": "Halte Vigor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Cichlid, dann Vigor aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-cichlid-molly": "Halte Cichlid mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Solveig, dann Cichlid aus und hebe Molly bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-iris-hraesvelg": "Halte Iris mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Hraesvelg, dann Iris aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
     }
   },
   "betta-shihwa-iona": {
     "instruction": "Nutze Shihwa, um das Hauptziel auszuschalten; beide Wiederbeleber halten das Team bis zum Abschluss am Leben.",
     "matchups": {
-      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
+      "morris-trevor-figaro": "Halte Trevor mit Shihwas Schlaf unter Kontrolle, während du Morris fokussierst. Schalte nach Morris zuerst Figaro aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "morris-orion-trevor": "Halte Trevor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Orion, dann Morris aus und hebe Trevor bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-vigor-cichlid": "Halte Vigor mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Cichlid, dann Vigor aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-cichlid-molly": "Halte Cichlid mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Solveig, dann Cichlid aus und hebe Molly bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten.",
+      "solveig-iris-hraesvelg": "Halte Iris mit Shihwas Schlaf unter Kontrolle. Schalte zuerst Hraesvelg, dann Iris aus und hebe Solveig bis zum Schluss auf. Nutze beide Wiederbeleber, um das Team während des gesamten Kampfes am Leben zu halten."
     }
   }
 }
