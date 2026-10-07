@@ -95,6 +95,21 @@ relacionados incluirão os novos idiomas. `og:locale` usará códigos regionais
 compatíveis (`es_ES`, `fr_FR`, `de_DE`) sem transformar os locales do site em
 variantes regionais.
 
+### Paridade editorial das FAQs
+
+O conteúdo em inglês será a matriz canônica das FAQs. Para cada ferramenta,
+`es`, `fr` e `de` terão exatamente as mesmas dez perguntas e respostas da
+versão inglesa, na mesma ordem e com o mesmo significado. As traduções devem
+soar naturais no idioma de destino, mas não podem resumir, acrescentar nem
+omitir informações da matriz.
+
+Uma validação executada durante o carregamento dos dados verificará, para cada
+locale e ferramenta, a mesma quantidade de entradas da matriz inglesa e a
+ausência de perguntas ou respostas vazias. Os testes E2E também confirmarão as
+dez entradas renderizadas em todas as 25 combinações de locale e ferramenta.
+Assim, uma alteração futura na FAQ inglesa obrigará a atualização dos demais
+idiomas antes que o build e os testes possam ser concluídos.
+
 O seletor mostrará Español, Français e Deutsch com links reais para a rota
 equivalente. Parâmetros de busca compartilháveis serão preservados na troca de
 idioma conforme o comportamento atual.
@@ -114,11 +129,13 @@ Os testes unitários serão ampliados para garantir:
 - cobertura completa de rotas, mensagens, defesas e counters;
 - formatação numérica;
 - geração correta de caminhos;
+- paridade da quantidade e preenchimento das FAQs com a matriz inglesa;
 - manutenção de conteúdo SWARFARM em inglês.
 
 Os testes E2E validarão seletor de idioma, canonicals, `hreflang`, navegação,
-preservação de query string, 404 e pelo menos uma rota de ferramenta e uma rota
-de detalhe em cada novo idioma.
+preservação de query string, 404, pelo menos uma rota de ferramenta e uma rota
+de detalhe em cada novo idioma, além das dez FAQs de cada ferramenta em todos
+os idiomas publicados.
 
 A entrega será validada com `pnpm test`, `pnpm build` e `pnpm test:e2e` após a
 geração do build.
