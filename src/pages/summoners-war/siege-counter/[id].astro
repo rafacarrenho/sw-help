@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import SiegeDetail from '../../../components/pages/SiegeDetail.astro';
-import { defensesFor } from '../../../data/catalog';
+import { defenses } from '../../../data/catalog';
 
 export const prerender = true;
 
 export const getStaticPaths = (() =>
-  defensesFor('en').map((defense) => ({
+  defenses.map((defense) => ({
     params: { id: defense.id },
     props: { defense },
   }))) satisfies GetStaticPaths;

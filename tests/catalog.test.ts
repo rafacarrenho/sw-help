@@ -63,7 +63,6 @@ import {
 } from '../src/lib/speed-comparison.ts';
 import {
   monsterById,
-  defensesFor,
   countersFor,
   getCountersFor,
 } from '../src/data/catalog.ts';
@@ -87,7 +86,7 @@ import { validateSeoFaqParity } from '../src/lib/validate-seo.ts';
 import type {
   Monster,
   MonsterSkill,
-  DefenseBase,
+  Defense,
   Counter,
   CounterBase,
   CounterDefinition,
@@ -99,7 +98,7 @@ const read = (name: string) =>
   );
 const monsters: Monster[] = read('monsters');
 const skills: MonsterSkill[] = read('skills');
-const defenses: DefenseBase[] = read('defenses');
+const defenses: Defense[] = read('defenses');
 const counterDefinitions: CounterDefinition[] = read('counters');
 const counters: CounterBase[] = resolveCounterDefinitions(counterDefinitions);
 
@@ -438,20 +437,12 @@ test('registro de jogos mantém o menu contextual centralizado', () => {
 });
 
 test('conteúdo editorial e mensagens têm cobertura nos cinco idiomas', () => {
-  const englishDefenses = defensesFor('en');
-  const portugueseDefenses = defensesFor('pt-BR');
-
   for (const locale of locales) {
-    assert.equal(defensesFor(locale).length, defenses.length);
     assert.equal(countersFor(locale).length, counters.length);
     assert.ok(getMessages(locale).layout.language);
     assert.ok(getMessages(locale).portal.headingPrefix);
     assert.ok(getMessages(locale).notFound.title);
   }
-  assert.notEqual(
-    englishDefenses[0].description,
-    portugueseDefenses[0].description,
-  );
   assert.notEqual(
     countersFor('en')[0].instruction,
     countersFor('pt-BR')[0].instruction,

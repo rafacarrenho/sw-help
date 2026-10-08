@@ -1,7 +1,7 @@
 import type {
   Monster,
   MonsterSkill,
-  DefenseBase,
+  Defense,
   CounterBase,
   CounterDefinition,
 } from './types.ts';
@@ -12,7 +12,7 @@ const counterStatKeys = new Set<string>(counterStatNames);
 
 export function validateCounterDefinitions(
   monsters: Monster[],
-  defenses: DefenseBase[],
+  defenses: Defense[],
   definitions: CounterDefinition[],
 ): void {
   const fail = (message: string): never => {
@@ -99,7 +99,7 @@ export function validateCounterDefinitions(
 
 export function validateCatalog(
   monsters: Monster[],
-  defenses: DefenseBase[],
+  defenses: Defense[],
   counters: CounterBase[],
   skills?: MonsterSkill[],
 ): void {

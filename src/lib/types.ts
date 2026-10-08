@@ -69,17 +69,12 @@ export interface MonsterSkill {
   scalesWith: string[];
   source: string;
 }
-export interface DefenseBase {
+export interface Defense {
   id: string;
   team: string[];
   tower: Tower;
   status: 'example' | 'documented';
 }
-export interface DefenseCopy {
-  label: string;
-  description: string;
-}
-export type Defense = DefenseBase & DefenseCopy;
 export interface CounterStats {
   hp?: number;
   attack?: number;

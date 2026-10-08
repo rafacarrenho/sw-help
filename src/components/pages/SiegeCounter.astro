@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../Icon.astro';
 import DefenseCard from '../DefenseCard.astro';
 import SeoContent from '../SeoContent.astro';
-import { defensesFor, countersFor, monsters } from '../../data/catalog';
+import { defenses, countersFor, monsters } from '../../data/catalog';
 import { seoContent } from '../../data/seo-content';
 import { getMessages, routePath, type Locale } from '../../i18n';
 
@@ -12,7 +12,6 @@ interface Props {
 }
 const { locale = 'en' } = Astro.props;
 const messages = getMessages(locale);
-const defenses = defensesFor(locale);
 const counters = countersFor(locale);
 const searchContent = seoContent[locale].siegeCounter;
 ---
