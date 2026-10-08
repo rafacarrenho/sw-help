@@ -34,5 +34,299 @@
     "team": ["solveig-fire-2193", "iris-light-858", "hraesvelg-wind-520"],
     "tower": "4star",
     "status": "example"
+  },
+  {
+    "id": "morris-rex-shumar",
+    "team": ["morris-wind-1020", "rex-fire-2627", "shumar-dark-2936"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "platy-irene-qilin-slasher",
+    "team": ["platy-fire-835", "irene-water-2260", "qilin-slasher-wind-2719"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-irene-qilin-slasher",
+    "team": [
+      "tarnisha-fire-2439",
+      "irene-water-2260",
+      "qilin-slasher-wind-2719"
+    ],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "seara-orion-rakan",
+    "team": ["seara-wind-577", "orion-water-589", "rakan-fire-272"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "fiona-driana-lamiella",
+    "team": ["fiona-dark-2432", "driana-wind-2874", "lamiella-water-2616"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "morris-guillaume-rex",
+    "team": ["morris-wind-1020", "guillaume-dark-745", "rex-fire-2627"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "carcano-eladriel-miles",
+    "team": ["carcano", "eladriel-wind-559", "miles-water-1852"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "martina-shaina-triana",
+    "team": ["martina", "shaina", "triana"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "lamiella-ashour-byungchul",
+    "team": ["lamiella-water-2616", "ashour-fire-2173", "byungchul-wind-2322"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "ophilia-riley-theomars",
+    "team": ["ophilia-fire-1164", "riley-wind-1878", "theomars-water-639"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "seara-lionel-vendhan",
+    "team": ["seara-wind-577", "lionel-water-2162", "vendhan-fire-2203"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "conrad-kinki-robo-r40",
+    "team": ["conrad-light-659", "kinki", "robo-r40-water-1862"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "conrad-grego-robo-r40",
+    "team": ["conrad-light-659", "grego-dark-739", "robo-r40-water-1862"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "fiona-eshir-liesel",
+    "team": ["fiona-dark-2432", "eshir-light-1326", "liesel-water-625"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-figaro-savannah",
+    "team": ["tarnisha-fire-2439", "figaro-light-663", "savannah"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "seara-orion-perna",
+    "team": ["seara-wind-577", "orion-water-589", "perna"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "seara-jeogun-lamiella",
+    "team": ["seara-wind-577", "jeogun-fire-1603", "lamiella-water-2616"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "morris-liu-mei-vigor",
+    "team": ["morris-wind-1020", "liu-mei-light-667", "vigor"],
+    "tower": "4star",
+    "status": "documented"
+  },
+  {
+    "id": "solveig-adriana-odin",
+    "team": ["solveig-fire-2193", "adriana-water-2021", "odin-wind-1250"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-barbara-savannah",
+    "team": ["tarnisha-fire-2439", "barbara-water-1339", "savannah"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-irene-shahat",
+    "team": ["tarnisha-fire-2439", "irene-water-2260", "shahat-wind-2174"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-layla-shi-hou",
+    "team": ["tarnisha-fire-2439", "layla-wind-2262", "shi-hou-water-641"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-layla-son-zhang-lao",
+    "team": ["tarnisha-fire-2439", "layla-wind-2262", "son-zhang-lao-dark-776"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-figaro-layla",
+    "team": ["tarnisha-fire-2439", "figaro-light-663", "layla-wind-2262"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-layla-berghild",
+    "team": ["tarnisha-fire-2439", "layla-wind-2262", "berghild-light-2195"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "tarnisha-ethna-lamiella",
+    "team": ["tarnisha-fire-2439", "ethna-wind-569", "lamiella-water-2616"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nina-williams-light-triton-driana",
+    "team": ["nina-williams-light-2772", "triton-wind-847", "driana-wind-2874"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nina-williams-light-triton-amber",
+    "team": ["nina-williams-light-2772", "triton-wind-847", "amber-water-1967"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nina-williams-light-triton-vendhan",
+    "team": [
+      "nina-williams-light-2772",
+      "triton-wind-847",
+      "vendhan-fire-2203"
+    ],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nephthys-triton-driana",
+    "team": ["nephthys-dark-940", "triton-wind-847", "driana-wind-2874"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nephthys-triton-amber",
+    "team": ["nephthys-dark-940", "triton-wind-847", "amber-water-1967"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "nephthys-triton-vendhan",
+    "team": ["nephthys-dark-940", "triton-wind-847", "vendhan-fire-2203"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "maximilian-triton-driana",
+    "team": ["maximilian-dark-1890", "triton-wind-847", "driana-wind-2874"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "maximilian-triton-amber",
+    "team": ["maximilian-dark-1890", "triton-wind-847", "amber-water-1967"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "maximilian-triton-vendhan",
+    "team": ["maximilian-dark-1890", "triton-wind-847", "vendhan-fire-2203"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "stark-dark-triton-driana",
+    "team": ["stark-dark-3057", "triton-wind-847", "driana-wind-2874"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "stark-dark-triton-amber",
+    "team": ["stark-dark-3057", "triton-wind-847", "amber-water-1967"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "stark-dark-triton-vendhan",
+    "team": ["stark-dark-3057", "triton-wind-847", "vendhan-fire-2203"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "mimirr-zen-ren",
+    "team": ["mimirr-light-655", "zen-wind-1949", "ren-fire-1948"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "moore-daphnis-qilin-slasher",
+    "team": ["moore-water-1677", "daphnis-fire-994", "qilin-slasher-wind-2719"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "moore-daphnis-savannah",
+    "team": ["moore-water-1677", "daphnis-fire-994", "savannah"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "chandra-daphnis-qilin-slasher",
+    "team": [
+      "chandra-water-629",
+      "daphnis-fire-994",
+      "qilin-slasher-wind-2719"
+    ],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "chandra-daphnis-savannah",
+    "team": ["chandra-water-629", "daphnis-fire-994", "savannah"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "sylvia-daphnis-qilin-slasher",
+    "team": ["sylvia-dark-882", "daphnis-fire-994", "qilin-slasher-wind-2719"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "sylvia-daphnis-savannah",
+    "team": ["sylvia-dark-882", "daphnis-fire-994", "savannah"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "rahul-daphnis-qilin-slasher",
+    "team": ["rahul-dark-764", "daphnis-fire-994", "qilin-slasher-wind-2719"],
+    "tower": "open",
+    "status": "documented"
+  },
+  {
+    "id": "rahul-daphnis-savannah",
+    "team": ["rahul-dark-764", "daphnis-fire-994", "savannah"],
+    "tower": "open",
+    "status": "documented"
   }
 ]

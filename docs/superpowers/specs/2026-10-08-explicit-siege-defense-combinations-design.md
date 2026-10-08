@@ -14,7 +14,7 @@ catálogo:
 
 - Nina luz: Nina Williams de Luz (`nina-williams-light-2772`)
 - Mimmir: Mimirr de Luz (`mimirr-light-655`)
-- Verdehan: Verdehile (`verdehile-fire-266`)
+- Verdehan: Vendhan (`vendhan-fire-2203`)
 - Start dark: Stark de Trevas (`stark-dark-3057`)
 - Qilin vento: Qilin Slasher de Vento (`qilin-slasher-wind-2719`)
 - Savanah: Savannah (`savannah`)
@@ -26,16 +26,16 @@ O primeiro monstro listado será sempre `team[0]` e, portanto, o líder.
 1. Tarnisha, Ethna e Lamiella.
 2. Nina Williams de Luz, Triton e Driana.
 3. Nina Williams de Luz, Triton e Amber.
-4. Nina Williams de Luz, Triton e Verdehile.
+4. Nina Williams de Luz, Triton e Vendhan.
 5. Nephthys, Triton e Driana.
 6. Nephthys, Triton e Amber.
-7. Nephthys, Triton e Verdehile.
+7. Nephthys, Triton e Vendhan.
 8. Maximilian, Triton e Driana.
 9. Maximilian, Triton e Amber.
-10. Maximilian, Triton e Verdehile.
+10. Maximilian, Triton e Vendhan.
 11. Stark de Trevas, Triton e Driana.
 12. Stark de Trevas, Triton e Amber.
-13. Stark de Trevas, Triton e Verdehile.
+13. Stark de Trevas, Triton e Vendhan.
 14. Mimirr, Zen e Ren.
 15. Moore, Daphnis e Qilin Slasher de Vento.
 16. Moore, Daphnis e Savannah.

@@ -103,6 +103,12 @@ const defenses: DefenseBase[] = read('defenses');
 const counterDefinitions: CounterDefinition[] = read('counters');
 const counters: CounterBase[] = resolveCounterDefinitions(counterDefinitions);
 
+test('não repete defesas com os mesmos monstros em outra ordem', () => {
+  const signatures = defenses.map(({ team }) => [...team].sort().join('|'));
+
+  assert.equal(new Set(signatures).size, signatures.length);
+});
+
 test('resolve counters genéricos e aplica overrides isolados por defesa', () => {
   const generic = structuredClone(counterDefinitions[1]);
   const targetMatchup = generic.matchups.find(
@@ -2033,18 +2039,21 @@ test('rejeita metas de counter inválidas ou conflitantes', () => {
     /Tick/,
   );
 });
-test('todas as defesas ativas têm o número de counters esperado', () => {
+test('cada defesa tem o número de counters documentado', () => {
+  const expectedCountersByDefense: Record<string, number> = {
+    'morris-eshir-orion': 4,
+    'morris-trevor-figaro': 4,
+    'morris-orion-trevor': 4,
+    'solveig-vigor-cichlid': 3,
+    'solveig-cichlid-molly': 3,
+    'solveig-iris-hraesvelg': 3,
+  };
+
   for (const defense of defenses) {
     const matching = counters.filter(
       (counter) => counter.defenseId === defense.id,
     );
-    const expected = [
-      'solveig-vigor-cichlid',
-      'solveig-cichlid-molly',
-      'solveig-iris-hraesvelg',
-    ].includes(defense.id)
-      ? 3
-      : 4;
+    const expected = expectedCountersByDefense[defense.id] ?? 0;
     assert.equal(matching.length, expected, defense.id);
   }
 });

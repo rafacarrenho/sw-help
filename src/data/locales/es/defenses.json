@@ -22,5 +22,193 @@
   "solveig-iris-hraesvelg": {
     "label": "Presión y control",
     "description": "El daño continuo, el apoyo y el control presionan al equipo rival de forma constante."
+  },
+  "morris-rex-shumar": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "platy-irene-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-irene-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "seara-orion-rakan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "fiona-driana-lamiella": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "morris-guillaume-rex": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "carcano-eladriel-miles": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "martina-shaina-triana": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "lamiella-ashour-byungchul": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "ophilia-riley-theomars": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "seara-lionel-vendhan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "conrad-kinki-robo-r40": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "conrad-grego-robo-r40": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "fiona-eshir-liesel": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-figaro-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "seara-orion-perna": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "seara-jeogun-lamiella": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "morris-liu-mei-vigor": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "solveig-adriana-odin": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-barbara-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-irene-shahat": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-layla-shi-hou": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-layla-son-zhang-lao": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-figaro-layla": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-layla-berghild": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "tarnisha-ethna-lamiella": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nina-williams-light-triton-driana": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nina-williams-light-triton-amber": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nina-williams-light-triton-vendhan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nephthys-triton-driana": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nephthys-triton-amber": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "nephthys-triton-vendhan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "maximilian-triton-driana": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "maximilian-triton-amber": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "maximilian-triton-vendhan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "stark-dark-triton-driana": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "stark-dark-triton-amber": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "stark-dark-triton-vendhan": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "mimirr-zen-ren": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "moore-daphnis-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "moore-daphnis-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "chandra-daphnis-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "chandra-daphnis-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "sylvia-daphnis-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "sylvia-daphnis-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "rahul-daphnis-qilin-slasher": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
+  },
+  "rahul-daphnis-savannah": {
+    "label": "Defensa documentada",
+    "description": "Composición defensiva de Siege documentada a partir de la referencia proporcionada."
   }
 }
