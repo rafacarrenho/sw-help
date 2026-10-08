@@ -14,7 +14,7 @@ test('busca combinada, URL, detalhe e retorno preservam a seleção', async ({
   ).toBeVisible();
   const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
   if (await mobileMenu.isVisible()) await mobileMenu.click();
-  await expect(page.locator('[data-defense-card]:visible')).toHaveCount(53);
+  await expect(page.locator('[data-defense-card]:visible')).toHaveCount(133);
   await expect(page.getByRole('link', { name: 'Spd Tuning' })).toHaveAttribute(
     'href',
     '/pt/summoners-war/spd-tuning',
@@ -44,7 +44,7 @@ test('estado vazio permite limpar busca e filtro', async ({ page }) => {
     page.getByRole('heading', { name: 'Nenhuma defesa encontrada' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Limpar filtros' }).click();
-  await expect(page.locator('[data-defense-card]:visible')).toHaveCount(53);
+  await expect(page.locator('[data-defense-card]:visible')).toHaveCount(133);
   await expect(page.getByRole('searchbox')).toBeFocused();
   await expect(page).toHaveURL(
     'http://127.0.0.1:4321/pt/summoners-war/siege-counter',
@@ -290,7 +290,7 @@ test('catálogo e detalhes são navegáveis sem JavaScript', async ({
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(`${baseURL}/pt/summoners-war/siege-counter`);
-  await expect(page.locator('[data-defense-card]')).toHaveCount(53);
+  await expect(page.locator('[data-defense-card]')).toHaveCount(133);
   await page.getByRole('link', { name: /Morris.*Eshir.*Orion/ }).click();
   await expect(page.locator('.counter-card')).toHaveCount(4);
   await context.close();

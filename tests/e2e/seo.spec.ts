@@ -404,7 +404,7 @@ test('cada ferramenta publica dez FAQs úteis e renderizadas no HTML', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop');
-  test.setTimeout(60_000);
+  test.setTimeout(120_000);
 
   const localizedToolPaths = [
     '/summoners-war/siege-counter',

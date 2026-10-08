@@ -210,5 +210,325 @@
   "rahul-daphnis-savannah": {
     "label": "Défense documentée",
     "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-robo-e65-velaska": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "carcano-angela-miles": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-emily-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-molly-shahat": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-molly-vritra": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "chandra-perna-zen": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-eshir-truffle": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "geldnir-ophilia-theomars": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-driana-ren": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-7r1x-byungchul": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "geldnir-irene-shahat": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-driana-son-zhang-lao": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "odin-adriana-qilin-slasher": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "sylvia-adriana-odin": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "rahul-driana-lamiella": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-deborah-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "conrad-ophilia-theomars": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "maximilian-driana-lora": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "rahul-driana-ren": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-ashour-taranys": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-byungchul-kumar": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "moore-rakan-savannah": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "maximilian-driana-lionel": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mimirr-layla-son-zhang-lao": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "chandra-monte-qilin-slasher": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "ramael-and-judiah-cadiz-ren": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-guillaume-orion": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mihyang-cichlid-hraesvelg": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "tarnisha-lora-savannah": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-usha-vigor": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "platy-irene-shahat": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "geldnir-daphnis-qilin-slasher": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-adriana-odin": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "chandra-jaara-taranys": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "carcano-layla-shi-hou": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-emily-vigor": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "seara-lamiella-lora": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mimirr-gamir-rex": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "duke-light-daphnis-qilin-slasher": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-abigail-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "sylvia-amber-iris": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "sylvia-driana-iris": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "lamiella-craka-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-eshir-reno": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-hraesvelg-liesel": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "chandra-craig-odin": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mimirr-cichlid-molly": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "geldnir-irene-momo": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "ashour-brita-taranys": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "tarnisha-narsha-savannah": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-lamiella-son-zhang-lao": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "ramael-and-judiah-ren-shahat": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-eshir-orion": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-layla-son-zhang-lao": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mihyang-hraesvelg-rex": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "chandra-odin-sigrid": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-cichlid-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "seara-john-woonsa": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-daphnis-qilin-slasher": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-lavender-liesel": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-driana-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-iris-tarq": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "moore-savannah-tesarion": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "rahul-driana-elsharion": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-ethna-lamiella": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-fuuki-orion": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mihyang-gamir-rex": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "seara-john-lora": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-werner-dark-eshir": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-driana-lora": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-hraesvelg-rex": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "fiona-eshir-luer": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-kahn-rex": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "mimirr-chilling-cichlid": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-berghild-layla": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "nephthys-christina-lionel": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "ramael-and-judiah-narsha-ren": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "seara-jeogun-theomars": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "solveig-chakra-vivachel": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
+  },
+  "morris-iris-vritra": {
+    "label": "Défense documentée",
+    "description": "Composition défensive de Siege documentée à partir de la référence fournie."
   }
 }
