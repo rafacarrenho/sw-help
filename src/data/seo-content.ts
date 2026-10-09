@@ -211,7 +211,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'What does minimum additional SPD mean?',
           answer:
-            'It is the minimum green SPD from runes needed for that monster under the configured conditions. Compare it with the additional SPD shown in the monster details screen in game.',
+            'It is the minimum additional SPD from runes needed for that monster under the configured conditions. Compare it with the additional SPD shown in the monster details screen in game.',
         },
         {
           question: 'Why are Siege, Arena, and RTA calculated differently?',
@@ -221,7 +221,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'Should I enter total SPD or only rune SPD?',
           answer:
-            'Enter the additional SPD supplied by runes, often shown in green in game. The calculator already knows the selected monster base SPD and applies the configured bonuses separately.',
+            'Enter only the additional SPD supplied by runes. The calculator already knows the selected monster base SPD and applies the configured bonuses separately.',
         },
         {
           question: 'How does a Swift set affect SPD tuning?',
@@ -329,7 +329,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
       heading: 'Calculate Summoners War SPD tick breakpoints',
       intro: [
         'Summoners War combat advances the Attack Bar in ticks. Select a monster to calculate the additional rune SPD needed to reach Tick 4, Tick 5, or Tick 6 with a chosen SPD tower, leader skill, and Swift set.',
-        'The table separates base and percentage bonuses from the green SPD you need on runes. It is a breakpoint reference for planning builds; Attack Bar boosts, buffs, passives, and enemy effects can still change real combat timing.',
+        'The table separates base and percentage bonuses from the additional SPD you need on runes. It is a breakpoint reference for planning builds; Attack Bar boosts, buffs, passives, and enemy effects can still change real combat timing.',
       ],
       faqHeading: 'Summoners War SPD Tick calculator FAQ',
       faqIntro:
@@ -351,9 +351,9 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
             'Select a monster, set your SPD tower, choose a leader percentage or view all leaders, and enable Swift if equipped. The table then shows the additional rune SPD required for each Tick.',
         },
         {
-          question: 'What is bonus SPD or green SPD?',
+          question: 'What is additional SPD?',
           answer:
-            'It is the additional SPD supplied by runes and shown in green in the monster details screen. It is separate from base SPD and from percentage bonuses such as leader skills, towers, and Swift.',
+            'It is the SPD supplied by runes beyond the monster base SPD. It is separate from percentage bonuses such as leader skills, towers, and Swift.',
         },
         {
           question: 'Why does monster base SPD matter for a Tick breakpoint?',
@@ -373,7 +373,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'Does the Swift rune set lower the Tick requirement?',
           answer:
-            'Usually yes. Swift adds 25% of base SPD before the additional rune SPD is considered, so enabling it can substantially reduce the remaining green SPD requirement.',
+            'Usually yes. Swift adds 25% of base SPD before the additional rune SPD is considered, so enabling it can substantially reduce the remaining additional SPD requirement.',
         },
         {
           question: 'Why might the in-game turn happen at a different time?',
@@ -584,7 +584,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'Devo informar a SPD total ou apenas a SPD das runas?',
           answer:
-            'Informe a SPD adicional fornecida pelas runas, normalmente exibida em verde no jogo. A calculadora já conhece a SPD base do monstro e aplica os bônus configurados separadamente.',
+            'Informe apenas a SPD adicional fornecida pelas runas. A calculadora já conhece a SPD base do monstro e aplica os bônus configurados separadamente.',
         },
         {
           question: 'Como o conjunto Swift afeta o Spd Tuning?',
@@ -695,7 +695,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
       heading: 'Calcule breakpoints de SPD Tick no Summoners War',
       intro: [
         'O combate de Summoners War avança a barra de ataque em ticks. Selecione um monstro para calcular a SPD adicional de runas necessária para atingir Tick 4, Tick 5 ou Tick 6 com a torre, liderança e Swift escolhidos.',
-        'A tabela separa a base e os bônus percentuais da SPD verde exigida nas runas. Ela serve como referência de breakpoint; boosts de barra, buffs, passivas e efeitos inimigos ainda podem mudar o tempo real do combate.',
+        'A tabela separa a base e os bônus percentuais da SPD adicional exigida nas runas. Ela serve como referência de breakpoint; boosts de barra, buffs, passivas e efeitos inimigos ainda podem mudar o tempo real do combate.',
       ],
       faqHeading: 'Dúvidas sobre a calculadora de SPD Tick',
       faqIntro:
@@ -717,9 +717,9 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
             'Selecione o monstro, ajuste a torre de SPD, escolha uma liderança ou veja todas e ative Swift se estiver equipado. A tabela mostra a SPD adicional de runas necessária para cada Tick.',
         },
         {
-          question: 'O que é SPD bônus ou SPD verde?',
+          question: 'O que é SPD adicional?',
           answer:
-            'É a SPD adicional fornecida pelas runas e exibida em verde nos detalhes do monstro. Ela é separada da SPD base e dos bônus percentuais de liderança, torre e Swift.',
+            'É a SPD fornecida pelas runas além da SPD base do monstro. Ela é separada dos bônus percentuais de liderança, torre e Swift.',
         },
         {
           question: 'Por que a SPD base muda o breakpoint de Tick?',
@@ -739,7 +739,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'O conjunto Swift reduz o requisito do Tick?',
           answer:
-            'Normalmente, sim. Swift adiciona 25% da SPD base antes da SPD adicional das runas, então pode reduzir bastante o valor verde que falta para alcançar o breakpoint.',
+            'Normalmente, sim. Swift adiciona 25% da SPD base antes da SPD adicional das runas, então pode reduzir bastante o valor adicional necessário para alcançar o breakpoint.',
         },
         {
           question: 'Por que o turno no jogo pode acontecer em outro momento?',

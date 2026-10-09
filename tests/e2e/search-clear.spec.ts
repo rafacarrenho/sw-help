@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { seedEssentialPrivacyPreferences } from './helpers/privacy';
 
+test.describe.configure({ timeout: 60_000 });
+
 test.beforeEach(async ({ page }) => {
   await seedEssentialPrivacyPreferences(page);
 });

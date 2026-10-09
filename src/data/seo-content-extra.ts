@@ -180,7 +180,7 @@ export const seoContentEs: SeoContentCollection = {
       {
         question: '¿Qué significa SPD adicional mínima?',
         answer:
-          'Es la SPD verde mínima de las runas que necesita ese monstruo con las condiciones configuradas. Compárala con la SPD adicional que aparece en la pantalla de detalles del monstruo dentro del juego.',
+          'Es la SPD adicional mínima de las runas que necesita ese monstruo con las condiciones configuradas. Compárala con la SPD adicional que aparece en la pantalla de detalles del monstruo dentro del juego.',
       },
       {
         question: '¿Por qué Siege, Arena y RTA se calculan de forma distinta?',
@@ -190,7 +190,7 @@ export const seoContentEs: SeoContentCollection = {
       {
         question: '¿Debo introducir la SPD total o solo la SPD de las runas?',
         answer:
-          'Introduce la SPD adicional que aportan las runas, normalmente mostrada en verde dentro del juego. La calculadora ya conoce la SPD base del monstruo seleccionado y aplica por separado los bonos configurados.',
+          'Introduce solo la SPD adicional que aportan las runas. La calculadora ya conoce la SPD base del monstruo seleccionado y aplica por separado los bonos configurados.',
       },
       {
         question: '¿Cómo afecta un set Swift al Spd Tuning?',
@@ -321,9 +321,9 @@ export const seoContentEs: SeoContentCollection = {
           'Selecciona un monstruo, configura tu torre de SPD, elige un porcentaje de líder o consulta todos los líderes y activa Swift si está equipado. La tabla mostrará la SPD adicional de runas necesaria para cada Tick.',
       },
       {
-        question: '¿Qué es la SPD adicional o SPD verde?',
+        question: '¿Qué es la SPD adicional?',
         answer:
-          'Es la SPD adicional que aportan las runas y que aparece en verde en la pantalla de detalles del monstruo. Es independiente de la SPD base y de los bonos porcentuales, como habilidades de líder, torres y Swift.',
+          'Es la SPD que aportan las runas además de la SPD base del monstruo. Es independiente de los bonos porcentuales, como habilidades de líder, torres y Swift.',
       },
       {
         question:
@@ -345,7 +345,7 @@ export const seoContentEs: SeoContentCollection = {
       {
         question: '¿El set de runas Swift reduce el requisito de Tick?',
         answer:
-          'Normalmente sí. Swift añade un 25 % de la SPD base antes de considerar la SPD adicional de las runas, por lo que activarlo puede reducir considerablemente la SPD verde restante.',
+          'Normalmente sí. Swift añade un 25 % de la SPD base antes de considerar la SPD adicional de las runas, por lo que activarlo puede reducir considerablemente la SPD adicional restante.',
       },
       {
         question:
@@ -555,7 +555,7 @@ export const seoContentFr: SeoContentCollection = {
       {
         question: 'Que signifie VIT supplémentaire minimale ?',
         answer:
-          'Il s’agit de la VIT verte minimale que les runes doivent fournir à ce monstre dans les conditions configurées. Comparez-la à la VIT supplémentaire affichée sur l’écran détaillé du monstre dans le jeu.',
+          'Il s’agit de la VIT supplémentaire minimale que les runes doivent fournir à ce monstre dans les conditions configurées. Comparez-la à la VIT supplémentaire affichée sur l’écran détaillé du monstre dans le jeu.',
       },
       {
         question:
@@ -567,7 +567,7 @@ export const seoContentFr: SeoContentCollection = {
         question:
           'Dois-je saisir la VIT totale ou uniquement la VIT des runes ?',
         answer:
-          'Saisissez la VIT supplémentaire fournie par les runes, généralement affichée en vert dans le jeu. Le calculateur connaît déjà la VIT de base du monstre sélectionné et applique séparément les bonus configurés.',
+          'Saisissez uniquement la VIT supplémentaire fournie par les runes. Le calculateur connaît déjà la VIT de base du monstre sélectionné et applique séparément les bonus configurés.',
       },
       {
         question: 'Quel est l’effet d’un set Swift sur le Spd Tuning ?',
@@ -700,9 +700,9 @@ export const seoContentFr: SeoContentCollection = {
           'Sélectionnez un monstre, réglez votre tour de VIT, choisissez un pourcentage de leader ou affichez tous les leaders, puis activez Swift s’il est équipé. Le tableau indique alors la VIT de runes supplémentaire requise pour chaque Tick.',
       },
       {
-        question: 'Qu’est-ce que la VIT bonus ou VIT verte ?',
+        question: 'Qu’est-ce que la VIT supplémentaire ?',
         answer:
-          'Il s’agit de la VIT supplémentaire fournie par les runes et affichée en vert sur l’écran détaillé du monstre. Elle est distincte de la VIT de base et des bonus en pourcentage comme les compétences de leader, les tours et Swift.',
+          'Il s’agit de la VIT fournie par les runes au-delà de la VIT de base du monstre. Elle est distincte des bonus en pourcentage comme les compétences de leader, les tours et Swift.',
       },
       {
         question:
@@ -724,7 +724,7 @@ export const seoContentFr: SeoContentCollection = {
       {
         question: 'Le set de runes Swift réduit-il le seuil de Tick ?',
         answer:
-          'Généralement oui. Swift ajoute 25 % de la VIT de base avant la prise en compte de la VIT supplémentaire des runes ; l’activer peut donc réduire considérablement la VIT verte encore nécessaire.',
+          'Généralement oui. Swift ajoute 25 % de la VIT de base avant la prise en compte de la VIT supplémentaire des runes ; l’activer peut donc réduire considérablement la VIT supplémentaire encore nécessaire.',
       },
       {
         question:
@@ -928,7 +928,7 @@ export const seoContentDe: SeoContentCollection = {
       {
         question: 'Was bedeutet minimale zusätzliche GES?',
         answer:
-          'Das ist die minimale grüne GES aus Runen, die das Monster unter den eingestellten Bedingungen benötigt. Vergleiche sie mit der zusätzlichen GES, die im Detailbildschirm des Monsters im Spiel angezeigt wird.',
+          'Das ist die minimale zusätzliche GES aus Runen, die das Monster unter den eingestellten Bedingungen benötigt. Vergleiche sie mit der zusätzlichen GES, die im Detailbildschirm des Monsters im Spiel angezeigt wird.',
       },
       {
         question:
@@ -939,7 +939,7 @@ export const seoContentDe: SeoContentCollection = {
       {
         question: 'Soll ich die gesamte GES oder nur die Runen-GES eingeben?',
         answer:
-          'Gib die zusätzliche GES aus Runen ein, die im Spiel meist grün angezeigt wird. Der Rechner kennt bereits die Basis-GES des ausgewählten Monsters und wendet die eingestellten Boni separat an.',
+          'Gib nur die zusätzliche GES aus Runen ein. Der Rechner kennt bereits die Basis-GES des ausgewählten Monsters und wendet die eingestellten Boni separat an.',
       },
       {
         question: 'Wie beeinflusst ein Swift-Set das Spd Tuning?',
@@ -1070,9 +1070,9 @@ export const seoContentDe: SeoContentCollection = {
           'Wähle ein Monster, stelle deinen GES-Turm ein, wähle einen Leader-Prozentsatz oder zeige alle Leader an und aktiviere Swift, falls es ausgerüstet ist. Die Tabelle zeigt anschließend die zusätzlich benötigte Runen-GES für jeden Tick.',
       },
       {
-        question: 'Was ist Bonus-GES oder grüne GES?',
+        question: 'Was ist zusätzliche GES?',
         answer:
-          'Das ist die zusätzliche GES aus Runen, die im Detailbildschirm des Monsters grün angezeigt wird. Sie ist von der Basis-GES und Prozentboni wie Leader-Skills, Türmen und Swift getrennt.',
+          'Das ist die GES aus Runen zusätzlich zur Basis-GES des Monsters. Sie ist von Prozentboni wie Leader-Skills, Türmen und Swift getrennt.',
       },
       {
         question:
@@ -1094,7 +1094,7 @@ export const seoContentDe: SeoContentCollection = {
       {
         question: 'Senkt das Swift-Runenset die Tick-Anforderung?',
         answer:
-          'Meistens ja. Swift addiert 25 % der Basis-GES, bevor die zusätzliche Runen-GES berücksichtigt wird. Das Aktivieren des Sets kann daher den verbleibenden Bedarf an grüner GES deutlich senken.',
+          'Meistens ja. Swift addiert 25 % der Basis-GES, bevor die zusätzliche Runen-GES berücksichtigt wird. Das Aktivieren des Sets kann daher den verbleibenden Bedarf an zusätzlicher GES deutlich senken.',
       },
       {
         question:

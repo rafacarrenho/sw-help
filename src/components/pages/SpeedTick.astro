@@ -4,9 +4,11 @@ import Icon from '../Icon.astro';
 import SeoContent from '../SeoContent.astro';
 import { monsterById, monsters } from '../../data/catalog';
 import { seoContent } from '../../data/seo-content';
+import { elementLabelsFor } from '../../lib/monster-catalog.ts';
 import {
   DEFAULT_SPEED_TICK_TOWER_PERCENT,
   getPossibleSpeedLeaders,
+  getSpeedTickTeamLeader,
   requiredAdditionalSpeed,
   SPEED_TICK_BREAKPOINTS,
 } from '../../lib/speed-tick.ts';
@@ -18,6 +20,7 @@ interface Props {
 const { locale } = Astro.props;
 const messages = getMessages(locale);
 const searchContent = seoContent[locale].speedTick;
+const elementLabels = elementLabelsFor(locale);
 
 const defaultBaseSpeed = 100;
 const defaultTowerPercent = DEFAULT_SPEED_TICK_TOWER_PERCENT;
@@ -39,8 +42,11 @@ const monsterData = monsters.map((monster) => ({
   id: monster.id,
   name: monster.name,
   unawakenedName: getUnawakenedName(monster),
+  element: monster.element,
+  elementLabel: elementLabels[monster.element] ?? monster.element,
   speed: monster.speed ?? 0,
   image: monster.image ?? null,
+  leader: getSpeedTickTeamLeader(monster),
 }));
 const leaderOptions = getPossibleSpeedLeaders(monsters);
 const serializedData = JSON.stringify({
@@ -84,168 +90,392 @@ const resultText = (value: number | null) => {
   <section class="speed-tick-tool" aria-labelledby="tool-title">
     <div class="section-heading">
       <div>
-        <h2 id="tool-title">{messages.tick.calculator}</h2>
-        <p>{messages.tick.calculatorCopy}</p>
+        <h2 id="tool-title" data-speed-tick-tool-title>
+          {messages.tick.calculator}
+        </h2>
+        <p data-speed-tick-tool-copy>{messages.tick.calculatorCopy}</p>
       </div>
     </div>
 
-    <div class="speed-tick-form">
-      <div class="speed-select speed-select--monster">
-        <label for="speed-tick-monster-search">{messages.tick.monster}</label>
-        <div id="speed-tick-monster-combobox" class="speed-monster-combobox">
-          <input
-            id="speed-tick-monster-search"
-            type="search"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-controls="speed-tick-monster-options"
-            aria-expanded="false"
-            autocomplete="off"
-            placeholder={messages.tick.searchMonster}
-          />
-          <button
-            class="search-clear-button"
-            type="button"
-            aria-label={messages.common.clearSearch}
-            title={messages.common.clearSearch}
-            data-search-clear
-          >
-            <Icon name="close" size={16} />
-          </button>
-          <div
-            id="speed-tick-monster-options"
-            class="speed-monster-options"
-            role="listbox"
-            aria-label={messages.tick.foundMonsters}
-            hidden
-          ></div>
-        </div>
-      </div>
-
-      <label class="speed-select">
-        <span>{messages.tick.speedTower}</span>
-        <select id="speed-tick-bonus-percent">
-          {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
-            (percent) => (
-              <option
-                value={percent}
-                selected={percent === defaultTowerPercent}
-              >
-                {percent}%
-              </option>
-            ),
-          )}
-        </select>
-      </label>
-
-      <label class="speed-select speed-select--leader">
-        <span>{messages.tick.speedLeader}</span>
-        <select id="speed-tick-leader">
-          <option value="all" selected>
-            {messages.tick.all}
-          </option>
-          {leaderOptions.map((option) => (
-            <option value={option.value}>{option.label}</option>
-          ))}
-        </select>
-      </label>
-
-      <label class="speed-toggle speed-toggle--swift">
-        <input id="speed-tick-swift" type="checkbox" />
-        <span>{messages.tick.usesSwift}</span>
-      </label>
+    <div
+      class="speed-tick-mode"
+      role="tablist"
+      aria-label={messages.tick.calculationMode}
+    >
+      <button
+        id="speed-tick-individual-tab"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="speed-tick-individual-panel"
+        tabindex="0"
+        data-speed-tick-mode="individual"
+      >
+        {messages.tick.individualMode}
+      </button>
+      <button
+        id="speed-tick-siege-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="speed-tick-team-panel"
+        tabindex="-1"
+        data-speed-tick-mode="siege"
+      >
+        {messages.tick.siegeMode}
+      </button>
+      <button
+        id="speed-tick-arena-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="speed-tick-team-panel"
+        tabindex="-1"
+        data-speed-tick-mode="arena"
+      >
+        {messages.tick.arenaMode}
+      </button>
     </div>
 
-    <div class="speed-tick-results">
-      <div class="speed-tick-header">
-        <div class="speed-tick-selected">
-          <span
-            id="speed-tick-selected-portrait"
-            class="speed-monster-portrait speed-monster-portrait--selected is-empty"
-            aria-hidden="true"
-          >
-            <span
-              id="speed-tick-selected-placeholder"
-              class="speed-monster-placeholder"
-            >
-              ?
-            </span>
-            <span
-              id="speed-tick-selected-fallback"
-              class="speed-monster-fallback"
-              hidden
-            ></span>
-            <img
-              id="speed-tick-selected-image"
-              alt=""
-              width="64"
-              height="64"
-              hidden
+    <div
+      id="speed-tick-individual-panel"
+      role="tabpanel"
+      aria-labelledby="speed-tick-individual-tab"
+      data-speed-tick-panel="individual"
+    >
+      <div class="speed-tick-form">
+        <div class="speed-select speed-select--monster">
+          <label for="speed-tick-monster-search">{messages.tick.monster}</label>
+          <div id="speed-tick-monster-combobox" class="speed-monster-combobox">
+            <input
+              id="speed-tick-monster-search"
+              type="search"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="speed-tick-monster-options"
+              aria-expanded="false"
+              autocomplete="off"
+              placeholder={messages.tick.searchMonster}
             />
-          </span>
-          <div>
-            <span class="speed-tick-pill">{messages.tick.selectedMonster}</span>
-            <h3 id="speed-tick-monster-name">
-              {messages.tick.noMonsterSelected}
-            </h3>
+            <button
+              class="search-clear-button"
+              type="button"
+              aria-label={messages.common.clearSearch}
+              title={messages.common.clearSearch}
+              data-search-clear
+            >
+              <Icon name="close" size={16} />
+            </button>
+            <div
+              id="speed-tick-monster-options"
+              class="speed-monster-options"
+              role="listbox"
+              aria-label={messages.tick.foundMonsters}
+              hidden
+            ></div>
           </div>
         </div>
-        <div class="speed-tick-meta">
-          <span>{messages.tick.baseSpeed}</span>
-          <strong id="speed-tick-base-speed">{defaultBaseSpeed}</strong>
+
+        <label class="speed-select">
+          <span>{messages.tick.speedTower}</span>
+          <select id="speed-tick-bonus-percent">
+            {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+              (percent) => (
+                <option
+                  value={percent}
+                  selected={percent === defaultTowerPercent}
+                >
+                  {percent}%
+                </option>
+              ),
+            )}
+          </select>
+        </label>
+
+        <label class="speed-select speed-select--leader">
+          <span>{messages.tick.speedLeader}</span>
+          <select id="speed-tick-leader">
+            <option value="all" selected>
+              {messages.tick.all}
+            </option>
+            {leaderOptions.map((option) => (
+              <option value={option.value}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="speed-toggle speed-toggle--swift">
+          <input id="speed-tick-swift" type="checkbox" />
+          <span>{messages.tick.usesSwift}</span>
+        </label>
+      </div>
+
+      <div class="speed-tick-results">
+        <div class="speed-tick-header">
+          <div class="speed-tick-selected">
+            <span
+              id="speed-tick-selected-portrait"
+              class="speed-monster-portrait speed-monster-portrait--selected is-empty"
+              aria-hidden="true"
+            >
+              <span
+                id="speed-tick-selected-placeholder"
+                class="speed-monster-placeholder"
+              >
+                ?
+              </span>
+              <span
+                id="speed-tick-selected-fallback"
+                class="speed-monster-fallback"
+                hidden
+              ></span>
+              <img
+                id="speed-tick-selected-image"
+                alt=""
+                width="64"
+                height="64"
+                hidden
+              />
+            </span>
+            <div>
+              <span class="speed-tick-pill">
+                {messages.tick.selectedMonster}
+              </span>
+              <h3 id="speed-tick-monster-name">
+                {messages.tick.noMonsterSelected}
+              </h3>
+            </div>
+          </div>
+          <div class="speed-tick-meta">
+            <span>{messages.tick.baseSpeed}</span>
+            <strong id="speed-tick-base-speed">{defaultBaseSpeed}</strong>
+          </div>
         </div>
+
+        <div
+          class="speed-tick-table-scroll"
+          role="region"
+          aria-label={messages.tick.additionalSpeedRegion}
+          tabindex="0"
+        >
+          <table class="speed-tick-table">
+            <caption>{messages.tick.requiredBonusSpeed}</caption>
+            <thead>
+              <tr>
+                <th class="speed-tick-sticky-column" scope="col">
+                  Tick
+                </th>
+                {leaderOptions.map((option) => (
+                  <th scope="col" data-leader-percent={option.value}>
+                    {option.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody id="speed-tick-table-body">
+              {SPEED_TICK_BREAKPOINTS.map((breakpoint) => (
+                <tr
+                  class:list={{
+                    'row-highlight': [5, 6].includes(breakpoint.tick),
+                  }}
+                >
+                  <th class="speed-tick-sticky-column" scope="row">
+                    Tick {breakpoint.tick}
+                    <small>{breakpoint.minimumSpeed} SPD</small>
+                  </th>
+                  {leaderOptions.map((option) => {
+                    const value = requiredAdditionalSpeed({
+                      baseSpeed: defaultBaseSpeed,
+                      leaderPercent: option.value,
+                      activeAdditionalPercent: defaultTowerPercent,
+                      minimumSpeed: breakpoint.minimumSpeed,
+                      usesSwift: defaultUsesSwift,
+                    });
+
+                    return (
+                      <td data-leader-percent={option.value}>
+                        {resultText(value)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="speed-tick-team-panel"
+      role="tabpanel"
+      aria-labelledby="speed-tick-siege-tab"
+      data-speed-tick-panel="team"
+      hidden
+    >
+      <div class="speed-tick-team-controls">
+        <label class="speed-select">
+          <span>{messages.tick.teamSpeedTower}</span>
+          <select id="speed-tick-team-tower">
+            {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
+              (percent) => (
+                <option
+                  value={percent}
+                  selected={percent === defaultTowerPercent}
+                >
+                  {percent}%
+                </option>
+              ),
+            )}
+          </select>
+        </label>
+
+        <label class="speed-select speed-tick-team-leader">
+          <span>{messages.tick.teamSpeedLeader}</span>
+          <select id="speed-tick-team-leader" disabled>
+            <option value="0">{messages.tick.noLeader}</option>
+          </select>
+        </label>
+
+        <button
+          id="speed-tick-team-reset"
+          class="button button-secondary speed-tick-team-reset"
+          type="button"
+        >
+          {messages.tick.clearTeam}
+        </button>
       </div>
 
       <div
-        class="speed-tick-table-scroll"
-        role="region"
-        aria-label={messages.tick.additionalSpeedRegion}
-        tabindex="0"
+        class="speed-tick-team-slots"
+        aria-label={messages.tick.siegeTeam}
+        data-team-slots
+        data-slot-count="3"
       >
-        <table class="speed-tick-table">
-          <caption>{messages.tick.requiredBonusSpeed}</caption>
-          <thead>
-            <tr>
-              <th class="speed-tick-sticky-column" scope="col">
-                Tick
-              </th>
-              {leaderOptions.map((option) => (
-                <th scope="col" data-leader-percent={option.value}>
-                  {option.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody id="speed-tick-table-body">
-            {SPEED_TICK_BREAKPOINTS.map((breakpoint) => (
-              <tr
-                class:list={{
-                  'row-highlight': [5, 6].includes(breakpoint.tick),
-                }}
-              >
-                <th class="speed-tick-sticky-column" scope="row">
-                  Tick {breakpoint.tick}
-                  <small>{breakpoint.minimumSpeed} SPD</small>
-                </th>
-                {leaderOptions.map((option) => {
-                  const value = requiredAdditionalSpeed({
-                    baseSpeed: defaultBaseSpeed,
-                    leaderPercent: option.value,
-                    activeAdditionalPercent: defaultTowerPercent,
-                    minimumSpeed: breakpoint.minimumSpeed,
-                    usesSwift: defaultUsesSwift,
-                  });
+        {[0, 1, 2, 3].map((index) => (
+          <article
+            class="speed-tick-team-slot"
+            data-speed-tick-team-slot={index}
+            hidden={index === 3}
+          >
+            <header>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>
+                {messages.tick.monster} {index + 1}
+              </h3>
+            </header>
 
-                  return (
-                    <td data-leader-percent={option.value}>
-                      {resultText(value)}
-                    </td>
-                  );
-                })}
+            <div class="speed-select speed-tick-team-monster-select">
+              <label for={`speed-tick-team-search-${index}`}>
+                {messages.tick.monster}
+              </label>
+              <div class="speed-monster-combobox" data-team-combobox>
+                <input
+                  id={`speed-tick-team-search-${index}`}
+                  data-team-search
+                  type="search"
+                  role="combobox"
+                  aria-label={`${messages.tick.monster} ${index + 1}`}
+                  aria-autocomplete="list"
+                  aria-controls={`speed-tick-team-options-${index}`}
+                  aria-expanded="false"
+                  autocomplete="off"
+                  placeholder={messages.tick.searchMonster}
+                />
+                <button
+                  class="search-clear-button"
+                  type="button"
+                  aria-label={messages.common.clearSearch}
+                  title={messages.common.clearSearch}
+                  data-search-clear
+                >
+                  <Icon name="close" size={16} />
+                </button>
+                <div
+                  id={`speed-tick-team-options-${index}`}
+                  class="speed-monster-options speed-tick-team-options"
+                  data-team-options
+                  role="listbox"
+                  aria-label={`${messages.tick.monstersForSlot} ${index + 1}`}
+                  hidden
+                ></div>
+              </div>
+            </div>
+
+            <div class="speed-tick-team-summary">
+              <span
+                class="speed-monster-portrait speed-monster-portrait--selected is-empty"
+                data-team-portrait
+                aria-hidden="true"
+              >
+                <span class="speed-monster-placeholder" data-team-placeholder>
+                  ?
+                </span>
+                <span
+                  class="speed-monster-fallback"
+                  data-team-fallback
+                  hidden
+                ></span>
+                <img data-team-image alt="" width="64" height="64" hidden />
+              </span>
+              <div>
+                <strong data-team-name>
+                  {messages.tick.noMonsterSelected}
+                </strong>
+                <span data-team-detail>{messages.tick.selectAbove}</span>
+              </div>
+            </div>
+
+            <label class="speed-toggle speed-tick-team-swift">
+              <input data-team-swift type="checkbox" disabled />
+              <span>{messages.tick.usesSwift}</span>
+            </label>
+          </article>
+        ))}
+      </div>
+
+      <div class="speed-tick-results speed-tick-team-results">
+        <div class="speed-tick-team-result-header">
+          <div>
+            <span class="speed-tick-pill">{messages.tick.teamResult}</span>
+            <h3>{messages.tick.requiredSpeedByTick}</h3>
+          </div>
+          <p>{messages.tick.teamResultCopy}</p>
+        </div>
+        <p class="speed-tick-team-empty" data-team-empty>
+          {messages.tick.emptyTeam}
+        </p>
+        <div
+          class="speed-tick-table-scroll"
+          role="region"
+          aria-label={messages.tick.teamAdditionalSpeedRegion}
+          tabindex="0"
+          data-team-table-region
+          hidden
+        >
+          <table class="speed-tick-table speed-tick-team-table">
+            <caption>{messages.tick.requiredBonusSpeedByMonster}</caption>
+            <thead>
+              <tr>
+                <th class="speed-tick-sticky-column" scope="col">
+                  {messages.tick.monster}
+                </th>
+                {SPEED_TICK_BREAKPOINTS.map((breakpoint) => (
+                  <th
+                    scope="col"
+                    class:list={{
+                      'column-highlight': [5, 6].includes(breakpoint.tick),
+                    }}
+                  >
+                    Tick {breakpoint.tick}
+                    <small>{breakpoint.minimumSpeed} SPD</small>
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody data-team-table-body></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
@@ -261,19 +491,35 @@ const resultText = (value: number | null) => {
     import {
       DEFAULT_SPEED_TICK_LEADER_VALUE,
       DEFAULT_SPEED_TICK_TOWER_PERCENT,
+      isSpeedTickTeamLeaderValid,
+      readSpeedTickMode,
       readSpeedTickQueryState,
+      readSpeedTickTeamQueryState,
+      reconcileSpeedTickTeamLeader,
       requiredAdditionalSpeed,
       SPEED_TICK_BREAKPOINTS,
+      speedTickTeamLeaderPercent,
+      speedTickTeamSlotCount,
       writeSpeedTickQueryState,
+      writeSpeedTickTeamQueryState,
+      type SpeedTickMode,
+      type SpeedTickTeamLeader,
+      type SpeedTickTeamMode,
+      type SpeedTickTeamQueryMonster,
+      type SpeedTickTeamQueryState,
     } from '../../lib/speed-tick.ts';
     import { matchesSearch } from '../../lib/search.ts';
+    import type { Element as MonsterElement } from '../../lib/types.ts';
 
     type MonsterSummary = {
       id: string;
       name: string;
       unawakenedName: string | null;
+      element: MonsterElement;
+      elementLabel: string;
       speed: number;
       image: string | null;
+      leader: SpeedTickTeamLeader | null;
     };
 
     type SpeedTickData = {
@@ -338,11 +584,20 @@ const resultText = (value: number | null) => {
       speedTickData.monsters.map((monster) => [monster.id, monster]),
     );
     const monsterQueryIds = new Set(monsterByQueryId.keys());
+    const teamQueryMonsters = new Map<string, SpeedTickTeamQueryMonster>(
+      speedTickData.monsters.map((monster) => [
+        monster.id,
+        { element: monster.element, leader: monster.leader },
+      ]),
+    );
     const mobileSearchMedia = window.matchMedia('(max-width: 820px)');
     const reducedMotionMedia = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     );
 
+    let currentMode: SpeedTickMode = readSpeedTickMode(
+      new URLSearchParams(window.location.search),
+    );
     let selectedMonster: MonsterSummary | null = null;
     let visibleMonsters: MonsterSummary[] = [];
     let activeOptionIndex = -1;
@@ -708,7 +963,7 @@ const resultText = (value: number | null) => {
         `;
       }).join('');
 
-      if (updateUrl) syncQueryState();
+      if (updateUrl && currentMode === 'individual') syncQueryState();
     };
 
     const restoreQueryState = () => {
@@ -737,7 +992,490 @@ const resultText = (value: number | null) => {
       (leaderSelect as HTMLSelectElement).value = state.leaderValue;
       swiftToggle.checked = state.usesSwift;
       closeOptions();
-      render();
+      render(false);
+    };
+
+    type TeamSlotState = {
+      monster: MonsterSummary | null;
+      usesSwift: boolean;
+    };
+
+    type TeamSlotElements = {
+      root: HTMLElement;
+      combobox: HTMLElement;
+      search: HTMLInputElement;
+      options: HTMLElement;
+      portrait: HTMLElement;
+      placeholder: HTMLElement;
+      image: HTMLImageElement;
+      fallback: HTMLElement;
+      name: HTMLElement;
+      detail: HTMLElement;
+      swift: HTMLInputElement;
+    };
+
+    const modeButtons = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('[data-speed-tick-mode]'),
+    );
+    const modePanels = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-speed-tick-panel]'),
+    );
+    const toolTitle = document.querySelector<HTMLElement>(
+      '[data-speed-tick-tool-title]',
+    );
+    const toolCopy = document.querySelector<HTMLElement>(
+      '[data-speed-tick-tool-copy]',
+    );
+    const teamTower = document.getElementById(
+      'speed-tick-team-tower',
+    ) as HTMLSelectElement | null;
+    const teamLeader = document.getElementById(
+      'speed-tick-team-leader',
+    ) as HTMLSelectElement | null;
+    const teamReset = document.getElementById('speed-tick-team-reset');
+    const teamEmpty = document.querySelector<HTMLElement>('[data-team-empty]');
+    const teamTableRegion = document.querySelector<HTMLElement>(
+      '[data-team-table-region]',
+    );
+    const teamTableBody = document.querySelector<HTMLElement>(
+      '[data-team-table-body]',
+    );
+    const teamSlots = document.querySelector<HTMLElement>('[data-team-slots]');
+    const teamSlotRoots = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-speed-tick-team-slot]'),
+    );
+    const teamStates: TeamSlotState[] = teamSlotRoots.map(() => ({
+      monster: null,
+      usesSwift: false,
+    }));
+    let teamLeaderMonsterId: string | null = null;
+
+    const teamElements: TeamSlotElements[] = teamSlotRoots.map((root) => ({
+      root,
+      combobox: root.querySelector<HTMLElement>('[data-team-combobox]')!,
+      search: root.querySelector<HTMLInputElement>('[data-team-search]')!,
+      options: root.querySelector<HTMLElement>('[data-team-options]')!,
+      portrait: root.querySelector<HTMLElement>('[data-team-portrait]')!,
+      placeholder: root.querySelector<HTMLElement>('[data-team-placeholder]')!,
+      image: root.querySelector<HTMLImageElement>('[data-team-image]')!,
+      fallback: root.querySelector<HTMLElement>('[data-team-fallback]')!,
+      name: root.querySelector<HTMLElement>('[data-team-name]')!,
+      detail: root.querySelector<HTMLElement>('[data-team-detail]')!,
+      swift: root.querySelector<HTMLInputElement>('[data-team-swift]')!,
+    }));
+
+    const currentTeamMode = (): SpeedTickTeamMode =>
+      currentMode === 'arena' ? 'arena' : 'siege';
+    const visibleTeamSlotCount = () =>
+      speedTickTeamSlotCount(currentTeamMode());
+    const visibleTeamStates = () => teamStates.slice(0, visibleTeamSlotCount());
+    const teamMonsterIds = () =>
+      visibleTeamStates().map((state) => state.monster?.id ?? null);
+
+    const closeTeamOptions = (slotIndex: number) => {
+      const slot = teamElements[slotIndex];
+      if (!slot) return;
+      slot.options.hidden = true;
+      slot.search.setAttribute('aria-expanded', 'false');
+      slot.search.removeAttribute('aria-activedescendant');
+    };
+
+    const closeAllTeamOptions = (exceptIndex = -1) => {
+      teamElements.forEach((_, index) => {
+        if (index !== exceptIndex) closeTeamOptions(index);
+      });
+    };
+
+    const reconcileTeamLeader = () => {
+      teamLeaderMonsterId = reconcileSpeedTickTeamLeader(
+        teamLeaderMonsterId,
+        teamMonsterIds(),
+        teamQueryMonsters,
+        currentTeamMode(),
+      );
+    };
+
+    const renderTeamLeader = () => {
+      if (!teamLeader) return;
+      const candidates = visibleTeamStates()
+        .map((state) => state.monster)
+        .filter((monster): monster is MonsterSummary =>
+          Boolean(
+            monster &&
+            isSpeedTickTeamLeaderValid(monster.leader, currentTeamMode()),
+          ),
+        );
+      const options = [
+        new Option(messages.noLeader || 'No leader', '0'),
+        ...candidates.map(
+          (monster) =>
+            new Option(
+              `${monster.name} · ${monster.leader?.amount ?? 0}%`,
+              monster.id,
+            ),
+        ),
+      ];
+      teamLeader.replaceChildren(...options);
+      teamLeader.disabled = candidates.length === 0;
+      teamLeader.value =
+        teamLeaderMonsterId &&
+        candidates.some((monster) => monster.id === teamLeaderMonsterId)
+          ? teamLeaderMonsterId
+          : '0';
+    };
+
+    const renderTeamMonster = (slotIndex: number) => {
+      const state = teamStates[slotIndex];
+      const slot = teamElements[slotIndex];
+      if (!state || !slot) return;
+      const monster = state.monster;
+      slot.swift.disabled = !monster;
+      slot.swift.checked = Boolean(monster && state.usesSwift);
+
+      if (!monster) {
+        slot.portrait.classList.add('is-empty');
+        slot.placeholder.hidden = false;
+        slot.image.hidden = true;
+        slot.image.removeAttribute('src');
+        slot.fallback.hidden = true;
+        slot.name.textContent =
+          messages.noMonsterSelected || 'No monster selected';
+        slot.detail.textContent = messages.selectAbove || 'Select above';
+        return;
+      }
+
+      slot.portrait.classList.remove('is-empty');
+      slot.placeholder.hidden = true;
+      slot.name.textContent = monster.name;
+      slot.detail.textContent = `${monster.elementLabel} · ${monster.speed} SPD`;
+      slot.fallback.textContent = monster.name.slice(0, 2);
+
+      if (monster.image) {
+        slot.image.src = monster.image;
+        slot.image.hidden = false;
+        slot.fallback.hidden = true;
+      } else {
+        slot.image.removeAttribute('src');
+        showFallback(slot.image, slot.fallback);
+      }
+    };
+
+    const createTeamMonsterCell = (monster: MonsterSummary) => {
+      const cell = document.createElement('th');
+      cell.className = 'speed-tick-sticky-column';
+      cell.scope = 'row';
+      const content = document.createElement('span');
+      content.className = 'speed-tick-team-monster-cell';
+      const portrait = createOptionPortrait(monster);
+      const copy = document.createElement('span');
+      const name = document.createElement('strong');
+      name.textContent = monster.name;
+      const base = document.createElement('small');
+      base.textContent = `${messages.baseSpeed || 'Base SPD'} ${monster.speed}`;
+      copy.append(name, base);
+      content.append(portrait, copy);
+      cell.append(content);
+      return cell;
+    };
+
+    const currentTeamQueryState = (): SpeedTickTeamQueryState => ({
+      mode: currentTeamMode(),
+      monsterIds: teamMonsterIds(),
+      towerPercent: Number(
+        teamTower?.value ?? DEFAULT_SPEED_TICK_TOWER_PERCENT,
+      ),
+      leaderMonsterId: teamLeaderMonsterId,
+      usesSwift: visibleTeamStates().map((state) => state.usesSwift),
+    });
+
+    const syncTeamQueryState = () => {
+      const params = writeSpeedTickTeamQueryState(
+        new URLSearchParams(window.location.search),
+        currentTeamQueryState(),
+      );
+      const search = params.size > 0 ? `?${params.toString()}` : '';
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${search}${window.location.hash}`,
+      );
+    };
+
+    const renderTeam = (updateUrl = true) => {
+      const slotCount = visibleTeamSlotCount();
+      teamElements.forEach((slot, index) => {
+        slot.root.hidden = index >= slotCount;
+        renderTeamMonster(index);
+      });
+      if (teamSlots) {
+        teamSlots.dataset.slotCount = String(slotCount);
+        teamSlots.setAttribute(
+          'aria-label',
+          currentTeamMode() === 'arena'
+            ? messages.arenaTeam || 'Arena team'
+            : messages.siegeTeam || 'Siege team',
+        );
+      }
+      renderTeamLeader();
+
+      const selectedStates = visibleTeamStates().filter(
+        (state): state is TeamSlotState & { monster: MonsterSummary } =>
+          Boolean(state.monster),
+      );
+      if (teamEmpty) teamEmpty.hidden = selectedStates.length > 0;
+      if (teamTableRegion) teamTableRegion.hidden = selectedStates.length === 0;
+
+      if (teamTableBody) {
+        const fragment = document.createDocumentFragment();
+        const activeLeader = teamLeaderMonsterId
+          ? (monsterByQueryId.get(teamLeaderMonsterId)?.leader ?? null)
+          : null;
+        const towerPercent = Number(
+          teamTower?.value ?? DEFAULT_SPEED_TICK_TOWER_PERCENT,
+        );
+
+        selectedStates.forEach((state) => {
+          const row = document.createElement('tr');
+          row.append(createTeamMonsterCell(state.monster));
+          const leaderPercent = speedTickTeamLeaderPercent(
+            activeLeader,
+            state.monster.element,
+            currentTeamMode(),
+          );
+          SPEED_TICK_BREAKPOINTS.forEach((breakpoint) => {
+            const cell = document.createElement('td');
+            if ([5, 6].includes(breakpoint.tick)) {
+              cell.classList.add('column-highlight');
+            }
+            cell.textContent = formatResult(
+              requiredAdditionalSpeed({
+                baseSpeed: state.monster.speed,
+                leaderPercent,
+                activeAdditionalPercent: towerPercent,
+                minimumSpeed: breakpoint.minimumSpeed,
+                usesSwift: state.usesSwift,
+              }),
+            );
+            row.append(cell);
+          });
+          fragment.append(row);
+        });
+        teamTableBody.replaceChildren(fragment);
+      }
+
+      if (updateUrl && currentMode !== 'individual') syncTeamQueryState();
+    };
+
+    const clearTeamSlot = (slotIndex: number, keepSearchValue = false) => {
+      const state = teamStates[slotIndex];
+      const slot = teamElements[slotIndex];
+      if (!state || !slot) return;
+      state.monster = null;
+      state.usesSwift = false;
+      if (!keepSearchValue) slot.search.value = '';
+      reconcileTeamLeader();
+    };
+
+    const selectTeamMonster = (slotIndex: number, monster: MonsterSummary) => {
+      const state = teamStates[slotIndex];
+      const slot = teamElements[slotIndex];
+      if (!state || !slot) return;
+      teamStates.forEach((otherState, index) => {
+        if (index === slotIndex || otherState.monster?.id !== monster.id)
+          return;
+        otherState.monster = null;
+        otherState.usesSwift = false;
+        const otherSlot = teamElements[index];
+        if (otherSlot) otherSlot.search.value = '';
+      });
+      state.monster = monster;
+      state.usesSwift = false;
+      slot.search.value = monster.name;
+      reconcileTeamLeader();
+      closeTeamOptions(slotIndex);
+      slot.search.blur();
+      renderTeam();
+    };
+
+    const renderTeamOptions = (slotIndex: number) => {
+      const slot = teamElements[slotIndex];
+      if (!slot) return;
+      const selectedElsewhere = new Set(
+        visibleTeamStates()
+          .filter((_, index) => index !== slotIndex)
+          .map((state) => state.monster?.id)
+          .filter((id): id is string => Boolean(id)),
+      );
+      const query = slot.search.value.trim();
+      const visible = (
+        query
+          ? sortedMonsters.filter((monster) =>
+              matchesSearch(
+                [monster.name, monster.unawakenedName, monster.elementLabel]
+                  .filter(Boolean)
+                  .join(' '),
+                query,
+              ),
+            )
+          : sortedMonsters
+      )
+        .filter((monster) => !selectedElsewhere.has(monster.id))
+        .slice(0, 50);
+
+      slot.options.replaceChildren();
+      if (visible.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'speed-monster-options-status';
+        empty.textContent = messages.noMonsterFound || 'No monster found';
+        slot.options.append(empty);
+      } else {
+        const fragment = document.createDocumentFragment();
+        visible.forEach((monster, optionIndex) => {
+          const option = document.createElement('div');
+          option.id = `speed-tick-team-option-${slotIndex}-${monster.id}`;
+          option.className = 'speed-monster-option speed-tick-team-option';
+          option.setAttribute('role', 'option');
+          option.setAttribute('aria-selected', 'false');
+          option.dataset.optionIndex = String(optionIndex);
+          option.dataset.monsterId = monster.id;
+
+          const text = document.createElement('span');
+          text.className = 'speed-monster-option-text';
+          const name = document.createElement('span');
+          name.className = 'speed-monster-option-name';
+          name.textContent = monster.name;
+          const detail = document.createElement('small');
+          detail.className = 'speed-monster-option-unawakened';
+          detail.textContent = monster.unawakenedName
+            ? `${monster.unawakenedName} · ${monster.elementLabel} · ${monster.speed} SPD`
+            : `${monster.elementLabel} · ${monster.speed} SPD`;
+          text.append(name, detail);
+          option.append(createOptionPortrait(monster), text);
+          option.addEventListener('pointerdown', (event) =>
+            event.preventDefault(),
+          );
+          option.addEventListener('click', () =>
+            selectTeamMonster(slotIndex, monster),
+          );
+          fragment.append(option);
+        });
+        slot.options.append(fragment);
+      }
+
+      closeAllTeamOptions(slotIndex);
+      slot.options.hidden = false;
+      slot.search.setAttribute('aria-expanded', 'true');
+    };
+
+    const moveTeamActiveOption = (slotIndex: number, direction: 1 | -1) => {
+      const slot = teamElements[slotIndex];
+      if (!slot) return;
+      const options = Array.from(
+        slot.options.querySelectorAll<HTMLElement>('[role="option"]'),
+      );
+      if (options.length === 0) return;
+      const currentIndex = options.findIndex(
+        (option) => option.getAttribute('aria-selected') === 'true',
+      );
+      const nextIndex =
+        currentIndex < 0
+          ? direction === 1
+            ? 0
+            : options.length - 1
+          : (currentIndex + direction + options.length) % options.length;
+      options.forEach((option, index) =>
+        option.setAttribute('aria-selected', String(index === nextIndex)),
+      );
+      const active = options[nextIndex];
+      if (!active) return;
+      slot.search.setAttribute('aria-activedescendant', active.id);
+      active.scrollIntoView({ block: 'nearest' });
+    };
+
+    const restoreTeamQueryState = () => {
+      teamStates.forEach((slotState, index) => {
+        slotState.monster = null;
+        slotState.usesSwift = false;
+        const slot = teamElements[index];
+        if (slot) slot.search.value = '';
+      });
+      const state = readSpeedTickTeamQueryState(
+        new URLSearchParams(window.location.search),
+        teamQueryMonsters,
+        currentTeamMode(),
+      );
+      state.monsterIds.forEach((monsterId, index) => {
+        const slotState = teamStates[index];
+        const slot = teamElements[index];
+        if (!slotState || !slot) return;
+        slotState.monster = monsterId
+          ? (monsterByQueryId.get(monsterId) ?? null)
+          : null;
+        slotState.usesSwift = state.usesSwift[index] ?? false;
+        slot.search.value = slotState.monster?.name ?? '';
+      });
+      teamLeaderMonsterId = state.leaderMonsterId;
+      if (teamTower) teamTower.value = String(state.towerPercent);
+      closeAllTeamOptions();
+      renderTeam(false);
+    };
+
+    const renderMode = (updateUrl = true) => {
+      modeButtons.forEach((button) => {
+        const active = button.dataset.speedTickMode === currentMode;
+        button.setAttribute('aria-selected', String(active));
+        button.tabIndex = active ? 0 : -1;
+      });
+      modePanels.forEach((panel) => {
+        const panelMode = panel.dataset.speedTickPanel;
+        panel.hidden =
+          currentMode === 'individual'
+            ? panelMode !== 'individual'
+            : panelMode !== 'team';
+      });
+      const teamPanel = document.getElementById('speed-tick-team-panel');
+      if (teamPanel && currentMode !== 'individual') {
+        teamPanel.setAttribute(
+          'aria-labelledby',
+          `speed-tick-${currentMode}-tab`,
+        );
+      }
+      if (toolTitle) {
+        toolTitle.textContent =
+          currentMode === 'arena'
+            ? messages.arenaCalculator || 'Arena team calculator'
+            : currentMode === 'siege'
+              ? messages.siegeCalculator || 'Siege team calculator'
+              : messages.calculator || 'Monster calculator';
+      }
+      if (toolCopy) {
+        toolCopy.textContent =
+          currentMode === 'arena'
+            ? messages.arenaCalculatorCopy ||
+              'Select up to four monsters and compare the additional rune SPD required for every Tick.'
+            : currentMode === 'siege'
+              ? messages.siegeCalculatorCopy ||
+                'Select up to three monsters and compare the additional rune SPD required for every Tick.'
+              : messages.calculatorCopy || '';
+      }
+
+      if (!updateUrl) return;
+      if (currentMode === 'individual') render();
+      else {
+        reconcileTeamLeader();
+        renderTeam();
+      }
+    };
+
+    const restoreVisibleState = () => {
+      currentMode = readSpeedTickMode(
+        new URLSearchParams(window.location.search),
+      );
+      if (currentMode === 'individual') restoreQueryState();
+      else restoreTeamQueryState();
+      renderMode(false);
+      if (currentMode === 'individual') syncQueryState();
+      else syncTeamQueryState();
     };
 
     monsterOptions?.addEventListener('scroll', () => {
@@ -791,12 +1529,117 @@ const resultText = (value: number | null) => {
     });
     document.addEventListener('pointerdown', (event) => {
       if (!comboboxRoot?.contains(event.target as Node)) closeOptions();
+      teamElements.forEach((slot, index) => {
+        if (!slot.combobox.contains(event.target as Node)) {
+          closeTeamOptions(index);
+        }
+      });
     });
     bonusPercentSelect?.addEventListener('change', () => render());
     leaderSelect?.addEventListener('change', () => render());
     swiftToggle?.addEventListener('change', () => render());
-    window.addEventListener('popstate', restoreQueryState);
-    window.addEventListener('pageshow', restoreQueryState);
-    restoreQueryState();
+    teamElements.forEach((slot, slotIndex) => {
+      slot.image.addEventListener('error', () =>
+        showFallback(slot.image, slot.fallback),
+      );
+      slot.search.addEventListener('focus', () => {
+        renderTeamOptions(slotIndex);
+        if (mobileSearchMedia.matches) {
+          requestAnimationFrame(() => {
+            if (document.activeElement !== slot.search) return;
+            slot.root.scrollIntoView({
+              behavior: reducedMotionMedia.matches ? 'auto' : 'smooth',
+              block: 'start',
+            });
+          });
+        }
+      });
+      slot.search.addEventListener('input', () => {
+        clearTeamSlot(slotIndex, true);
+        renderTeam();
+        renderTeamOptions(slotIndex);
+      });
+      slot.search.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeTeamOptions(slotIndex);
+          return;
+        }
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          if (slot.options.hidden) renderTeamOptions(slotIndex);
+          event.preventDefault();
+          moveTeamActiveOption(slotIndex, event.key === 'ArrowDown' ? 1 : -1);
+          return;
+        }
+        if (event.key === 'Enter') {
+          const active = slot.options.querySelector<HTMLElement>(
+            '[role="option"][aria-selected="true"]',
+          );
+          const monster = active?.dataset.monsterId
+            ? monsterByQueryId.get(active.dataset.monsterId)
+            : null;
+          if (!monster) return;
+          event.preventDefault();
+          selectTeamMonster(slotIndex, monster);
+        }
+      });
+      slot.search.addEventListener('blur', () => {
+        queueMicrotask(() => {
+          if (!slot.combobox.contains(document.activeElement)) {
+            closeTeamOptions(slotIndex);
+          }
+        });
+      });
+      slot.swift.addEventListener('change', () => {
+        const state = teamStates[slotIndex];
+        if (!state?.monster) return;
+        state.usesSwift = slot.swift.checked;
+        renderTeam();
+      });
+    });
+    teamTower?.addEventListener('change', () => renderTeam());
+    teamLeader?.addEventListener('change', () => {
+      teamLeaderMonsterId = teamLeader.value === '0' ? null : teamLeader.value;
+      renderTeam();
+    });
+    teamReset?.addEventListener('click', () => {
+      teamStates.forEach((_, index) => clearTeamSlot(index));
+      teamLeaderMonsterId = null;
+      closeAllTeamOptions();
+      renderTeam();
+    });
+    const modeForButton = (button: HTMLButtonElement): SpeedTickMode => {
+      const mode = button.dataset.speedTickMode;
+      return mode === 'siege' || mode === 'arena' ? mode : 'individual';
+    };
+    modeButtons.forEach((button, buttonIndex) => {
+      button.addEventListener('click', () => {
+        currentMode = modeForButton(button);
+        closeOptions();
+        closeAllTeamOptions();
+        renderMode();
+      });
+      button.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+          return;
+        }
+        event.preventDefault();
+        const nextIndex =
+          event.key === 'Home'
+            ? 0
+            : event.key === 'End'
+              ? modeButtons.length - 1
+              : event.key === 'ArrowRight'
+                ? (buttonIndex + 1) % modeButtons.length
+                : (buttonIndex - 1 + modeButtons.length) % modeButtons.length;
+        const next = modeButtons[nextIndex];
+        if (!next) return;
+        currentMode = modeForButton(next);
+        renderMode();
+        next.focus();
+      });
+    });
+    window.addEventListener('popstate', restoreVisibleState);
+    window.addEventListener('pageshow', restoreVisibleState);
+    restoreVisibleState();
   </script>
 </Layout>

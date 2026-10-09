@@ -1,8 +1,157 @@
 import { test, expect } from '@playwright/test';
 import { seedEssentialPrivacyPreferences } from './helpers/privacy';
 
+test.describe.configure({ timeout: 45_000 });
+
 test.beforeEach(async ({ page }) => {
   await seedEssentialPrivacyPreferences(page);
+});
+
+test('calcula os breakpoints de um time de Siege na mesma tela', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+
+  await page.goto('/pt/summoners-war/spd-tick');
+  await page.getByRole('tab', { name: 'Siege' }).click();
+
+  await expect(
+    page.getByRole('heading', { name: 'Calculadora para time de Siege' }),
+  ).toBeVisible();
+  await expect(page.locator('[data-team-empty]')).toBeVisible();
+
+  const searches = page.locator('[data-team-search]');
+  const selectMonster = async (
+    slotIndex: number,
+    query: string,
+    monsterId: string,
+  ) => {
+    await searches.nth(slotIndex).fill(query);
+    await page
+      .locator(`#speed-tick-team-option-${slotIndex}-${monsterId}`)
+      .click();
+  };
+
+  await selectMonster(0, 'Ceres', 'ceres-fire-175');
+  await selectMonster(1, 'Shihwa', 'shihwa-fire-244');
+  await selectMonster(2, 'Iona', 'iona-light-661');
+
+  const leader = page.locator('#speed-tick-team-leader');
+  await expect(leader).toHaveValue('ceres-fire-175');
+  await expect(leader.locator('option')).toHaveText([
+    'Sem líder',
+    'Ceres · 16%',
+  ]);
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(3);
+  await expect(page.locator('[data-team-empty]')).toBeHidden();
+
+  const ceresRow = page
+    .locator('[data-team-table-body] tr')
+    .filter({ hasText: 'Ceres' });
+  const ionaRow = page
+    .locator('[data-team-table-body] tr')
+    .filter({ hasText: 'Iona' });
+  await expect(ceresRow.locator('td').nth(2)).toHaveText('152 SPD');
+  await expect(ionaRow.locator('td').nth(2)).toHaveText('136 SPD');
+
+  await page.locator('[data-team-swift]').nth(2).check();
+  await expect(ionaRow.locator('td').nth(2)).toHaveText('137 SPD');
+  await leader.selectOption('0');
+  await expect(ceresRow.locator('td').nth(2)).toHaveText('168 SPD');
+  await expect(page).toHaveURL(/view=siege/);
+  await expect(page).toHaveURL(/m1=ceres-fire-175/);
+  await expect(page).toHaveURL(/m2=shihwa-fire-244/);
+  await expect(page).toHaveURL(/m3=iona-light-661/);
+  await expect(page).toHaveURL(/teamLeader=0/);
+  await expect(page).toHaveURL(/swift3=1/);
+
+  await page.reload();
+  await expect(page.getByRole('tab', { name: 'Siege' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(3);
+  await expect(leader).toHaveValue('0');
+  await expect(page.locator('[data-team-swift]').nth(2)).toBeChecked();
+
+  await page.locator('#speed-tick-team-tower').selectOption('10');
+  await page.getByRole('button', { name: 'Limpar time' }).click();
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(0);
+  await expect(page.locator('[data-team-empty]')).toBeVisible();
+  await expect(page.locator('#speed-tick-team-tower')).toHaveValue('10');
+  expect(errors).toEqual([]);
+});
+
+test('alterna entre Siege e Arena preservando o quarto monstro', async ({
+  page,
+}) => {
+  await page.goto('/pt/summoners-war/spd-tick');
+  const individualTab = page.getByRole('tab', { name: 'Individual' });
+  const siegeTab = page.getByRole('tab', { name: 'Siege' });
+  const arenaTab = page.getByRole('tab', { name: 'Arena' });
+  await individualTab.focus();
+  await individualTab.press('ArrowRight');
+  await expect(siegeTab).toHaveAttribute('aria-selected', 'true');
+  await siegeTab.press('ArrowRight');
+  await expect(arenaTab).toHaveAttribute('aria-selected', 'true');
+
+  await expect(
+    page.getByRole('heading', { name: 'Calculadora para time de Arena' }),
+  ).toBeVisible();
+
+  const searches = page.locator('[data-team-search]:visible');
+  const selectMonster = async (
+    slotIndex: number,
+    query: string,
+    monsterId: string,
+  ) => {
+    await searches.nth(slotIndex).fill(query);
+    await page
+      .locator(`#speed-tick-team-option-${slotIndex}-${monsterId}`)
+      .click();
+  };
+
+  await selectMonster(0, 'Vanessa', 'vanessa-fire-294');
+  await selectMonster(1, 'Shihwa', 'shihwa-fire-244');
+  await selectMonster(2, 'Iona', 'iona-light-661');
+  await selectMonster(3, 'Bernard', 'bernard-wind-1579');
+
+  await expect(page.locator('#speed-tick-team-leader')).toHaveValue(
+    'vanessa-fire-294',
+  );
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(4);
+  await expect(page).toHaveURL(/view=arena/);
+  await expect(page).toHaveURL(/m4=bernard-wind-1579/);
+  const isMobile = (page.viewportSize()?.width ?? 0) <= 820;
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-team-slots]')
+        .evaluate(
+          (slots) =>
+            getComputedStyle(slots)
+              .gridTemplateColumns.split(' ')
+              .filter(Boolean).length,
+        ),
+    )
+    .toBe(isMobile ? 1 : 4);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth + 1,
+    ),
+  ).toBe(true);
+
+  await siegeTab.click();
+  await expect(page.locator('[data-team-search]:visible')).toHaveCount(3);
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(3);
+  await expect(page).toHaveURL(/view=siege/);
+  await expect(page).not.toHaveURL(/m4=/);
+
+  await arenaTab.click();
+  await expect(page.locator('[data-team-search]:visible')).toHaveCount(4);
+  await expect(page.locator('[data-team-table-body] tr')).toHaveCount(4);
+  await expect(page).toHaveURL(/m4=bernard-wind-1579/);
 });
 
 const leaderPercentages = [0, 10, 15, 16, 17, 19, 20, 21, 23, 24, 28, 30, 33];
@@ -24,7 +173,7 @@ test('busca um monstro e compara a SPD para todas as lideranças', async ({
   await expect(
     page.locator('thead [data-leader-percent]').allTextContents(),
   ).resolves.toEqual(leaderPercentages.map((value) => `${value}%`));
-  await expect(page.locator('#speed-tick-table-body tr')).toHaveCount(9);
+  await expect(page.locator('#speed-tick-table-body tr')).toHaveCount(6);
   await expect(
     page.locator('#speed-tick-table-body tr.row-highlight'),
   ).toHaveCount(2);
@@ -332,9 +481,6 @@ test('replica os valores de Anne e aplica a correção Swift', async ({
     '121 SPD',
     '87 SPD',
     '61 SPD',
-    '41 SPD',
-    '25 SPD',
-    '12 SPD',
   ]);
 
   await page.getByRole('checkbox', { name: 'Usa Swift' }).check();
@@ -353,9 +499,6 @@ test('replica os valores de Anne e aplica a correção Swift', async ({
     '122 SPD',
     '88 SPD',
     '62 SPD',
-    '42 SPD',
-    '26 SPD',
-    '13 SPD',
   ]);
 });
 

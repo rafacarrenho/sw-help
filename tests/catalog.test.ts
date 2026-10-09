@@ -32,10 +32,19 @@ import {
   additionalSpeedPercentOptions,
   getLeaderOptions,
   getPossibleSpeedLeaders,
+  getSpeedTickTeamLeader,
+  isSpeedTickTeamLeaderValid,
+  readSpeedTickMode,
+  readSpeedTickTeamQueryState,
   readSpeedTickQueryState,
+  reconcileSpeedTickTeamLeader,
   requiredAdditionalSpeed,
   requiredAdditionalSpeedPercent,
+  speedTickTeamLeaderPercent,
+  speedTickTeamSlotCount,
+  writeSpeedTickTeamQueryState,
   writeSpeedTickQueryState,
+  type SpeedTickTeamQueryMonster,
 } from '../src/lib/speed-tick.ts';
 import {
   applicableLeaderPercent,
@@ -612,6 +621,10 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
 
 test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
   assert.deepEqual(
+    SPEED_TICK_BREAKPOINTS.map((breakpoint) => breakpoint.tick),
+    [3, 4, 5, 6, 7, 8],
+  );
+  assert.deepEqual(
     SPEED_TICK_BREAKPOINTS.filter((tick) => [4, 5, 6].includes(tick.tick)).map(
       (tick) => [tick.tick, tick.minimumSpeed],
     ),
@@ -698,7 +711,7 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
         minimumSpeed,
       }),
     ),
-    [359, 240, 168, 121, 87, 61, 41, 25, 12],
+    [359, 240, 168, 121, 87, 61],
   );
   assert.deepEqual(
     SPEED_TICK_BREAKPOINTS.map(({ minimumSpeed }) =>
@@ -710,7 +723,7 @@ test('tickbreaks e cálculo de velocidade respeitam os valores do jogo', () => {
         usesSwift: true,
       }),
     ),
-    [360, 241, 169, 122, 88, 62, 42, 26, 13],
+    [360, 241, 169, 122, 88, 62],
   );
   assert.equal(
     requiredAdditionalSpeed({
@@ -1282,6 +1295,164 @@ test('query params do Speed Tick preservam e restauram filtros válidos', () => 
     writeSpeedTickQueryState(invalidParams, invalidState).toString(),
     'utm_source=share',
   );
+});
+
+test('modos Siege e Arena do Spd Tick validam estado compartilhável', () => {
+  const queryMonsters = new Map<string, SpeedTickTeamQueryMonster>([
+    [
+      'general-leader',
+      {
+        element: 'wind',
+        leader: { amount: 24, area: 'General', element: null },
+      },
+    ],
+    [
+      'fire-leader',
+      {
+        element: 'fire',
+        leader: { amount: 30, area: 'Element', element: 'fire' },
+      },
+    ],
+    ['fire-ally', { element: 'fire', leader: null }],
+    ['water-ally', { element: 'water', leader: null }],
+    [
+      'arena-leader',
+      {
+        element: 'water',
+        leader: { amount: 33, area: 'Arena', element: null },
+      },
+    ],
+  ]);
+  const defaults = readSpeedTickTeamQueryState(
+    new URLSearchParams('view=team'),
+    queryMonsters,
+  );
+  assert.deepEqual(defaults, {
+    mode: 'siege',
+    monsterIds: [null, null, null],
+    towerPercent: DEFAULT_SPEED_TICK_TOWER_PERCENT,
+    leaderMonsterId: null,
+    usesSwift: [false, false, false],
+  });
+
+  const completeParams = new URLSearchParams(
+    'view=team&m1=fire-leader&m2=fire-ally&m3=water-ally&tower=10&teamLeader=fire-leader&swift2=1&utm_source=share',
+  );
+  const completeState = readSpeedTickTeamQueryState(
+    completeParams,
+    queryMonsters,
+  );
+  assert.deepEqual(completeState, {
+    mode: 'siege',
+    monsterIds: ['fire-leader', 'fire-ally', 'water-ally'],
+    towerPercent: 10,
+    leaderMonsterId: 'fire-leader',
+    usesSwift: [false, true, false],
+  });
+  assert.equal(
+    writeSpeedTickTeamQueryState(completeParams, completeState).toString(),
+    completeParams.toString().replace('view=team', 'view=siege'),
+  );
+
+  const invalid = readSpeedTickTeamQueryState(
+    new URLSearchParams(
+      'view=team&m1=general-leader&m2=general-leader&m3=missing&tower=99&teamLeader=fire-leader&swift1=1&swift2=1',
+    ),
+    queryMonsters,
+  );
+  assert.deepEqual(invalid, {
+    mode: 'siege',
+    monsterIds: ['general-leader', null, null],
+    towerPercent: DEFAULT_SPEED_TICK_TOWER_PERCENT,
+    leaderMonsterId: 'general-leader',
+    usesSwift: [true, false, false],
+  });
+
+  assert.equal(
+    reconcileSpeedTickTeamLeader(
+      null,
+      ['fire-leader', 'fire-ally', null],
+      queryMonsters,
+      'siege',
+    ),
+    'fire-leader',
+  );
+  assert.equal(
+    reconcileSpeedTickTeamLeader(
+      'missing',
+      ['fire-leader', 'general-leader', null],
+      queryMonsters,
+      'siege',
+    ),
+    null,
+  );
+
+  const arenaState = readSpeedTickTeamQueryState(
+    new URLSearchParams(
+      'view=arena&m1=arena-leader&m2=fire-ally&m3=water-ally&m4=general-leader&swift4=1',
+    ),
+    queryMonsters,
+  );
+  assert.deepEqual(arenaState, {
+    mode: 'arena',
+    monsterIds: ['arena-leader', 'fire-ally', 'water-ally', 'general-leader'],
+    towerPercent: DEFAULT_SPEED_TICK_TOWER_PERCENT,
+    leaderMonsterId: null,
+    usesSwift: [false, false, false, true],
+  });
+  assert.equal(readSpeedTickMode(new URLSearchParams('view=team')), 'siege');
+  assert.equal(readSpeedTickMode(new URLSearchParams('view=arena')), 'arena');
+  assert.equal(speedTickTeamSlotCount('siege'), 3);
+  assert.equal(speedTickTeamSlotCount('arena'), 4);
+});
+
+test('liderança dos times respeita Siege, Arena e escopo elemental', () => {
+  assert.deepEqual(
+    getSpeedTickTeamLeader({
+      leaderSkill: {
+        attribute: 'Attack Speed',
+        amount: 24,
+        area: 'Guild',
+        element: null,
+      },
+    }),
+    { amount: 24, area: 'Guild', element: null },
+  );
+  assert.deepEqual(
+    getSpeedTickTeamLeader({
+      leaderSkill: {
+        attribute: 'Attack Speed',
+        amount: 33,
+        area: 'Arena',
+        element: null,
+      },
+    }),
+    { amount: 33, area: 'Arena', element: null },
+  );
+  assert.equal(
+    getSpeedTickTeamLeader({
+      leaderSkill: {
+        attribute: 'Attack Power',
+        amount: 40,
+        area: 'Guild',
+        element: null,
+      },
+    }),
+    null,
+  );
+
+  const guildLeader = { amount: 24, area: 'Guild', element: null };
+  const arenaLeader = { amount: 33, area: 'Arena', element: null };
+  const fireLeader = { amount: 30, area: 'Element', element: 'fire' } as const;
+  assert.equal(isSpeedTickTeamLeaderValid(guildLeader, 'siege'), true);
+  assert.equal(isSpeedTickTeamLeaderValid(guildLeader, 'arena'), false);
+  assert.equal(isSpeedTickTeamLeaderValid(arenaLeader, 'arena'), true);
+  assert.equal(isSpeedTickTeamLeaderValid(arenaLeader, 'siege'), false);
+  assert.equal(speedTickTeamLeaderPercent(guildLeader, 'water', 'siege'), 24);
+  assert.equal(speedTickTeamLeaderPercent(guildLeader, 'water', 'arena'), 0);
+  assert.equal(speedTickTeamLeaderPercent(arenaLeader, 'fire', 'arena'), 33);
+  assert.equal(speedTickTeamLeaderPercent(fireLeader, 'fire', 'siege'), 30);
+  assert.equal(speedTickTeamLeaderPercent(fireLeader, 'water', 'arena'), 0);
 });
 
 test('query params do Speed Tuning preservam e restauram todo o time', () => {

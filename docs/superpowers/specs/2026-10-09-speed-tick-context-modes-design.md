@@ -11,7 +11,7 @@ cortes permanecem no Spd Tuning.
 ## Alternativas consideradas
 
 1. **Três modos diretos no Spd Tick — escolhido.** Exibir `Individual`,
-   `Siege (3)` e `Arena (4)` no mesmo controle segmentado, compartilhando busca,
+   `Siege` e `Arena` no mesmo controle segmentado, compartilhando busca,
    fórmula e apresentação dos resultados.
 2. **Manter `Individual` e `Time`, com um segundo seletor dentro de Time.**
    Reduziria a quantidade de opções no primeiro nível, mas adicionaria uma etapa
@@ -21,7 +21,7 @@ cortes permanecem no Spd Tuning.
 
 ## Experiência e estado
 
-- O seletor principal terá os modos `Individual`, `Siege (3)` e `Arena (4)`,
+- O seletor principal terá os modos `Individual`, `Siege` e `Arena`,
   traduzidos nos cinco idiomas do site.
 - `Individual` permanece como modo padrão e mantém o fluxo atual de um monstro.
 - Siege exibe três slots e Arena exibe quatro. Cada slot contém busca, monstro,
