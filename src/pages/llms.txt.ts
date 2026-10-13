@@ -28,6 +28,7 @@ ${link('Monster Database', 'monsters', 'en')}: Search monster stats, skills, lea
 ${link('SPD Tuning', 'speedTuning', 'en')}: Plan a Summoners War team turn order with speed leads, towers, and combat speed effects.
 ${link('Speed Comparison', 'speedComparison', 'en')}: Compare two monsters and estimate the additional SPD needed to move first.
 ${link('SPD Tick Calculator', 'speedTick', 'en')}: Calculate combat tick breakpoints from base SPD, runes, towers, leads, and Swift.
+${link('Rune Optimizer', 'runeOptimizer', 'en')}: Import a SWEX JSON locally and find exact one-monster rune builds without an account or server upload.
 
 ## Português
 
@@ -40,6 +41,7 @@ ${link('Catálogo de monstros', 'monsters', 'pt-BR')}: Consulte atributos, habil
 ${link('SPD Tuning', 'speedTuning', 'pt-BR')}: Planeje a ordem de turno considerando líder de velocidade, torre e efeitos de combate.
 ${link('Comparador de SPD', 'speedComparison', 'pt-BR')}: Compare dois monstros e estime a SPD adicional necessária para jogar primeiro.
 ${link('Calculadora de Tick de SPD', 'speedTick', 'pt-BR')}: Calcule breakpoints de Tick considerando SPD base, runas, torre, líder e Swift.
+${link('Otimizador de Runas', 'runeOptimizer', 'pt-BR')}: Importe um JSON do SWEX localmente e encontre builds exatas sem login ou envio ao servidor.
 
 ## Español
 
@@ -52,6 +54,7 @@ ${link('Catálogo de monstruos', 'monsters', 'es')}: Consulta estadísticas, hab
 ${link('Spd Tuning', 'speedTuning', 'es')}: Planifica el orden de turnos con líderes, torre y efectos de combate.
 ${link('Comparador de SPD', 'speedComparison', 'es')}: Compara dos monstruos y estima la SPD adicional necesaria.
 ${link('Calculadora de Spd Tick', 'speedTick', 'es')}: Calcula breakpoints según SPD base, runas, torre, líder y Swift.
+${link('Optimizador de runas', 'runeOptimizer', 'es')}: Importa un JSON de SWEX localmente y encuentra builds exactas sin cuenta ni carga al servidor.
 
 ## Français
 
@@ -64,6 +67,7 @@ ${link('Catalogue de monstres', 'monsters', 'fr')}: Consultez statistiques, comp
 ${link('Spd Tuning', 'speedTuning', 'fr')}: Planifiez l’ordre de jeu avec leaders, tour et effets de combat.
 ${link('Comparateur de VIT', 'speedComparison', 'fr')}: Comparez deux monstres et estimez la VIT supplémentaire nécessaire.
 ${link('Calculateur Spd Tick', 'speedTick', 'fr')}: Calculez les seuils selon la VIT de base, les runes, la tour, le leader et Swift.
+${link('Optimiseur de runes', 'runeOptimizer', 'fr')}: Importez un JSON SWEX localement et trouvez des builds exacts sans compte ni envoi au serveur.
 
 ## Deutsch
 
@@ -76,6 +80,7 @@ ${link('Monsterkatalog', 'monsters', 'de')}: Sieh Werte, Skills und aus SWARFARM
 ${link('Spd Tuning', 'speedTuning', 'de')}: Plane Zugreihenfolgen mit Leadern, Turm und Kampfeffekten.
 ${link('GES-Vergleich', 'speedComparison', 'de')}: Vergleiche zwei Monster und schätze die nötige zusätzliche GES.
 ${link('Spd Tick Rechner', 'speedTick', 'de')}: Berechne Schwellen aus Basis-GES, Runen, Turm, Leader und Swift.
+${link('Runen-Optimierer', 'runeOptimizer', 'de')}: Importiere eine SWEX-JSON-Datei lokal und finde exakte Builds ohne Konto oder Server-Upload.
 
 ## Discovery
 

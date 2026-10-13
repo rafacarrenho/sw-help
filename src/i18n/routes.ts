@@ -54,7 +54,8 @@ export type RouteName =
   | 'monsterPage'
   | 'speedComparison'
   | 'speedTuning'
-  | 'speedTick';
+  | 'speedTick'
+  | 'runeOptimizer';
 
 export type RouteParams = {
   id?: string;
@@ -77,6 +78,7 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedComparison: '/summoners-war/speed-comparison',
     speedTuning: '/summoners-war/speed-tuning',
     speedTick: '/summoners-war/speed-tick',
+    runeOptimizer: '/summoners-war/rune-optimizer',
   },
   'pt-BR': {
     portalHome: '/pt',
@@ -93,6 +95,7 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedComparison: '/pt/summoners-war/comparador-spd',
     speedTuning: '/pt/summoners-war/spd-tuning',
     speedTick: '/pt/summoners-war/spd-tick',
+    runeOptimizer: '/pt/summoners-war/otimizador-de-runas',
   },
   es: {
     portalHome: '/es',
@@ -109,6 +112,7 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedComparison: '/es/summoners-war/comparador-spd',
     speedTuning: '/es/summoners-war/spd-tuning',
     speedTick: '/es/summoners-war/spd-tick',
+    runeOptimizer: '/es/summoners-war/optimizador-de-runas',
   },
   fr: {
     portalHome: '/fr',
@@ -125,6 +129,7 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedComparison: '/fr/summoners-war/comparateur-spd',
     speedTuning: '/fr/summoners-war/spd-tuning',
     speedTick: '/fr/summoners-war/spd-tick',
+    runeOptimizer: '/fr/summoners-war/optimiseur-de-runes',
   },
   de: {
     portalHome: '/de',
@@ -141,6 +146,7 @@ const routeTemplates: Record<Locale, Record<RouteName, string>> = {
     speedComparison: '/de/summoners-war/spd-vergleich',
     speedTuning: '/de/summoners-war/spd-tuning',
     speedTick: '/de/summoners-war/spd-tick',
+    runeOptimizer: '/de/summoners-war/runen-optimierer',
   },
 };
 

@@ -1,0 +1,855 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { monsters } from '../../data/catalog.ts';
+import { runeOptimizerMessages } from '../../i18n/rune-optimizer.ts';
+import { runeSetNames, buildStatKeys } from '../../lib/rune-optimizer-types.ts';
+import { getMessages, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = runeOptimizerMessages[locale];
+const messages = getMessages(locale);
+const clientCopy = {
+  ...copy,
+  searchMonster: messages.tick.searchMonster,
+  clearSearch: messages.common.clearSearch,
+  foundMonsters: messages.tick.foundMonsters,
+};
+const catalog = monsters
+  .filter(
+    (monster) => monster.com2usId && monster.speed && monster.maxLevelStats,
+  )
+  .map((monster) => ({
+    id: monster.id,
+    com2usId: monster.com2usId,
+    name: monster.name,
+    image: monster.image,
+    speed: monster.speed,
+    stats: monster.maxLevelStats,
+  }));
+const statLabels = {
+  hp: 'HP',
+  attack: 'ATK',
+  defense: 'DEF',
+  speed: 'SPD',
+  critRate: 'CR',
+  critDamage: 'CD',
+  resistance: 'RES',
+  accuracy: 'ACC',
+};
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  locale={locale}
+  routeName="runeOptimizer"
+  section="rune-optimizer"
+  gameId="summoners-war"
+>
+  <main class="rune-optimizer" data-rune-optimizer>
+    <script
+      type="application/json"
+      data-copy
+      set:html={JSON.stringify(clientCopy).replaceAll('<', '\u003c')}
+    />
+    <script
+      type="application/json"
+      data-catalog
+      set:html={JSON.stringify(catalog).replaceAll('<', '\u003c')}
+    />
+    <header class="optimizer-hero">
+      <p class="eyebrow">Summoners War</p>
+      <h1>{copy.title}</h1>
+      <p>{copy.description}</p>
+      <p class="privacy-note">🔒 {copy.privacy}</p>
+    </header>
+
+    <section
+      class="optimizer-panel import-panel"
+      aria-labelledby="import-title"
+    >
+      <div>
+        <h2 id="import-title">{copy.importTitle}</h2>
+        <p>{copy.importHelp}</p>
+      </div>
+      <div class="import-actions">
+        <label class="button primary" for="swex-file" data-file-label>
+          {copy.chooseFile}
+        </label>
+        <input
+          id="swex-file"
+          type="file"
+          accept="application/json,.json,.txt"
+          data-file-input
+        />
+        <button class="button ghost" type="button" data-remove hidden>
+          {copy.removeData}
+        </button>
+      </div>
+      <p
+        class="import-status"
+        role="status"
+        aria-live="polite"
+        data-import-status
+      ></p>
+    </section>
+
+    <section class="optimizer-workspace" data-workspace hidden>
+      <section
+        class="optimizer-panel builder-panel"
+        aria-labelledby="builder-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">1</p>
+            <h2 id="builder-title">{copy.builderTitle}</h2>
+          </div>
+          <div class="preset-list" aria-label="Presets">
+            <button type="button" data-preset="fastest">
+              {copy.presetFastest}
+            </button>
+            <button type="button" data-preset="swift">
+              {copy.presetSwift}
+            </button>
+            <button type="button" data-preset="violent-will">
+              {copy.presetViolentWill}
+            </button>
+            <button type="button" data-preset="tank">
+              {copy.presetTank}
+            </button>
+          </div>
+        </div>
+
+        <div class="builder-grid">
+          <div class="monster-field">
+            <label for="rune-optimizer-monster-search">{copy.monster}</label>
+            <div class="optimizer-monster-combobox" data-monster-combobox>
+              <input
+                id="rune-optimizer-monster-search"
+                type="search"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls="rune-optimizer-monster-options"
+                aria-expanded="false"
+                autocomplete="off"
+                placeholder={messages.tick.searchMonster}
+                data-monster-search
+              />
+              <button
+                type="button"
+                class="optimizer-search-clear"
+                aria-label={messages.common.clearSearch}
+                title={messages.common.clearSearch}
+                data-monster-clear
+              >
+                ×
+              </button>
+              <div
+                id="rune-optimizer-monster-options"
+                class="optimizer-monster-options"
+                role="listbox"
+                aria-label={messages.tick.foundMonsters}
+                data-monster-options
+                hidden
+              ></div>
+            </div>
+          </div>
+          <label>
+            <span>{copy.objective}</span>
+            <select data-objective>
+              {buildStatKeys.map((stat) => (
+                <option value={stat}>{statLabels[stat]}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>{copy.requiredSets}</legend>
+          <div class="set-grid">
+            {[0, 1, 2].map((index) => (
+              <label>
+                <span class="sr-only">
+                  {copy.requiredSets} {index + 1}
+                </span>
+                <select data-required-set>
+                  <option value="">{copy.anySet}</option>
+                  {runeSetNames
+                    .filter((set) => set !== 'Intangible')
+                    .map((set) => (
+                      <option value={set}>{set}</option>
+                    ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <details>
+          <summary>{copy.poolTitle}</summary>
+          <div class="details-content">
+            <label class="check-row">
+              <input type="checkbox" data-inventory-only /> {copy.inventoryOnly}
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-include-locked /> {copy.includeLocked}
+            </label>
+            <div class="exclude-control">
+              <label for="exclude-monster">{copy.excludeMonster}</label>
+              <div>
+                <select id="exclude-monster" data-exclude-select></select>
+                <button type="button" class="button compact" data-exclude-add>
+                  {copy.add}
+                </button>
+              </div>
+              <div class="chip-list" data-excluded></div>
+            </div>
+          </div>
+        </details>
+
+        <details open>
+          <summary>{copy.constraints}</summary>
+          <div class="details-content constraints-wrap">
+            <table class="constraints-table">
+              <thead>
+                <tr>
+                  <th>{copy.stat}</th>
+                  <th>{copy.minimum}</th>
+                  <th>{copy.maximum}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {buildStatKeys.map((stat) => (
+                  <tr>
+                    <th scope="row">{statLabels[stat]}</th>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        inputmode="numeric"
+                        data-constraint-min={stat}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        inputmode="numeric"
+                        data-constraint-max={stat}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details>
+          <summary>{copy.tickTitle}</summary>
+          <div class="details-content tick-controls">
+            <label class="check-row">
+              <input type="checkbox" data-tick-enabled /> {copy.requireTick}
+            </label>
+            <label>
+              <span>Tick</span>
+              <select data-tick>
+                {[3, 4, 5, 6, 7, 8].map((tick) => (
+                  <option value={tick}>Tick {tick}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>{copy.speedTower}</span>
+              <input type="number" min="0" max="15" value="15" data-tower />
+            </label>
+            <label>
+              <span>{copy.leaderSkill}</span>
+              <input type="number" min="0" max="50" value="0" data-leader />
+            </label>
+          </div>
+        </details>
+
+        <p class="potential-note">{copy.potentialNote}</p>
+        <div class="run-actions">
+          <button class="button primary" type="button" data-optimize>
+            {copy.optimize}
+          </button>
+          <button class="button ghost" type="button" data-cancel hidden>
+            {copy.cancel}
+          </button>
+          <span role="status" aria-live="polite" data-calculation-status></span>
+        </div>
+      </section>
+
+      <section
+        class="optimizer-panel results-panel"
+        aria-labelledby="results-title"
+        data-results-panel
+        hidden
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">2</p>
+            <h2 id="results-title">{copy.results}</h2>
+          </div>
+          <p data-result-meta></p>
+        </div>
+        <div data-results></div>
+      </section>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import {
+    clearRuneSnapshot,
+    loadRuneSnapshot,
+    saveRuneSnapshot,
+  } from '../../lib/rune-optimizer-storage.ts';
+  import type {
+    AccountSnapshot,
+    BuildStatKey,
+    OptimizerQuery,
+    OptimizerResult,
+    RuneSetName,
+  } from '../../lib/rune-optimizer-types.ts';
+
+  interface CatalogMonster {
+    id: string;
+    com2usId: number;
+    name: string;
+    image?: string;
+    speed: number;
+    stats: {
+      hp: number;
+      attack: number;
+      defense: number;
+      critRate: number;
+      critDamage: number;
+      resistance: number;
+      accuracy: number;
+    };
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-rune-optimizer]');
+  if (!root) throw new Error('Rune optimizer root was not found.');
+  const copy = JSON.parse(
+    root.querySelector('[data-copy]')?.textContent ?? '{}',
+  ) as Record<string, string>;
+  const catalog = JSON.parse(
+    root.querySelector('[data-catalog]')?.textContent ?? '[]',
+  ) as CatalogMonster[];
+  const catalogByCom2usId = new Map(
+    catalog.map((monster) => [monster.com2usId, monster]),
+  );
+  const $ = <T extends Element>(selector: string) =>
+    root.querySelector<T>(selector)!;
+  const $$ = <T extends Element>(selector: string) => [
+    ...root.querySelectorAll<T>(selector),
+  ];
+  const fileInput = $<HTMLInputElement>('[data-file-input]');
+  const fileLabel = $<HTMLLabelElement>('[data-file-label]');
+  const removeButton = $<HTMLButtonElement>('[data-remove]');
+  const workspace = $<HTMLElement>('[data-workspace]');
+  const importStatus = $<HTMLElement>('[data-import-status]');
+  const monsterSearch = $<HTMLInputElement>('[data-monster-search]');
+  const monsterOptions = $<HTMLElement>('[data-monster-options]');
+  const excludeSelect = $<HTMLSelectElement>('[data-exclude-select]');
+  const objectiveSelect = $<HTMLSelectElement>('[data-objective]');
+  const optimizeButton = $<HTMLButtonElement>('[data-optimize]');
+  const cancelButton = $<HTMLButtonElement>('[data-cancel]');
+  const calculationStatus = $<HTMLElement>('[data-calculation-status]');
+  const resultsPanel = $<HTMLElement>('[data-results-panel]');
+  const resultMeta = $<HTMLElement>('[data-result-meta]');
+  const resultsContainer = $<HTMLElement>('[data-results]');
+  let snapshot: AccountSnapshot | null = null;
+  let worker: Worker;
+  let excludedMonsterIds = new Set<string>();
+  let selectedMonsterId = '';
+
+  function createWorker(): Worker {
+    const next = new Worker(
+      new URL('../../scripts/rune-optimizer.worker.ts', import.meta.url),
+      { type: 'module' },
+    );
+    next.onmessage = handleWorkerMessage;
+    if (snapshot) next.postMessage({ type: 'load', snapshot });
+    return next;
+  }
+
+  function formatTemplate(
+    template: string,
+    values: Record<string, string | number>,
+  ): string {
+    return template.replace(/\{(\w+)\}/g, (_, key) =>
+      String(values[key] ?? ''),
+    );
+  }
+
+  function monsterLabel(importedId: string): string {
+    const imported = snapshot?.monsters.find(({ id }) => id === importedId);
+    if (!imported) return copy.unknownMonster;
+    return (
+      catalogByCom2usId.get(imported.com2usId)?.name ??
+      `${copy.unknownMonster} (${imported.com2usId})`
+    );
+  }
+
+  function setStatusForSnapshot(): void {
+    if (!snapshot) return;
+    workspace.hidden = false;
+    removeButton.hidden = false;
+    fileLabel.textContent = copy.replaceFile;
+    const summary = formatTemplate(copy.storedSummary, {
+      monsters: snapshot.monsters.length,
+      runes: snapshot.runes.length,
+      artifacts: snapshot.artifacts.length,
+    });
+    const date = new Intl.DateTimeFormat(
+      document.documentElement.lang || undefined,
+      { dateStyle: 'medium', timeStyle: 'short' },
+    ).format(new Date(snapshot.importedAt));
+    importStatus.textContent = `${summary} · ${copy.lastImport}: ${date}`;
+    populateMonsterSelects();
+  }
+
+  function populateMonsterSelects(): void {
+    if (!snapshot) return;
+    const nameCounts = new Map<string, number>();
+    const options = snapshot.monsters
+      .map((imported) => ({
+        imported,
+        catalog: catalogByCom2usId.get(imported.com2usId),
+      }))
+      .filter(
+        (
+          entry,
+        ): entry is {
+          imported: typeof entry.imported;
+          catalog: CatalogMonster;
+        } => Boolean(entry.catalog),
+      )
+      .sort((a, b) => a.catalog.name.localeCompare(b.catalog.name));
+    excludeSelect.replaceChildren();
+    for (const { imported, catalog: monster } of options) {
+      const occurrence = (nameCounts.get(monster.name) ?? 0) + 1;
+      nameCounts.set(monster.name, occurrence);
+      const label = `${monster.name}${occurrence > 1 ? ` #${occurrence}` : ''}`;
+      excludeSelect.add(new Option(label, imported.id));
+    }
+  }
+
+  function normalizeSearch(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+  }
+
+  function selectCatalogMonster(monster: CatalogMonster): void {
+    selectedMonsterId = monster.id;
+    monsterSearch.value = monster.name;
+    monsterSearch.setAttribute('aria-expanded', 'false');
+    monsterOptions.hidden = true;
+  }
+
+  function renderMonsterOptions(): void {
+    const search = normalizeSearch(monsterSearch.value);
+    const matches = catalog
+      .filter(
+        (monster) => !search || normalizeSearch(monster.name).includes(search),
+      )
+      .slice(0, 40);
+    monsterOptions.replaceChildren();
+    for (const monster of matches) {
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'optimizer-monster-option';
+      option.setAttribute('role', 'option');
+      option.setAttribute(
+        'aria-selected',
+        String(monster.id === selectedMonsterId),
+      );
+      if (monster.image) {
+        const image = document.createElement('img');
+        image.src = monster.image;
+        image.alt = '';
+        image.width = 38;
+        image.height = 38;
+        image.loading = 'lazy';
+        option.append(image);
+      }
+      const name = document.createElement('span');
+      name.textContent = monster.name;
+      option.append(name);
+      option.addEventListener('click', () => selectCatalogMonster(monster));
+      option.addEventListener('keydown', (event) => {
+        const options = $$<HTMLButtonElement>('.optimizer-monster-option');
+        const current = options.indexOf(option);
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          options[Math.min(current + 1, options.length - 1)]?.focus();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (current === 0) monsterSearch.focus();
+          else options[current - 1]?.focus();
+        } else if (event.key === 'Escape') {
+          monsterOptions.hidden = true;
+          monsterSearch.setAttribute('aria-expanded', 'false');
+          monsterSearch.focus();
+        }
+      });
+      monsterOptions.append(option);
+    }
+    monsterOptions.hidden = matches.length === 0;
+    monsterSearch.setAttribute('aria-expanded', String(matches.length > 0));
+  }
+
+  function handleWorkerMessage(event: MessageEvent): void {
+    const message = event.data as {
+      type: string;
+      snapshot?: AccountSnapshot;
+      result?: OptimizerResult;
+      code?: string;
+    };
+    if (message.type === 'imported' && message.snapshot) {
+      snapshot = message.snapshot;
+      void saveRuneSnapshot(snapshot)
+        .then(() => {
+          setStatusForSnapshot();
+          calculationStatus.textContent = '';
+        })
+        .catch(() => {
+          importStatus.textContent = copy.importError;
+        });
+      return;
+    }
+    if (message.type === 'optimized' && message.result) {
+      finishCalculation();
+      renderResults(message.result);
+      return;
+    }
+    if (message.type === 'error') {
+      finishCalculation();
+      importStatus.textContent = copy.importError;
+    }
+  }
+
+  function finishCalculation(): void {
+    optimizeButton.disabled = false;
+    cancelButton.hidden = true;
+    calculationStatus.textContent = '';
+  }
+
+  function renderExcluded(): void {
+    const container = $<HTMLElement>('[data-excluded]');
+    container.replaceChildren();
+    for (const id of excludedMonsterIds) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'chip';
+      button.textContent = `${monsterLabel(id)} ×`;
+      button.addEventListener('click', () => {
+        excludedMonsterIds.delete(id);
+        renderExcluded();
+      });
+      container.append(button);
+    }
+  }
+
+  function getQuery(): OptimizerQuery | null {
+    if (!snapshot) return null;
+    const catalogMonster = catalog.find(({ id }) => id === selectedMonsterId);
+    if (!catalogMonster) return null;
+    const constraints: OptimizerQuery['constraints'] = {};
+    for (const stat of [
+      'hp',
+      'attack',
+      'defense',
+      'speed',
+      'critRate',
+      'critDamage',
+      'resistance',
+      'accuracy',
+    ] as BuildStatKey[]) {
+      const minimum = $<HTMLInputElement>(
+        `[data-constraint-min="${stat}"]`,
+      ).valueAsNumber;
+      const maximum = $<HTMLInputElement>(
+        `[data-constraint-max="${stat}"]`,
+      ).valueAsNumber;
+      if (Number.isFinite(minimum) || Number.isFinite(maximum)) {
+        constraints[stat] = {
+          ...(Number.isFinite(minimum) ? { min: minimum } : {}),
+          ...(Number.isFinite(maximum) ? { max: maximum } : {}),
+        };
+      }
+    }
+    const tickEnabled = $<HTMLInputElement>('[data-tick-enabled]').checked;
+    return {
+      monster: {
+        id: catalogMonster.id,
+        name: catalogMonster.name,
+        speed: catalogMonster.speed,
+        ...catalogMonster.stats,
+      },
+      objective: objectiveSelect.value as BuildStatKey,
+      constraints,
+      requiredSets: $$<HTMLSelectElement>('[data-required-set]')
+        .map(({ value }) => value)
+        .filter(Boolean) as RuneSetName[],
+      inventoryOnly: $<HTMLInputElement>('[data-inventory-only]').checked,
+      includeLocked: $<HTMLInputElement>('[data-include-locked]').checked,
+      excludedMonsterIds: [...excludedMonsterIds],
+      ...(tickEnabled
+        ? {
+            tick: {
+              tick: Number($<HTMLSelectElement>('[data-tick]').value) as
+                3 | 4 | 5 | 6 | 7 | 8,
+              speedTowerPercent:
+                $<HTMLInputElement>('[data-tower]').valueAsNumber || 0,
+              leaderSkillPercent:
+                $<HTMLInputElement>('[data-leader]').valueAsNumber || 0,
+            },
+          }
+        : {}),
+      limit: 10,
+    };
+  }
+
+  const statOrder: BuildStatKey[] = [
+    'hp',
+    'attack',
+    'defense',
+    'speed',
+    'critRate',
+    'critDamage',
+    'resistance',
+    'accuracy',
+  ];
+  const statNames: Record<BuildStatKey, string> = {
+    hp: 'HP',
+    attack: 'ATK',
+    defense: 'DEF',
+    speed: 'SPD',
+    critRate: 'CR',
+    critDamage: 'CD',
+    resistance: 'RES',
+    accuracy: 'ACC',
+  };
+  const percentStats = new Set<BuildStatKey>([
+    'critRate',
+    'critDamage',
+    'resistance',
+    'accuracy',
+  ]);
+
+  function renderResults(result: OptimizerResult): void {
+    resultsPanel.hidden = false;
+    resultsContainer.replaceChildren();
+    resultMeta.textContent = `${result.combinationsEvaluated.toLocaleString()} ${copy.candidates} · ${result.elapsedMs.toLocaleString()} ms`;
+    if (result.builds.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'empty-results';
+      empty.textContent = copy.noResults;
+      resultsContainer.append(empty);
+      return;
+    }
+    const runeById = new Map(snapshot?.runes.map((rune) => [rune.id, rune]));
+    result.builds.forEach((build, index) => {
+      const article = document.createElement('article');
+      article.className = 'build-result';
+      const heading = document.createElement('div');
+      heading.className = 'build-heading';
+      const title = document.createElement('h3');
+      title.textContent = `#${index + 1} · ${build.sets.length ? build.sets.join(' + ') : copy.anySet}`;
+      const score = document.createElement('strong');
+      const objective = objectiveSelect.value as BuildStatKey;
+      score.textContent = `${statNames[objective]} ${build.potential[objective].toLocaleString()}`;
+      heading.append(title, score);
+      article.append(heading);
+
+      const statTable = document.createElement('table');
+      statTable.className = 'result-stats';
+      const head = statTable.createTHead().insertRow();
+      for (const text of ['', copy.current, copy.potential]) {
+        const th = document.createElement('th');
+        th.textContent = text;
+        head.append(th);
+      }
+      const body = statTable.createTBody();
+      for (const stat of statOrder) {
+        const row = body.insertRow();
+        const values: Array<string | number> = [
+          statNames[stat],
+          build.current[stat],
+          build.potential[stat],
+        ];
+        values.forEach((value, cellIndex) => {
+          const cell =
+            cellIndex === 0
+              ? document.createElement('th')
+              : document.createElement('td');
+          cell.textContent =
+            cellIndex > 0 && percentStats.has(stat)
+              ? `${Number(value).toLocaleString()}%`
+              : Number.isFinite(Number(value))
+                ? Number(value).toLocaleString()
+                : String(value);
+          row.append(cell);
+        });
+      }
+      article.append(statTable);
+
+      const runeList = document.createElement('ol');
+      runeList.className = 'result-runes';
+      for (const runeId of build.runeIds) {
+        const rune = runeById.get(runeId);
+        if (!rune) continue;
+        const item = document.createElement('li');
+        const main = rune.main.stat.replace('Percent', '%').replace('Flat', '');
+        item.textContent = `S${rune.slot} · ${rune.set} · ${main} ${rune.main.value}${rune.locked ? ' · 🔒' : ''}${rune.location === 'equipped' ? ` · ${monsterLabel(rune.equippedMonsterId ?? '')}` : ''}`;
+        runeList.append(item);
+      }
+      article.append(runeList);
+      resultsContainer.append(article);
+    });
+    resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function clearForm(): void {
+    $$<HTMLInputElement>(
+      '[data-constraint-min], [data-constraint-max]',
+    ).forEach((input) => {
+      input.value = '';
+    });
+    $$<HTMLSelectElement>('[data-required-set]').forEach((select) => {
+      select.value = '';
+    });
+    $<HTMLInputElement>('[data-tick-enabled]').checked = false;
+  }
+
+  $$<HTMLButtonElement>('[data-preset]').forEach((button) => {
+    button.addEventListener('click', () => {
+      clearForm();
+      const sets = $$<HTMLSelectElement>('[data-required-set]');
+      const preset = button.dataset.preset;
+      if (preset === 'swift') {
+        objectiveSelect.value = 'speed';
+        sets[0].value = 'Swift';
+      } else if (preset === 'violent-will') {
+        objectiveSelect.value = 'speed';
+        sets[0].value = 'Violent';
+        sets[1].value = 'Will';
+      } else if (preset === 'tank') {
+        objectiveSelect.value = 'resistance';
+      } else objectiveSelect.value = 'speed';
+    });
+  });
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    importStatus.textContent = copy.importing;
+    try {
+      worker.postMessage({ type: 'import', text: await file.text() });
+    } catch {
+      importStatus.textContent = copy.importError;
+    } finally {
+      fileInput.value = '';
+    }
+  });
+
+  monsterSearch.addEventListener('focus', renderMonsterOptions);
+  monsterSearch.addEventListener('input', () => {
+    if (
+      catalog.find(({ id }) => id === selectedMonsterId)?.name !==
+      monsterSearch.value
+    ) {
+      selectedMonsterId = '';
+    }
+    renderMonsterOptions();
+  });
+  monsterSearch.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      renderMonsterOptions();
+      $<HTMLButtonElement>('.optimizer-monster-option')?.focus();
+    } else if (event.key === 'Enter') {
+      const first = catalog.find((monster) =>
+        normalizeSearch(monster.name).includes(
+          normalizeSearch(monsterSearch.value),
+        ),
+      );
+      if (first) selectCatalogMonster(first);
+    } else if (event.key === 'Escape') {
+      monsterOptions.hidden = true;
+      monsterSearch.setAttribute('aria-expanded', 'false');
+    }
+  });
+  $<HTMLButtonElement>('[data-monster-clear]').addEventListener('click', () => {
+    selectedMonsterId = '';
+    monsterSearch.value = '';
+    monsterSearch.focus();
+    renderMonsterOptions();
+  });
+  document.addEventListener('click', (event) => {
+    if (
+      !$<HTMLElement>('[data-monster-combobox]').contains(event.target as Node)
+    ) {
+      monsterOptions.hidden = true;
+      monsterSearch.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  removeButton.addEventListener('click', () => {
+    void clearRuneSnapshot().then(() => {
+      snapshot = null;
+      workspace.hidden = true;
+      removeButton.hidden = true;
+      fileLabel.textContent = copy.chooseFile;
+      importStatus.textContent = copy.dataRemoved;
+      resultsPanel.hidden = true;
+    });
+  });
+
+  $<HTMLButtonElement>('[data-exclude-add]').addEventListener('click', () => {
+    if (excludeSelect.value) excludedMonsterIds.add(excludeSelect.value);
+    renderExcluded();
+  });
+
+  optimizeButton.addEventListener('click', () => {
+    const query = getQuery();
+    if (!query) {
+      calculationStatus.textContent = copy.searchMonster;
+      monsterSearch.focus();
+      return;
+    }
+    optimizeButton.disabled = true;
+    cancelButton.hidden = false;
+    calculationStatus.textContent = copy.calculating;
+    worker.postMessage({ type: 'optimize', query });
+  });
+
+  cancelButton.addEventListener('click', () => {
+    worker.terminate();
+    worker = createWorker();
+    finishCalculation();
+  });
+
+  worker = createWorker();
+  void loadRuneSnapshot()
+    .then((stored) => {
+      if (!stored) return;
+      snapshot = stored;
+      worker.postMessage({ type: 'load', snapshot });
+      setStatusForSnapshot();
+    })
+    .catch(() => undefined);
+</script>

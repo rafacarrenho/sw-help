@@ -115,13 +115,14 @@ export const institutionalContent: InstitutionalContent = {
       heading: 'Clear choices and limited data collection.',
       intro:
         'PlayerDojo is designed to work without an account. This policy explains the limited information used to operate and improve the site.',
-      updated: 'Last updated: October 6, 2026',
+      updated: 'Last updated: October 13, 2026',
       sections: [
         {
           heading: 'Information the site uses',
           paragraphs: [
             'PlayerDojo does not offer user accounts and does not ask for names, passwords, payment details, or game credentials. The site may process standard technical request information needed to deliver pages securely, such as IP-derived network information, browser type, requested URL, and timestamps.',
             'Interface preferences, including navigation state and your advertising and analytics choices, may be stored locally in your browser. This information stays on your device unless a third-party service is separately enabled.',
+            'When you use the Rune Optimizer, the selected SWEX file is processed only in your browser. Account and session identifiers are discarded, and a sanitized snapshot of monsters, runes, and artifacts is stored in IndexedDB on your device until you remove it.',
           ],
         },
         {
@@ -305,13 +306,14 @@ export const institutionalContent: InstitutionalContent = {
       heading: 'Escolhas claras e coleta limitada de dados.',
       intro:
         'O PlayerDojo foi feito para funcionar sem uma conta. Esta política explica as informações limitadas usadas para operar e melhorar o site.',
-      updated: 'Última atualização: 6 de outubro de 2026',
+      updated: 'Última atualização: 13 de outubro de 2026',
       sections: [
         {
           heading: 'Informações utilizadas pelo site',
           paragraphs: [
             'O PlayerDojo não oferece contas de usuário e não solicita nomes, senhas, dados de pagamento ou credenciais de jogos. O site pode processar informações técnicas comuns necessárias para entregar as páginas com segurança, como informações de rede derivadas do IP, tipo de navegador, URL solicitada e horários de acesso.',
             'Preferências da interface, incluindo o estado da navegação e suas escolhas sobre publicidade e analytics, podem ser armazenadas localmente no navegador. Essas informações permanecem no dispositivo, salvo quando um serviço externo é habilitado separadamente.',
+            'Ao usar o Otimizador de Runas, o arquivo SWEX selecionado é processado somente no navegador. Identificadores de conta e sessão são descartados, e uma cópia sanitizada de monstros, runas e artefatos fica no IndexedDB do dispositivo até você removê-la.',
           ],
         },
         {

@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../Icon.astro';
 import SeoContent from '../SeoContent.astro';
 import { seoContent } from '../../data/seo-content';
+import { runeOptimizerMessages } from '../../i18n/rune-optimizer';
 import {
   getMessages,
   routePath,
@@ -17,6 +18,7 @@ interface Props {
 const { locale } = Astro.props;
 const messages = getMessages(locale);
 const searchContent = seoContent[locale].home;
+const optimizerCopy = runeOptimizerMessages[locale];
 const tools: Array<{
   route: RouteName;
   icon: string;
@@ -34,6 +36,12 @@ const tools: Array<{
     icon: 'book',
     title: messages.landing.monstersTitle,
     copy: messages.landing.monstersCopy,
+  },
+  {
+    route: 'runeOptimizer',
+    icon: 'rune',
+    title: optimizerCopy.title,
+    copy: optimizerCopy.description,
   },
   {
     route: 'speedTuning',

@@ -442,6 +442,7 @@ test('registro de jogos mantém o menu contextual centralizado', () => {
       'home',
       'siegeCounter',
       'monsters',
+      'runeOptimizer',
       'speedTuning',
       'speedComparison',
       'speedTick',

@@ -75,7 +75,7 @@ export const institutionalContentEs: LocaleInstitutionalContent = {
     heading: 'Privacidad clara y opciones bajo tu control.',
     intro:
       'Esta política explica qué tecnologías puede usar PlayerDojo, para qué se utilizan y cómo cambiar tus preferencias.',
-    updated: 'Actualizada el 6 de octubre de 2026',
+    updated: 'Actualizada el 13 de octubre de 2026',
     sections: [
       {
         heading: 'Datos que tratamos',
@@ -89,6 +89,7 @@ export const institutionalContentEs: LocaleInstitutionalContent = {
         paragraphs: [
           'Las preferencias de interfaz y privacidad pueden guardarse en el navegador. Permanecen en tu dispositivo salvo que actives por separado un servicio externo.',
           'Puedes reabrir la configuración de cookies desde el pie de página y modificar tus elecciones en cualquier momento.',
+          'Al usar el Optimizador de runas, el archivo SWEX se procesa solo en tu navegador. Se descartan los identificadores de cuenta y sesión, y una copia saneada de monstruos, runas y artefactos se guarda en IndexedDB hasta que la elimines.',
         ],
       },
       {
@@ -242,7 +243,7 @@ export const institutionalContentFr: LocaleInstitutionalContent = {
     heading: 'Une confidentialité claire et des choix sous votre contrôle.',
     intro:
       'Cette politique explique les technologies que PlayerDojo peut utiliser, leur objectif et la façon de modifier vos préférences.',
-    updated: 'Mise à jour le 6 octobre 2026',
+    updated: 'Mise à jour le 13 octobre 2026',
     sections: [
       {
         heading: 'Données traitées',
@@ -256,6 +257,7 @@ export const institutionalContentFr: LocaleInstitutionalContent = {
         paragraphs: [
           'Les préférences d’interface et de confidentialité peuvent être conservées dans votre navigateur. Elles restent sur votre appareil sauf activation séparée d’un service externe.',
           'Vous pouvez rouvrir les paramètres des cookies depuis le pied de page et modifier vos choix à tout moment.',
+          'Avec l’Optimiseur de runes, le fichier SWEX est traité uniquement dans votre navigateur. Les identifiants de compte et de session sont supprimés, et une copie assainie des monstres, runes et artefacts reste dans IndexedDB jusqu’à sa suppression.',
         ],
       },
       {
@@ -409,7 +411,7 @@ export const institutionalContentDe: LocaleInstitutionalContent = {
     heading: 'Klare Privatsphäre und Entscheidungen unter deiner Kontrolle.',
     intro:
       'Diese Erklärung beschreibt mögliche Technologien, ihren Zweck und wie du deine Einstellungen änderst.',
-    updated: 'Aktualisiert am 6. Oktober 2026',
+    updated: 'Aktualisiert am 13. Oktober 2026',
     sections: [
       {
         heading: 'Verarbeitete Daten',
@@ -423,6 +425,7 @@ export const institutionalContentDe: LocaleInstitutionalContent = {
         paragraphs: [
           'Oberflächen- und Datenschutzeinstellungen können im Browser gespeichert werden. Sie bleiben auf deinem Gerät, sofern du keinen externen Dienst separat aktivierst.',
           'Du kannst die Cookie-Einstellungen im Footer jederzeit erneut öffnen und deine Auswahl ändern.',
+          'Beim Runen-Optimierer wird die SWEX-Datei ausschließlich im Browser verarbeitet. Konto- und Sitzungskennungen werden verworfen; eine bereinigte Kopie von Monstern, Runen und Artefakten bleibt bis zum Löschen in IndexedDB gespeichert.',
         ],
       },
       {

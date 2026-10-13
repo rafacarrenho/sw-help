@@ -7,7 +7,8 @@ export type GameSection =
   | 'monsters'
   | 'speed-tick'
   | 'speed-tuning'
-  | 'speed-comparison';
+  | 'speed-comparison'
+  | 'rune-optimizer';
 
 export interface GameNavigationItem {
   route: RouteName;
@@ -76,6 +77,18 @@ export const games = [
           es: 'Catálogo de monstruos',
           fr: 'Catalogue de monstres',
           de: 'Monsterkatalog',
+        },
+      },
+      {
+        route: 'runeOptimizer',
+        section: 'rune-optimizer',
+        icon: 'rune',
+        label: {
+          en: 'Rune Optimizer',
+          'pt-BR': 'Otimizador de Runas',
+          es: 'Optimizador de runas',
+          fr: 'Optimiseur de runes',
+          de: 'Runen-Optimierer',
         },
       },
       {

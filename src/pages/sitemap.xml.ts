@@ -34,6 +34,7 @@ const entries: Entry[] = [
   { route: 'speedComparison' },
   { route: 'speedTuning' },
   { route: 'speedTick' },
+  { route: 'runeOptimizer' },
   ...defenses.map(({ id }) => ({ route: 'siege' as const, params: { id } })),
   ...monsters.map(({ id }) => ({ route: 'monster' as const, params: { id } })),
   ...Array.from({ length: Math.max(0, totalMonsterPages - 1) }, (_, index) => ({

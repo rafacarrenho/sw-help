@@ -13,6 +13,7 @@ import '../styles/monsters.css';
 import '../styles/speed-tick.css';
 import '../styles/speed-tuning.css';
 import '../styles/speed-comparison.css';
+import '../styles/rune-optimizer.css';
 import {
   getMessages,
   localeMetadata,
@@ -50,9 +51,11 @@ const {
           ? 'speedTick'
           : section === 'speed-tuning'
             ? 'speedTuning'
-            : section === 'speed-comparison'
-              ? 'speedComparison'
-              : 'home',
+            : section === 'rune-optimizer'
+              ? 'runeOptimizer'
+              : section === 'speed-comparison'
+                ? 'speedComparison'
+                : 'home',
   routeParams = {},
   noIndex = false,
   breadcrumbLabel,
@@ -112,9 +115,11 @@ const sectionRoute: RouteName =
         ? 'speedTick'
         : section === 'speed-tuning'
           ? 'speedTuning'
-          : section === 'speed-comparison'
-            ? 'speedComparison'
-            : 'home';
+          : section === 'rune-optimizer'
+            ? 'runeOptimizer'
+            : section === 'speed-comparison'
+              ? 'speedComparison'
+              : 'home';
 const sectionLabel =
   section === 'monsters'
     ? messages.layout.monsters
@@ -122,11 +127,15 @@ const sectionLabel =
       ? 'Spd Tick'
       : section === 'speed-tuning'
         ? 'Spd Tuning'
-        : section === 'speed-comparison'
-          ? messages.layout.speedComparison
-          : section === 'siege'
-            ? 'Siege Counter'
-            : messages.layout.home;
+        : section === 'rune-optimizer'
+          ? (activeGame?.navigation.find(
+              (item) => item.section === 'rune-optimizer',
+            )?.label[locale] ?? 'Rune Optimizer')
+          : section === 'speed-comparison'
+            ? messages.layout.speedComparison
+            : section === 'siege'
+              ? 'Siege Counter'
+              : messages.layout.home;
 const documentTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
 const structuredData: Record<string, unknown>[] = [];
 const webApplicationRoutes = new Set<RouteName>([
@@ -135,6 +144,7 @@ const webApplicationRoutes = new Set<RouteName>([
   'speedComparison',
   'speedTuning',
   'speedTick',
+  'runeOptimizer',
 ]);
 
 if (routeName === 'portalHome') {
