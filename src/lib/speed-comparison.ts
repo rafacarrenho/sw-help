@@ -1,5 +1,5 @@
 import type { Monster } from './types.ts';
-import { combatSpeed } from './speed-tuning.ts';
+import { combatSpeed, minimumRuneSpeedForCombat } from './speed-tuning.ts';
 
 export const DEFAULT_SPEED_COMPARISON_TOWER_PERCENT = 15;
 export const SWIFT_STRUCTURAL_PERCENT = 25;
@@ -18,6 +18,7 @@ export interface SpeedComparisonSideState {
   towerPercent: number;
   usesSwift: boolean;
   initialBuffs: number;
+  additionalSpeed: number | null;
 }
 
 export interface SpeedComparisonState {
@@ -41,6 +42,23 @@ export interface StructuralSpeedComparison {
   strictRuneTolerance: number;
 }
 
+export interface DisplayedAdditionalSpeedInput extends StructuralSpeedInput {
+  additionalSpeed: number;
+}
+
+export interface BuildSpeedComparison {
+  allySpeed: number;
+  enemySpeed: number;
+  winner: 'ally' | 'enemy' | 'tie';
+  advantage: number;
+}
+
+export interface RequiredDisplayedAdditionalSpeeds {
+  referenceCombatSpeed: number;
+  tieAdditionalSpeed: number | null;
+  winAdditionalSpeed: number;
+}
+
 type LeaderMonster = Pick<Monster, 'leaderSkill'>;
 
 const managedQueryKeys = [
@@ -55,6 +73,10 @@ const managedQueryKeys = [
   'enemyTower',
   'allyStartBuffs',
   'enemyStartBuffs',
+  'allySpd',
+  'enemySpd',
+  'allyBonusSpd',
+  'enemyBonusSpd',
 ] as const;
 
 const validTower = (value: string | null) => {
@@ -126,6 +148,104 @@ export function compareStructuralSpeed(
   };
 }
 
+export function minimumDisplayedAdditionalSpeed({
+  baseSpeed,
+  usesSwift,
+}: Pick<DisplayedAdditionalSpeedInput, 'baseSpeed' | 'usesSwift'>):
+  number | null {
+  if (!Number.isFinite(baseSpeed) || baseSpeed <= 0) return null;
+
+  return usesSwift
+    ? Math.ceil((baseSpeed * SWIFT_STRUCTURAL_PERCENT) / 100)
+    : 0;
+}
+
+export function displayedAdditionalCombatSpeed({
+  additionalSpeed,
+  ...input
+}: DisplayedAdditionalSpeedInput): number | null {
+  const minimum = minimumDisplayedAdditionalSpeed(input);
+  if (
+    minimum === null ||
+    !Number.isInteger(additionalSpeed) ||
+    additionalSpeed < minimum
+  ) {
+    return null;
+  }
+
+  return combatSpeed({
+    ...input,
+    runeSpeed: additionalSpeed,
+  });
+}
+
+export function compareBuildSpeed(
+  ally: DisplayedAdditionalSpeedInput,
+  enemy: DisplayedAdditionalSpeedInput,
+): BuildSpeedComparison | null {
+  const allySpeed = displayedAdditionalCombatSpeed(ally);
+  const enemySpeed = displayedAdditionalCombatSpeed(enemy);
+  if (allySpeed === null || enemySpeed === null) return null;
+
+  const difference = allySpeed - enemySpeed;
+  return {
+    allySpeed,
+    enemySpeed,
+    winner: difference > 0 ? 'ally' : difference < 0 ? 'enemy' : 'tie',
+    advantage: Math.abs(difference),
+  };
+}
+
+const minimumDisplayedAdditionalSpeedForCombat = (
+  minimumCombatSpeed: number,
+  input: StructuralSpeedInput,
+): number | null => {
+  const minimumAdditionalSpeed = minimumDisplayedAdditionalSpeed(input);
+  if (minimumAdditionalSpeed === null) return null;
+
+  const requiredRuneSpeed = minimumRuneSpeedForCombat(minimumCombatSpeed, {
+    baseSpeed: input.baseSpeed,
+    towerPercent: input.towerPercent,
+    leaderPercent: input.leaderPercent,
+    usesSwift: input.usesSwift,
+    passiveSpeedBonus: input.passiveSpeedBonus,
+  });
+  if (requiredRuneSpeed === null) return null;
+
+  return Math.max(minimumAdditionalSpeed, requiredRuneSpeed);
+};
+
+export function requiredDisplayedAdditionalSpeeds(
+  reference: DisplayedAdditionalSpeedInput,
+  target: StructuralSpeedInput,
+): RequiredDisplayedAdditionalSpeeds | null {
+  const referenceCombatSpeed = displayedAdditionalCombatSpeed(reference);
+  if (referenceCombatSpeed === null) return null;
+
+  const tieCandidate = minimumDisplayedAdditionalSpeedForCombat(
+    referenceCombatSpeed,
+    target,
+  );
+  const winAdditionalSpeed = minimumDisplayedAdditionalSpeedForCombat(
+    referenceCombatSpeed + 1,
+    target,
+  );
+  if (tieCandidate === null || winAdditionalSpeed === null) return null;
+
+  const tieCombatSpeed = displayedAdditionalCombatSpeed({
+    ...target,
+    additionalSpeed: tieCandidate,
+  });
+  const tieAdditionalSpeed =
+    tieCombatSpeed === referenceCombatSpeed ? tieCandidate : null;
+
+  return {
+    referenceCombatSpeed,
+    tieAdditionalSpeed,
+    winAdditionalSpeed,
+  };
+}
+
 const readSide = (
   params: URLSearchParams,
   prefix: 'ally' | 'enemy',
@@ -152,6 +272,20 @@ const readSide = (
     parsedInitialBuffs <= 2
       ? parsedInitialBuffs
       : defaultInitialBuffs;
+  const usesSwift = monster ? params.get(`${prefix}Swift`) !== '0' : true;
+  const parsedAdditionalSpeed = Number(params.get(`${prefix}BonusSpd`));
+  const additionalSpeed =
+    monster &&
+    params.get(`${prefix}BonusSpd`) !== null &&
+    displayedAdditionalCombatSpeed({
+      baseSpeed: monster.speed,
+      additionalSpeed: parsedAdditionalSpeed,
+      leaderPercent: 0,
+      towerPercent: 0,
+      usesSwift,
+    }) !== null
+      ? parsedAdditionalSpeed
+      : null;
 
   return {
     monsterId: monster?.id ?? null,
@@ -160,8 +294,9 @@ const readSide = (
         ? parsedLeader
         : 0,
     towerPercent: validTower(params.get(`${prefix}Tower`)),
-    usesSwift: monster ? params.get(`${prefix}Swift`) !== '0' : true,
+    usesSwift,
     initialBuffs,
+    additionalSpeed,
   };
 };
 
@@ -198,6 +333,14 @@ const writeSide = (
     if (normalizedInitialBuffs !== DEFAULT_CHILLING_INITIAL_BUFFS) {
       params.set(`${prefix}StartBuffs`, String(normalizedInitialBuffs));
     }
+  }
+  if (
+    side.monsterId &&
+    side.additionalSpeed !== null &&
+    Number.isInteger(side.additionalSpeed) &&
+    side.additionalSpeed >= 0
+  ) {
+    params.set(`${prefix}BonusSpd`, String(side.additionalSpeed));
   }
 };
 

@@ -161,6 +161,91 @@ test('aplica a passiva do Chilling conforme os buffs iniciais', async ({
   await expect(page).not.toHaveURL(/allyStartBuffs=/);
 });
 
+test('compara SPD adicional em zero, um ou dois lados', async ({ page }) => {
+  await page.goto(
+    '/pt/summoners-war/comparador-spd?ally=chilling-water-958&enemy=triton-wind-847',
+  );
+
+  const ally = allyCard(page);
+  const enemy = enemyCard(page);
+  const allySpeed = ally.getByLabel('SPD adicional (opcional)');
+  const enemySpeed = enemy.getByLabel('SPD adicional (opcional)');
+
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('182 SPD');
+  await expect(enemy.locator('[data-comparison-speed]')).toHaveText('163 SPD');
+
+  await allySpeed.fill('112');
+  await expect(ally.locator('[data-comparison-speed-label]')).toHaveText(
+    'SPD de combate',
+  );
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('268 SPD');
+  await expect(ally.locator('[data-comparison-speed-copy]')).toHaveText(
+    '213 SPD total (101 base + 112)',
+  );
+  await expect(enemy.locator('[data-comparison-speed-label]')).toHaveText(
+    'SPD adicional necessária',
+  );
+  await expect(enemy.locator('[data-comparison-speed]')).toHaveText('+135 SPD');
+  await expect(enemy.locator('[data-comparison-speed-copy]')).toHaveText(
+    '+134 para empatar · 250 SPD total',
+  );
+  await expect(
+    page.getByRole('heading', {
+      name: 'Triton precisa de +135 SPD adicional (251 total) para ultrapassar Chilling',
+    }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/allyBonusSpd=112/);
+
+  await enemySpeed.fill('134');
+  await expect(
+    page.getByRole('heading', { name: 'Empate em SPD de combate' }),
+  ).toBeVisible();
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('268 SPD');
+  await expect(enemy.locator('[data-comparison-speed]')).toHaveText('268 SPD');
+  await expect(page).toHaveURL(/enemyBonusSpd=134/);
+
+  await enemySpeed.fill('135');
+  await expect(
+    page.getByRole('heading', { name: 'Triton age primeiro por 1 SPD' }),
+  ).toBeVisible();
+  await expect(enemy.locator('[data-comparison-speed]')).toHaveText('269 SPD');
+
+  await allySpeed.fill('');
+  await expect(ally.locator('[data-comparison-speed]')).toHaveText('+114 SPD');
+  await expect(ally.locator('[data-comparison-speed-copy]')).toHaveText(
+    '+113 para empatar · 214 SPD total',
+  );
+  await expect(page).not.toHaveURL(/allyBonusSpd=/);
+});
+
+test('valida a SPD adicional possível e restaura builds pela URL', async ({
+  page,
+}) => {
+  await page.goto('/pt/summoners-war/comparador-spd');
+  const ally = allyCard(page);
+  const enemy = enemyCard(page);
+  await expect(ally.getByLabel('SPD adicional (opcional)')).toBeDisabled();
+
+  await page.goto(
+    '/pt/summoners-war/comparador-spd?ally=chilling-water-958&allyBonusSpd=112&enemy=triton-wind-847&enemyBonusSpd=3',
+  );
+  const allySpeed = ally.getByLabel('SPD adicional (opcional)');
+  const enemySpeed = enemy.getByLabel('SPD adicional (opcional)');
+  await expect(allySpeed).toHaveValue('112');
+  await expect(enemySpeed).toHaveValue('');
+  await expect(page).not.toHaveURL(/enemyBonusSpd=/);
+
+  await enemySpeed.fill('3');
+  await expect(enemySpeed).toHaveAttribute('aria-invalid', 'true');
+  await expect(
+    enemy.locator('[data-comparison-additional-error]'),
+  ).toContainText('pelo menos +29');
+  await expect(
+    page.getByRole('heading', { name: 'Corrija a SPD adicional' }),
+  ).toBeVisible();
+  await expect(page).not.toHaveURL(/enemyBonusSpd=/);
+});
+
 test('inverte vantagem, representa empate e limpa os estados semânticos', async ({
   page,
 }) => {
@@ -229,4 +314,9 @@ test('abre pelo menu e empilha os lados no celular', async ({
   expect(allyBox).not.toBeNull();
   expect(enemyBox).not.toBeNull();
   expect(enemyBox!.y).toBeGreaterThan(allyBox!.y + allyBox!.height);
+  const viewport = await page.evaluate(() => ({
+    innerWidth: window.innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(viewport.scrollWidth).toBeLessThanOrEqual(viewport.innerWidth);
 });

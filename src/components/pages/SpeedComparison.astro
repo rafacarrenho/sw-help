@@ -193,6 +193,27 @@ const sides = [
           </div>
 
           <div class="speed-comparison-fields">
+            <label class="speed-comparison-field speed-comparison-additional-field">
+              <span>{messages.comparison.additionalSpeed}</span>
+              <input
+                data-comparison-additional-speed
+                type="number"
+                inputmode="numeric"
+                step="1"
+                placeholder={messages.comparison.additionalSpeedPlaceholder}
+                disabled
+              />
+              <small data-comparison-additional-help>
+                {messages.comparison.additionalSpeedHelp}
+              </small>
+              <small
+                class="speed-comparison-field-error"
+                data-comparison-additional-error
+                aria-live="polite"
+                hidden
+              ></small>
+            </label>
+
             <label class="speed-comparison-field">
               <span>{messages.comparison.speedLeader}</span>
               <select data-comparison-leader disabled>
@@ -234,11 +255,15 @@ const sides = [
 
           <div class="speed-comparison-card-result is-empty">
             <div class="speed-comparison-card-result-heading">
-              <span>{messages.comparison.structuralSpeed}</span>
+              <span data-comparison-speed-label>
+                {messages.comparison.structuralSpeed}
+              </span>
               <span data-comparison-status hidden></span>
             </div>
             <strong data-comparison-speed>—</strong>
-            <small>{messages.comparison.noRuneStats}</small>
+            <small data-comparison-speed-copy>
+              {messages.comparison.noRuneStats}
+            </small>
           </div>
         </article>
       ))}

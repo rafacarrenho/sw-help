@@ -79,7 +79,8 @@
 }
 
 .speed-comparison-combobox input,
-.speed-comparison-field select {
+.speed-comparison-field select,
+.speed-comparison-field input {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -105,7 +106,8 @@
 }
 
 .speed-comparison-combobox input:focus-visible,
-.speed-comparison-field select:focus-visible {
+.speed-comparison-field select:focus-visible,
+.speed-comparison-field input:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
@@ -268,7 +270,30 @@
   font-size: var(--text-sm);
 }
 
-.speed-comparison-field select:disabled {
+.speed-comparison-additional-field {
+  grid-column: 1 / -1;
+}
+
+.speed-comparison-field input {
+  font-size: var(--text-base);
+}
+
+.speed-comparison-field input[aria-invalid='true'] {
+  border-color: #d77878;
+}
+
+.speed-comparison-field small {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.speed-comparison-field .speed-comparison-field-error {
+  color: #f2aaaa;
+}
+
+.speed-comparison-field select:disabled,
+.speed-comparison-field input:disabled {
   opacity: 0.56;
   cursor: not-allowed;
 }
@@ -534,6 +559,10 @@
   }
 
   .speed-comparison-check {
+    grid-column: auto;
+  }
+
+  .speed-comparison-additional-field {
     grid-column: auto;
   }
 

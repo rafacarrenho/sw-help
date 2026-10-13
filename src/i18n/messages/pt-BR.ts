@@ -303,9 +303,10 @@ export const ptBR: Messages = {
     headingPrefix: 'Comparador de',
     headingAccent: 'SPD',
     introLine1: 'Compare SPD base, liderança, Swift e torre no Summoners War',
-    introLine2: 'para descobrir a vantagem antes da SPD individual das runas.',
+    introLine2: 'e, opcionalmente, informe a SPD adicional das builds.',
     compareTitle: 'Compare os contestadores',
-    compareCopy: 'Configure cada lado para descobrir a vantagem estrutural.',
+    compareCopy:
+      'Compare a estrutura ou informe a SPD adicional exibida em verde no jogo.',
     yourSide: 'SEU LADO',
     otherSide: 'OUTRO LADO',
     yourMonster: 'Seu monstro',
@@ -324,15 +325,27 @@ export const ptBR: Messages = {
     initialBuffs: 'Buffs iniciais',
     buffs: 'buffs',
     usesSwift: 'Usa Swift',
+    additionalSpeed: 'SPD adicional (opcional)',
+    additionalSpeedPlaceholder: 'Ex.: 112',
+    additionalSpeedHelp:
+      'Digite o número verde exibido no jogo; a SPD total será calculada.',
+    additionalSpeedMinimum:
+      'Use uma SPD adicional inteira de pelo menos +{minimum} com esta configuração.',
     structuralSpeed: 'SPD estrutural',
+    combatSpeed: 'SPD de combate',
+    calculatedTotalSpeed: '{total} SPD total ({base} base + {additional})',
+    requiredAdditionalSpeed: 'SPD adicional necessária',
+    additionalSpeedToTie: '+{speed} para empatar · {total} SPD total',
+    alreadyWinsAtMinimum:
+      'Já ultrapassa com a SPD adicional mínima desta configuração.',
     noRuneStats: 'Sem atributos individuais das runas',
     result: 'RESULTADO',
     selectBoth: 'Selecione os dois monstros',
     resultWaiting:
       'A comparação aparecerá quando os dois lados estiverem configurados.',
-    noteTitle: 'Esta é uma vantagem estrutural.',
+    noteTitle: 'O total é calculado a partir da SPD adicional.',
     noteCopy:
-      'A SPD adicional dos atributos das runas não entra no cálculo. Fora o caso especial do Chilling configurado acima, passivas, buffs, debuffs, boosts de barra e outros efeitos de batalha podem alterar a ordem real.',
+      'Digite o número verde exibido no jogo, que já inclui Swift. Passivas configuradas, liderança, torre e o arredondamento de Swift são aplicados separadamente.',
     noScript:
       'O comparador de SPD precisa de JavaScript para calcular os resultados.',
     noMonsterFound: 'Nenhum monstro encontrado',
@@ -350,6 +363,22 @@ export const ptBR: Messages = {
       '{winner} pode ter até {tolerance} SPD adicional a menos nas runas e ainda agir antes de {loser}.',
     combatTie:
       'Com {advantage} SPD adicional a menos, os dois empatam em SPD de combate.',
+    fixAdditionalSpeed: 'Corrija a SPD adicional',
+    fixAdditionalSpeedCopy:
+      'Revise o valor destacado para continuar a comparação.',
+    targetTitle:
+      '{target} precisa de +{speed} SPD adicional ({total} total) para ultrapassar {reference}',
+    targetCopy:
+      'Com +{tieSpeed} SPD adicional ({tieTotal} total), {target} empata em {combatSpeed} SPD de combate.',
+    targetAlreadyWinsCopy:
+      'Com o mínimo de +{speed} SPD adicional ({total} total), {target} já ultrapassa {reference}.',
+    buildTie: 'Empate em SPD de combate',
+    buildTieResult: '{ally} e {enemy} chegam a {speed} SPD de combate.',
+    buildSpeeds:
+      'SPDs totais calculadas: {ally} com {allyTotal} (+{allyAdditional}) e {enemy} com {enemyTotal} (+{enemyAdditional}).',
+    buildAdvantageTitle: '{winner} age primeiro por {advantage} SPD',
+    buildAdvantageCopy:
+      '{winner} chega a {winnerSpeed} SPD de combate contra {loserSpeed} de {loser}.',
   },
   tick: {
     title: 'Calculadora de SPD Tick para Summoners War',

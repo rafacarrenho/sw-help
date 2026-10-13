@@ -309,10 +309,10 @@ export const de: Messages = {
     headingAccent: 'Vergleich',
     introLine1:
       'Vergleiche Basis-GES, Leader-Skill, Swift und Turm in Summoners War',
-    introLine2: 'und erkenne den Vorteil vor den individuellen Runenwerten.',
+    introLine2: 'und gib optional die zusätzliche GES echter Builds ein.',
     compareTitle: 'Kontrahenten vergleichen',
     compareCopy:
-      'Konfiguriere beide Seiten, um den strukturellen Vorteil zu sehen.',
+      'Vergleiche die Struktur oder gib die grün angezeigte zusätzliche GES ein.',
     yourSide: 'DEINE SEITE',
     otherSide: 'ANDERE SEITE',
     yourMonster: 'Dein Monster',
@@ -331,15 +331,27 @@ export const de: Messages = {
     initialBuffs: 'Anfangsbuffs',
     buffs: 'Buffs',
     usesSwift: 'Verwendet Swift',
+    additionalSpeed: 'Zusätzliche GES (optional)',
+    additionalSpeedPlaceholder: 'Z. B. 112',
+    additionalSpeedHelp:
+      'Gib die grüne Zahl aus dem Spiel ein; die Gesamt-GES wird berechnet.',
+    additionalSpeedMinimum:
+      'Gib für diese Konfiguration eine ganze zusätzliche GES von mindestens +{minimum} ein.',
     structuralSpeed: 'Strukturelle GES',
+    combatSpeed: 'Kampf-GES',
+    calculatedTotalSpeed: '{total} Gesamt-GES ({base} Basis + {additional})',
+    requiredAdditionalSpeed: 'Erforderliche zusätzliche GES',
+    additionalSpeedToTie: '+{speed} für Gleichstand · {total} Gesamt-GES',
+    alreadyWinsAtMinimum:
+      'Zieht bereits mit der minimalen zusätzlichen GES dieser Konfiguration zuerst.',
     noRuneStats: 'Ohne individuelle Runenwerte',
     result: 'ERGEBNIS',
     selectBoth: 'Beide Monster auswählen',
     resultWaiting:
       'Der Vergleich erscheint, sobald beide Seiten konfiguriert sind.',
-    noteTitle: 'Dies ist ein struktureller Vorteil.',
+    noteTitle: 'Die Gesamt-GES wird aus der zusätzlichen GES berechnet.',
     noteCopy:
-      'Zusätzliche GES aus Runenwerten ist nicht enthalten. Abgesehen von Chillings Sonderfall können Passive, Buffs, Debuffs, Angriffsbalken-Boosts und andere Effekte die reale Zugreihenfolge ändern.',
+      'Gib die grüne Zahl aus dem Spiel ein, die Swift bereits enthält. Konfigurierte Passive, Leader, Turm und Swift-Rundung werden separat angewendet.',
     noScript: 'Der GES-Vergleich benötigt JavaScript zur Berechnung.',
     noMonsterFound: 'Kein Monster gefunden',
     advantage: 'VORTEIL',
@@ -356,6 +368,22 @@ export const de: Messages = {
       '{winner} kann bis zu {tolerance} weniger zusätzliche GES haben und trotzdem vor {loser} ziehen.',
     combatTie:
       'Mit {advantage} weniger zusätzlicher GES erreichen beide Monster dieselbe Kampf-GES.',
+    fixAdditionalSpeed: 'Zusätzliche GES korrigieren',
+    fixAdditionalSpeedCopy:
+      'Prüfe den hervorgehobenen Wert, um den Vergleich fortzusetzen.',
+    targetTitle:
+      '{target} benötigt +{speed} zusätzliche GES ({total} gesamt), um vor {reference} zu ziehen',
+    targetCopy:
+      'Mit +{tieSpeed} zusätzlicher GES ({tieTotal} gesamt) erreicht {target} bei {combatSpeed} Kampf-GES Gleichstand.',
+    targetAlreadyWinsCopy:
+      'Mit mindestens +{speed} zusätzlicher GES ({total} gesamt) zieht {target} bereits vor {reference}.',
+    buildTie: 'Gleichstand bei Kampf-GES',
+    buildTieResult: '{ally} und {enemy} erreichen {speed} Kampf-GES.',
+    buildSpeeds:
+      'Berechnete Gesamt-GES: {ally} mit {allyTotal} (+{allyAdditional}) und {enemy} mit {enemyTotal} (+{enemyAdditional}).',
+    buildAdvantageTitle: '{winner} zieht mit {advantage} GES zuerst',
+    buildAdvantageCopy:
+      '{winner} erreicht {winnerSpeed} Kampf-GES gegenüber {loserSpeed} von {loser}.',
   },
   tick: {
     title: 'Summoners War Spd Tick Rechner',

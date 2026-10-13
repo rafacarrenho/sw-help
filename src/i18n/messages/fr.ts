@@ -311,10 +311,10 @@ export const fr: Messages = {
     headingAccent: 'VIT',
     introLine1:
       'Comparez la VIT de base, la compétence de leader, Swift et la tour',
-    introLine2:
-      'pour trouver l’avantage avant les statistiques individuelles des runes.',
+    introLine2: 'et saisissez éventuellement la VIT supplémentaire des builds.',
     compareTitle: 'Comparez les adversaires',
-    compareCopy: 'Configurez chaque côté pour révéler l’avantage structurel.',
+    compareCopy:
+      'Comparez la structure ou saisissez la VIT supplémentaire affichée en vert.',
     yourSide: 'VOTRE CÔTÉ',
     otherSide: 'AUTRE CÔTÉ',
     yourMonster: 'Votre monstre',
@@ -333,15 +333,27 @@ export const fr: Messages = {
     initialBuffs: 'Buffs initiaux',
     buffs: 'buffs',
     usesSwift: 'Utilise Swift',
+    additionalSpeed: 'VIT supplémentaire (facultatif)',
+    additionalSpeedPlaceholder: 'Ex. : 112',
+    additionalSpeedHelp:
+      'Saisissez le nombre vert affiché en jeu ; la VIT totale sera calculée.',
+    additionalSpeedMinimum:
+      'Saisissez une VIT supplémentaire entière d’au moins +{minimum} pour cette configuration.',
     structuralSpeed: 'VIT structurelle',
+    combatSpeed: 'VIT de combat',
+    calculatedTotalSpeed: '{total} VIT totale ({base} de base + {additional})',
+    requiredAdditionalSpeed: 'VIT supplémentaire requise',
+    additionalSpeedToTie: '+{speed} pour égaliser · {total} VIT totale',
+    alreadyWinsAtMinimum:
+      'Joue déjà en premier avec la VIT supplémentaire minimale de cette configuration.',
     noRuneStats: 'Sans statistiques individuelles des runes',
     result: 'RÉSULTAT',
     selectBoth: 'Sélectionnez les deux monstres',
     resultWaiting:
       'La comparaison apparaîtra lorsque les deux côtés seront configurés.',
-    noteTitle: 'Il s’agit d’un avantage structurel.',
+    noteTitle: 'La VIT totale est calculée depuis la VIT supplémentaire.',
     noteCopy:
-      'La VIT supplémentaire des statistiques de runes n’est pas incluse. Hormis le cas spécial de Chilling configuré ci-dessus, passifs, buffs, debuffs, boosts de jauge et autres effets peuvent modifier l’ordre réel.',
+      'Saisissez le nombre vert affiché en jeu, qui inclut déjà Swift. Les passifs configurés, le leader, la tour et l’arrondi Swift sont appliqués séparément.',
     noScript:
       'Le comparateur de VIT nécessite JavaScript pour calculer les résultats.',
     noMonsterFound: 'Aucun monstre trouvé',
@@ -360,6 +372,22 @@ export const fr: Messages = {
       '{winner} peut avoir jusqu’à {tolerance} VIT supplémentaire de moins et jouer avant {loser}.',
     combatTie:
       'Avec {advantage} VIT supplémentaire de moins, les deux monstres sont à égalité en VIT de combat.',
+    fixAdditionalSpeed: 'Corrigez la VIT supplémentaire',
+    fixAdditionalSpeedCopy:
+      'Vérifiez la valeur en surbrillance pour poursuivre la comparaison.',
+    targetTitle:
+      '{target} a besoin de +{speed} VIT supplémentaire ({total} au total) pour jouer avant {reference}',
+    targetCopy:
+      'Avec +{tieSpeed} VIT supplémentaire ({tieTotal} au total), {target} atteint l’égalité à {combatSpeed} VIT de combat.',
+    targetAlreadyWinsCopy:
+      'Avec le minimum de +{speed} VIT supplémentaire ({total} au total), {target} joue déjà avant {reference}.',
+    buildTie: 'Égalité de VIT de combat',
+    buildTieResult: '{ally} et {enemy} atteignent {speed} de VIT de combat.',
+    buildSpeeds:
+      'VIT totale calculée : {ally} à {allyTotal} (+{allyAdditional}) et {enemy} à {enemyTotal} (+{enemyAdditional}).',
+    buildAdvantageTitle: '{winner} joue en premier avec {advantage} VIT',
+    buildAdvantageCopy:
+      '{winner} atteint {winnerSpeed} VIT de combat contre {loserSpeed} pour {loser}.',
   },
   tick: {
     title: 'Calculateur de Spd Tick Summoners War',

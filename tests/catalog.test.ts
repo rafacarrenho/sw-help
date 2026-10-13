@@ -64,9 +64,13 @@ import {
   type SpeedTuningQueryMonster,
 } from '../src/lib/speed-tuning.ts';
 import {
+  compareBuildSpeed,
   compareStructuralSpeed,
+  displayedAdditionalCombatSpeed,
   getSpeedComparisonLeaderPercentages,
+  minimumDisplayedAdditionalSpeed,
   readSpeedComparisonQueryState,
+  requiredDisplayedAdditionalSpeeds,
   structuralSpeed,
   writeSpeedComparisonQueryState,
 } from '../src/lib/speed-comparison.ts';
@@ -540,6 +544,80 @@ test('Comparador de SPD calcula vantagem estrutural e folga estrita', () => {
   );
 });
 
+test('Comparador de SPD calcula builds pela SPD adicional exibida', () => {
+  const chilling = {
+    baseSpeed: 101,
+    additionalSpeed: 112,
+    leaderPercent: 0,
+    towerPercent: 15,
+    usesSwift: true,
+    passiveSpeedBonus: 40,
+  };
+  const triton = {
+    baseSpeed: 116,
+    leaderPercent: 0,
+    towerPercent: 15,
+    usesSwift: true,
+  };
+
+  assert.equal(minimumDisplayedAdditionalSpeed(chilling), 26);
+  assert.equal(
+    minimumDisplayedAdditionalSpeed({ baseSpeed: 101, usesSwift: false }),
+    0,
+  );
+  assert.equal(displayedAdditionalCombatSpeed(chilling), 268);
+  assert.equal(
+    displayedAdditionalCombatSpeed({ ...chilling, usesSwift: false }),
+    269,
+  );
+  assert.equal(
+    displayedAdditionalCombatSpeed({ ...chilling, additionalSpeed: 25 }),
+    null,
+  );
+  assert.equal(
+    displayedAdditionalCombatSpeed({
+      ...chilling,
+      additionalSpeed: 112.5,
+    }),
+    null,
+  );
+  assert.deepEqual(requiredDisplayedAdditionalSpeeds(chilling, triton), {
+    referenceCombatSpeed: 268,
+    tieAdditionalSpeed: 134,
+    winAdditionalSpeed: 135,
+  });
+  assert.deepEqual(
+    requiredDisplayedAdditionalSpeeds(
+      {
+        baseSpeed: 100,
+        additionalSpeed: 0,
+        leaderPercent: 0,
+        towerPercent: 0,
+        usesSwift: false,
+      },
+      triton,
+    ),
+    {
+      referenceCombatSpeed: 100,
+      tieAdditionalSpeed: null,
+      winAdditionalSpeed: 29,
+    },
+  );
+  assert.deepEqual(
+    compareBuildSpeed(chilling, { ...triton, additionalSpeed: 134 }),
+    {
+      allySpeed: 268,
+      enemySpeed: 268,
+      winner: 'tie',
+      advantage: 0,
+    },
+  );
+  assert.equal(
+    compareBuildSpeed(chilling, { ...triton, additionalSpeed: 135 })?.winner,
+    'enemy',
+  );
+});
+
 test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
   const comparisonMonsters = new Map([
     [
@@ -570,6 +648,7 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       towerPercent: 14,
       usesSwift: true,
       initialBuffs: 0,
+      additionalSpeed: null,
     },
     enemy: {
       monsterId: 'triton-wind-847',
@@ -577,6 +656,7 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       towerPercent: 15,
       usesSwift: false,
       initialBuffs: 0,
+      additionalSpeed: null,
     },
   });
   assert.equal(
@@ -596,6 +676,8 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
   );
   assert.equal(chillingState.ally.initialBuffs, 1);
   assert.equal(chillingState.enemy.initialBuffs, 0);
+  assert.equal(chillingState.ally.additionalSpeed, null);
+  assert.equal(chillingState.enemy.additionalSpeed, null);
   assert.equal(
     writeSpeedComparisonQueryState(
       new URLSearchParams('allyStartBuffs=9&enemyStartBuffs=1'),
@@ -616,6 +698,37 @@ test('Comparador de SPD normaliza e serializa estado compartilhável', () => {
       defaultChillingState,
     ).toString(),
     'ally=chilling-water-958',
+  );
+
+  const buildState = readSpeedComparisonQueryState(
+    new URLSearchParams(
+      'ally=chilling-water-958&allyBonusSpd=112&enemy=triton-wind-847&enemyBonusSpd=3',
+    ),
+    comparisonMonsters,
+    monsters,
+  );
+  assert.equal(buildState.ally.additionalSpeed, 112);
+  assert.equal(buildState.enemy.additionalSpeed, null);
+  assert.equal(
+    writeSpeedComparisonQueryState(
+      new URLSearchParams('allyBonusSpd=999&enemyBonusSpd=999'),
+      buildState,
+    ).toString(),
+    'ally=chilling-water-958&allyBonusSpd=112&enemy=triton-wind-847',
+  );
+
+  const zeroAdditionalState = readSpeedComparisonQueryState(
+    new URLSearchParams('ally=chilling-water-958&allySwift=0&allyBonusSpd=0'),
+    comparisonMonsters,
+    monsters,
+  );
+  assert.equal(zeroAdditionalState.ally.additionalSpeed, 0);
+  assert.equal(
+    writeSpeedComparisonQueryState(
+      new URLSearchParams(),
+      zeroAdditionalState,
+    ).toString(),
+    'ally=chilling-water-958&allySwift=0&allyBonusSpd=0',
   );
 });
 

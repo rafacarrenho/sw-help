@@ -303,9 +303,10 @@ export const en = {
     headingAccent: 'Comparison',
     introLine1:
       'Compare Summoners War base SPD, leader skill, Swift, and tower',
-    introLine2: 'to find the advantage before individual rune stats.',
+    introLine2: 'and optionally enter the additional SPD of real builds.',
     compareTitle: 'Compare the contenders',
-    compareCopy: 'Configure each side to reveal the structural advantage.',
+    compareCopy:
+      'Compare their structure or enter the additional SPD shown in green in-game.',
     yourSide: 'YOUR SIDE',
     otherSide: 'OTHER SIDE',
     yourMonster: 'Your monster',
@@ -324,14 +325,26 @@ export const en = {
     initialBuffs: 'Initial buffs',
     buffs: 'buffs',
     usesSwift: 'Uses Swift',
+    additionalSpeed: 'Additional SPD (optional)',
+    additionalSpeedPlaceholder: 'E.g. 112',
+    additionalSpeedHelp:
+      'Enter the green number shown in-game; total SPD is calculated for you.',
+    additionalSpeedMinimum:
+      'Enter a whole additional SPD value of at least +{minimum} for this setup.',
     structuralSpeed: 'Structural SPD',
+    combatSpeed: 'Combat SPD',
+    calculatedTotalSpeed: '{total} total SPD ({base} base + {additional})',
+    requiredAdditionalSpeed: 'Required additional SPD',
+    additionalSpeedToTie: '+{speed} to tie · {total} total SPD',
+    alreadyWinsAtMinimum:
+      'Already moves first at the minimum additional SPD for this setup.',
     noRuneStats: 'Without individual rune stats',
     result: 'RESULT',
     selectBoth: 'Select both monsters',
     resultWaiting: 'The comparison will appear when both sides are configured.',
-    noteTitle: 'This is a structural advantage.',
+    noteTitle: 'Total SPD is calculated from additional SPD.',
     noteCopy:
-      "Additional SPD from rune stats is not included. Except for Chilling's special case configured above, passives, buffs, debuffs, Attack Bar boosts, and other battle effects can change the real turn order.",
+      'Enter the green number shown in-game, which already includes Swift. Configured passives, leader skill, tower, and Swift rounding are applied separately.',
     noScript: 'The SPD comparison needs JavaScript to calculate results.',
     noMonsterFound: 'No monster found',
     advantage: 'ADVANTAGE',
@@ -348,6 +361,22 @@ export const en = {
       '{winner} can have up to {tolerance} less additional rune SPD and still move before {loser}.',
     combatTie:
       'With {advantage} less additional SPD, both monsters tie in combat SPD.',
+    fixAdditionalSpeed: 'Correct the additional SPD',
+    fixAdditionalSpeedCopy:
+      'Review the highlighted value to continue the comparison.',
+    targetTitle:
+      '{target} needs +{speed} additional SPD ({total} total) to move before {reference}',
+    targetCopy:
+      'At +{tieSpeed} additional SPD ({tieTotal} total), {target} ties at {combatSpeed} combat SPD.',
+    targetAlreadyWinsCopy:
+      'At the minimum of +{speed} additional SPD ({total} total), {target} already moves before {reference}.',
+    buildTie: 'Combat SPD tie',
+    buildTieResult: '{ally} and {enemy} both reach {speed} combat SPD.',
+    buildSpeeds:
+      'Calculated total SPD: {ally} at {allyTotal} (+{allyAdditional}) and {enemy} at {enemyTotal} (+{enemyAdditional}).',
+    buildAdvantageTitle: '{winner} moves first by {advantage} SPD',
+    buildAdvantageCopy:
+      '{winner} reaches {winnerSpeed} combat SPD versus {loserSpeed} for {loser}.',
   },
   tick: {
     title: 'Summoners War SPD Tick Calculator',

@@ -1,10 +1,14 @@
 import { matchesSearch } from '../lib/search.ts';
 import {
   CHILLING_SPEED_PER_BUFF,
+  compareBuildSpeed,
   compareStructuralSpeed,
   DEFAULT_CHILLING_INITIAL_BUFFS,
+  displayedAdditionalCombatSpeed,
   getSpeedComparisonLeaderPercentages,
+  minimumDisplayedAdditionalSpeed,
   readSpeedComparisonQueryState,
+  requiredDisplayedAdditionalSpeeds,
   SPEED_COMPARISON_CHILLING_ID,
   structuralSpeed,
   writeSpeedComparisonQueryState,
@@ -33,6 +37,8 @@ type SideState = {
   towerPercent: number;
   usesSwift: boolean;
   initialBuffs: number;
+  additionalSpeed: number | null;
+  additionalSpeedInvalid: boolean;
 };
 
 type SideElements = {
@@ -51,7 +57,11 @@ type SideElements = {
   initialBuffsSelect: HTMLSelectElement;
   tower: HTMLSelectElement;
   swift: HTMLInputElement;
+  additionalSpeed: HTMLInputElement;
+  additionalSpeedError: HTMLElement;
+  speedLabel: HTMLElement;
   speed: HTMLElement;
+  speedCopy: HTMLElement;
   cardResult: HTMLElement;
   comparisonStatus: HTMLElement;
 };
@@ -103,6 +113,8 @@ if (root && dataNode) {
       towerPercent: 15,
       usesSwift: true,
       initialBuffs: 0,
+      additionalSpeed: null,
+      additionalSpeedInvalid: false,
     },
     enemy: {
       monster: null,
@@ -110,6 +122,8 @@ if (root && dataNode) {
       towerPercent: 15,
       usesSwift: true,
       initialBuffs: 0,
+      additionalSpeed: null,
+      additionalSpeedInvalid: false,
     },
   };
 
@@ -148,7 +162,23 @@ if (root && dataNode) {
         )!,
         tower: query<HTMLSelectElement>(sideRoot, '[data-comparison-tower]')!,
         swift: query<HTMLInputElement>(sideRoot, '[data-comparison-swift]')!,
+        additionalSpeed: query<HTMLInputElement>(
+          sideRoot,
+          '[data-comparison-additional-speed]',
+        )!,
+        additionalSpeedError: query<HTMLElement>(
+          sideRoot,
+          '[data-comparison-additional-error]',
+        )!,
+        speedLabel: query<HTMLElement>(
+          sideRoot,
+          '[data-comparison-speed-label]',
+        )!,
         speed: query<HTMLElement>(sideRoot, '[data-comparison-speed]')!,
+        speedCopy: query<HTMLElement>(
+          sideRoot,
+          '[data-comparison-speed-copy]',
+        )!,
         cardResult: query<HTMLElement>(
           sideRoot,
           '.speed-comparison-card-result',
@@ -170,6 +200,34 @@ if (root && dataNode) {
       ? state.initialBuffs * CHILLING_SPEED_PER_BUFF
       : 0;
 
+  const speedInput = (state: SideState) => ({
+    baseSpeed: state.monster!.speed,
+    leaderPercent: state.leaderPercent,
+    towerPercent: state.towerPercent,
+    usesSwift: state.usesSwift,
+    passiveSpeedBonus: passiveSpeedBonus(state),
+  });
+
+  const validateAdditionalSpeed = (side: Side) => {
+    const state = states[side];
+    const rawValue = elements[side].additionalSpeed.value.trim();
+    if (!state.monster || rawValue === '') {
+      state.additionalSpeed = null;
+      state.additionalSpeedInvalid = false;
+      return;
+    }
+
+    const additionalSpeed = Number(rawValue);
+    state.additionalSpeed =
+      displayedAdditionalCombatSpeed({
+        ...speedInput(state),
+        additionalSpeed,
+      }) === null
+        ? null
+        : additionalSpeed;
+    state.additionalSpeedInvalid = state.additionalSpeed === null;
+  };
+
   const publicState = (): SpeedComparisonState => ({
     ally: {
       monsterId: states.ally.monster?.id ?? null,
@@ -177,6 +235,7 @@ if (root && dataNode) {
       towerPercent: states.ally.towerPercent,
       usesSwift: states.ally.usesSwift,
       initialBuffs: states.ally.initialBuffs,
+      additionalSpeed: states.ally.additionalSpeed,
     },
     enemy: {
       monsterId: states.enemy.monster?.id ?? null,
@@ -184,6 +243,7 @@ if (root && dataNode) {
       towerPercent: states.enemy.towerPercent,
       usesSwift: states.enemy.usesSwift,
       initialBuffs: states.enemy.initialBuffs,
+      additionalSpeed: states.enemy.additionalSpeed,
     },
   });
 
@@ -386,21 +446,63 @@ if (root && dataNode) {
     sideElements.tower.value = String(state.towerPercent);
     sideElements.swift.checked = state.usesSwift;
     sideElements.swift.disabled = !state.monster;
+    sideElements.additionalSpeed.disabled = !state.monster;
     const usesChillingPassive =
       state.monster?.id === SPEED_COMPARISON_CHILLING_ID;
     sideElements.initialBuffs.hidden = !usesChillingPassive;
     sideElements.initialBuffsSelect.value = String(state.initialBuffs);
 
-    const speed = state.monster
-      ? structuralSpeed({
-          baseSpeed: state.monster.speed,
-          leaderPercent: state.leaderPercent,
-          towerPercent: state.towerPercent,
-          usesSwift: state.usesSwift,
-          passiveSpeedBonus: passiveSpeedBonus(state),
-        })
+    const minimumAdditionalSpeed = state.monster
+      ? minimumDisplayedAdditionalSpeed(speedInput(state))
       : null;
+    if (minimumAdditionalSpeed === null) {
+      sideElements.additionalSpeed.removeAttribute('min');
+    } else {
+      sideElements.additionalSpeed.min = String(minimumAdditionalSpeed);
+    }
+    sideElements.additionalSpeed.setAttribute(
+      'aria-invalid',
+      String(state.additionalSpeedInvalid),
+    );
+    sideElements.additionalSpeedError.hidden = !state.additionalSpeedInvalid;
+    sideElements.additionalSpeedError.textContent = state.additionalSpeedInvalid
+      ? interpolate(
+          message(
+            'additionalSpeedMinimum',
+            'Enter a whole additional SPD value of at least +{minimum} for this setup.',
+          ),
+          { minimum: minimumAdditionalSpeed ?? 0 },
+        )
+      : '';
+
+    const speed =
+      !state.monster || state.additionalSpeedInvalid
+        ? null
+        : state.additionalSpeed === null
+          ? structuralSpeed(speedInput(state))
+          : displayedAdditionalCombatSpeed({
+              ...speedInput(state),
+              additionalSpeed: state.additionalSpeed,
+            });
+    sideElements.speedLabel.textContent =
+      state.additionalSpeed === null
+        ? message('structuralSpeed', 'Structural SPD')
+        : message('combatSpeed', 'Combat SPD');
     sideElements.speed.textContent = speed === null ? '—' : `${speed} SPD`;
+    sideElements.speedCopy.textContent =
+      state.additionalSpeed === null || !state.monster
+        ? message('noRuneStats', 'Without individual rune stats')
+        : interpolate(
+            message(
+              'calculatedTotalSpeed',
+              '{total} total SPD ({base} base +{additional})',
+            ),
+            {
+              total: state.monster.speed + state.additionalSpeed,
+              base: state.monster.speed,
+              additional: state.additionalSpeed,
+            },
+          );
     sideElements.cardResult.classList.toggle('is-empty', speed === null);
     sideElements.cardResult.classList.remove(
       'is-advantage',
@@ -429,9 +531,11 @@ if (root && dataNode) {
   const renderResult = () => {
     const ally = states.ally;
     const enemy = states.enemy;
+    const clearResultClasses = () =>
+      result.classList.remove('is-ally', 'is-enemy', 'is-tie');
     if (!ally.monster || !enemy.monster) {
       result.classList.add('is-empty');
-      result.classList.remove('is-ally', 'is-enemy', 'is-tie');
+      clearResultClasses();
       resultTitle.textContent = message('selectBoth', 'Select both monsters');
       resultCopy.textContent = message(
         'resultWaiting',
@@ -442,21 +546,204 @@ if (root && dataNode) {
       return;
     }
 
+    if (ally.additionalSpeedInvalid || enemy.additionalSpeedInvalid) {
+      result.classList.add('is-empty');
+      clearResultClasses();
+      resultTitle.textContent = message(
+        'fixAdditionalSpeed',
+        'Correct the additional SPD',
+      );
+      resultCopy.textContent = message(
+        'fixAdditionalSpeedCopy',
+        'Review the highlighted value to continue the comparison.',
+      );
+      tieCopy.hidden = true;
+      tieCopy.textContent = '';
+      return;
+    }
+
+    const buildSides = sideNames.filter(
+      (side) => states[side].additionalSpeed !== null,
+    );
+
+    if (buildSides.length === 1) {
+      const referenceSide = buildSides[0]!;
+      const targetSide: Side = referenceSide === 'ally' ? 'enemy' : 'ally';
+      const reference = states[referenceSide];
+      const target = states[targetSide];
+      const thresholds = requiredDisplayedAdditionalSpeeds(
+        {
+          ...speedInput(reference),
+          additionalSpeed: reference.additionalSpeed!,
+        },
+        speedInput(target),
+      );
+      if (!thresholds) return;
+
+      const targetElements = elements[targetSide];
+      targetElements.speedLabel.textContent = message(
+        'requiredAdditionalSpeed',
+        'Required additional SPD',
+      );
+      const winTotalSpeed =
+        target.monster!.speed + thresholds.winAdditionalSpeed;
+      const tieTotalSpeed =
+        thresholds.tieAdditionalSpeed === null
+          ? null
+          : target.monster!.speed + thresholds.tieAdditionalSpeed;
+      targetElements.speed.textContent = `+${thresholds.winAdditionalSpeed} SPD`;
+      targetElements.speedCopy.textContent =
+        thresholds.tieAdditionalSpeed === null
+          ? message(
+              'alreadyWinsAtMinimum',
+              'Already moves first at the minimum additional SPD for this setup.',
+            )
+          : interpolate(
+              message(
+                'additionalSpeedToTie',
+                '+{speed} to tie · {total} total SPD',
+              ),
+              {
+                speed: thresholds.tieAdditionalSpeed,
+                total: tieTotalSpeed!,
+              },
+            );
+      targetElements.cardResult.classList.remove('is-empty');
+
+      result.classList.remove('is-empty');
+      clearResultClasses();
+      result.classList.add(referenceSide === 'ally' ? 'is-ally' : 'is-enemy');
+      resultTitle.textContent = interpolate(
+        message(
+          'targetTitle',
+          '{target} needs +{speed} additional SPD ({total} total) to move before {reference}',
+        ),
+        {
+          target: target.monster!.name,
+          speed: thresholds.winAdditionalSpeed,
+          total: winTotalSpeed,
+          reference: reference.monster!.name,
+        },
+      );
+      resultCopy.textContent =
+        thresholds.tieAdditionalSpeed === null
+          ? interpolate(
+              message(
+                'targetAlreadyWinsCopy',
+                'At the minimum of +{speed} additional SPD ({total} total), {target} already moves before {reference}.',
+              ),
+              {
+                speed: thresholds.winAdditionalSpeed,
+                total: winTotalSpeed,
+                target: target.monster!.name,
+                reference: reference.monster!.name,
+              },
+            )
+          : interpolate(
+              message(
+                'targetCopy',
+                'At +{tieSpeed} additional SPD ({tieTotal} total), {target} ties at {combatSpeed} combat SPD.',
+              ),
+              {
+                tieSpeed: thresholds.tieAdditionalSpeed,
+                tieTotal: tieTotalSpeed!,
+                target: target.monster!.name,
+                combatSpeed: thresholds.referenceCombatSpeed,
+              },
+            );
+      tieCopy.hidden = true;
+      tieCopy.textContent = '';
+      return;
+    }
+
+    if (buildSides.length === 2) {
+      const comparison = compareBuildSpeed(
+        { ...speedInput(ally), additionalSpeed: ally.additionalSpeed! },
+        { ...speedInput(enemy), additionalSpeed: enemy.additionalSpeed! },
+      );
+      if (!comparison) return;
+
+      result.classList.remove('is-empty');
+      clearResultClasses();
+      if (comparison.winner === 'tie') {
+        setComparisonStatus('ally', 'tie');
+        setComparisonStatus('enemy', 'tie');
+        result.classList.add('is-tie');
+        resultTitle.textContent = message('buildTie', 'Combat SPD tie');
+        resultCopy.textContent = interpolate(
+          message(
+            'buildTieResult',
+            '{ally} and {enemy} both reach {speed} combat SPD.',
+          ),
+          {
+            ally: ally.monster.name,
+            enemy: enemy.monster.name,
+            speed: comparison.allySpeed,
+          },
+        );
+      } else {
+        const winner = comparison.winner === 'ally' ? ally : enemy;
+        const loser = comparison.winner === 'ally' ? enemy : ally;
+        const winnerSpeed =
+          comparison.winner === 'ally'
+            ? comparison.allySpeed
+            : comparison.enemySpeed;
+        const loserSpeed =
+          comparison.winner === 'ally'
+            ? comparison.enemySpeed
+            : comparison.allySpeed;
+        setComparisonStatus(comparison.winner, 'advantage');
+        setComparisonStatus(
+          comparison.winner === 'ally' ? 'enemy' : 'ally',
+          'disadvantage',
+        );
+        result.classList.add(
+          comparison.winner === 'ally' ? 'is-ally' : 'is-enemy',
+        );
+        resultTitle.textContent = interpolate(
+          message(
+            'buildAdvantageTitle',
+            '{winner} moves first by {advantage} SPD',
+          ),
+          {
+            winner: winner.monster!.name,
+            advantage: comparison.advantage,
+          },
+        );
+        resultCopy.textContent = interpolate(
+          message(
+            'buildAdvantageCopy',
+            '{winner} reaches {winnerSpeed} combat SPD versus {loserSpeed} for {loser}.',
+          ),
+          {
+            winner: winner.monster!.name,
+            winnerSpeed,
+            loserSpeed,
+            loser: loser.monster!.name,
+          },
+        );
+      }
+      tieCopy.hidden = false;
+      tieCopy.textContent = interpolate(
+        message(
+          'buildSpeeds',
+          'Calculated total SPD: {ally} at {allyTotal} (+{allyAdditional}) and {enemy} at {enemyTotal} (+{enemyAdditional}).',
+        ),
+        {
+          ally: ally.monster.name,
+          allyTotal: ally.monster.speed + ally.additionalSpeed!,
+          allyAdditional: ally.additionalSpeed!,
+          enemy: enemy.monster.name,
+          enemyTotal: enemy.monster.speed + enemy.additionalSpeed!,
+          enemyAdditional: enemy.additionalSpeed!,
+        },
+      );
+      return;
+    }
+
     const comparison = compareStructuralSpeed(
-      {
-        baseSpeed: ally.monster.speed,
-        leaderPercent: ally.leaderPercent,
-        towerPercent: ally.towerPercent,
-        usesSwift: ally.usesSwift,
-        passiveSpeedBonus: passiveSpeedBonus(ally),
-      },
-      {
-        baseSpeed: enemy.monster.speed,
-        leaderPercent: enemy.leaderPercent,
-        towerPercent: enemy.towerPercent,
-        usesSwift: enemy.usesSwift,
-        passiveSpeedBonus: passiveSpeedBonus(enemy),
-      },
+      speedInput(ally),
+      speedInput(enemy),
     );
     if (!comparison) return;
 
@@ -544,7 +831,10 @@ if (root && dataNode) {
       monster.id === SPEED_COMPARISON_CHILLING_ID
         ? DEFAULT_CHILLING_INITIAL_BUFFS
         : 0;
+    state.additionalSpeed = null;
+    state.additionalSpeedInvalid = false;
     elements[side].search.value = monster.name;
+    elements[side].additionalSpeed.value = '';
     closeOptions(side);
     elements[side].search.blur();
     render();
@@ -556,6 +846,9 @@ if (root && dataNode) {
     state.leaderPercent = 0;
     state.usesSwift = true;
     state.initialBuffs = 0;
+    state.additionalSpeed = null;
+    state.additionalSpeedInvalid = false;
+    elements[side].additionalSpeed.value = '';
   };
 
   const applyQueryState = (queryState: SpeedComparisonState) => {
@@ -568,7 +861,11 @@ if (root && dataNode) {
       states[side].towerPercent = next.towerPercent;
       states[side].usesSwift = next.usesSwift;
       states[side].initialBuffs = next.initialBuffs;
+      states[side].additionalSpeed = next.additionalSpeed;
+      states[side].additionalSpeedInvalid = false;
       elements[side].search.value = states[side].monster?.name ?? '';
+      elements[side].additionalSpeed.value =
+        next.additionalSpeed === null ? '' : String(next.additionalSpeed);
       closeOptions(side);
     });
   };
@@ -629,6 +926,11 @@ if (root && dataNode) {
     });
     sideElements.swift.addEventListener('change', () => {
       state.usesSwift = sideElements.swift.checked;
+      validateAdditionalSpeed(side);
+      render();
+    });
+    sideElements.additionalSpeed.addEventListener('input', () => {
+      validateAdditionalSpeed(side);
       render();
     });
     sideElements.initialBuffsSelect.addEventListener('change', () => {
