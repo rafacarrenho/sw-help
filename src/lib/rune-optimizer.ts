@@ -97,7 +97,10 @@ export function runePotentialEffects(
       source: 'main',
       stat: rune.main.stat,
       value: rune.main.value,
-      grindGain: 0,
+      baseValue: rune.main.value,
+      currentGrind: 0,
+      possibleGrind: 0,
+      grindable: false,
       enchanted: false,
     },
     ...(rune.innate
@@ -106,18 +109,28 @@ export function runePotentialEffects(
             source: 'innate' as const,
             stat: rune.innate.stat,
             value: rune.innate.value,
-            grindGain: 0,
+            baseValue: rune.innate.value,
+            currentGrind: 0,
+            possibleGrind: 0,
+            grindable: false,
             enchanted: false,
           },
         ]
       : []),
     ...rune.substats.map((substat) => {
-      const finalGrind = Math.max(substat.grind, grindCaps[substat.stat] ?? 0);
+      const grindCap = grindCaps[substat.stat];
+      const grindable = grindCap !== undefined;
+      const possibleGrind = grindable
+        ? Math.max(0, grindCap - substat.grind)
+        : 0;
       return {
         source: 'substat' as const,
         stat: substat.stat,
-        value: substat.value + finalGrind,
-        grindGain: Math.max(0, finalGrind - substat.grind),
+        value: substat.value + substat.grind + possibleGrind,
+        baseValue: substat.value,
+        currentGrind: substat.grind,
+        possibleGrind,
+        grindable,
         enchanted: substat.enchanted,
       };
     }),

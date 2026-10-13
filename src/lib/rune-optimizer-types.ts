@@ -85,7 +85,10 @@ export interface PotentialRuneEffect {
   source: 'main' | 'innate' | 'substat';
   stat: RuneStatKey;
   value: number;
-  grindGain: number;
+  baseValue: number;
+  currentGrind: number;
+  possibleGrind: number;
+  grindable: boolean;
   enchanted: boolean;
 }
 

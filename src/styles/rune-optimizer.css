@@ -484,18 +484,22 @@
 }
 
 .rune-effects dd {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
+  display: grid;
+  justify-items: end;
+  gap: 3px;
   min-width: 0;
   margin: 0;
-  flex-wrap: wrap;
   text-align: right;
 }
 
 .rune-effects dd strong {
   font-size: 16px;
+}
+
+.rune-grind-breakdown {
+  color: var(--muted, #a5aab3);
+  font-size: 14px;
+  line-height: 1.35;
 }
 
 .rune-effect-badge {

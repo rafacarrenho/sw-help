@@ -805,15 +805,16 @@ const statLabels = {
           name.textContent = `${label} · ${runeStatNames[effect.stat]}`;
           const value = document.createElement('dd');
           const finalValue = document.createElement('strong');
-          finalValue.textContent = formatRuneValue(effect.stat, effect.value);
+          finalValue.textContent =
+            effect.source === 'substat'
+              ? `${copy.finalValue} ${formatRuneValue(effect.stat, effect.value)}`
+              : formatRuneValue(effect.stat, effect.value);
           value.append(finalValue);
-          if (effect.grindGain > 0) {
-            const grind = document.createElement('span');
-            grind.className = 'rune-effect-badge';
-            grind.textContent = formatTemplate(copy.grindPossible, {
-              value: effect.grindGain,
-            });
-            value.append(grind);
+          if (effect.grindable) {
+            const breakdown = document.createElement('span');
+            breakdown.className = 'rune-grind-breakdown';
+            breakdown.textContent = `${copy.base} ${formatRuneValue(effect.stat, effect.baseValue)} · ${copy.currentGrind} ${formatRuneValue(effect.stat, effect.currentGrind)} · ${copy.possibleGrind} ${formatRuneValue(effect.stat, effect.possibleGrind)}`;
+            value.append(breakdown);
           }
           if (effect.enchanted) {
             const gemmed = document.createElement('span');

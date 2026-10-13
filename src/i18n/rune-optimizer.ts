@@ -44,7 +44,9 @@ export interface RuneOptimizerMessages {
   mainStat: string;
   innateStat: string;
   substats: string;
-  grindPossible: string;
+  finalValue: string;
+  currentGrind: string;
+  possibleGrind: string;
   gemmed: string;
   ancient: string;
   inventory: string;
@@ -110,7 +112,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Main stat',
     innateStat: 'Innate',
     substats: 'Substats',
-    grindPossible: '+{value} possible grind',
+    finalValue: 'Final',
+    currentGrind: 'Current grind',
+    possibleGrind: 'Possible',
     gemmed: 'Gemmed',
     ancient: 'Ancient',
     inventory: 'Inventory',
@@ -175,7 +179,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Status principal',
     innateStat: 'Inato',
     substats: 'Substats',
-    grindPossible: '+{value} de grind possível',
+    finalValue: 'Final',
+    currentGrind: 'Grind atual',
+    possibleGrind: 'Possível',
     gemmed: 'Gemado',
     ancient: 'Ancient',
     inventory: 'Inventário',
@@ -240,7 +246,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Atributo principal',
     innateStat: 'Innato',
     substats: 'Substats',
-    grindPossible: '+{value} de grind posible',
+    finalValue: 'Final',
+    currentGrind: 'Grind actual',
+    possibleGrind: 'Posible',
     gemmed: 'Con gema',
     ancient: 'Ancient',
     inventory: 'Inventario',
@@ -305,7 +313,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Stat principale',
     innateStat: 'Innée',
     substats: 'Substats',
-    grindPossible: '+{value} de grind possible',
+    finalValue: 'Final',
+    currentGrind: 'Grind actuel',
+    possibleGrind: 'Possible',
     gemmed: 'Gemmée',
     ancient: 'Ancient',
     inventory: 'Inventaire',
@@ -369,7 +379,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Hauptwert',
     innateStat: 'Angeboren',
     substats: 'Substats',
-    grindPossible: '+{value} möglicher Grind',
+    finalValue: 'Final',
+    currentGrind: 'Aktueller Grind',
+    possibleGrind: 'Möglich',
     gemmed: 'Mit Gem',
     ancient: 'Ancient',
     inventory: 'Inventar',

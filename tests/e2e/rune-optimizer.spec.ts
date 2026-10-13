@@ -25,12 +25,12 @@ const syntheticExport = {
     rune_id: 800000 + index,
     slot_no: index + 1,
     set_id: index < 4 ? 3 : 15,
-    class: 6,
+    class: index === 0 ? 16 : 6,
     rank: 5,
     upgrade_curr: 15,
     pri_eff: [1, 2448],
     prefix_eff: [0, 0],
-    sec_eff: [[8, 30, 0, 0]],
+    sec_eff: [index === 0 ? [8, 26, 0, 5] : [8, 30, 0, 0]],
   })),
   artifacts: [{ rid: 700001, slot: 1, rank: 4, level: 15 }],
 };
@@ -63,9 +63,9 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(firstBuild.locator('.objective-score')).toContainText(
     'SPD Adicional',
   );
-  await expect(firstBuild.locator('.objective-score')).toContainText('+234');
+  await expect(firstBuild.locator('.objective-score')).toContainText('+231');
   await expect(firstBuild.locator('.objective-score')).toContainText(
-    'Total 330',
+    'Total 327',
   );
   await expect(firstBuild.locator('.result-stats thead th')).toHaveText([
     '',
@@ -80,8 +80,10 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(firstRune).toContainText('Status principal · HP');
   await expect(firstRune).toContainText('+2.448');
   await expect(firstRune).toContainText('Substats · SPD');
-  await expect(firstRune).toContainText('+35');
-  await expect(firstRune).toContainText('+5 de grind possível');
+  await expect(firstRune).toContainText('Final +32');
+  await expect(firstRune).toContainText(
+    'Base +26 · Grind atual +5 · Possível +1',
+  );
   await expect(firstRune).toContainText('Inventário');
 
   const stored = await page.evaluate(async () => {
