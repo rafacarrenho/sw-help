@@ -10,7 +10,7 @@ const syntheticExport = {
   ret_code: 0,
   session_key: 'must-not-be-stored',
   wizard_info: { wizard_id: 999999, wizard_name: 'Private test account' },
-  rune_lock_list: [],
+  rune_lock_list: [{ rune_id: 800000, lock_type: 1 }],
   unit_list: [
     {
       unit_id: 123456,
@@ -48,6 +48,7 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(page.locator('[data-import-status]')).toContainText(
     '1 monstros · 6 runas · 1 artefatos',
   );
+  await expect(page.getByLabel('Permitir runas bloqueadas')).toBeChecked();
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   await monsterSearch.fill('Tiana');
