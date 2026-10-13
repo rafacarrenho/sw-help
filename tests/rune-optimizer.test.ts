@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { optimizeRunes, runeVectors } from '../src/lib/rune-optimizer.ts';
+import {
+  optimizeRunes,
+  runePotentialEffects,
+  runeVectors,
+} from '../src/lib/rune-optimizer.ts';
 import { parseSwexJson } from '../src/lib/swex-import.ts';
 import type {
   NormalizedRune,
@@ -111,19 +115,73 @@ test('SWEX import sanitizes identifiers and projects main stats to +15', () => {
 });
 
 test('potential stats keep current substats and add only maximum grinds', () => {
-  const vectors = runeVectors(
-    rune('r1', 1, 'Energy', 'hpFlat', 2448, {
-      substats: [
-        { stat: 'speed', value: 25, grind: 0, enchanted: false },
-        { stat: 'hpPercent', value: 20, grind: 4, enchanted: true },
-        { stat: 'critRate', value: 18, grind: 0, enchanted: false },
-      ],
-    }),
-  );
+  const testRune = rune('r1', 1, 'Energy', 'hpFlat', 2448, {
+    innate: { stat: 'accuracy', value: 8 },
+    substats: [
+      { stat: 'speed', value: 25, grind: 0, enchanted: false },
+      { stat: 'hpPercent', value: 20, grind: 4, enchanted: true },
+      { stat: 'critRate', value: 18, grind: 0, enchanted: false },
+    ],
+  });
+  const vectors = runeVectors(testRune);
   assert.equal(vectors.current.speed, 25);
   assert.equal(vectors.potential.speed, 30);
   assert.equal(vectors.potential.hpPercent, 30);
   assert.equal(vectors.potential.critRate, 18);
+
+  assert.deepEqual(runePotentialEffects(testRune), [
+    {
+      source: 'main',
+      stat: 'hpFlat',
+      value: 2448,
+      grindGain: 0,
+      enchanted: false,
+    },
+    {
+      source: 'innate',
+      stat: 'accuracy',
+      value: 8,
+      grindGain: 0,
+      enchanted: false,
+    },
+    {
+      source: 'substat',
+      stat: 'speed',
+      value: 30,
+      grindGain: 5,
+      enchanted: false,
+    },
+    {
+      source: 'substat',
+      stat: 'hpPercent',
+      value: 30,
+      grindGain: 6,
+      enchanted: true,
+    },
+    {
+      source: 'substat',
+      stat: 'critRate',
+      value: 18,
+      grindGain: 0,
+      enchanted: false,
+    },
+  ]);
+});
+
+test('Ancient runes display their higher possible grind', () => {
+  const effects = runePotentialEffects(
+    rune('ancient', 2, 'Swift', 'speed', 42, {
+      ancient: true,
+      substats: [{ stat: 'hpPercent', value: 20, grind: 10, enchanted: false }],
+    }),
+  );
+  assert.deepEqual(effects[1], {
+    source: 'substat',
+    stat: 'hpPercent',
+    value: 32,
+    grindGain: 2,
+    enchanted: false,
+  });
 });
 
 test('optimizer finds the exact fastest build and applies Swift rounding', () => {

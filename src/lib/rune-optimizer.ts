@@ -4,6 +4,7 @@ import type {
   NormalizedRune,
   OptimizerQuery,
   OptimizerResult,
+  PotentialRuneEffect,
   RuneBuildResult,
   RuneSetName,
   RuneStatKey,
@@ -87,6 +88,42 @@ const ANCIENT_GRIND_MAX: Partial<Record<RuneStatKey, number>> = {
   speed: 6,
 };
 
+export function runePotentialEffects(
+  rune: NormalizedRune,
+): PotentialRuneEffect[] {
+  const grindCaps = rune.ancient ? ANCIENT_GRIND_MAX : NORMAL_GRIND_MAX;
+  return [
+    {
+      source: 'main',
+      stat: rune.main.stat,
+      value: rune.main.value,
+      grindGain: 0,
+      enchanted: false,
+    },
+    ...(rune.innate
+      ? [
+          {
+            source: 'innate' as const,
+            stat: rune.innate.stat,
+            value: rune.innate.value,
+            grindGain: 0,
+            enchanted: false,
+          },
+        ]
+      : []),
+    ...rune.substats.map((substat) => {
+      const finalGrind = Math.max(substat.grind, grindCaps[substat.stat] ?? 0);
+      return {
+        source: 'substat' as const,
+        stat: substat.stat,
+        value: substat.value + finalGrind,
+        grindGain: Math.max(0, finalGrind - substat.grind),
+        enchanted: substat.enchanted,
+      };
+    }),
+  ];
+}
+
 type RuneVector = Record<RuneStatKey, number>;
 
 interface CandidateRune {
@@ -125,14 +162,12 @@ export function runeVectors(rune: NormalizedRune): {
     addEffect(current, rune.innate.stat, rune.innate.value);
     addEffect(potential, rune.innate.stat, rune.innate.value);
   }
-  const grindCaps = rune.ancient ? ANCIENT_GRIND_MAX : NORMAL_GRIND_MAX;
   for (const substat of rune.substats) {
     addEffect(current, substat.stat, substat.value + substat.grind);
-    addEffect(
-      potential,
-      substat.stat,
-      substat.value + Math.max(substat.grind, grindCaps[substat.stat] ?? 0),
-    );
+  }
+  for (const effect of runePotentialEffects(rune)) {
+    if (effect.source === 'main' || effect.source === 'innate') continue;
+    addEffect(potential, effect.stat, effect.value);
   }
   return { current, potential };
 }

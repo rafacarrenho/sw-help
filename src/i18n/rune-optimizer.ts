@@ -37,8 +37,19 @@ export interface RuneOptimizerMessages {
   calculating: string;
   noResults: string;
   results: string;
-  current: string;
-  potential: string;
+  base: string;
+  additional: string;
+  total: string;
+  finalBuild: string;
+  mainStat: string;
+  innateStat: string;
+  substats: string;
+  grindPossible: string;
+  gemmed: string;
+  ancient: string;
+  inventory: string;
+  equippedOn: string;
+  locked: string;
   sets: string;
   runes: string;
   candidates: string;
@@ -92,8 +103,19 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     calculating: 'Calculating exact combinations…',
     noResults: 'No build meets every selected condition.',
     results: 'Best builds',
-    current: 'Current',
-    potential: 'Potential',
+    base: 'Base',
+    additional: 'Additional',
+    total: 'Total',
+    finalBuild: 'Final build',
+    mainStat: 'Main stat',
+    innateStat: 'Innate',
+    substats: 'Substats',
+    grindPossible: '+{value} possible grind',
+    gemmed: 'Gemmed',
+    ancient: 'Ancient',
+    inventory: 'Inventory',
+    equippedOn: 'Equipped on {monster}',
+    locked: 'Locked',
     sets: 'Sets',
     runes: 'Runes',
     candidates: 'combinations evaluated',
@@ -102,7 +124,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     presetViolentWill: 'Violent + Will',
     presetTank: 'Tank / RES',
     potentialNote:
-      'Potential projects main stats to +15 and applies the maximum possible grind while keeping current substats.',
+      'Final results project main stats to +15 and apply the maximum possible grind while keeping existing substats.',
     unknownMonster: 'Unknown monster',
     dataRemoved: 'Local data removed.',
   },
@@ -146,8 +168,19 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     calculating: 'Calculando combinações exatas…',
     noResults: 'Nenhuma build atende a todas as condições.',
     results: 'Melhores builds',
-    current: 'Atual',
-    potential: 'Potencial',
+    base: 'Base',
+    additional: 'Adicional',
+    total: 'Total',
+    finalBuild: 'Build final',
+    mainStat: 'Status principal',
+    innateStat: 'Inato',
+    substats: 'Substats',
+    grindPossible: '+{value} de grind possível',
+    gemmed: 'Gemado',
+    ancient: 'Ancient',
+    inventory: 'Inventário',
+    equippedOn: 'Equipada em {monster}',
+    locked: 'Bloqueada',
     sets: 'Sets',
     runes: 'Runas',
     candidates: 'combinações avaliadas',
@@ -156,7 +189,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     presetViolentWill: 'Violent + Will',
     presetTank: 'Tank / RES',
     potentialNote:
-      'O potencial projeta os status principais para +15 e aplica o maior grind possível, mantendo os substats atuais.',
+      'O resultado final projeta os status principais para +15 e aplica o maior grind possível, mantendo os substats existentes.',
     unknownMonster: 'Monstro desconhecido',
     dataRemoved: 'Dados locais removidos.',
   },
@@ -200,8 +233,19 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     calculating: 'Calculando combinaciones exactas…',
     noResults: 'Ninguna build cumple todas las condiciones.',
     results: 'Mejores builds',
-    current: 'Actual',
-    potential: 'Potencial',
+    base: 'Base',
+    additional: 'Adicional',
+    total: 'Total',
+    finalBuild: 'Build final',
+    mainStat: 'Atributo principal',
+    innateStat: 'Innato',
+    substats: 'Substats',
+    grindPossible: '+{value} de grind posible',
+    gemmed: 'Con gema',
+    ancient: 'Ancient',
+    inventory: 'Inventario',
+    equippedOn: 'Equipada en {monster}',
+    locked: 'Bloqueada',
     sets: 'Sets',
     runes: 'Runas',
     candidates: 'combinaciones evaluadas',
@@ -210,7 +254,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     presetViolentWill: 'Violent + Will',
     presetTank: 'Tank / RES',
     potentialNote:
-      'El potencial proyecta los atributos principales a +15 y aplica el mayor grind posible, conservando los substats actuales.',
+      'El resultado final proyecta los atributos principales a +15 y aplica el mayor grind posible, conservando los substats existentes.',
     unknownMonster: 'Monstruo desconocido',
     dataRemoved: 'Datos locales eliminados.',
   },
@@ -254,8 +298,19 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     calculating: 'Calcul des combinaisons exactes…',
     noResults: 'Aucun build ne respecte toutes les conditions.',
     results: 'Meilleurs builds',
-    current: 'Actuel',
-    potential: 'Potentiel',
+    base: 'Base',
+    additional: 'Additionnel',
+    total: 'Total',
+    finalBuild: 'Build final',
+    mainStat: 'Stat principale',
+    innateStat: 'Innée',
+    substats: 'Substats',
+    grindPossible: '+{value} de grind possible',
+    gemmed: 'Gemmée',
+    ancient: 'Ancient',
+    inventory: 'Inventaire',
+    equippedOn: 'Équipée sur {monster}',
+    locked: 'Verrouillée',
     sets: 'Sets',
     runes: 'Runes',
     candidates: 'combinaisons évaluées',
@@ -264,7 +319,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     presetViolentWill: 'Violent + Will',
     presetTank: 'Tank / RES',
     potentialNote:
-      'Le potentiel projette les stats principales à +15 et applique le grind maximal possible, sans changer les substats.',
+      'Le résultat final projette les stats principales à +15 et applique le grind maximal possible, sans changer les substats existants.',
     unknownMonster: 'Monstre inconnu',
     dataRemoved: 'Données locales supprimées.',
   },
@@ -307,8 +362,19 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     calculating: 'Exakte Kombinationen werden berechnet…',
     noResults: 'Kein Build erfüllt alle Bedingungen.',
     results: 'Beste Builds',
-    current: 'Aktuell',
-    potential: 'Potenzial',
+    base: 'Basis',
+    additional: 'Zusätzlich',
+    total: 'Gesamt',
+    finalBuild: 'Finaler Build',
+    mainStat: 'Hauptwert',
+    innateStat: 'Angeboren',
+    substats: 'Substats',
+    grindPossible: '+{value} möglicher Grind',
+    gemmed: 'Mit Gem',
+    ancient: 'Ancient',
+    inventory: 'Inventar',
+    equippedOn: 'Ausgerüstet auf {monster}',
+    locked: 'Gesperrt',
     sets: 'Sets',
     runes: 'Runen',
     candidates: 'Kombinationen geprüft',
@@ -317,7 +383,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     presetViolentWill: 'Violent + Will',
     presetTank: 'Tank / RES',
     potentialNote:
-      'Das Potenzial rechnet Hauptwerte auf +15 und wendet den höchstmöglichen Grind an, ohne Substats zu ersetzen.',
+      'Das Endergebnis rechnet Hauptwerte auf +15 und wendet den höchstmöglichen Grind an, ohne vorhandene Substats zu ersetzen.',
     unknownMonster: 'Unbekanntes Monster',
     dataRemoved: 'Lokale Daten gelöscht.',
   },

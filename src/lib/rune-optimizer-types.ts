@@ -81,6 +81,14 @@ export interface NormalizedRune {
   substats: RuneSubstat[];
 }
 
+export interface PotentialRuneEffect {
+  source: 'main' | 'innate' | 'substat';
+  stat: RuneStatKey;
+  value: number;
+  grindGain: number;
+  enchanted: boolean;
+}
+
 export interface ImportedMonster {
   id: string;
   com2usId: number;

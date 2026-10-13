@@ -58,8 +58,31 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await page.getByRole('button', { name: 'Encontrar builds exatas' }).click();
 
   await expect(page.locator('.build-result').first()).toBeVisible();
-  await expect(page.locator('.build-result').first()).toContainText('Swift');
-  await expect(page.locator('.build-result').first()).toContainText('SPD');
+  const firstBuild = page.locator('.build-result').first();
+  await expect(firstBuild).toContainText('Swift');
+  await expect(firstBuild.locator('.objective-score')).toContainText(
+    'SPD Adicional',
+  );
+  await expect(firstBuild.locator('.objective-score')).toContainText('+234');
+  await expect(firstBuild.locator('.objective-score')).toContainText(
+    'Total 330',
+  );
+  await expect(firstBuild.locator('.result-stats thead th')).toHaveText([
+    '',
+    'Base',
+    'Adicional',
+    'Total',
+  ]);
+  await expect(firstBuild).not.toContainText('Atual');
+  await expect(firstBuild.locator('[data-rune-card]')).toHaveCount(6);
+  const firstRune = firstBuild.locator('[data-rune-card="1"]');
+  await expect(firstRune).toContainText('Slot 1 · Swift');
+  await expect(firstRune).toContainText('Status principal · HP');
+  await expect(firstRune).toContainText('+2.448');
+  await expect(firstRune).toContainText('Substats · SPD');
+  await expect(firstRune).toContainText('+35');
+  await expect(firstRune).toContainText('+5 de grind possível');
+  await expect(firstRune).toContainText('Inventário');
 
   const stored = await page.evaluate(async () => {
     const request = indexedDB.open('playerdojo-rune-optimizer', 1);

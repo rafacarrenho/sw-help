@@ -311,12 +311,14 @@ const statLabels = {
     loadRuneSnapshot,
     saveRuneSnapshot,
   } from '../../lib/rune-optimizer-storage.ts';
+  import { runePotentialEffects } from '../../lib/rune-optimizer.ts';
   import type {
     AccountSnapshot,
     BuildStatKey,
     OptimizerQuery,
     OptimizerResult,
     RuneSetName,
+    RuneStatKey,
   } from '../../lib/rune-optimizer-types.ts';
 
   interface CatalogMonster {
@@ -341,6 +343,7 @@ const statLabels = {
   const copy = JSON.parse(
     root.querySelector('[data-copy]')?.textContent ?? '{}',
   ) as Record<string, string>;
+  const numberLocale = document.documentElement.lang || undefined;
   const catalog = JSON.parse(
     root.querySelector('[data-catalog]')?.textContent ?? '[]',
   ) as CatalogMonster[];
@@ -371,6 +374,7 @@ const statLabels = {
   let worker: Worker;
   let excludedMonsterIds = new Set<string>();
   let selectedMonsterId = '';
+  let activeQuery: OptimizerQuery | null = null;
 
   function createWorker(): Worker {
     const next = new Worker(
@@ -649,11 +653,47 @@ const statLabels = {
     'resistance',
     'accuracy',
   ]);
+  const runeStatNames: Record<RuneStatKey, string> = {
+    hpFlat: 'HP',
+    hpPercent: 'HP',
+    attackFlat: 'ATK',
+    attackPercent: 'ATK',
+    defenseFlat: 'DEF',
+    defensePercent: 'DEF',
+    speed: 'SPD',
+    critRate: 'CR',
+    critDamage: 'CD',
+    resistance: 'RES',
+    accuracy: 'ACC',
+  };
+  const runePercentStats = new Set<RuneStatKey>([
+    'hpPercent',
+    'attackPercent',
+    'defensePercent',
+    'critRate',
+    'critDamage',
+    'resistance',
+    'accuracy',
+  ]);
+
+  function formatStatValue(
+    stat: BuildStatKey,
+    value: number,
+    signed = false,
+  ): string {
+    const prefix = signed && value >= 0 ? '+' : '';
+    const suffix = percentStats.has(stat) ? '%' : '';
+    return `${prefix}${value.toLocaleString(numberLocale)}${suffix}`;
+  }
+
+  function formatRuneValue(stat: RuneStatKey, value: number): string {
+    return `+${value.toLocaleString(numberLocale)}${runePercentStats.has(stat) ? '%' : ''}`;
+  }
 
   function renderResults(result: OptimizerResult): void {
     resultsPanel.hidden = false;
     resultsContainer.replaceChildren();
-    resultMeta.textContent = `${result.combinationsEvaluated.toLocaleString()} ${copy.candidates} · ${result.elapsedMs.toLocaleString()} ms`;
+    resultMeta.textContent = `${result.combinationsEvaluated.toLocaleString(numberLocale)} ${copy.candidates} · ${result.elapsedMs.toLocaleString(numberLocale)} ms`;
     if (result.builds.length === 0) {
       const empty = document.createElement('p');
       empty.className = 'empty-results';
@@ -662,6 +702,18 @@ const statLabels = {
       return;
     }
     const runeById = new Map(snapshot?.runes.map((rune) => [rune.id, rune]));
+    const query = activeQuery;
+    if (!query) return;
+    const baseStats: Record<BuildStatKey, number> = {
+      hp: query.monster.hp,
+      attack: query.monster.attack,
+      defense: query.monster.defense,
+      speed: query.monster.speed,
+      critRate: query.monster.critRate,
+      critDamage: query.monster.critDamage,
+      resistance: query.monster.resistance,
+      accuracy: query.monster.accuracy,
+    };
     result.builds.forEach((build, index) => {
       const article = document.createElement('article');
       article.className = 'build-result';
@@ -669,16 +721,27 @@ const statLabels = {
       heading.className = 'build-heading';
       const title = document.createElement('h3');
       title.textContent = `#${index + 1} · ${build.sets.length ? build.sets.join(' + ') : copy.anySet}`;
-      const score = document.createElement('strong');
-      const objective = objectiveSelect.value as BuildStatKey;
-      score.textContent = `${statNames[objective]} ${build.potential[objective].toLocaleString()}`;
+      const objective = query.objective;
+      const score = document.createElement('div');
+      score.className = 'objective-score';
+      const scoreLabel = document.createElement('span');
+      scoreLabel.textContent = `${statNames[objective]} ${copy.additional}`;
+      const scoreValue = document.createElement('strong');
+      scoreValue.textContent = formatStatValue(
+        objective,
+        build.potential[objective] - baseStats[objective],
+        true,
+      );
+      const scoreTotal = document.createElement('span');
+      scoreTotal.textContent = `${copy.total} ${formatStatValue(objective, build.potential[objective])}`;
+      score.append(scoreLabel, scoreValue, scoreTotal);
       heading.append(title, score);
       article.append(heading);
 
       const statTable = document.createElement('table');
       statTable.className = 'result-stats';
       const head = statTable.createTHead().insertRow();
-      for (const text of ['', copy.current, copy.potential]) {
+      for (const text of ['', copy.base, copy.additional, copy.total]) {
         const th = document.createElement('th');
         th.textContent = text;
         head.append(th);
@@ -688,7 +751,8 @@ const statLabels = {
         const row = body.insertRow();
         const values: Array<string | number> = [
           statNames[stat],
-          build.current[stat],
+          baseStats[stat],
+          build.potential[stat] - baseStats[stat],
           build.potential[stat],
         ];
         values.forEach((value, cellIndex) => {
@@ -697,24 +761,91 @@ const statLabels = {
               ? document.createElement('th')
               : document.createElement('td');
           cell.textContent =
-            cellIndex > 0 && percentStats.has(stat)
-              ? `${Number(value).toLocaleString()}%`
-              : Number.isFinite(Number(value))
-                ? Number(value).toLocaleString()
-                : String(value);
+            cellIndex === 0
+              ? String(value)
+              : formatStatValue(stat, Number(value), cellIndex === 2);
+          if (cellIndex === 2) cell.className = 'stat-additional';
+          if (cellIndex === 3) cell.className = 'stat-total';
           row.append(cell);
         });
       }
-      article.append(statTable);
+      const statTableWrap = document.createElement('div');
+      statTableWrap.className = 'result-stats-wrap';
+      statTableWrap.append(statTable);
+      article.append(statTableWrap);
 
       const runeList = document.createElement('ol');
       runeList.className = 'result-runes';
-      for (const runeId of build.runeIds) {
-        const rune = runeById.get(runeId);
-        if (!rune) continue;
+      const buildRunes = build.runeIds
+        .map((runeId) => runeById.get(runeId))
+        .filter((rune): rune is NonNullable<typeof rune> => Boolean(rune))
+        .sort((a, b) => a.slot - b.slot);
+      for (const rune of buildRunes) {
         const item = document.createElement('li');
-        const main = rune.main.stat.replace('Percent', '%').replace('Flat', '');
-        item.textContent = `S${rune.slot} · ${rune.set} · ${main} ${rune.main.value}${rune.locked ? ' · 🔒' : ''}${rune.location === 'equipped' ? ` · ${monsterLabel(rune.equippedMonsterId ?? '')}` : ''}`;
+        item.className = 'rune-result-card';
+        item.dataset.runeCard = String(rune.slot);
+
+        const runeHeading = document.createElement('div');
+        runeHeading.className = 'rune-result-heading';
+        const runeTitle = document.createElement('strong');
+        runeTitle.textContent = `Slot ${rune.slot} · ${rune.set}`;
+        const runeMeta = document.createElement('span');
+        runeMeta.textContent = `${'★'.repeat(rune.grade)} · +15${rune.ancient ? ` · ${copy.ancient}` : ''}`;
+        runeHeading.append(runeTitle, runeMeta);
+        item.append(runeHeading);
+
+        const effectList = document.createElement('dl');
+        effectList.className = 'rune-effects';
+        const addEffect = (
+          label: string,
+          effect: ReturnType<typeof runePotentialEffects>[number],
+        ) => {
+          const row = document.createElement('div');
+          const name = document.createElement('dt');
+          name.textContent = `${label} · ${runeStatNames[effect.stat]}`;
+          const value = document.createElement('dd');
+          const finalValue = document.createElement('strong');
+          finalValue.textContent = formatRuneValue(effect.stat, effect.value);
+          value.append(finalValue);
+          if (effect.grindGain > 0) {
+            const grind = document.createElement('span');
+            grind.className = 'rune-effect-badge';
+            grind.textContent = formatTemplate(copy.grindPossible, {
+              value: effect.grindGain,
+            });
+            value.append(grind);
+          }
+          if (effect.enchanted) {
+            const gemmed = document.createElement('span');
+            gemmed.className = 'rune-effect-badge';
+            gemmed.textContent = copy.gemmed;
+            value.append(gemmed);
+          }
+          row.append(name, value);
+          effectList.append(row);
+        };
+        const effects = runePotentialEffects(rune);
+        const mainEffect = effects.find(({ source }) => source === 'main');
+        const innateEffect = effects.find(({ source }) => source === 'innate');
+        if (mainEffect) addEffect(copy.mainStat, mainEffect);
+        if (innateEffect) addEffect(copy.innateStat, innateEffect);
+        for (const effect of effects.filter(
+          ({ source }) => source === 'substat',
+        )) {
+          addEffect(copy.substats, effect);
+        }
+        item.append(effectList);
+
+        const location = document.createElement('p');
+        location.className = 'rune-location';
+        location.textContent =
+          rune.location === 'equipped'
+            ? formatTemplate(copy.equippedOn, {
+                monster: monsterLabel(rune.equippedMonsterId ?? ''),
+              })
+            : copy.inventory;
+        if (rune.locked) location.textContent += ` · 🔒 ${copy.locked}`;
+        item.append(location);
         runeList.append(item);
       }
       article.append(runeList);
@@ -834,12 +965,14 @@ const statLabels = {
     optimizeButton.disabled = true;
     cancelButton.hidden = false;
     calculationStatus.textContent = copy.calculating;
+    activeQuery = query;
     worker.postMessage({ type: 'optimize', query });
   });
 
   cancelButton.addEventListener('click', () => {
     worker.terminate();
     worker = createWorker();
+    activeQuery = null;
     finishCalculation();
   });
 
