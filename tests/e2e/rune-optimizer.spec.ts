@@ -95,7 +95,7 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   ).toHaveAttribute('src', '/images/runes/rune1.png');
   await expect(
     firstRuneIcon.locator('[data-rune-asset="set"]'),
-  ).toHaveAttribute('src', '/images/runes/swift.png');
+  ).toHaveAttribute('src', '/images/runes/gold/swift.png');
   await expect
     .poll(() =>
       firstRuneIcon
@@ -122,23 +122,75 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     const wrapperBounds = icon.getBoundingClientRect();
     const backgroundBounds = background.getBoundingClientRect();
     const slotBounds = slot.getBoundingClientRect();
+    const setBounds = set.getBoundingClientRect();
 
     return {
       wrapperWidth: wrapperBounds.width,
       backgroundWidth: backgroundBounds.width,
       slotWidth: slotBounds.width,
+      setWidth: setBounds.width,
       insetLeft: slotBounds.left - wrapperBounds.left,
       insetTop: slotBounds.top - wrapperBounds.top,
+      setCenterX:
+        setBounds.left +
+        setBounds.width / 2 -
+        (wrapperBounds.left + wrapperBounds.width / 2),
+      setCenterY:
+        setBounds.top +
+        setBounds.height / 2 -
+        (wrapperBounds.top + wrapperBounds.height / 2),
       slotFilter: getComputedStyle(slot).filter,
       setFilter: getComputedStyle(set).filter,
     };
   });
   expect(iconPresentation.backgroundWidth).toBe(iconPresentation.wrapperWidth);
-  expect(iconPresentation.slotWidth).toBeLessThan(iconPresentation.wrapperWidth);
+  expect(iconPresentation.slotWidth).toBeLessThan(
+    iconPresentation.wrapperWidth,
+  );
   expect(iconPresentation.insetLeft).toBe(8);
   expect(iconPresentation.insetTop).toBe(4);
+  expect(iconPresentation.setWidth).toBe(28);
+  expect(iconPresentation.setCenterX).toBe(0);
+  expect(iconPresentation.setCenterY).toBe(0);
   expect(iconPresentation.slotFilter).toBe('none');
-  expect(iconPresentation.setFilter).not.toBe('none');
+  expect(iconPresentation.setFilter).toBe('none');
+
+  const iconAlignment = await firstBuild
+    .locator('[data-rune-icon]')
+    .evaluateAll((icons) =>
+      icons.map((icon) => {
+        const wrapperBounds = icon.getBoundingClientRect();
+        const set = icon.querySelector<HTMLElement>('[data-rune-asset="set"]');
+        if (!set) throw new Error('Rune set layer was not rendered');
+        const setBounds = set.getBoundingClientRect();
+        return {
+          slot: icon.getAttribute('data-slot'),
+          width: setBounds.width,
+          centerX:
+            setBounds.left +
+            setBounds.width / 2 -
+            (wrapperBounds.left + wrapperBounds.width / 2),
+          centerY:
+            setBounds.top +
+            setBounds.height / 2 -
+            (wrapperBounds.top + wrapperBounds.height / 2),
+        };
+      }),
+    );
+  expect(iconAlignment).toHaveLength(6);
+  expect(iconAlignment.map(({ slot }) => slot)).toEqual([
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+  ]);
+  for (const alignment of iconAlignment) {
+    expect(alignment.width).toBe(28);
+    expect(alignment.centerX).toBe(0);
+    expect(alignment.centerY).toBe(0);
+  }
   await expect(firstRuneIcon.locator('.rune-icon-level')).toHaveText('+15');
   const secondRuneIcon = firstBuild
     .locator('[data-rune-card="2"]')

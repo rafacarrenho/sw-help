@@ -42,6 +42,6 @@ export function runeVisualAssets(
   return {
     background: `${assetBase}/bg_${quality}${ancientSuffix}.png`,
     slot: `${assetBase}/rune${rune.slot}.png`,
-    set: `${assetBase}/${runeSetAssetNames[rune.set]}.png`,
+    set: `${assetBase}/gold/${runeSetAssetNames[rune.set]}.png`,
   };
 }

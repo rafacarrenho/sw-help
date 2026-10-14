@@ -5,6 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@11.24.0",
   "scripts": {
+    "assets:runes": "node scripts/build-rune-set-assets.mjs",
     "import:monsters": "node --experimental-strip-types scripts/import-monsters.mjs",
     "dev": "astro dev",
     "build": "astro check && astro build",

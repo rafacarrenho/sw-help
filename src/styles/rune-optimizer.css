@@ -515,37 +515,13 @@
 }
 
 .rune-icon-set {
+  top: 50%;
+  left: 50%;
   z-index: 2;
-  width: 35px;
-  height: 35px;
-  filter: sepia(1) saturate(3.8) hue-rotate(350deg) brightness(1.12)
-    contrast(1.06);
-}
-
-.rune-icon[data-slot='1'] .rune-icon-set {
-  top: 14px;
-  left: 10px;
-}
-
-.rune-icon[data-slot='2'] .rune-icon-set,
-.rune-icon[data-slot='3'] .rune-icon-set {
-  top: 10px;
-  left: 8px;
-}
-
-.rune-icon[data-slot='4'] .rune-icon-set {
-  top: 7px;
-  left: 10px;
-}
-
-.rune-icon[data-slot='5'] .rune-icon-set {
-  top: 10px;
-  left: 13px;
-}
-
-.rune-icon[data-slot='6'] .rune-icon-set {
-  top: 10px;
-  left: 12px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
 }
 
 .rune-icon-level {
