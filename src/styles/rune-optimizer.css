@@ -213,7 +213,7 @@
 }
 
 .rune-optimizer label > span:not(.sr-only),
-.exclude-control > label,
+.exclude-heading > label,
 .monster-field > label {
   display: block;
   margin-bottom: 7px;
@@ -348,29 +348,36 @@
 }
 
 .optimizer-config-sections {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
   margin: 0 0 24px;
 }
 
 .optimizer-config-section {
   min-width: 0;
-  padding: 16px;
-  border: 1px solid var(--border, #30343a);
-  border-radius: 13px;
-  background: color-mix(in srgb, var(--surface, #17191d) 82%, black);
+  padding: 22px 0;
+  border-top: 1px solid var(--border, #30343a);
+}
+
+.optimizer-config-section:last-child {
+  border-bottom: 1px solid var(--border, #30343a);
 }
 
 .optimizer-config-section h3 {
   margin: 0 0 14px;
-  color: var(--text-muted, #a9adb5);
-  font-size: 14px;
+  color: inherit;
+  font-size: 16px;
 }
 
-.constraints-section {
-  grid-column: 1 / -1;
-  grid-row: 2;
+.config-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.config-section-heading h3 {
+  margin: 0;
 }
 
 .config-section-content {
@@ -394,9 +401,64 @@
   margin-top: 16px;
 }
 
-.exclude-control > div:first-of-type {
+.exclude-heading,
+.exclude-picker {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.exclude-heading {
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.exclude-heading > label {
+  margin-bottom: 0;
+}
+
+.text-action {
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent, #ef9f3f);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.text-action:disabled {
+  color: var(--text-muted, #a9adb5);
+  cursor: default;
+  opacity: 0.55;
+}
+
+.constraints-mode {
+  min-height: auto;
+  color: var(--text-muted, #a9adb5);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.account-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border, #30343a);
+}
+
+.account-stat strong {
+  font-size: 16px;
+}
+
+.account-stat small {
+  color: var(--text-muted, #a9adb5);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .button.compact {
@@ -780,15 +842,9 @@
   .builder-grid,
   .preset-groups,
   .set-grid,
-  .optimizer-config-sections,
   .tick-controls,
   .result-runes {
     grid-template-columns: 1fr;
-  }
-
-  .constraints-section {
-    grid-column: 1;
-    grid-row: auto;
   }
 
   .build-heading {

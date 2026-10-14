@@ -10,6 +10,7 @@ const syntheticExport = {
   ret_code: 0,
   session_key: 'must-not-be-stored',
   wizard_info: { wizard_id: 999999, wizard_name: 'Private test account' },
+  wizard_skill_list: { '14': { skill_id: 14, level: 20 } },
   rune_lock_list: [{ rune_id: 800000, lock_type: 1 }],
   unit_list: [
     {
@@ -63,6 +64,22 @@ test('exibe as configurações sem dropdown e limita CR, RES e ACC a 100', async
   await expect(
     page.getByRole('heading', { name: 'Velocidade de combate' }),
   ).toBeVisible();
+  await expect(page.locator('[data-speed-tower-value]')).toHaveText('15%');
+  await expect(page.locator('[data-speed-tower-source]')).toHaveText('Do JSON');
+  await expect(page.locator('[data-tower]')).toHaveCount(0);
+
+  const sectionPresentation = await page
+    .locator('.optimizer-config-section')
+    .first()
+    .evaluate((section) => {
+      const style = getComputedStyle(section);
+      return {
+        background: style.backgroundColor,
+        radius: style.borderRadius,
+      };
+    });
+  expect(sectionPresentation.background).toBe('rgba(0, 0, 0, 0)');
+  expect(sectionPresentation.radius).toBe('0px');
 
   for (const stat of ['critRate', 'resistance', 'accuracy']) {
     for (const bound of ['min', 'max']) {
@@ -72,6 +89,76 @@ test('exibe as configurações sem dropdown e limita CR, RES e ACC a 100', async
       await expect(input).toHaveValue('100');
     }
   }
+
+  const removeAll = page.getByRole('button', { name: 'Remover todos' });
+  await expect(removeAll).toBeDisabled();
+  await page.getByRole('button', { name: 'Adicionar' }).click();
+  await expect(page.locator('[data-excluded] .chip')).toHaveCount(1);
+  await expect(removeAll).toBeEnabled();
+  await removeAll.click();
+  await expect(page.locator('[data-excluded] .chip')).toHaveCount(0);
+  await expect(removeAll).toBeDisabled();
+});
+
+test('alimenta e converte limites entre status total e adicional', async ({
+  page,
+}) => {
+  await importSyntheticExport(page);
+
+  const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
+  await monsterSearch.fill('Tiana');
+  await monsterSearch.press('ArrowDown');
+  await page.getByRole('option', { name: 'Tiana', exact: true }).press('Enter');
+
+  const minimums = {
+    hp: '11850',
+    attack: '725',
+    defense: '626',
+    speed: '96',
+    critRate: '15',
+    critDamage: '50',
+    resistance: '40',
+    accuracy: '0',
+  };
+  for (const [stat, value] of Object.entries(minimums)) {
+    await expect(page.locator(`[data-constraint-min="${stat}"]`)).toHaveValue(
+      value,
+    );
+    await expect(page.locator(`[data-constraint-max="${stat}"]`)).toHaveValue(
+      '',
+    );
+  }
+
+  await page.locator('[data-constraint-min="hp"]').fill('30000');
+  await page.locator('[data-constraint-max="speed"]').fill('200');
+  await page.getByLabel('Excluir status base').check();
+
+  await expect(page.locator('[data-constraint-min="hp"]')).toHaveValue('18150');
+  await expect(page.locator('[data-constraint-min="attack"]')).toHaveValue('0');
+  await expect(page.locator('[data-constraint-min="defense"]')).toHaveValue(
+    '0',
+  );
+  await expect(page.locator('[data-constraint-min="speed"]')).toHaveValue('0');
+  await expect(page.locator('[data-constraint-max="speed"]')).toHaveValue(
+    '104',
+  );
+  await expect(page.locator('[data-constraint-min="critRate"]')).toHaveValue(
+    '15',
+  );
+  await expect(page.locator('[data-constraint-min="resistance"]')).toHaveValue(
+    '40',
+  );
+
+  const hpMinimum = page.locator('[data-constraint-min="hp"]');
+  await hpMinimum.fill('-1');
+  await hpMinimum.blur();
+  await expect(hpMinimum).toHaveValue('0');
+
+  await page.getByLabel('Excluir status base').uncheck();
+  await expect(hpMinimum).toHaveValue('11850');
+  await expect(page.locator('[data-constraint-max="speed"]')).toHaveValue(
+    '200',
+  );
 });
 
 test('combina presets de runas e status sem apagar o outro grupo', async ({
@@ -429,4 +516,5 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   expect(stored).not.toContain('must-not-be-stored');
   expect(stored).not.toContain('Private test account');
   expect(stored).not.toContain('999999');
+  expect(stored).toContain('"speedTower":{"level":20,"percent":15}');
 });

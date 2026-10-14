@@ -116,6 +116,10 @@ export interface ImportedArtifact {
 export interface AccountSnapshot {
   schemaVersion: 1;
   importedAt: string;
+  speedTower?: {
+    level: number;
+    percent: number;
+  };
   monsters: ImportedMonster[];
   runes: NormalizedRune[];
   artifacts: ImportedArtifact[];

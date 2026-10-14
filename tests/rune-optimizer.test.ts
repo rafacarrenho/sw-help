@@ -7,7 +7,10 @@ import {
   runePotentialEffects,
   runeVectors,
 } from '../src/lib/rune-optimizer.ts';
-import { parseSwexJson } from '../src/lib/swex-import.ts';
+import {
+  parseSwexJson,
+  speedTowerPercentFromLevel,
+} from '../src/lib/swex-import.ts';
 import { runeSetAssetNames, runeVisualAssets } from '../src/lib/rune-visual.ts';
 import { runeSetNames } from '../src/lib/rune-optimizer-types.ts';
 import type {
@@ -139,6 +142,52 @@ test('SWEX import sanitizes identifiers and projects main stats to +15', () => {
     serialized,
     /private-session|Private name|987654|123456|555/,
   );
+});
+
+test('SWEX import reads the SPD tower from object and array skill lists', () => {
+  const parseWithSkills = (wizardSkillList: unknown) =>
+    parseSwexJson(
+      JSON.stringify({
+        ret_code: 0,
+        wizard_skill_list: wizardSkillList,
+        unit_list: [
+          {
+            unit_id: 111,
+            unit_master_id: 10101,
+            unit_level: 40,
+            class: 6,
+            runes: [
+              {
+                rune_id: 222,
+                slot_no: 1,
+                set_id: 1,
+                class: 6,
+                rank: 5,
+                upgrade_curr: 15,
+                pri_eff: [1, 2448],
+                prefix_eff: [0, 0],
+                sec_eff: [],
+              },
+            ],
+          },
+        ],
+      }),
+    );
+
+  assert.deepEqual(
+    parseWithSkills({ '14': { skill_id: 14, level: 20 } }).speedTower,
+    { level: 20, percent: 15 },
+  );
+  assert.deepEqual(parseWithSkills([{ skill_id: 14, level: 11 }]).speedTower, {
+    level: 11,
+    percent: 8.5,
+  });
+  assert.deepEqual(parseWithSkills([{ skill_id: 14, level: 0 }]).speedTower, {
+    level: 0,
+    percent: 0,
+  });
+  assert.equal(speedTowerPercentFromLevel(0), 0);
+  assert.equal(speedTowerPercentFromLevel(20), 15);
 });
 
 test('potential stats keep current substats and add only maximum grinds', () => {

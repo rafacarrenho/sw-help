@@ -27,13 +27,17 @@ export interface RuneOptimizerMessages {
   includeLocked: string;
   excludeMonster: string;
   add: string;
+  removeAll: string;
   constraints: string;
+  excludeBaseStats: string;
   stat: string;
   minimum: string;
   maximum: string;
   tickTitle: string;
   requireTick: string;
   speedTower: string;
+  fromJson: string;
+  legacyDefault: string;
   leaderSkill: string;
   optimize: string;
   cancel: string;
@@ -106,13 +110,17 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     includeLocked: 'Allow locked runes',
     excludeMonster: 'Do not take runes from',
     add: 'Add',
+    removeAll: 'Remove all',
     constraints: 'Stat constraints',
+    excludeBaseStats: 'Exclude base stats',
     stat: 'Stat',
     minimum: 'Minimum',
     maximum: 'Maximum',
     tickTitle: 'Combat speed',
     requireTick: 'Require a Tick',
-    speedTower: 'SPD tower (%)',
+    speedTower: 'SPD tower',
+    fromJson: 'From JSON',
+    legacyDefault: 'Legacy default',
     leaderSkill: 'SPD leader (%)',
     optimize: 'Find exact builds',
     cancel: 'Cancel',
@@ -184,13 +192,17 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     includeLocked: 'Permitir runas bloqueadas',
     excludeMonster: 'Não retirar runas de',
     add: 'Adicionar',
+    removeAll: 'Remover todos',
     constraints: 'Limites de status',
+    excludeBaseStats: 'Excluir status base',
     stat: 'Status',
     minimum: 'Mínimo',
     maximum: 'Máximo',
     tickTitle: 'Velocidade de combate',
     requireTick: 'Exigir um Tick',
-    speedTower: 'Torre de SPD (%)',
+    speedTower: 'Torre de SPD',
+    fromJson: 'Do JSON',
+    legacyDefault: 'Padrão anterior',
     leaderSkill: 'Líder de SPD (%)',
     optimize: 'Encontrar builds exatas',
     cancel: 'Cancelar',
@@ -262,13 +274,17 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     includeLocked: 'Permitir runas bloqueadas',
     excludeMonster: 'No tomar runas de',
     add: 'Añadir',
+    removeAll: 'Eliminar todos',
     constraints: 'Límites de estadísticas',
+    excludeBaseStats: 'Excluir estadísticas base',
     stat: 'Estadística',
     minimum: 'Mínimo',
     maximum: 'Máximo',
     tickTitle: 'Velocidad de combate',
     requireTick: 'Exigir un Tick',
-    speedTower: 'Torre de SPD (%)',
+    speedTower: 'Torre de SPD',
+    fromJson: 'Del JSON',
+    legacyDefault: 'Valor anterior',
     leaderSkill: 'Líder de SPD (%)',
     optimize: 'Buscar builds exactas',
     cancel: 'Cancelar',
@@ -340,13 +356,17 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     includeLocked: 'Autoriser les runes verrouillées',
     excludeMonster: 'Ne pas prendre les runes de',
     add: 'Ajouter',
+    removeAll: 'Tout supprimer',
     constraints: 'Contraintes de stats',
+    excludeBaseStats: 'Exclure les stats de base',
     stat: 'Stat',
     minimum: 'Minimum',
     maximum: 'Maximum',
     tickTitle: 'Vitesse de combat',
     requireTick: 'Exiger un Tick',
-    speedTower: 'Tour de VIT (%)',
+    speedTower: 'Tour de VIT',
+    fromJson: 'Depuis le JSON',
+    legacyDefault: 'Valeur précédente',
     leaderSkill: 'Leader VIT (%)',
     optimize: 'Trouver les builds exacts',
     cancel: 'Annuler',
@@ -417,13 +437,17 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     includeLocked: 'Gesperrte Runen erlauben',
     excludeMonster: 'Keine Runen nehmen von',
     add: 'Hinzufügen',
+    removeAll: 'Alle entfernen',
     constraints: 'Statusgrenzen',
+    excludeBaseStats: 'Basiswerte ausschließen',
     stat: 'Status',
     minimum: 'Minimum',
     maximum: 'Maximum',
     tickTitle: 'Kampfgeschwindigkeit',
     requireTick: 'Tick verlangen',
-    speedTower: 'GES-Turm (%)',
+    speedTower: 'GES-Turm',
+    fromJson: 'Aus JSON',
+    legacyDefault: 'Bisheriger Standard',
     leaderSkill: 'GES-Leader (%)',
     optimize: 'Exakte Builds finden',
     cancel: 'Abbrechen',

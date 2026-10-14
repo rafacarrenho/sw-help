@@ -294,8 +294,18 @@ const statLabels = {
                 {copy.includeLocked}
               </label>
               <div class="exclude-control">
-                <label for="exclude-monster">{copy.excludeMonster}</label>
-                <div>
+                <div class="exclude-heading">
+                  <label for="exclude-monster">{copy.excludeMonster}</label>
+                  <button
+                    type="button"
+                    class="text-action"
+                    data-exclude-clear
+                    disabled
+                  >
+                    {copy.removeAll}
+                  </button>
+                </div>
+                <div class="exclude-picker">
                   <select id="exclude-monster" data-exclude-select></select>
                   <button type="button" class="button compact" data-exclude-add>
                     {copy.add}
@@ -310,7 +320,13 @@ const statLabels = {
             class="optimizer-config-section constraints-section"
             aria-labelledby="constraints-title"
           >
-            <h3 id="constraints-title">{copy.constraints}</h3>
+            <div class="config-section-heading">
+              <h3 id="constraints-title">{copy.constraints}</h3>
+              <label class="check-row constraints-mode">
+                <input type="checkbox" data-exclude-base-stats />
+                {copy.excludeBaseStats}
+              </label>
+            </div>
             <div class="config-section-content constraints-wrap">
               <table class="constraints-table">
                 <thead>
@@ -380,7 +396,10 @@ const statLabels = {
               </label>
               <label>
                 <span>{copy.speedTower}</span>
-                <input type="number" min="0" max="15" value="15" data-tower />
+                <span class="account-stat" data-speed-tower>
+                  <strong data-speed-tower-value>15%</strong>
+                  <small data-speed-tower-source>{copy.legacyDefault}</small>
+                </span>
               </label>
               <label>
                 <span>{copy.leaderSkill}</span>
@@ -480,8 +499,14 @@ const statLabels = {
   const monsterSearch = $<HTMLInputElement>('[data-monster-search]');
   const monsterOptions = $<HTMLElement>('[data-monster-options]');
   const excludeSelect = $<HTMLSelectElement>('[data-exclude-select]');
+  const excludeClearButton = $<HTMLButtonElement>('[data-exclude-clear]');
   const objectiveSelect = $<HTMLSelectElement>('[data-objective]');
   const projectionInput = $<HTMLInputElement>('[data-projection]');
+  const excludeBaseStatsInput = $<HTMLInputElement>(
+    '[data-exclude-base-stats]',
+  );
+  const speedTowerValue = $<HTMLElement>('[data-speed-tower-value]');
+  const speedTowerSource = $<HTMLElement>('[data-speed-tower-source]');
   const optimizeButton = $<HTMLButtonElement>('[data-optimize]');
   const cancelButton = $<HTMLButtonElement>('[data-cancel]');
   const calculationStatus = $<HTMLElement>('[data-calculation-status]');
@@ -493,6 +518,28 @@ const statLabels = {
   let excludedMonsterIds = new Set<string>();
   let selectedMonsterId = '';
   let activeQuery: OptimizerQuery | null = null;
+
+  const constraintStatKeys: BuildStatKey[] = [
+    'hp',
+    'attack',
+    'defense',
+    'speed',
+    'critRate',
+    'critDamage',
+    'resistance',
+    'accuracy',
+  ];
+  const runeAdditionalStats = new Set<BuildStatKey>([
+    'hp',
+    'attack',
+    'defense',
+    'speed',
+  ]);
+  const cappedPercentageStats = new Set<BuildStatKey>([
+    'critRate',
+    'resistance',
+    'accuracy',
+  ]);
 
   function createWorker(): Worker {
     const next = new Worker(
@@ -522,6 +569,19 @@ const statLabels = {
     );
   }
 
+  function accountSpeedTowerPercent(): number {
+    return snapshot?.speedTower?.percent ?? 15;
+  }
+
+  function renderSpeedTower(): void {
+    speedTowerValue.textContent = `${new Intl.NumberFormat(numberLocale, {
+      maximumFractionDigits: 1,
+    }).format(accountSpeedTowerPercent())}%`;
+    speedTowerSource.textContent = snapshot?.speedTower
+      ? copy.fromJson
+      : copy.legacyDefault;
+  }
+
   function setStatusForSnapshot(): void {
     if (!snapshot) return;
     workspace.hidden = false;
@@ -538,6 +598,7 @@ const statLabels = {
     ).format(new Date(snapshot.importedAt));
     importStatus.textContent = `${summary} · ${copy.lastImport}: ${date}`;
     populateMonsterSelects();
+    renderSpeedTower();
   }
 
   function populateMonsterSelects(): void {
@@ -574,11 +635,119 @@ const statLabels = {
       .trim();
   }
 
+  function selectedCatalogMonster(): CatalogMonster | undefined {
+    return catalog.find(({ id }) => id === selectedMonsterId);
+  }
+
+  function monsterBaseStat(
+    monster: CatalogMonster,
+    stat: BuildStatKey,
+  ): number {
+    return stat === 'speed' ? monster.speed : monster.stats[stat];
+  }
+
+  function constraintFloor(
+    stat: BuildStatKey,
+    monster = selectedCatalogMonster(),
+  ): number {
+    if (!monster) return 0;
+    if (excludeBaseStatsInput.checked && runeAdditionalStats.has(stat)) {
+      return 0;
+    }
+    return monsterBaseStat(monster, stat);
+  }
+
+  function constraintInput(
+    stat: BuildStatKey,
+    bound: 'min' | 'max',
+  ): HTMLInputElement {
+    return $<HTMLInputElement>(`[data-constraint-${bound}="${stat}"]`);
+  }
+
+  function constraintStat(input: HTMLInputElement): BuildStatKey {
+    return (input.dataset.constraintMin ??
+      input.dataset.constraintMax) as BuildStatKey;
+  }
+
+  function clampConstraintInput(
+    input: HTMLInputElement,
+    enforceFloor: boolean,
+  ): void {
+    if (input.value === '') {
+      if (enforceFloor && input.dataset.constraintMin) {
+        input.value = String(constraintFloor(constraintStat(input)));
+      }
+      return;
+    }
+    const value = input.valueAsNumber;
+    if (!Number.isFinite(value)) return;
+    const stat = constraintStat(input);
+    const floor = enforceFloor ? constraintFloor(stat) : -Infinity;
+    const ceiling = cappedPercentageStats.has(stat) ? 100 : Infinity;
+    input.value = String(Math.min(ceiling, Math.max(floor, value)));
+  }
+
+  function updateConstraintBounds(monster = selectedCatalogMonster()): void {
+    for (const stat of constraintStatKeys) {
+      const floor = constraintFloor(stat, monster);
+      for (const bound of ['min', 'max'] as const) {
+        const input = constraintInput(stat, bound);
+        input.min = String(floor);
+        if (cappedPercentageStats.has(stat)) input.max = '100';
+        else input.removeAttribute('max');
+      }
+    }
+  }
+
+  function resetConstraintFields(monster = selectedCatalogMonster()): void {
+    updateConstraintBounds(monster);
+    for (const stat of constraintStatKeys) {
+      constraintInput(stat, 'min').value = monster
+        ? String(constraintFloor(stat, monster))
+        : '';
+      constraintInput(stat, 'max').value = '';
+    }
+  }
+
+  function displayedConstraintFromTotal(
+    stat: BuildStatKey,
+    total: number,
+    monster = selectedCatalogMonster(),
+  ): number {
+    if (
+      monster &&
+      excludeBaseStatsInput.checked &&
+      runeAdditionalStats.has(stat)
+    ) {
+      return total - monsterBaseStat(monster, stat);
+    }
+    return total;
+  }
+
+  function totalConstraintFromDisplayed(
+    stat: BuildStatKey,
+    displayed: number,
+    monster: CatalogMonster,
+  ): number {
+    if (excludeBaseStatsInput.checked && runeAdditionalStats.has(stat)) {
+      return displayed + monsterBaseStat(monster, stat);
+    }
+    return displayed;
+  }
+
+  function setMinimumTotal(stat: BuildStatKey, total: number): void {
+    const input = constraintInput(stat, 'min');
+    input.value = String(displayedConstraintFromTotal(stat, total));
+    clampConstraintInput(input, true);
+  }
+
   function selectCatalogMonster(monster: CatalogMonster): void {
     selectedMonsterId = monster.id;
     monsterSearch.value = monster.name;
     monsterSearch.setAttribute('aria-expanded', 'false');
     monsterOptions.hidden = true;
+    resetConstraintFields(monster);
+    updatePresetState('stat', '');
   }
 
   function renderMonsterOptions(): void {
@@ -684,44 +853,27 @@ const statLabels = {
       });
       container.append(button);
     }
+    excludeClearButton.disabled = excludedMonsterIds.size === 0;
   }
 
   function getQuery(): OptimizerQuery | null {
     if (!snapshot) return null;
-    const catalogMonster = catalog.find(({ id }) => id === selectedMonsterId);
+    const catalogMonster = selectedCatalogMonster();
     if (!catalogMonster) return null;
     const constraints: OptimizerQuery['constraints'] = {};
-    const cappedPercentageStats = new Set<BuildStatKey>([
-      'critRate',
-      'resistance',
-      'accuracy',
-    ]);
-    for (const stat of [
-      'hp',
-      'attack',
-      'defense',
-      'speed',
-      'critRate',
-      'critDamage',
-      'resistance',
-      'accuracy',
-    ] as BuildStatKey[]) {
-      const rawMinimum = $<HTMLInputElement>(
-        `[data-constraint-min="${stat}"]`,
-      ).valueAsNumber;
-      const rawMaximum = $<HTMLInputElement>(
-        `[data-constraint-max="${stat}"]`,
-      ).valueAsNumber;
-      const clampConstraint = (value: number) =>
-        cappedPercentageStats.has(stat)
-          ? Math.min(100, Math.max(0, value))
-          : value;
-      const minimum = Number.isFinite(rawMinimum)
-        ? clampConstraint(rawMinimum)
-        : rawMinimum;
-      const maximum = Number.isFinite(rawMaximum)
-        ? clampConstraint(rawMaximum)
-        : rawMaximum;
+    for (const stat of constraintStatKeys) {
+      const minimumInput = constraintInput(stat, 'min');
+      const maximumInput = constraintInput(stat, 'max');
+      clampConstraintInput(minimumInput, true);
+      clampConstraintInput(maximumInput, true);
+      const displayedMinimum = minimumInput.valueAsNumber;
+      const displayedMaximum = maximumInput.valueAsNumber;
+      const minimum = Number.isFinite(displayedMinimum)
+        ? totalConstraintFromDisplayed(stat, displayedMinimum, catalogMonster)
+        : displayedMinimum;
+      const maximum = Number.isFinite(displayedMaximum)
+        ? totalConstraintFromDisplayed(stat, displayedMaximum, catalogMonster)
+        : displayedMaximum;
       if (Number.isFinite(minimum) || Number.isFinite(maximum)) {
         constraints[stat] = {
           ...(Number.isFinite(minimum) ? { min: minimum } : {}),
@@ -751,8 +903,7 @@ const statLabels = {
             tick: {
               tick: Number($<HTMLSelectElement>('[data-tick]').value) as
                 3 | 4 | 5 | 6 | 7 | 8,
-              speedTowerPercent:
-                $<HTMLInputElement>('[data-tower]').valueAsNumber || 0,
+              speedTowerPercent: accountSpeedTowerPercent(),
               leaderSkillPercent:
                 $<HTMLInputElement>('[data-leader]').valueAsNumber || 0,
             },
@@ -762,16 +913,7 @@ const statLabels = {
     };
   }
 
-  const statOrder: BuildStatKey[] = [
-    'hp',
-    'attack',
-    'defense',
-    'speed',
-    'critRate',
-    'critDamage',
-    'resistance',
-    'accuracy',
-  ];
+  const statOrder = constraintStatKeys;
   const statNames: Record<BuildStatKey, string> = {
     hp: 'HP',
     attack: 'ATK',
@@ -1065,11 +1207,7 @@ const statLabels = {
   }
 
   function clearStatPresetFields(): void {
-    $$<HTMLInputElement>(
-      '[data-constraint-min], [data-constraint-max]',
-    ).forEach((input) => {
-      input.value = '';
-    });
+    resetConstraintFields(selectedCatalogMonster());
     $<HTMLInputElement>('[data-tick-enabled]').checked = false;
   }
 
@@ -1133,14 +1271,14 @@ const statLabels = {
       clearStatPresetFields();
       const preset = button.dataset.statPreset ?? '';
       if (preset === 'tank') {
-        $<HTMLInputElement>('[data-constraint-min="hp"]').value = '30000';
-        $<HTMLInputElement>('[data-constraint-min="defense"]').value = '700';
-        $<HTMLInputElement>('[data-constraint-min="resistance"]').value = '100';
+        setMinimumTotal('hp', 30000);
+        setMinimumTotal('defense', 700);
+        setMinimumTotal('resistance', 100);
         $<HTMLInputElement>('[data-tick-enabled]').checked = true;
         $<HTMLSelectElement>('[data-tick]').value = '5';
         objectiveSelect.value = 'hp';
       } else if (preset === 'damage') {
-        $<HTMLInputElement>('[data-constraint-min="critRate"]').value = '100';
+        setMinimumTotal('critRate', 100);
         objectiveSelect.value = 'damage';
       }
       updatePresetState('stat', preset);
@@ -1150,26 +1288,41 @@ const statLabels = {
   $$<HTMLSelectElement>('[data-required-set]').forEach((select) => {
     select.addEventListener('change', () => updatePresetState('rune', ''));
   });
-  const cappedConstraintInputs = $$<HTMLInputElement>(
-    '[data-constraint-min="critRate"], [data-constraint-max="critRate"], [data-constraint-min="resistance"], [data-constraint-max="resistance"], [data-constraint-min="accuracy"], [data-constraint-max="accuracy"]',
+  $$<HTMLInputElement>('[data-constraint-min], [data-constraint-max]').forEach(
+    (input) => {
+      input.addEventListener('input', () => clampConstraintInput(input, false));
+      input.addEventListener('change', () => {
+        clampConstraintInput(input, true);
+        updatePresetState('stat', '');
+      });
+    },
   );
-
-  function clampPercentageConstraint(input: HTMLInputElement): void {
-    if (input.value === '') return;
-    const value = input.valueAsNumber;
-    if (!Number.isFinite(value)) return;
-    input.value = String(Math.min(100, Math.max(0, value)));
-  }
-
-  cappedConstraintInputs.forEach((input) => {
-    input.addEventListener('input', () => clampPercentageConstraint(input));
+  excludeBaseStatsInput.addEventListener('change', () => {
+    const monster = selectedCatalogMonster();
+    if (monster) {
+      for (const stat of runeAdditionalStats) {
+        const base = monsterBaseStat(monster, stat);
+        for (const bound of ['min', 'max'] as const) {
+          const input = constraintInput(stat, bound);
+          if (input.value === '') continue;
+          const value = input.valueAsNumber;
+          if (!Number.isFinite(value)) continue;
+          input.value = String(
+            excludeBaseStatsInput.checked ? value - base : value + base,
+          );
+        }
+      }
+    }
+    updateConstraintBounds(monster);
+    $$<HTMLInputElement>(
+      '[data-constraint-min], [data-constraint-max]',
+    ).forEach((input) => clampConstraintInput(input, true));
   });
-
-  $$<HTMLInputElement>(
-    '[data-constraint-min], [data-constraint-max], [data-tick-enabled], [data-tower], [data-leader]',
-  ).forEach((input) => {
-    input.addEventListener('change', () => updatePresetState('stat', ''));
-  });
+  $$<HTMLInputElement>('[data-tick-enabled], [data-leader]').forEach(
+    (input) => {
+      input.addEventListener('change', () => updatePresetState('stat', ''));
+    },
+  );
   $<HTMLSelectElement>('[data-tick]').addEventListener('change', () =>
     updatePresetState('stat', ''),
   );
@@ -1203,6 +1356,8 @@ const statLabels = {
       monsterSearch.value
     ) {
       selectedMonsterId = '';
+      resetConstraintFields(undefined);
+      updatePresetState('stat', '');
     }
     renderMonsterOptions();
   });
@@ -1226,6 +1381,8 @@ const statLabels = {
   $<HTMLButtonElement>('[data-monster-clear]').addEventListener('click', () => {
     selectedMonsterId = '';
     monsterSearch.value = '';
+    resetConstraintFields(undefined);
+    updatePresetState('stat', '');
     monsterSearch.focus();
     renderMonsterOptions();
   });
@@ -1251,6 +1408,10 @@ const statLabels = {
 
   $<HTMLButtonElement>('[data-exclude-add]').addEventListener('click', () => {
     if (excludeSelect.value) excludedMonsterIds.add(excludeSelect.value);
+    renderExcluded();
+  });
+  excludeClearButton.addEventListener('click', () => {
+    excludedMonsterIds.clear();
     renderExcluded();
   });
 

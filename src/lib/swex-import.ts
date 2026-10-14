@@ -64,6 +64,17 @@ const MAX_MAIN_BY_STAT: Record<RuneStatKey, number[]> = {
   accuracy: [18, 20, 38, 44, 51, 64],
 };
 
+const SPEED_TOWER_PERCENT_BY_LEVEL = [
+  0, 1, 2, 2.5, 3, 4, 5, 5.5, 6, 7, 8, 8.5, 9, 10, 11, 11.5, 12, 13, 14, 14.5,
+  15,
+] as const;
+
+export function speedTowerPercentFromLevel(level: number): number {
+  if (!Number.isFinite(level)) return 0;
+  const normalizedLevel = Math.min(20, Math.max(0, Math.trunc(level)));
+  return SPEED_TOWER_PERCENT_BY_LEVEL[normalizedLevel] ?? 0;
+}
+
 function isRecord(value: unknown): value is JsonRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -74,6 +85,31 @@ function numberValue(value: unknown, fallback = 0): number {
 
 function arrayValue(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
+}
+
+function recordValues(value: unknown): unknown[] {
+  if (Array.isArray(value)) return value;
+  return isRecord(value) ? Object.values(value) : [];
+}
+
+function speedTowerFromExport(
+  root: JsonRecord,
+): { level: number; percent: number } | undefined {
+  const wizardInfo = isRecord(root.wizard_info) ? root.wizard_info : undefined;
+  const rawSkills = root.wizard_skill_list ?? wizardInfo?.wizard_skill_list;
+  let found = false;
+  let highestLevel = 0;
+  for (const value of recordValues(rawSkills)) {
+    if (!isRecord(value) || numberValue(value.skill_id) !== 14) continue;
+    found = true;
+    highestLevel = Math.max(
+      highestLevel,
+      numberValue(value.level ?? value.skill_level ?? value.lv),
+    );
+  }
+  if (!found) return undefined;
+  const level = Math.min(20, Math.max(0, Math.trunc(highestLevel)));
+  return { level, percent: speedTowerPercentFromLevel(level) };
 }
 
 function normalizeEffect(value: unknown): RuneEffect | undefined {
@@ -100,6 +136,7 @@ export function parseSwexJson(text: string, now = new Date()): AccountSnapshot {
   if (numberValue(root.ret_code, -1) !== 0) throw new Error('invalid-export');
 
   const warnings = new Set<string>();
+  const speedTower = speedTowerFromExport(root);
   const lockedRawIds = new Set(
     arrayValue(root.rune_lock_list)
       .filter(isRecord)
@@ -230,6 +267,7 @@ export function parseSwexJson(text: string, now = new Date()): AccountSnapshot {
   return {
     schemaVersion: 1,
     importedAt: now.toISOString(),
+    ...(speedTower ? { speedTower } : {}),
     monsters,
     runes,
     artifacts,
