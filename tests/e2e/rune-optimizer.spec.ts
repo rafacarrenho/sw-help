@@ -30,7 +30,9 @@ const syntheticExport = {
     upgrade_curr: 15,
     pri_eff: [1, 2448],
     prefix_eff: [0, 0],
-    sec_eff: [index === 0 ? [8, 26, 0, 5] : [8, 30, 0, 0]],
+    sec_eff: [
+      index === 0 ? [8, 26, 1, 5] : index === 2 ? [8, 30, 0, 5] : [8, 30, 0, 0],
+    ],
   })),
   artifacts: [{ rid: 700001, slot: 1, rank: 4, level: 15 }],
 };
@@ -78,14 +80,52 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(firstBuild.locator('[data-rune-card]')).toHaveCount(6);
   const firstRune = firstBuild.locator('[data-rune-card="1"]');
   await expect(firstRune).toContainText('Slot 1 · Swift');
-  await expect(firstRune).toContainText('Status principal · HP');
-  await expect(firstRune).toContainText('+2.448');
-  await expect(firstRune).toContainText('Substats · SPD');
-  await expect(firstRune).toContainText('Final +32');
-  await expect(firstRune).toContainText(
-    'Base +26 · Grind atual +5 · Possível +1',
+  const mainStat = firstRune.locator('[data-rune-source="main"]');
+  await expect(mainStat).toContainText('HP');
+  await expect(mainStat).toContainText('Status principal');
+  await expect(mainStat.locator('.rune-stat-current')).toHaveText('+2.448');
+  const upgradedSpeed = firstRune.locator('[data-rune-stat="speed"]');
+  await expect(upgradedSpeed.locator('.rune-stat-current')).toHaveText('+31');
+  await expect(upgradedSpeed.locator('.rune-stat-current')).toHaveClass(
+    /is-upgraded/,
   );
+  await expect(upgradedSpeed.locator('.rune-stat-limit')).toHaveText(
+    '(+32 limite)',
+  );
+  await expect(upgradedSpeed.getByRole('img', { name: 'Gemado' })).toHaveText(
+    '↻',
+  );
+  await expect(firstRune).not.toContainText('Grind atual');
+  await expect(firstRune).not.toContainText('Base +26');
+  await expect(firstRune).not.toContainText('Final +32');
   await expect(firstRune).toContainText('Inventário');
+
+  const untouchedSpeed = firstBuild
+    .locator('[data-rune-card="2"]')
+    .locator('[data-rune-stat="speed"]');
+  await expect(untouchedSpeed.locator('.rune-stat-current')).toHaveText('+30');
+  await expect(untouchedSpeed.locator('.rune-stat-current')).not.toHaveClass(
+    /is-upgraded/,
+  );
+  await expect(untouchedSpeed.locator('.rune-stat-limit')).toHaveText(
+    '(+35 limite)',
+  );
+
+  const maximumSpeed = firstBuild
+    .locator('[data-rune-card="3"]')
+    .locator('[data-rune-stat="speed"]');
+  await expect(maximumSpeed.locator('.rune-stat-current')).toHaveText('+35');
+  await expect(maximumSpeed.locator('.rune-stat-current')).toHaveClass(
+    /is-upgraded/,
+  );
+  await expect(maximumSpeed.locator('.rune-stat-limit')).toHaveText('(limite)');
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    )
+    .toBe(true);
 
   const stored = await page.evaluate(async () => {
     const request = indexedDB.open('playerdojo-rune-optimizer', 1);

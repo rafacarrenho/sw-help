@@ -40,11 +40,13 @@
 
 .optimizer-workspace {
   display: grid;
+  min-width: 0;
   gap: 24px;
   margin-top: 24px;
 }
 
 .optimizer-panel {
+  min-width: 0;
   padding: clamp(18px, 4vw, 30px);
   border: 1px solid var(--border, #30343a);
   border-radius: 18px;
@@ -367,6 +369,7 @@
 }
 
 .build-result {
+  min-width: 0;
   margin-top: 16px;
   padding: 18px;
   border: 1px solid var(--border, #30343a);
@@ -412,6 +415,8 @@
 }
 
 .result-stats-wrap {
+  width: 100%;
+  min-width: 0;
   margin-top: 12px;
   overflow-x: auto;
 }
@@ -445,6 +450,10 @@
   border-radius: 12px;
   background: color-mix(in srgb, var(--background, #101216) 82%, transparent);
   font-size: 14px;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1;
 }
 
 .rune-result-heading {
@@ -472,43 +481,79 @@
 
 .rune-effects > div {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) minmax(0, 1.35fr);
+  grid-template-columns: minmax(92px, 1fr) auto;
   align-items: center;
   gap: 10px;
-  padding: 6px 0;
+  min-height: 34px;
+  padding: 4px 0;
 }
 
 .rune-effects dt {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   color: var(--muted, #a5aab3);
   font-size: 14px;
 }
 
+.rune-stat-name {
+  color: var(--text, #f7f7f8);
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.rune-effect-kind {
+  color: var(--muted, #a5aab3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.rune-effect-main + .rune-effect-substat,
+.rune-effect-innate + .rune-effect-substat {
+  margin-top: 5px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border, #30343a);
+}
+
 .rune-effects dd {
   display: grid;
+  grid-template-columns: 6.5ch minmax(7ch, max-content) 1.25rem;
+  align-items: baseline;
   justify-items: end;
-  gap: 3px;
+  gap: 7px;
   min-width: 0;
   margin: 0;
   text-align: right;
 }
 
-.rune-effects dd strong {
+.rune-stat-current {
+  grid-column: 1;
+  min-width: 6.5ch;
+  color: var(--text, #f7f7f8);
   font-size: 16px;
+  font-weight: 800;
+  text-align: right;
 }
 
-.rune-grind-breakdown {
-  color: var(--muted, #a5aab3);
+.rune-stat-current.is-upgraded {
+  color: #f2b84b;
+}
+
+.rune-stat-limit {
+  grid-column: 2;
+  color: color-mix(in srgb, var(--accent, #ef9f3f) 78%, #f7f7f8);
   font-size: 14px;
   line-height: 1.35;
+  white-space: nowrap;
 }
 
-.rune-effect-badge {
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent, #ef9f3f) 16%, transparent);
-  color: var(--accent, #ef9f3f);
-  font-size: 12px;
-  font-weight: 700;
+.rune-altered-symbol {
+  grid-column: 3;
+  color: #f2b84b;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .rune-location {
@@ -553,7 +598,13 @@
   }
 
   .rune-effects > div {
-    grid-template-columns: minmax(100px, 1fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(78px, 1fr) auto;
+    gap: 8px;
+  }
+
+  .rune-effects dd {
+    grid-template-columns: 6ch minmax(6ch, max-content) 1.1rem;
+    gap: 5px;
   }
 
   .import-actions,

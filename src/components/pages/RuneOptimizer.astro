@@ -797,31 +797,58 @@ const statLabels = {
 
         const effectList = document.createElement('dl');
         effectList.className = 'rune-effects';
+        effectList.setAttribute('aria-label', copy.runes);
         const addEffect = (
-          label: string,
           effect: ReturnType<typeof runePotentialEffects>[number],
+          label?: string,
         ) => {
           const row = document.createElement('div');
+          row.className = `rune-effect-row rune-effect-${effect.source}`;
+          row.dataset.runeStat = effect.stat;
+          row.dataset.runeSource = effect.source;
           const name = document.createElement('dt');
-          name.textContent = `${label} · ${runeStatNames[effect.stat]}`;
+          const statName = document.createElement('span');
+          statName.className = 'rune-stat-name';
+          statName.textContent = runeStatNames[effect.stat];
+          name.append(statName);
+          if (label) {
+            const kind = document.createElement('small');
+            kind.className = 'rune-effect-kind';
+            kind.textContent = label;
+            name.append(kind);
+          }
           const value = document.createElement('dd');
-          const finalValue = document.createElement('strong');
-          finalValue.textContent =
+          const currentValue = document.createElement('strong');
+          currentValue.className = 'rune-stat-current';
+          const displayedValue =
             effect.source === 'substat'
-              ? `${copy.finalValue} ${formatRuneValue(effect.stat, effect.value)}`
-              : formatRuneValue(effect.stat, effect.value);
-          value.append(finalValue);
+              ? effect.baseValue + effect.currentGrind
+              : effect.value;
+          currentValue.textContent = formatRuneValue(
+            effect.stat,
+            displayedValue,
+          );
+          if (effect.currentGrind > 0) {
+            currentValue.classList.add('is-upgraded');
+          }
+          value.append(currentValue);
           if (effect.grindable) {
-            const breakdown = document.createElement('span');
-            breakdown.className = 'rune-grind-breakdown';
-            breakdown.textContent = `${copy.base} ${formatRuneValue(effect.stat, effect.baseValue)} · ${copy.currentGrind} ${formatRuneValue(effect.stat, effect.currentGrind)} · ${copy.possibleGrind} ${formatRuneValue(effect.stat, effect.possibleGrind)}`;
-            value.append(breakdown);
+            const limit = document.createElement('span');
+            limit.className = 'rune-stat-limit';
+            limit.textContent =
+              effect.possibleGrind > 0
+                ? `(${formatRuneValue(effect.stat, effect.value)} ${copy.limit})`
+                : `(${copy.limit})`;
+            value.append(limit);
           }
           if (effect.enchanted) {
-            const gemmed = document.createElement('span');
-            gemmed.className = 'rune-effect-badge';
-            gemmed.textContent = copy.gemmed;
-            value.append(gemmed);
+            const altered = document.createElement('span');
+            altered.className = 'rune-altered-symbol';
+            altered.textContent = '↻';
+            altered.title = copy.gemmed;
+            altered.setAttribute('role', 'img');
+            altered.setAttribute('aria-label', copy.gemmed);
+            value.append(altered);
           }
           row.append(name, value);
           effectList.append(row);
@@ -829,12 +856,12 @@ const statLabels = {
         const effects = runePotentialEffects(rune);
         const mainEffect = effects.find(({ source }) => source === 'main');
         const innateEffect = effects.find(({ source }) => source === 'innate');
-        if (mainEffect) addEffect(copy.mainStat, mainEffect);
-        if (innateEffect) addEffect(copy.innateStat, innateEffect);
+        if (mainEffect) addEffect(mainEffect, copy.mainStat);
+        if (innateEffect) addEffect(innateEffect, copy.innateStat);
         for (const effect of effects.filter(
           ({ source }) => source === 'substat',
         )) {
-          addEffect(copy.substats, effect);
+          addEffect(effect);
         }
         item.append(effectList);
 

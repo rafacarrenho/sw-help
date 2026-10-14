@@ -44,9 +44,7 @@ export interface RuneOptimizerMessages {
   mainStat: string;
   innateStat: string;
   substats: string;
-  finalValue: string;
-  currentGrind: string;
-  possibleGrind: string;
+  limit: string;
   gemmed: string;
   ancient: string;
   inventory: string;
@@ -112,9 +110,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Main stat',
     innateStat: 'Innate',
     substats: 'Substats',
-    finalValue: 'Final',
-    currentGrind: 'Current grind',
-    possibleGrind: 'Possible',
+    limit: 'limit',
     gemmed: 'Gemmed',
     ancient: 'Ancient',
     inventory: 'Inventory',
@@ -179,9 +175,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Status principal',
     innateStat: 'Inato',
     substats: 'Substats',
-    finalValue: 'Final',
-    currentGrind: 'Grind atual',
-    possibleGrind: 'Possível',
+    limit: 'limite',
     gemmed: 'Gemado',
     ancient: 'Ancient',
     inventory: 'Inventário',
@@ -246,9 +240,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Atributo principal',
     innateStat: 'Innato',
     substats: 'Substats',
-    finalValue: 'Final',
-    currentGrind: 'Grind actual',
-    possibleGrind: 'Posible',
+    limit: 'límite',
     gemmed: 'Con gema',
     ancient: 'Ancient',
     inventory: 'Inventario',
@@ -313,9 +305,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Stat principale',
     innateStat: 'Innée',
     substats: 'Substats',
-    finalValue: 'Final',
-    currentGrind: 'Grind actuel',
-    possibleGrind: 'Possible',
+    limit: 'limite',
     gemmed: 'Gemmée',
     ancient: 'Ancient',
     inventory: 'Inventaire',
@@ -379,9 +369,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Hauptwert',
     innateStat: 'Angeboren',
     substats: 'Substats',
-    finalValue: 'Final',
-    currentGrind: 'Aktueller Grind',
-    possibleGrind: 'Möglich',
+    limit: 'Limit',
     gemmed: 'Mit Gem',
     ancient: 'Ancient',
     inventory: 'Inventar',
