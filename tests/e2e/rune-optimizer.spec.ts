@@ -86,6 +86,39 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(firstBuild.locator('[data-rune-card]')).toHaveCount(6);
   const firstRune = firstBuild.locator('[data-rune-card="1"]');
   await expect(firstRune).toContainText('Slot 1 · Swift');
+  const firstRuneIcon = firstRune.locator('[data-rune-icon]');
+  await expect(
+    firstRuneIcon.locator('[data-rune-asset="background"]'),
+  ).toHaveAttribute('src', '/images/runes/bg_legend_immemorial.png');
+  await expect(
+    firstRuneIcon.locator('[data-rune-asset="slot"]'),
+  ).toHaveAttribute('src', '/images/runes/rune1.png');
+  await expect(
+    firstRuneIcon.locator('[data-rune-asset="set"]'),
+  ).toHaveAttribute('src', '/images/runes/swift.png');
+  await expect
+    .poll(() =>
+      firstRuneIcon
+        .locator('img')
+        .evaluateAll((images) =>
+          images.every(
+            (image) =>
+              (image as HTMLImageElement).complete &&
+              (image as HTMLImageElement).naturalWidth > 0,
+          ),
+        ),
+    )
+    .toBe(true);
+  await expect(firstRuneIcon.locator('.rune-icon-level')).toHaveText('+15');
+  const secondRuneIcon = firstBuild
+    .locator('[data-rune-card="2"]')
+    .locator('[data-rune-icon]');
+  await expect(
+    secondRuneIcon.locator('[data-rune-asset="background"]'),
+  ).toHaveAttribute('src', '/images/runes/bg_legend.png');
+  await expect(
+    secondRuneIcon.locator('[data-rune-asset="slot"]'),
+  ).toHaveAttribute('src', '/images/runes/rune2.png');
   const mainStat = firstRune.locator('[data-rune-source="main"]');
   await expect(mainStat).toContainText('HP');
   await expect(mainStat).toContainText('Status principal');

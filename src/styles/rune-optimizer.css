@@ -457,10 +457,6 @@
 }
 
 .rune-result-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--border, #30343a);
 }
@@ -469,10 +465,99 @@
   font-size: 16px;
 }
 
-.rune-result-heading span {
+.rune-result-meta {
   color: var(--muted, #a5aab3);
   font-size: 12px;
-  text-align: right;
+}
+
+.rune-heading-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.rune-heading-identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.rune-icon {
+  position: relative;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+}
+
+.rune-icon-layer {
+  position: absolute;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.rune-icon-background,
+.rune-icon-slot {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rune-icon-background {
+  z-index: 0;
+}
+
+.rune-icon-slot {
+  z-index: 1;
+}
+
+.rune-icon-set {
+  z-index: 2;
+  width: 35px;
+  height: 35px;
+}
+
+.rune-icon[data-slot='1'] .rune-icon-set {
+  top: 14px;
+  left: 10px;
+}
+
+.rune-icon[data-slot='2'] .rune-icon-set,
+.rune-icon[data-slot='3'] .rune-icon-set {
+  top: 10px;
+  left: 8px;
+}
+
+.rune-icon[data-slot='4'] .rune-icon-set {
+  top: 7px;
+  left: 10px;
+}
+
+.rune-icon[data-slot='5'] .rune-icon-set {
+  top: 10px;
+  left: 13px;
+}
+
+.rune-icon[data-slot='6'] .rune-icon-set {
+  top: 10px;
+  left: 12px;
+}
+
+.rune-icon-level {
+  position: absolute;
+  z-index: 3;
+  right: 2px;
+  bottom: 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1;
+  text-shadow:
+    0 1px 2px #000,
+    1px 0 1px #000,
+    -1px 0 1px #000;
 }
 
 .rune-effects {

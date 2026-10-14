@@ -316,6 +316,7 @@ const statLabels = {
     saveRuneSnapshot,
   } from '../../lib/rune-optimizer-storage.ts';
   import { runePotentialEffects } from '../../lib/rune-optimizer.ts';
+  import { runeVisualAssets } from '../../lib/rune-visual.ts';
   import type {
     AccountSnapshot,
     BuildStatKey,
@@ -791,11 +792,46 @@ const statLabels = {
 
         const runeHeading = document.createElement('div');
         runeHeading.className = 'rune-result-heading';
+        const runeIdentity = document.createElement('div');
+        runeIdentity.className = 'rune-heading-identity';
+        const visual = runeVisualAssets(rune);
+        const runeIcon = document.createElement('span');
+        runeIcon.className = 'rune-icon';
+        runeIcon.dataset.runeIcon = '';
+        runeIcon.dataset.slot = String(rune.slot);
+        runeIcon.setAttribute('aria-hidden', 'true');
+        const addIconLayer = (
+          source: string,
+          className: string,
+          asset: 'background' | 'slot' | 'set',
+        ) => {
+          const image = document.createElement('img');
+          image.className = `rune-icon-layer ${className}`;
+          image.dataset.runeAsset = asset;
+          image.src = source;
+          image.alt = '';
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          image.draggable = false;
+          runeIcon.append(image);
+        };
+        addIconLayer(visual.background, 'rune-icon-background', 'background');
+        addIconLayer(visual.slot, 'rune-icon-slot', 'slot');
+        addIconLayer(visual.set, 'rune-icon-set', 'set');
+        const runeLevel = document.createElement('span');
+        runeLevel.className = 'rune-icon-level';
+        runeLevel.textContent = '+15';
+        runeIcon.append(runeLevel);
+        const runeHeadingCopy = document.createElement('div');
+        runeHeadingCopy.className = 'rune-heading-copy';
         const runeTitle = document.createElement('strong');
         runeTitle.textContent = `Slot ${rune.slot} · ${rune.set}`;
         const runeMeta = document.createElement('span');
+        runeMeta.className = 'rune-result-meta';
         runeMeta.textContent = `${'★'.repeat(rune.grade)} · +15${rune.ancient ? ` · ${copy.ancient}` : ''}`;
-        runeHeading.append(runeTitle, runeMeta);
+        runeHeadingCopy.append(runeTitle, runeMeta);
+        runeIdentity.append(runeIcon, runeHeadingCopy);
+        runeHeading.append(runeIdentity);
         item.append(runeHeading);
 
         const effectList = document.createElement('dl');

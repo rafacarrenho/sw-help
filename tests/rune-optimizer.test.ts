@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import test from 'node:test';
 import {
   optimizeRunes,
@@ -6,12 +7,37 @@ import {
   runeVectors,
 } from '../src/lib/rune-optimizer.ts';
 import { parseSwexJson } from '../src/lib/swex-import.ts';
+import { runeSetAssetNames, runeVisualAssets } from '../src/lib/rune-visual.ts';
+import { runeSetNames } from '../src/lib/rune-optimizer-types.ts';
 import type {
   NormalizedRune,
   OptimizerQuery,
   RuneSetName,
   RuneStatKey,
 } from '../src/lib/rune-optimizer-types.ts';
+
+test('rune visuals cover every set, slot, quality and Ancient variant', () => {
+  assert.deepEqual(
+    Object.keys(runeSetAssetNames).sort(),
+    [...runeSetNames].sort(),
+  );
+
+  for (const set of runeSetNames) {
+    for (const slot of [1, 2, 3, 4, 5, 6] as const) {
+      for (const quality of [1, 2, 3, 4, 5]) {
+        for (const ancient of [false, true]) {
+          const assets = runeVisualAssets({ slot, set, quality, ancient });
+          for (const path of Object.values(assets)) {
+            assert.ok(
+              existsSync(new URL(`../public${path}`, import.meta.url)),
+              `Missing rune asset: ${path}`,
+            );
+          }
+        }
+      }
+    }
+  }
+});
 
 const monster = {
   id: 'monster-1',
