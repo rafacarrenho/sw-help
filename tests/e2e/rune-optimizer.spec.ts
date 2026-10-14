@@ -128,9 +128,16 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
       wrapperWidth: wrapperBounds.width,
       backgroundWidth: backgroundBounds.width,
       slotWidth: slotBounds.width,
+      slotHeight: slotBounds.height,
       setWidth: setBounds.width,
-      insetLeft: slotBounds.left - wrapperBounds.left,
-      insetTop: slotBounds.top - wrapperBounds.top,
+      slotCenterX:
+        slotBounds.left +
+        slotBounds.width / 2 -
+        (wrapperBounds.left + wrapperBounds.width / 2),
+      slotCenterY:
+        slotBounds.top +
+        slotBounds.height / 2 -
+        (wrapperBounds.top + wrapperBounds.height / 2),
       setCenterX:
         setBounds.left +
         setBounds.width / 2 -
@@ -147,8 +154,10 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   expect(iconPresentation.slotWidth).toBeLessThan(
     iconPresentation.wrapperWidth,
   );
-  expect(iconPresentation.insetLeft).toBe(8);
-  expect(iconPresentation.insetTop).toBe(4);
+  expect(iconPresentation.slotWidth).toBe(35);
+  expect(iconPresentation.slotHeight).toBe(42);
+  expect(iconPresentation.slotCenterX).toBe(0);
+  expect(iconPresentation.slotCenterY).toBe(0);
   expect(iconPresentation.setWidth).toBe(28);
   expect(iconPresentation.setCenterX).toBe(0);
   expect(iconPresentation.setCenterY).toBe(0);
@@ -162,17 +171,32 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
         const wrapperBounds = icon.getBoundingClientRect();
         const set = icon.querySelector<HTMLElement>('[data-rune-asset="set"]');
         if (!set) throw new Error('Rune set layer was not rendered');
+        const slotLayer = icon.querySelector<HTMLElement>(
+          '[data-rune-asset="slot"]',
+        );
+        if (!slotLayer) throw new Error('Rune slot layer was not rendered');
         const setBounds = set.getBoundingClientRect();
+        const slotBounds = slotLayer.getBoundingClientRect();
         return {
           slot: icon.getAttribute('data-slot'),
-          width: setBounds.width,
-          centerX:
+          setWidth: setBounds.width,
+          setCenterX:
             setBounds.left +
             setBounds.width / 2 -
             (wrapperBounds.left + wrapperBounds.width / 2),
-          centerY:
+          setCenterY:
             setBounds.top +
             setBounds.height / 2 -
+            (wrapperBounds.top + wrapperBounds.height / 2),
+          slotWidth: slotBounds.width,
+          slotHeight: slotBounds.height,
+          slotCenterX:
+            slotBounds.left +
+            slotBounds.width / 2 -
+            (wrapperBounds.left + wrapperBounds.width / 2),
+          slotCenterY:
+            slotBounds.top +
+            slotBounds.height / 2 -
             (wrapperBounds.top + wrapperBounds.height / 2),
         };
       }),
@@ -187,9 +211,14 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     '6',
   ]);
   for (const alignment of iconAlignment) {
-    expect(alignment.width).toBe(28);
-    expect(alignment.centerX).toBe(0);
-    expect(alignment.centerY).toBe(0);
+    const isVerticalSlot = alignment.slot === '1' || alignment.slot === '4';
+    expect(alignment.setWidth).toBe(28);
+    expect(alignment.setCenterX).toBe(0);
+    expect(alignment.setCenterY).toBe(0);
+    expect(alignment.slotWidth).toBe(isVerticalSlot ? 35 : 42);
+    expect(alignment.slotHeight).toBe(isVerticalSlot ? 42 : 50);
+    expect(alignment.slotCenterX).toBe(0);
+    expect(alignment.slotCenterY).toBe(0);
   }
   await expect(firstRuneIcon.locator('.rune-icon-level')).toHaveText('+15');
   const secondRuneIcon = firstBuild

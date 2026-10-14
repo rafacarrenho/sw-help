@@ -506,12 +506,19 @@
 }
 
 .rune-icon-slot {
-  top: 4px;
-  left: 8px;
+  top: 50%;
+  left: 50%;
   z-index: 1;
   width: 42px;
   height: 50px;
   object-fit: contain;
+  transform: translate(-50%, -50%);
+}
+
+.rune-icon[data-slot='1'] .rune-icon-slot,
+.rune-icon[data-slot='4'] .rune-icon-slot {
+  width: 35px;
+  height: 42px;
 }
 
 .rune-icon-set {
