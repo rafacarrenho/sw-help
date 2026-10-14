@@ -12,7 +12,7 @@ Cada miniatura será composta por assets locais em três camadas:
 
 1. fundo da qualidade da runa, com variante própria para Ancient;
 2. pedra com formato específico para cada slot de 1 a 6;
-3. símbolo do set, posicionado sobre a pedra de acordo com o slot.
+3. símbolo dourado do set, centralizado sobre a pedra.
 
 O nível `+15` será sobreposto no canto inferior direito. As estrelas continuarão
 no texto do cabeçalho para preservar a leitura em tamanhos compactos. O ícone
@@ -22,13 +22,16 @@ ficará à esquerda de `Slot N · Set`, com tamanho estável em desktop e celula
 
 O fundo de qualidade preencherá o wrapper e não será recolorido, preservando a
 distinção entre raridades e a variante Ancient. A pedra do slot manterá seus tons
-escuros originais e ficará menor, centralizada sobre o fundo. Apenas o símbolo do
-set receberá o tratamento amarelo/dourado visto no jogo.
+escuros originais e ficará menor, centralizada sobre o fundo. O símbolo do set
+será armazenado já em amarelo/dourado no próprio PNG: a interface não aplicará
+`filter`, máscara, sobreposição de cor ou outro tratamento em tempo de execução.
 
 O wrapper manterá uma área estável para não deslocar o texto entre slots. A pedra
 usará suas proporções originais de `42 × 50 px` dentro do fundo de `58 × 58 px`,
-criando respiro sem reduzir a moldura de qualidade. O indicador `+15` ficará
-preso ao canto inferior direito do fundo, como na interface do jogo.
+criando respiro sem reduzir a moldura de qualidade. O símbolo usará uma caixa de
+`28 × 28 px`, ancorada no mesmo centro nos seis slots — inclusive no slot 1 — em
+vez de offsets independentes. O indicador `+15` ficará preso ao canto inferior
+direito do fundo, como na interface do jogo.
 
 ## Assets e cobertura
 
@@ -38,7 +41,9 @@ normal, magic, rare, hero e legend, suas variantes Ancient e todos os 23 sets
 aceitos pelo importador.
 
 Os arquivos vêm do repositório público do SWARFARM e as imagens do jogo pertencem
-à Com2uS. Um README junto aos assets registrará a origem e a propriedade.
+à Com2uS. As variantes douradas serão arquivos estáticos derivados dos símbolos
+originais, mantendo seu contorno e transparência. Um README junto aos assets
+registrará a origem, a derivação e a propriedade.
 
 ## Renderização e fallback
 
@@ -57,4 +62,5 @@ Os testes confirmarão:
 - fundo Ancient e fundo comum;
 - cobertura de assets para todos os sets e slots suportados;
 - manutenção do texto, nível e layout sem rolagem horizontal;
+- ausência de filtro visual e centralização uniforme do símbolo nos seis slots;
 - funcionamento em desktop e mobile.
