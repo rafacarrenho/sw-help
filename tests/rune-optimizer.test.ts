@@ -265,6 +265,82 @@ test('optimizer finds the exact fastest build and applies Swift rounding', () =>
   ]);
 });
 
+test('full required sets prune irrelevant Pareto candidates before searching', () => {
+  const runes: NormalizedRune[] = [];
+  for (let slot = 1; slot <= 6; slot += 1) {
+    const normalizedSlot = slot as NormalizedRune['slot'];
+    for (const set of ['Violent', 'Will'] as const) {
+      runes.push(
+        rune(`${set}-${slot}`, normalizedSlot, set, 'speed', 10, {
+          substats: [
+            { stat: 'critRate', value: 15, grind: 0, enchanted: false },
+          ],
+        }),
+      );
+    }
+    for (let index = 1; index <= 30; index += 1) {
+      runes.push(
+        rune(
+          `Blade-${slot}-${index}`,
+          normalizedSlot,
+          'Blade',
+          'speed',
+          index,
+          {
+            substats: [
+              {
+                stat: 'critRate',
+                value: 31 - index,
+                grind: 0,
+                enchanted: false,
+              },
+            ],
+          },
+        ),
+      );
+    }
+  }
+
+  const result = optimizeRunes(
+    runes,
+    query({
+      requiredSets: ['Violent', 'Will'],
+      constraints: { critRate: { min: 100 } },
+    }),
+  );
+
+  assert.deepEqual(result.candidatesBySlot, [2, 2, 2, 2, 2, 2]);
+  assert.equal(result.builds.length, 10);
+  assert.ok(result.combinationsEvaluated <= 15);
+  assert.ok(
+    result.builds.every(
+      ({ sets, potential }) =>
+        sets.includes('Violent') &&
+        sets.includes('Will') &&
+        potential.critRate === 100,
+    ),
+  );
+});
+
+test('required sets that need more than six pieces fail before searching', () => {
+  const runes = Array.from({ length: 6 }, (_, index) =>
+    rune(
+      `r${index + 1}`,
+      (index + 1) as NormalizedRune['slot'],
+      'Swift',
+      'speed',
+      10,
+    ),
+  );
+  const result = optimizeRunes(
+    runes,
+    query({ requiredSets: ['Swift', 'Violent'] }),
+  );
+  assert.equal(result.builds.length, 0);
+  assert.equal(result.combinationsEvaluated, 0);
+  assert.deepEqual(result.candidatesBySlot, [0, 0, 0, 0, 0, 0]);
+});
+
 test('one Intangible rune can complete a required four-piece set', () => {
   const sets: RuneSetName[] = [
     'Violent',

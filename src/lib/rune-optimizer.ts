@@ -533,12 +533,36 @@ export function optimizeRunes(
   query: OptimizerQuery,
 ): OptimizerResult {
   const startedAt = Date.now();
+  const requiredPieceTargets = new Map<RuneSetName, number>();
+  for (const set of query.requiredSets) {
+    requiredPieceTargets.set(
+      set,
+      (requiredPieceTargets.get(set) ?? 0) + SET_SIZE[set],
+    );
+  }
+  const requiredPieceCount = [...requiredPieceTargets.values()].reduce(
+    (total, count) => total + count,
+    0,
+  );
+  if (requiredPieceCount > 6) {
+    return {
+      builds: [],
+      combinationsEvaluated: 0,
+      candidatesBySlot: [0, 0, 0, 0, 0, 0],
+      elapsedMs: Date.now() - startedAt,
+    };
+  }
+
+  const allSlotsReservedByRequiredSets = requiredPieceCount === 6;
   const excluded = new Set(query.excludedMonsterIds);
   const allowed = allRunes.filter(
     (rune) =>
       (!query.inventoryOnly || rune.location === 'inventory') &&
       (query.includeLocked || !rune.locked) &&
-      (!rune.equippedMonsterId || !excluded.has(rune.equippedMonsterId)),
+      (!rune.equippedMonsterId || !excluded.has(rune.equippedMonsterId)) &&
+      (!allSlotsReservedByRequiredSets ||
+        rune.set === 'Intangible' ||
+        requiredPieceTargets.has(rune.set)),
   );
   const candidatesBySlot = Array.from({ length: 6 }, (_, slotIndex) => {
     const candidates = allowed
@@ -555,6 +579,92 @@ export function optimizeRunes(
   });
 
   if (candidatesBySlot.some((slot) => slot.length === 0)) {
+    return {
+      builds: [],
+      combinationsEvaluated: 0,
+      candidatesBySlot: candidatesBySlot.map((slot) => slot.length),
+      elapsedMs: Date.now() - startedAt,
+    };
+  }
+
+  const requiredTargets = [...requiredPieceTargets.entries()];
+  const requiredSetIndexes = new Map(
+    requiredTargets.map(([set], index) => [set, index]),
+  );
+  const candidateKindsBySlot = candidatesBySlot.map(
+    (candidates) =>
+      new Set(
+        candidates.map(({ rune }) => {
+          if (rune.set === 'Intangible') return -2;
+          return requiredSetIndexes.get(rune.set) ?? -1;
+        }),
+      ),
+  );
+  const setFeasibilityMemo = new Map<string, boolean>();
+  const canCompleteRequiredSets = (
+    depth: number,
+    counts: number[],
+    intangible: number,
+  ): boolean => {
+    if (requiredTargets.length === 0) return true;
+    if (depth === 6) {
+      const missingPieces = requiredTargets.reduce(
+        (total, [, target], index) =>
+          total + Math.max(0, target - counts[index]),
+        0,
+      );
+      return missingPieces <= intangible;
+    }
+
+    const cappedCounts = counts.map((count, index) =>
+      Math.min(count, requiredTargets[index][1]),
+    );
+    const key = `${depth}|${intangible}|${cappedCounts.join(',')}`;
+    const cached = setFeasibilityMemo.get(key);
+    if (cached !== undefined) return cached;
+
+    for (const kind of candidateKindsBySlot[depth]) {
+      if (kind === -2) {
+        if (
+          intangible === 0 &&
+          canCompleteRequiredSets(depth + 1, cappedCounts, 1)
+        ) {
+          setFeasibilityMemo.set(key, true);
+          return true;
+        }
+        continue;
+      }
+
+      const nextCounts = [...cappedCounts];
+      if (kind >= 0) nextCounts[kind] += 1;
+      if (canCompleteRequiredSets(depth + 1, nextCounts, intangible)) {
+        setFeasibilityMemo.set(key, true);
+        return true;
+      }
+    }
+
+    setFeasibilityMemo.set(key, false);
+    return false;
+  };
+
+  const optimisticSetBonus = allSlotsReservedByRequiredSets
+    ? (() => {
+        const bonus = emptyVector();
+        for (const set of query.requiredSets) {
+          const effect = SET_STAT_BONUS[set];
+          if (effect) addEffect(bonus, effect.stat, effect.value);
+        }
+        return bonus;
+      })()
+    : MAX_SET_BONUS;
+
+  if (
+    !canCompleteRequiredSets(
+      0,
+      requiredTargets.map(() => 0),
+      0,
+    )
+  ) {
     return {
       builds: [],
       combinationsEvaluated: 0,
@@ -603,6 +713,7 @@ export function optimizeRunes(
   const limit = Math.max(1, Math.min(50, query.limit ?? 10));
   let combinationsEvaluated = 0;
   let intangibleCount = 0;
+  const selectedRequiredCounts = requiredTargets.map(() => 0);
 
   const maximumPossibleSpeed = (
     depth: number,
@@ -664,45 +775,56 @@ export function optimizeRunes(
       hp:
         query.monster.hp +
         Math.floor(
-          (scaled('hp') + query.monster.hp * MAX_SET_BONUS.hpPercent) / 100,
+          (scaled('hp') + query.monster.hp * optimisticSetBonus.hpPercent) /
+            100,
         ),
       attack:
         query.monster.attack +
         Math.floor(
           (scaled('attack') +
-            query.monster.attack * MAX_SET_BONUS.attackPercent) /
+            query.monster.attack * optimisticSetBonus.attackPercent) /
             100,
         ),
       defense:
         query.monster.defense +
         Math.floor(
           (scaled('defense') +
-            query.monster.defense * MAX_SET_BONUS.defensePercent) /
+            query.monster.defense * optimisticSetBonus.defensePercent) /
             100,
         ),
       speed: maximumPossibleSpeed(depth, mode),
       critRate: Math.min(
         100,
-        query.monster.critRate + scaled('critRate') + MAX_SET_BONUS.critRate,
+        query.monster.critRate +
+          scaled('critRate') +
+          optimisticSetBonus.critRate,
       ),
       critDamage:
         query.monster.critDamage +
         scaled('critDamage') +
-        MAX_SET_BONUS.critDamage,
+        optimisticSetBonus.critDamage,
       resistance: Math.min(
         100,
         query.monster.resistance +
           scaled('resistance') +
-          MAX_SET_BONUS.resistance,
+          optimisticSetBonus.resistance,
       ),
       accuracy: Math.min(
         100,
-        query.monster.accuracy + scaled('accuracy') + MAX_SET_BONUS.accuracy,
+        query.monster.accuracy +
+          scaled('accuracy') +
+          optimisticSetBonus.accuracy,
       ),
     };
   };
 
   const visit = (depth: number): void => {
+    if (
+      !canCompleteRequiredSets(depth, selectedRequiredCounts, intangibleCount)
+    ) {
+      return;
+    }
+
     if (depth === 6) {
       combinationsEvaluated += 1;
       const runes = selected.map(({ rune }) => rune);
@@ -774,7 +896,18 @@ export function optimizeRunes(
     for (const candidate of candidatesBySlot[depth]) {
       const isIntangible = candidate.rune.set === 'Intangible';
       if (isIntangible && intangibleCount >= 1) continue;
+      const requiredSetIndex = requiredSetIndexes.get(candidate.rune.set);
+      const previousRequiredCount =
+        requiredSetIndex === undefined
+          ? 0
+          : selectedRequiredCounts[requiredSetIndex];
       if (isIntangible) intangibleCount += 1;
+      if (requiredSetIndex !== undefined) {
+        selectedRequiredCounts[requiredSetIndex] = Math.min(
+          requiredTargets[requiredSetIndex][1],
+          previousRequiredCount + 1,
+        );
+      }
       selected.push(candidate);
       addVector(currentVector, candidate.current);
       addVector(potentialVector, candidate.potential);
@@ -782,6 +915,9 @@ export function optimizeRunes(
       subtractVector(potentialVector, candidate.potential);
       subtractVector(currentVector, candidate.current);
       selected.pop();
+      if (requiredSetIndex !== undefined) {
+        selectedRequiredCounts[requiredSetIndex] = previousRequiredCount;
+      }
       if (isIntangible) intangibleCount -= 1;
     }
   };
