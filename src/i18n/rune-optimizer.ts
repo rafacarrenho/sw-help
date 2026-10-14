@@ -17,8 +17,7 @@ export interface RuneOptimizerMessages {
   builderTitle: string;
   monster: string;
   objective: string;
-  calculateUsing: string;
-  current: string;
+  maximumPotential: string;
   currentResult: string;
   maximumResult: string;
   requiredSets: string;
@@ -97,8 +96,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Build goal',
     monster: 'Monster',
     objective: 'Maximize',
-    calculateUsing: 'Calculate using',
-    current: 'Current',
+    maximumPotential: 'Max property potential',
     currentResult: 'Current result',
     maximumResult: 'Maximum result',
     requiredSets: 'Required sets',
@@ -176,8 +174,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objetivo da build',
     monster: 'Monstro',
     objective: 'Maximizar',
-    calculateUsing: 'Calcular usando',
-    current: 'Atual',
+    maximumPotential: 'Potencial máximo dos atributos',
     currentResult: 'Resultado atual',
     maximumResult: 'Resultado máximo',
     requiredSets: 'Sets obrigatórios',
@@ -255,8 +252,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objetivo de la build',
     monster: 'Monstruo',
     objective: 'Maximizar',
-    calculateUsing: 'Calcular usando',
-    current: 'Actual',
+    maximumPotential: 'Potencial máximo de los atributos',
     currentResult: 'Resultado actual',
     maximumResult: 'Resultado máximo',
     requiredSets: 'Sets obligatorios',
@@ -334,8 +330,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objectif du build',
     monster: 'Monstre',
     objective: 'Maximiser',
-    calculateUsing: 'Calculer avec',
-    current: 'Actuel',
+    maximumPotential: 'Potentiel maximal des attributs',
     currentResult: 'Résultat actuel',
     maximumResult: 'Résultat maximum',
     requiredSets: 'Sets obligatoires',
@@ -412,8 +407,7 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Build-Ziel',
     monster: 'Monster',
     objective: 'Maximieren',
-    calculateUsing: 'Berechnen mit',
-    current: 'Aktuell',
+    maximumPotential: 'Maximales Attributpotenzial',
     currentResult: 'Aktuelles Ergebnis',
     maximumResult: 'Maximales Ergebnis',
     requiredSets: 'Erforderliche Sets',

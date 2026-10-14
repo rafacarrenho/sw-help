@@ -389,6 +389,32 @@ test('damage objective balances ATK and critical damage at 100% CR', () => {
   assert.equal(result.builds[0].objectiveValue, 2415);
 });
 
+test('CR, RES and ACC totals never exceed 100', () => {
+  const runes = Array.from({ length: 6 }, (_, index) =>
+    rune(
+      `capped-${index + 1}`,
+      (index + 1) as NormalizedRune['slot'],
+      'Energy',
+      'hpFlat',
+      0,
+      {
+        substats: [
+          { stat: 'critRate', value: 30, grind: 0, enchanted: false },
+          { stat: 'resistance', value: 30, grind: 0, enchanted: false },
+          { stat: 'accuracy', value: 30, grind: 0, enchanted: false },
+        ],
+      },
+    ),
+  );
+
+  const result = optimizeRunes(runes, query({ limit: 1 }));
+
+  assert.equal(result.builds.length, 1);
+  assert.equal(result.builds[0].stats.critRate, 100);
+  assert.equal(result.builds[0].stats.resistance, 100);
+  assert.equal(result.builds[0].stats.accuracy, 100);
+});
+
 test('full required sets prune irrelevant Pareto candidates before searching', () => {
   const runes: NormalizedRune[] = [];
   for (let slot = 1; slot <= 6; slot += 1) {

@@ -242,30 +242,20 @@ const statLabels = {
           </label>
         </div>
 
-        <fieldset class="projection-fieldset">
-          <legend>{copy.calculateUsing}</legend>
-          <div class="projection-control">
-            <label>
-              <input
-                type="radio"
-                name="optimizer-projection"
-                value="current"
-                data-projection
-              />
-              <span>{copy.current}</span>
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="optimizer-projection"
-                value="potential"
-                data-projection
-                checked
-              />
-              <span>{copy.maximum}</span>
-            </label>
-          </div>
-        </fieldset>
+        <div class="projection-fieldset">
+          <label class="check-row projection-control">
+            <input
+              type="checkbox"
+              aria-describedby="projection-description"
+              data-projection
+              checked
+            />
+            {copy.maximumPotential}
+          </label>
+          <p id="projection-description" class="potential-note">
+            {copy.potentialNote}
+          </p>
+        </div>
 
         <fieldset>
           <legend>{copy.requiredSets}</legend>
@@ -288,93 +278,118 @@ const statLabels = {
           </div>
         </fieldset>
 
-        <details>
-          <summary>{copy.poolTitle}</summary>
-          <div class="details-content">
-            <label class="check-row">
-              <input type="checkbox" data-inventory-only /> {copy.inventoryOnly}
-            </label>
-            <label class="check-row">
-              <input type="checkbox" data-include-locked checked />
-              {copy.includeLocked}
-            </label>
-            <div class="exclude-control">
-              <label for="exclude-monster">{copy.excludeMonster}</label>
-              <div>
-                <select id="exclude-monster" data-exclude-select></select>
-                <button type="button" class="button compact" data-exclude-add>
-                  {copy.add}
-                </button>
+        <div class="optimizer-config-sections">
+          <section
+            class="optimizer-config-section pool-section"
+            aria-labelledby="rune-pool-title"
+          >
+            <h3 id="rune-pool-title">{copy.poolTitle}</h3>
+            <div class="config-section-content">
+              <label class="check-row">
+                <input type="checkbox" data-inventory-only />{' '}
+                {copy.inventoryOnly}
+              </label>
+              <label class="check-row">
+                <input type="checkbox" data-include-locked checked />
+                {copy.includeLocked}
+              </label>
+              <div class="exclude-control">
+                <label for="exclude-monster">{copy.excludeMonster}</label>
+                <div>
+                  <select id="exclude-monster" data-exclude-select></select>
+                  <button type="button" class="button compact" data-exclude-add>
+                    {copy.add}
+                  </button>
+                </div>
+                <div class="chip-list" data-excluded></div>
               </div>
-              <div class="chip-list" data-excluded></div>
             </div>
-          </div>
-        </details>
+          </section>
 
-        <details open>
-          <summary>{copy.constraints}</summary>
-          <div class="details-content constraints-wrap">
-            <table class="constraints-table">
-              <thead>
-                <tr>
-                  <th>{copy.stat}</th>
-                  <th>{copy.minimum}</th>
-                  <th>{copy.maximum}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {buildStatKeys.map((stat) => (
+          <section
+            class="optimizer-config-section constraints-section"
+            aria-labelledby="constraints-title"
+          >
+            <h3 id="constraints-title">{copy.constraints}</h3>
+            <div class="config-section-content constraints-wrap">
+              <table class="constraints-table">
+                <thead>
                   <tr>
-                    <th scope="row">{statLabels[stat]}</th>
-                    <td>
-                      <input
-                        type="number"
-                        min="0"
-                        inputmode="numeric"
-                        data-constraint-min={stat}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        min="0"
-                        inputmode="numeric"
-                        data-constraint-max={stat}
-                      />
-                    </td>
+                    <th>{copy.stat}</th>
+                    <th>{copy.minimum}</th>
+                    <th>{copy.maximum}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
+                </thead>
+                <tbody>
+                  {buildStatKeys.map((stat) => (
+                    <tr>
+                      <th scope="row">{statLabels[stat]}</th>
+                      <td>
+                        <input
+                          type="number"
+                          min="0"
+                          max={
+                            ['critRate', 'resistance', 'accuracy'].includes(
+                              stat,
+                            )
+                              ? '100'
+                              : undefined
+                          }
+                          inputmode="numeric"
+                          data-constraint-min={stat}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          min="0"
+                          max={
+                            ['critRate', 'resistance', 'accuracy'].includes(
+                              stat,
+                            )
+                              ? '100'
+                              : undefined
+                          }
+                          inputmode="numeric"
+                          data-constraint-max={stat}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
 
-        <details>
-          <summary>{copy.tickTitle}</summary>
-          <div class="details-content tick-controls">
-            <label class="check-row">
-              <input type="checkbox" data-tick-enabled /> {copy.requireTick}
-            </label>
-            <label>
-              <span>Tick</span>
-              <select data-tick>
-                {[3, 4, 5, 6, 7, 8].map((tick) => (
-                  <option value={tick}>Tick {tick}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              <span>{copy.speedTower}</span>
-              <input type="number" min="0" max="15" value="15" data-tower />
-            </label>
-            <label>
-              <span>{copy.leaderSkill}</span>
-              <input type="number" min="0" max="50" value="0" data-leader />
-            </label>
-          </div>
-        </details>
+          <section
+            class="optimizer-config-section tick-section"
+            aria-labelledby="tick-title"
+          >
+            <h3 id="tick-title">{copy.tickTitle}</h3>
+            <div class="config-section-content tick-controls">
+              <label class="check-row">
+                <input type="checkbox" data-tick-enabled /> {copy.requireTick}
+              </label>
+              <label>
+                <span>Tick</span>
+                <select data-tick>
+                  {[3, 4, 5, 6, 7, 8].map((tick) => (
+                    <option value={tick}>Tick {tick}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>{copy.speedTower}</span>
+                <input type="number" min="0" max="15" value="15" data-tower />
+              </label>
+              <label>
+                <span>{copy.leaderSkill}</span>
+                <input type="number" min="0" max="50" value="0" data-leader />
+              </label>
+            </div>
+          </section>
+        </div>
 
-        <p class="potential-note">{copy.potentialNote}</p>
         <div class="run-actions">
           <button class="button primary" type="button" data-optimize>
             {copy.optimize}
@@ -466,7 +481,7 @@ const statLabels = {
   const monsterOptions = $<HTMLElement>('[data-monster-options]');
   const excludeSelect = $<HTMLSelectElement>('[data-exclude-select]');
   const objectiveSelect = $<HTMLSelectElement>('[data-objective]');
-  const projectionInputs = $$<HTMLInputElement>('[data-projection]');
+  const projectionInput = $<HTMLInputElement>('[data-projection]');
   const optimizeButton = $<HTMLButtonElement>('[data-optimize]');
   const cancelButton = $<HTMLButtonElement>('[data-cancel]');
   const calculationStatus = $<HTMLElement>('[data-calculation-status]');
@@ -650,9 +665,7 @@ const statLabels = {
 
   function finishCalculation(): void {
     optimizeButton.disabled = false;
-    projectionInputs.forEach((input) => {
-      input.disabled = false;
-    });
+    projectionInput.disabled = false;
     cancelButton.hidden = true;
     calculationStatus.textContent = '';
   }
@@ -678,6 +691,11 @@ const statLabels = {
     const catalogMonster = catalog.find(({ id }) => id === selectedMonsterId);
     if (!catalogMonster) return null;
     const constraints: OptimizerQuery['constraints'] = {};
+    const cappedPercentageStats = new Set<BuildStatKey>([
+      'critRate',
+      'resistance',
+      'accuracy',
+    ]);
     for (const stat of [
       'hp',
       'attack',
@@ -688,12 +706,22 @@ const statLabels = {
       'resistance',
       'accuracy',
     ] as BuildStatKey[]) {
-      const minimum = $<HTMLInputElement>(
+      const rawMinimum = $<HTMLInputElement>(
         `[data-constraint-min="${stat}"]`,
       ).valueAsNumber;
-      const maximum = $<HTMLInputElement>(
+      const rawMaximum = $<HTMLInputElement>(
         `[data-constraint-max="${stat}"]`,
       ).valueAsNumber;
+      const clampConstraint = (value: number) =>
+        cappedPercentageStats.has(stat)
+          ? Math.min(100, Math.max(0, value))
+          : value;
+      const minimum = Number.isFinite(rawMinimum)
+        ? clampConstraint(rawMinimum)
+        : rawMinimum;
+      const maximum = Number.isFinite(rawMaximum)
+        ? clampConstraint(rawMaximum)
+        : rawMaximum;
       if (Number.isFinite(minimum) || Number.isFinite(maximum)) {
         constraints[stat] = {
           ...(Number.isFinite(minimum) ? { min: minimum } : {}),
@@ -710,10 +738,7 @@ const statLabels = {
         ...catalogMonster.stats,
       },
       objective: objectiveSelect.value as OptimizerObjectiveKey,
-      projection:
-        $<HTMLInputElement>('[data-projection]:checked').value === 'current'
-          ? 'current'
-          : 'potential',
+      projection: projectionInput.checked ? 'potential' : 'current',
       constraints,
       requiredSets: $$<HTMLSelectElement>('[data-required-set]')
         .map(({ value }) => value)
@@ -1125,6 +1150,21 @@ const statLabels = {
   $$<HTMLSelectElement>('[data-required-set]').forEach((select) => {
     select.addEventListener('change', () => updatePresetState('rune', ''));
   });
+  const cappedConstraintInputs = $$<HTMLInputElement>(
+    '[data-constraint-min="critRate"], [data-constraint-max="critRate"], [data-constraint-min="resistance"], [data-constraint-max="resistance"], [data-constraint-min="accuracy"], [data-constraint-max="accuracy"]',
+  );
+
+  function clampPercentageConstraint(input: HTMLInputElement): void {
+    if (input.value === '') return;
+    const value = input.valueAsNumber;
+    if (!Number.isFinite(value)) return;
+    input.value = String(Math.min(100, Math.max(0, value)));
+  }
+
+  cappedConstraintInputs.forEach((input) => {
+    input.addEventListener('input', () => clampPercentageConstraint(input));
+  });
+
   $$<HTMLInputElement>(
     '[data-constraint-min], [data-constraint-max], [data-tick-enabled], [data-tower], [data-leader]',
   ).forEach((input) => {
@@ -1136,13 +1176,11 @@ const statLabels = {
   objectiveSelect.addEventListener('change', () =>
     updatePresetState('stat', ''),
   );
-  projectionInputs.forEach((input) => {
-    input.addEventListener('change', () => {
-      activeQuery = null;
-      resultsPanel.hidden = true;
-      resultMeta.textContent = '';
-      resultsContainer.replaceChildren();
-    });
+  projectionInput.addEventListener('change', () => {
+    activeQuery = null;
+    resultsPanel.hidden = true;
+    resultMeta.textContent = '';
+    resultsContainer.replaceChildren();
   });
 
   fileInput.addEventListener('change', async () => {
@@ -1224,9 +1262,7 @@ const statLabels = {
       return;
     }
     optimizeButton.disabled = true;
-    projectionInputs.forEach((input) => {
-      input.disabled = true;
-    });
+    projectionInput.disabled = true;
     cancelButton.hidden = false;
     calculationStatus.textContent = copy.calculating;
     activeQuery = query;

@@ -48,6 +48,32 @@ async function importSyntheticExport(page: Page) {
   await expect(page.locator('[data-workspace]')).toBeVisible();
 }
 
+test('exibe as configurações sem dropdown e limita CR, RES e ACC a 100', async ({
+  page,
+}) => {
+  await importSyntheticExport(page);
+
+  await expect(page.locator('[data-workspace] details')).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Conjunto de runas' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Limites de status' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Velocidade de combate' }),
+  ).toBeVisible();
+
+  for (const stat of ['critRate', 'resistance', 'accuracy']) {
+    for (const bound of ['min', 'max']) {
+      const input = page.locator(`[data-constraint-${bound}="${stat}"]`);
+      await expect(input).toHaveAttribute('max', '100');
+      await input.fill('150');
+      await expect(input).toHaveValue('100');
+    }
+  }
+});
+
 test('combina presets de runas e status sem apagar o outro grupo', async ({
   page,
 }) => {
@@ -130,8 +156,10 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     '1 monstros · 6 runas · 1 artefatos',
   );
   await expect(page.getByLabel('Permitir runas bloqueadas')).toBeChecked();
-  await expect(page.getByLabel('Máximo', { exact: true })).toBeChecked();
-  await expect(page.getByLabel('Atual', { exact: true })).not.toBeChecked();
+  const maximumPotential = page.getByLabel('Potencial máximo dos atributos', {
+    exact: true,
+  });
+  await expect(maximumPotential).toBeChecked();
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   await monsterSearch.fill('Tiana');
@@ -154,7 +182,7 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(
     firstBuild.locator('.result-stats thead tr').first().locator('th'),
   ).toHaveText(['Status', 'Base', 'Adicional', 'Total']);
-  await page.getByLabel('Atual', { exact: true }).check();
+  await maximumPotential.uncheck();
   await expect(page.locator('[data-results-panel]')).toBeHidden();
   await page.getByRole('button', { name: 'Encontrar builds exatas' }).click();
   await expect(firstBuild).toBeVisible();
