@@ -20,14 +20,15 @@ ficará à esquerda de `Slot N · Set`, com tamanho estável em desktop e celula
 
 ### Refinamento de cor e respiro
 
-A pedra e o símbolo do set terão um tratamento dourado uniforme, mais próximo da
-leitura visual predominante no jogo. O fundo de qualidade não será recolorido,
-preservando a distinção entre raridades e a variante Ancient.
+O fundo de qualidade preencherá o wrapper e não será recolorido, preservando a
+distinção entre raridades e a variante Ancient. A pedra do slot manterá seus tons
+escuros originais e ficará menor, centralizada sobre o fundo. Apenas o símbolo do
+set receberá o tratamento amarelo/dourado visto no jogo.
 
-O wrapper manterá uma área estável para não deslocar o texto entre slots, enquanto
-as três camadas visuais ficarão menores e centralizadas dentro dele. Esse recuo
-evita que a runa pareça encostada nas bordas. O indicador `+15` acompanhará o
-limite interno do desenho, em vez da borda externa do wrapper.
+O wrapper manterá uma área estável para não deslocar o texto entre slots. A pedra
+usará suas proporções originais de `42 × 50 px` dentro do fundo de `58 × 58 px`,
+criando respiro sem reduzir a moldura de qualidade. O indicador `+15` ficará
+preso ao canto inferior direito do fundo, como na interface do jogo.
 
 ## Assets e cobertura
 
