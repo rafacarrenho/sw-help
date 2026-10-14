@@ -63,7 +63,10 @@ const statLabels = {
     />
     <header class="optimizer-hero">
       <p class="eyebrow">Summoners War</p>
-      <h1>{copy.title}</h1>
+      <h1>
+        {copy.title}
+        <span class="beta-badge">BETA</span>
+      </h1>
       <p>{copy.description}</p>
       <p class="privacy-note">🔒 {copy.privacy}</p>
     </header>
@@ -835,10 +838,7 @@ const statLabels = {
           if (effect.grindable) {
             const limit = document.createElement('span');
             limit.className = 'rune-stat-limit';
-            limit.textContent =
-              effect.possibleGrind > 0
-                ? `(${formatRuneValue(effect.stat, effect.value)} ${copy.limit})`
-                : `(${copy.limit})`;
+            limit.textContent = `(${formatRuneValue(effect.stat, effect.value)})`;
             value.append(limit);
           }
           if (effect.enchanted) {

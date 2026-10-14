@@ -32,6 +32,7 @@ const syntheticExport = {
     prefix_eff: [0, 0],
     sec_eff: [
       index === 0 ? [8, 26, 1, 5] : index === 2 ? [8, 30, 0, 5] : [8, 30, 0, 0],
+      ...(index === 0 ? [[9, 12, 1, 0]] : []),
     ],
   })),
   artifacts: [{ rid: 700001, slot: 1, rank: 4, level: 15 }],
@@ -41,6 +42,11 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   page,
 }) => {
   await page.goto('/pt/summoners-war/otimizador-de-runas');
+
+  await expect(page.locator('.optimizer-hero h1')).toContainText(
+    'Otimizador de Runas',
+  );
+  await expect(page.locator('.beta-badge')).toHaveText('BETA');
 
   await page.locator('[data-file-input]').setInputFiles({
     name: 'swex.json',
@@ -89,12 +95,13 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(upgradedSpeed.locator('.rune-stat-current')).toHaveClass(
     /is-upgraded/,
   );
-  await expect(upgradedSpeed.locator('.rune-stat-limit')).toHaveText(
-    '(+32 limite)',
-  );
+  await expect(upgradedSpeed.locator('.rune-stat-limit')).toHaveText('(+32)');
   await expect(upgradedSpeed.getByRole('img', { name: 'Gemado' })).toHaveText(
     '↻',
   );
+  await expect(upgradedSpeed.locator('dd')).toHaveText('+31(+32)↻');
+  const alteredCritRate = firstRune.locator('[data-rune-stat="critRate"]');
+  await expect(alteredCritRate.locator('dd')).toHaveText('+12%↻');
   await expect(firstRune).not.toContainText('Grind atual');
   await expect(firstRune).not.toContainText('Base +26');
   await expect(firstRune).not.toContainText('Final +32');
@@ -107,9 +114,20 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(untouchedSpeed.locator('.rune-stat-current')).not.toHaveClass(
     /is-upgraded/,
   );
-  await expect(untouchedSpeed.locator('.rune-stat-limit')).toHaveText(
-    '(+35 limite)',
-  );
+  await expect(untouchedSpeed.locator('.rune-stat-limit')).toHaveText('(+35)');
+  const [limitColor, upgradedColor, untouchedColor] = await Promise.all([
+    upgradedSpeed
+      .locator('.rune-stat-limit')
+      .evaluate((element) => getComputedStyle(element).color),
+    upgradedSpeed
+      .locator('.rune-stat-current')
+      .evaluate((element) => getComputedStyle(element).color),
+    untouchedSpeed
+      .locator('.rune-stat-current')
+      .evaluate((element) => getComputedStyle(element).color),
+  ]);
+  expect(limitColor).not.toBe(upgradedColor);
+  expect(limitColor).not.toBe(untouchedColor);
 
   const maximumSpeed = firstBuild
     .locator('[data-rune-card="3"]')
@@ -118,7 +136,8 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(maximumSpeed.locator('.rune-stat-current')).toHaveClass(
     /is-upgraded/,
   );
-  await expect(maximumSpeed.locator('.rune-stat-limit')).toHaveText('(limite)');
+  await expect(maximumSpeed.locator('.rune-stat-limit')).toHaveText('(+35)');
+  await expect(maximumSpeed.locator('dd')).toHaveText('+35(+35)');
   await expect
     .poll(() =>
       page.evaluate(

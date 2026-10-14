@@ -44,7 +44,6 @@ export interface RuneOptimizerMessages {
   mainStat: string;
   innateStat: string;
   substats: string;
-  limit: string;
   gemmed: string;
   ancient: string;
   inventory: string;
@@ -110,7 +109,6 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Main stat',
     innateStat: 'Innate',
     substats: 'Substats',
-    limit: 'limit',
     gemmed: 'Gemmed',
     ancient: 'Ancient',
     inventory: 'Inventory',
@@ -175,7 +173,6 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Status principal',
     innateStat: 'Inato',
     substats: 'Substats',
-    limit: 'limite',
     gemmed: 'Gemado',
     ancient: 'Ancient',
     inventory: 'Inventário',
@@ -240,7 +237,6 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Atributo principal',
     innateStat: 'Innato',
     substats: 'Substats',
-    limit: 'límite',
     gemmed: 'Con gema',
     ancient: 'Ancient',
     inventory: 'Inventario',
@@ -305,7 +301,6 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Stat principale',
     innateStat: 'Innée',
     substats: 'Substats',
-    limit: 'limite',
     gemmed: 'Gemmée',
     ancient: 'Ancient',
     inventory: 'Inventaire',
@@ -369,7 +364,6 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     mainStat: 'Hauptwert',
     innateStat: 'Angeboren',
     substats: 'Substats',
-    limit: 'Limit',
     gemmed: 'Mit Gem',
     ancient: 'Ancient',
     inventory: 'Inventar',
