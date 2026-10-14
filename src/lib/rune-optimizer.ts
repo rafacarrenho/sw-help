@@ -1,7 +1,9 @@
 import { SPEED_TICK_BREAKPOINTS } from './speed-tick.ts';
+import { runeSetNames } from './rune-optimizer-types.ts';
 import type {
   BuildStatKey,
   NormalizedRune,
+  OptimizerObjectiveKey,
   OptimizerQuery,
   OptimizerResult,
   PotentialRuneEffect,
@@ -145,6 +147,14 @@ interface CandidateRune {
   potential: RuneVector;
 }
 
+type DamagePartialFrontier = Array<Array<[attack: number, critDamage: number]>>;
+
+interface DamageProjection {
+  attack: number;
+  critRate: number;
+  critDamage: number;
+}
+
 const emptyVector = (): RuneVector => ({
   hpFlat: 0,
   hpPercent: 0,
@@ -195,6 +205,15 @@ function subtractVector(target: RuneVector, source: RuneVector): void {
   for (const stat of Object.keys(target) as RuneStatKey[]) {
     target[stat] -= source[stat];
   }
+}
+
+function candidateVector(
+  candidate: CandidateRune,
+  query: OptimizerQuery,
+): RuneVector {
+  return query.projection === 'current'
+    ? candidate.current
+    : candidate.potential;
 }
 
 function statsFromVector(
@@ -338,23 +357,28 @@ function dominates(
   query: OptimizerQuery,
 ): boolean {
   let better = false;
+  const objectiveStats = objectiveStatKeys(query.objective);
   const relevantStats = new Set<BuildStatKey>([
-    query.objective,
+    ...objectiveStats,
     ...(Object.keys(query.constraints) as BuildStatKey[]),
     ...(query.tick ? (['speed'] as BuildStatKey[]) : []),
   ]);
   for (const buildStat of relevantStats) {
     const hasMaximum = query.constraints[buildStat]?.max !== undefined;
-    const aValue = scaledContribution(a.potential, buildStat, query);
-    const bValue = scaledContribution(b.potential, buildStat, query);
+    const aValue = scaledContribution(
+      candidateVector(a, query),
+      buildStat,
+      query,
+    );
+    const bValue = scaledContribution(
+      candidateVector(b, query),
+      buildStat,
+      query,
+    );
     if (hasMaximum && aValue !== bValue) return false;
     if (!hasMaximum && aValue < bValue) return false;
     if (aValue > bValue) better = true;
   }
-  const aCurrent = scaledContribution(a.current, query.objective, query);
-  const bCurrent = scaledContribution(b.current, query.objective, query);
-  if (aCurrent < bCurrent) return false;
-  if (aCurrent > bCurrent) better = true;
   return better || a.rune.id.localeCompare(b.rune.id) < 0;
 }
 
@@ -392,7 +416,7 @@ function paretoPrune(
   query: OptimizerQuery,
 ): CandidateRune[] {
   const relevantStats = new Set<BuildStatKey>([
-    query.objective,
+    ...objectiveStatKeys(query.objective),
     ...(Object.keys(query.constraints) as BuildStatKey[]),
     ...(query.tick ? (['speed'] as BuildStatKey[]) : []),
   ]);
@@ -426,6 +450,23 @@ function paretoPrune(
   );
 }
 
+function objectiveStatKeys(objective: OptimizerObjectiveKey): BuildStatKey[] {
+  return objective === 'damage'
+    ? ['attack', 'critRate', 'critDamage']
+    : [objective];
+}
+
+export function buildObjectiveValue(
+  stats: StatValues,
+  objective: OptimizerObjectiveKey,
+): number {
+  if (objective !== 'damage') return stats[objective];
+  return Math.round(
+    stats.attack *
+      (1 + (Math.min(100, stats.critRate) / 100) * (stats.critDamage / 100)),
+  );
+}
+
 function buildStatForRuneStat(stat: RuneStatKey): BuildStatKey {
   switch (stat) {
     case 'hpFlat':
@@ -455,6 +496,13 @@ function objectiveContributionForVector(
   query: OptimizerQuery,
 ): number {
   switch (query.objective) {
+    case 'damage': {
+      const base = statsFromVector(query.monster, emptyVector());
+      return (
+        buildObjectiveValue(statsFromVector(query.monster, vector), 'damage') -
+        buildObjectiveValue(base, 'damage')
+      );
+    }
     case 'hp':
       return vector.hpFlat + (query.monster.hp * vector.hpPercent) / 100;
     case 'attack':
@@ -483,7 +531,10 @@ function objectiveContribution(
   candidate: CandidateRune,
   query: OptimizerQuery,
 ): number {
-  return objectiveContributionForVector(candidate.potential, query);
+  return objectiveContributionForVector(
+    candidateVector(candidate, query),
+    query,
+  );
 }
 
 function candidatePriority(
@@ -497,14 +548,18 @@ function candidatePriority(
     if (range.min === undefined) continue;
     const baseValue = query.monster[stat];
     const gap = Math.max(1, range.min - baseValue);
-    const contribution = scaledContribution(candidate.potential, stat, query);
+    const contribution = scaledContribution(
+      candidateVector(candidate, query),
+      stat,
+      query,
+    );
     score +=
       contribution /
       (stat === 'hp' || stat === 'attack' || stat === 'defense'
         ? gap * 100
         : gap);
   }
-  if (query.tick) score += candidate.potential.speed / 10;
+  if (query.tick) score += candidateVector(candidate, query).speed / 10;
   if (query.requiredSets.includes(candidate.rune.set)) score += 5;
   return score;
 }
@@ -522,10 +577,70 @@ function insertResult(
   results.sort(
     (a, b) =>
       b.objectiveValue - a.objectiveValue ||
-      b.currentObjectiveValue - a.currentObjectiveValue ||
       a.runeIds.join('|').localeCompare(b.runeIds.join('|')),
   );
   if (results.length > limit) results.length = limit;
+}
+
+function addDamagePartial(
+  frontier: DamagePartialFrontier,
+  attack: number,
+  critRate: number,
+  critDamage: number,
+): boolean {
+  const cappedCritRate = Math.min(100, critRate);
+  for (let rate = cappedCritRate; rate <= 100; rate += 1) {
+    if (
+      frontier[rate].some(
+        ([knownAttack, knownCritDamage]) =>
+          knownAttack >= attack && knownCritDamage >= critDamage,
+      )
+    ) {
+      return false;
+    }
+  }
+
+  for (let rate = 0; rate <= cappedCritRate; rate += 1) {
+    frontier[rate] = frontier[rate].filter(
+      ([knownAttack, knownCritDamage]) =>
+        knownAttack > attack || knownCritDamage > critDamage,
+    );
+  }
+  frontier[cappedCritRate].push([attack, critDamage]);
+  return true;
+}
+
+function paretoDamageProjections(
+  projections: DamageProjection[],
+): DamageProjection[] {
+  projections.sort(
+    (a, b) =>
+      b.attack - a.attack ||
+      b.critRate - a.critRate ||
+      b.critDamage - a.critDamage,
+  );
+  const bestCritDamageByRate = Array.from(
+    { length: 101 },
+    () => Number.NEGATIVE_INFINITY,
+  );
+  const result: DamageProjection[] = [];
+  for (const projection of projections) {
+    const critRate = Math.min(100, projection.critRate);
+    let dominated = false;
+    for (let rate = critRate; rate <= 100; rate += 1) {
+      if (bestCritDamageByRate[rate] >= projection.critDamage) {
+        dominated = true;
+        break;
+      }
+    }
+    if (dominated) continue;
+    result.push({ ...projection, critRate });
+    bestCritDamageByRate[critRate] = Math.max(
+      bestCritDamageByRate[critRate],
+      projection.critDamage,
+    );
+  }
+  return result;
 }
 
 export function optimizeRunes(
@@ -572,8 +687,7 @@ export function optimizeRunes(
     pruned.sort(
       (a, b) =>
         candidatePriority(b, query) - candidatePriority(a, query) ||
-        scaledContribution(b.current, query.objective, query) -
-          scaledContribution(a.current, query.objective, query),
+        a.rune.id.localeCompare(b.rune.id),
     );
     return pruned;
   });
@@ -586,6 +700,8 @@ export function optimizeRunes(
       elapsedMs: Date.now() - startedAt,
     };
   }
+  const candidateCountsBySlot = candidatesBySlot.map((slot) => slot.length);
+  candidatesBySlot.sort((a, b) => a.length - b.length);
 
   const requiredTargets = [...requiredPieceTargets.entries()];
   const requiredSetIndexes = new Map(
@@ -657,6 +773,13 @@ export function optimizeRunes(
         return bonus;
       })()
     : MAX_SET_BONUS;
+  const fixedDamageSetBonuses: DamageProjection[] = [
+    {
+      attack: optimisticSetBonus.attackPercent,
+      critRate: optimisticSetBonus.critRate,
+      critDamage: optimisticSetBonus.critDamage,
+    },
+  ];
 
   if (
     !canCompleteRequiredSets(
@@ -668,7 +791,7 @@ export function optimizeRunes(
     return {
       builds: [],
       combinationsEvaluated: 0,
-      candidatesBySlot: candidatesBySlot.map((slot) => slot.length),
+      candidatesBySlot: candidateCountsBySlot,
       elapsedMs: Date.now() - startedAt,
     };
   }
@@ -684,41 +807,152 @@ export function optimizeRunes(
     accuracy: 0,
   });
   const remainingScaledMax = Array.from({ length: 7 }, emptyBuildValues);
-  const remainingCurrentScaledMax = Array.from({ length: 7 }, emptyBuildValues);
   for (let depth = 5; depth >= 0; depth -= 1) {
     remainingScaledMax[depth] = { ...remainingScaledMax[depth + 1] };
-    remainingCurrentScaledMax[depth] = {
-      ...remainingCurrentScaledMax[depth + 1],
-    };
     for (const stat of Object.keys(
       remainingScaledMax[depth],
     ) as BuildStatKey[]) {
       remainingScaledMax[depth][stat] += Math.max(
         ...candidatesBySlot[depth].map((candidate) =>
-          scaledContribution(candidate.potential, stat, query),
+          scaledContribution(candidateVector(candidate, query), stat, query),
         ),
       );
-      remainingCurrentScaledMax[depth][stat] += Math.max(
-        ...candidatesBySlot[depth].map((candidate) =>
-          scaledContribution(candidate.current, stat, query),
-        ),
-      );
+    }
+  }
+
+  const remainingDamageProjections: DamageProjection[][] = Array.from(
+    { length: 7 },
+    () => [],
+  );
+  if (query.objective === 'damage') {
+    remainingDamageProjections[6] = [{ attack: 0, critRate: 0, critDamage: 0 }];
+    for (let depth = 5; depth >= 0; depth -= 1) {
+      const projections: DamageProjection[] = [];
+      for (const candidate of candidatesBySlot[depth]) {
+        const vector = candidateVector(candidate, query);
+        const attack = scaledContribution(vector, 'attack', query);
+        for (const suffix of remainingDamageProjections[depth + 1]) {
+          projections.push({
+            attack: attack + suffix.attack,
+            critRate: vector.critRate + suffix.critRate,
+            critDamage: vector.critDamage + suffix.critDamage,
+          });
+        }
+      }
+      remainingDamageProjections[depth] = paretoDamageProjections(projections);
     }
   }
 
   const selected: CandidateRune[] = [];
   const currentVector = emptyVector();
   const potentialVector = emptyVector();
+  const selectedVector =
+    query.projection === 'current' ? currentVector : potentialVector;
   const results: RuneBuildResult[] = [];
   const limit = Math.max(1, Math.min(50, query.limit ?? 10));
   let combinationsEvaluated = 0;
   let intangibleCount = 0;
   const selectedRequiredCounts = requiredTargets.map(() => 0);
+  const objectiveStats = objectiveStatKeys(query.objective);
+  const partialRelevantStats = [
+    ...new Set<BuildStatKey>([
+      ...objectiveStats,
+      ...(Object.keys(query.constraints) as BuildStatKey[]),
+      ...(query.tick ? (['speed'] as BuildStatKey[]) : []),
+    ]),
+  ];
+  const partialRelevantSets = runeSetNames.filter((set) => {
+    if (set === 'Intangible' || query.requiredSets.includes(set)) return true;
+    if (set === 'Swift') return partialRelevantStats.includes('speed');
+    const effect = SET_STAT_BONUS[set];
+    return (
+      effect !== undefined &&
+      partialRelevantStats.includes(buildStatForRuneStat(effect.stat))
+    );
+  });
+  const partialSetIndexes = new Map(
+    partialRelevantSets.map((set, index) => [set, index]),
+  );
+  const partialSetCounts = partialRelevantSets.map(() => 0);
+  const partialFrontiers = Array.from(
+    { length: 7 },
+    () => new Map<string, DamagePartialFrontier>(),
+  );
+  const canUsePartialPareto =
+    query.objective === 'damage' &&
+    query.tick === undefined &&
+    Object.entries(query.constraints).every(
+      ([stat, range]) =>
+        ['attack', 'critRate', 'critDamage'].includes(stat) &&
+        range?.max === undefined,
+    );
+  const needsOptimisticSpeed =
+    query.objective === 'speed' ||
+    query.tick !== undefined ||
+    query.constraints.speed !== undefined;
+  const damageBonusMemo = new Map<string, DamageProjection[]>();
 
-  const maximumPossibleSpeed = (
-    depth: number,
-    mode: 'current' | 'potential',
-  ): number => {
+  const possibleDamageSetBonuses = (depth: number): DamageProjection[] => {
+    if (allSlotsReservedByRequiredSets) return fixedDamageSetBonuses;
+    const damageSets = ['Fatal', 'Rage', 'Blade', 'Fight'] as const;
+    const selectedCounts = damageSets.map((set) => {
+      const index = partialSetIndexes.get(set);
+      return index === undefined ? 0 : partialSetCounts[index];
+    });
+    const intangibleIndex = partialSetIndexes.get('Intangible');
+    const selectedIntangible =
+      intangibleIndex === undefined ? 0 : partialSetCounts[intangibleIndex];
+    const key = `${depth}|${selectedCounts.join(',')}|${selectedIntangible}`;
+    const cached = damageBonusMemo.get(key);
+    if (cached) return cached;
+
+    const unique = new Map<string, DamageProjection>();
+    const additions = [0, 0, 0, 0];
+    const addBonus = (assignment: number): void => {
+      const counts = selectedCounts.map(
+        (count, index) =>
+          count + additions[index] + (assignment === index ? 1 : 0),
+      );
+      const bonus = {
+        attack: Math.floor(counts[0] / 4) * 35 + Math.floor(counts[3] / 2) * 8,
+        critRate: Math.floor(counts[2] / 2) * 12,
+        critDamage: Math.floor(counts[1] / 4) * 40,
+      };
+      unique.set(
+        `${bonus.attack}|${bonus.critRate}|${bonus.critDamage}`,
+        bonus,
+      );
+    };
+    const enumerate = (index: number, remaining: number): void => {
+      if (index < additions.length) {
+        for (let count = 0; count <= remaining; count += 1) {
+          additions[index] = count;
+          enumerate(index + 1, remaining - count);
+        }
+        return;
+      }
+      const maxExtraIntangible = Math.min(1 - selectedIntangible, remaining);
+      for (
+        let extraIntangible = 0;
+        extraIntangible <= maxExtraIntangible;
+        extraIntangible += 1
+      ) {
+        const hasIntangible = selectedIntangible + extraIntangible === 1;
+        addBonus(-1);
+        if (hasIntangible) {
+          for (let assignment = 0; assignment < 4; assignment += 1) {
+            addBonus(assignment);
+          }
+        }
+      }
+    };
+    enumerate(0, 6 - depth);
+    const bonuses = [...unique.values()];
+    damageBonusMemo.set(key, bonuses);
+    return bonuses;
+  };
+
+  const maximumPossibleSpeed = (depth: number): number => {
     const selectedSwift = selected.filter(
       ({ rune }) => rune.set === 'Swift',
     ).length;
@@ -737,7 +971,7 @@ export function optimizeRunes(
             swiftCount + (candidate.rune.set === 'Swift' ? 1 : 0);
           const nextIntangible = extraIntangible + isIntangible;
           const nextKey = `${nextSwift}|${nextIntangible}`;
-          const value = total + candidate[mode].speed;
+          const value = total + candidateVector(candidate, query).speed;
           if (value > (next.get(nextKey) ?? Number.NEGATIVE_INFINITY)) {
             next.set(nextKey, value);
           }
@@ -752,7 +986,7 @@ export function optimizeRunes(
         selectedSwift + swiftCount + selectedIntangible + extraIntangible >= 4;
       const total =
         query.monster.speed +
-        potentialVector.speed +
+        selectedVector.speed +
         addedSpeed +
         (canActivateSwift ? Math.ceil(query.monster.speed * 0.25) : 0);
       best = Math.max(best, total);
@@ -760,15 +994,43 @@ export function optimizeRunes(
     return best;
   };
 
-  const optimisticStatsAt = (
-    depth: number,
-    vector: RuneVector,
-    mode: 'current' | 'potential',
-  ): StatValues => {
-    const remaining =
-      mode === 'potential'
-        ? remainingScaledMax[depth]
-        : remainingCurrentScaledMax[depth];
+  const maximumPossibleDamage = (depth: number): number => {
+    const selectedAttack = scaledContribution(selectedVector, 'attack', query);
+    let best = Number.NEGATIVE_INFINITY;
+    const bonuses = possibleDamageSetBonuses(depth);
+    for (const remaining of remainingDamageProjections[depth]) {
+      for (const bonus of bonuses) {
+        const attack =
+          query.monster.attack +
+          Math.floor(
+            (selectedAttack +
+              remaining.attack +
+              query.monster.attack * bonus.attack) /
+              100,
+          );
+        const critRate = Math.min(
+          100,
+          query.monster.critRate +
+            selectedVector.critRate +
+            remaining.critRate +
+            bonus.critRate,
+        );
+        const critDamage =
+          query.monster.critDamage +
+          selectedVector.critDamage +
+          remaining.critDamage +
+          bonus.critDamage;
+        best = Math.max(
+          best,
+          Math.round(attack * (1 + (critRate / 100) * (critDamage / 100))),
+        );
+      }
+    }
+    return best;
+  };
+
+  const optimisticStatsAt = (depth: number, vector: RuneVector): StatValues => {
+    const remaining = remainingScaledMax[depth];
     const scaled = (stat: BuildStatKey) =>
       scaledContribution(vector, stat, query) + remaining[stat];
     return {
@@ -792,7 +1054,9 @@ export function optimizeRunes(
             query.monster.defense * optimisticSetBonus.defensePercent) /
             100,
         ),
-      speed: maximumPossibleSpeed(depth, mode),
+      speed: needsOptimisticSpeed
+        ? maximumPossibleSpeed(depth)
+        : query.monster.speed,
       critRate: Math.min(
         100,
         query.monster.critRate +
@@ -825,70 +1089,97 @@ export function optimizeRunes(
       return;
     }
 
+    if (canUsePartialPareto && depth > 0) {
+      const state = partialSetCounts.join(',');
+      let frontier = partialFrontiers[depth].get(state);
+      if (!frontier) {
+        frontier = Array.from({ length: 101 }, () => []);
+        partialFrontiers[depth].set(state, frontier);
+      }
+      if (
+        !addDamagePartial(
+          frontier,
+          scaledContribution(selectedVector, 'attack', query),
+          selectedVector.critRate,
+          selectedVector.critDamage,
+        )
+      )
+        return;
+    }
+
     if (depth === 6) {
       combinationsEvaluated += 1;
-      const runes = selected.map(({ rune }) => rune);
+      const runes = selected
+        .map(({ rune }) => rune)
+        .sort((a, b) => a.slot - b.slot);
       for (const variant of setVariants(runes)) {
         if (!containsRequiredSets(variant.sets, query.requiredSets)) continue;
         const currentWithBonus = { ...currentVector };
-        const potentialWithBonus = { ...potentialVector };
         addVector(currentWithBonus, variant.bonus);
-        addVector(potentialWithBonus, variant.bonus);
         const current = statsFromRuneVector(
           query.monster,
           currentWithBonus,
           variant.swiftActive,
         );
+        const potentialWithBonus = { ...potentialVector };
+        addVector(potentialWithBonus, variant.bonus);
         const potential = statsFromRuneVector(
           query.monster,
           potentialWithBonus,
           variant.swiftActive,
         );
-        if (!satisfiesConstraints(potential, query.constraints)) continue;
-        if (!reachesTick(potential, query, variant.swiftActive)) continue;
-        insertResult(
-          results,
-          {
-            runeIds: runes.map(({ id }) => id),
-            sets: variant.sets,
-            current,
-            potential,
-            objectiveValue: potential[query.objective],
-            currentObjectiveValue: current[query.objective],
-          },
-          limit,
-        );
+        const selectedStats =
+          query.projection === 'current' ? current : potential;
+        if (!satisfiesConstraints(selectedStats, query.constraints)) continue;
+        if (!reachesTick(selectedStats, query, variant.swiftActive)) continue;
+        const result = {
+          runeIds: runes.map(({ id }) => id),
+          sets: variant.sets,
+          current,
+          potential,
+          objectiveValue: buildObjectiveValue(selectedStats, query.objective),
+        };
+        if (
+          canUsePartialPareto &&
+          results[0] &&
+          result.objectiveValue < results[0].objectiveValue
+        ) {
+          continue;
+        }
+        if (
+          canUsePartialPareto &&
+          results[0] &&
+          result.objectiveValue > results[0].objectiveValue
+        ) {
+          results.length = 0;
+        }
+        insertResult(results, result, limit);
       }
       return;
     }
 
-    const optimisticStats = optimisticStatsAt(
-      depth,
-      potentialVector,
-      'potential',
-    );
-    const optimisticCurrentStats = optimisticStatsAt(
-      depth,
-      currentVector,
-      'current',
-    );
+    const optimisticStats = optimisticStatsAt(depth, selectedVector);
     for (const [stat, range] of Object.entries(query.constraints) as Array<
       [BuildStatKey, { min?: number; max?: number }]
     >) {
       if (range.min !== undefined && optimisticStats[stat] < range.min) return;
       if (range.max !== undefined) {
-        const minimumStats = statsFromVector(query.monster, potentialVector);
+        const minimumStats = statsFromVector(query.monster, selectedVector);
         if (minimumStats[stat] > range.max) return;
       }
     }
-    if (results.length === limit) {
-      const worst = results[results.length - 1];
-      if (
-        optimisticStats[query.objective] < worst.objectiveValue ||
-        (optimisticStats[query.objective] === worst.objectiveValue &&
-          optimisticCurrentStats[query.objective] <=
-            worst.currentObjectiveValue)
-      ) {
+    if (
+      results.length === limit ||
+      (canUsePartialPareto && results.length > 0)
+    ) {
+      const worst = canUsePartialPareto
+        ? results[0]
+        : results[results.length - 1];
+      const optimisticObjective =
+        query.objective === 'damage'
+          ? maximumPossibleDamage(depth)
+          : buildObjectiveValue(optimisticStats, query.objective);
+      if (optimisticObjective < worst.objectiveValue) {
         return;
       }
     }
@@ -902,6 +1193,8 @@ export function optimizeRunes(
           ? 0
           : selectedRequiredCounts[requiredSetIndex];
       if (isIntangible) intangibleCount += 1;
+      const partialSetIndex = partialSetIndexes.get(candidate.rune.set);
+      if (partialSetIndex !== undefined) partialSetCounts[partialSetIndex] += 1;
       if (requiredSetIndex !== undefined) {
         selectedRequiredCounts[requiredSetIndex] = Math.min(
           requiredTargets[requiredSetIndex][1],
@@ -918,6 +1211,7 @@ export function optimizeRunes(
       if (requiredSetIndex !== undefined) {
         selectedRequiredCounts[requiredSetIndex] = previousRequiredCount;
       }
+      if (partialSetIndex !== undefined) partialSetCounts[partialSetIndex] -= 1;
       if (isIntangible) intangibleCount -= 1;
     }
   };
@@ -926,7 +1220,7 @@ export function optimizeRunes(
   return {
     builds: results,
     combinationsEvaluated,
-    candidatesBySlot: candidatesBySlot.map((slot) => slot.length),
+    candidatesBySlot: candidateCountsBySlot,
     elapsedMs: Date.now() - startedAt,
   };
 }

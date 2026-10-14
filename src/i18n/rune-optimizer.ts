@@ -17,6 +17,9 @@ export interface RuneOptimizerMessages {
   builderTitle: string;
   monster: string;
   objective: string;
+  calculateUsing: string;
+  current: string;
+  usedForSearch: string;
   requiredSets: string;
   anySet: string;
   poolTitle: string;
@@ -52,10 +55,21 @@ export interface RuneOptimizerMessages {
   sets: string;
   runes: string;
   candidates: string;
+  runePresets: string;
+  statPresets: string;
   presetFastest: string;
+  presetFastestWill: string;
   presetSwift: string;
   presetViolentWill: string;
+  presetViolentNemesis: string;
+  presetViolentDestroy: string;
   presetTank: string;
+  presetDamage: string;
+  presetTankHint: string;
+  presetDamageHint: string;
+  objectiveDamage: string;
+  estimatedDamage: string;
+  damageFormula: string;
   potentialNote: string;
   unknownMonster: string;
   dataRemoved: string;
@@ -82,6 +96,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Build goal',
     monster: 'Monster',
     objective: 'Maximize',
+    calculateUsing: 'Calculate using',
+    current: 'Current',
+    usedForSearch: 'Used for search',
     requiredSets: 'Required sets',
     anySet: 'Any / broken set',
     poolTitle: 'Rune pool',
@@ -117,12 +134,23 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     sets: 'Sets',
     runes: 'Runes',
     candidates: 'combinations evaluated',
+    runePresets: 'Rune presets',
+    statPresets: 'Stat presets',
     presetFastest: 'Fastest',
+    presetFastestWill: 'Fastest + Will',
     presetSwift: 'Swift speed',
     presetViolentWill: 'Violent + Will',
-    presetTank: 'Tank / RES',
+    presetViolentNemesis: 'Violent + Nemesis',
+    presetViolentDestroy: 'Violent + Destroy',
+    presetTank: 'Tank',
+    presetDamage: 'Damage',
+    presetTankHint: '30,000 HP · 700 DEF · 100% RES · Tick 5',
+    presetDamageHint: '100% CR · maximize ATK and CD',
+    objectiveDamage: 'Estimated damage',
+    estimatedDamage: 'Estimated damage',
+    damageFormula: 'ATK × critical average',
     potentialNote:
-      'Final results project main stats to +15 and apply the maximum possible grind while keeping existing substats.',
+      'Current uses rune levels and grinds as they are now. Maximum projects main stats to +15 and applies the maximum possible grind, without changing existing substats.',
     unknownMonster: 'Unknown monster',
     dataRemoved: 'Local data removed.',
   },
@@ -146,6 +174,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objetivo da build',
     monster: 'Monstro',
     objective: 'Maximizar',
+    calculateUsing: 'Calcular usando',
+    current: 'Atual',
+    usedForSearch: 'Usado na busca',
     requiredSets: 'Sets obrigatórios',
     anySet: 'Qualquer / set quebrado',
     poolTitle: 'Conjunto de runas',
@@ -181,12 +212,23 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     sets: 'Sets',
     runes: 'Runas',
     candidates: 'combinações avaliadas',
+    runePresets: 'Presets de runas',
+    statPresets: 'Presets de status',
     presetFastest: 'Maior SPD',
+    presetFastestWill: 'Maior SPD + Will',
     presetSwift: 'SPD com Swift',
     presetViolentWill: 'Violent + Will',
-    presetTank: 'Tank / RES',
+    presetViolentNemesis: 'Violent + Nemesis',
+    presetViolentDestroy: 'Violent + Destroy',
+    presetTank: 'Tank',
+    presetDamage: 'Dano',
+    presetTankHint: '30.000 HP · 700 DEF · 100% RES · Tick 5',
+    presetDamageHint: '100% CR · maximizar ATK e CD',
+    objectiveDamage: 'Dano estimado',
+    estimatedDamage: 'Dano estimado',
+    damageFormula: 'ATK × média crítica',
     potentialNote:
-      'O resultado final projeta os status principais para +15 e aplica o maior grind possível, mantendo os substats existentes.',
+      'Atual usa o nível e os grinds que as runas têm agora. Máximo projeta os status principais para +15 e aplica o maior grind possível, sem trocar os substats existentes.',
     unknownMonster: 'Monstro desconhecido',
     dataRemoved: 'Dados locais removidos.',
   },
@@ -210,6 +252,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objetivo de la build',
     monster: 'Monstruo',
     objective: 'Maximizar',
+    calculateUsing: 'Calcular usando',
+    current: 'Actual',
+    usedForSearch: 'Usado en la búsqueda',
     requiredSets: 'Sets obligatorios',
     anySet: 'Cualquiera / set roto',
     poolTitle: 'Grupo de runas',
@@ -245,12 +290,23 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     sets: 'Sets',
     runes: 'Runas',
     candidates: 'combinaciones evaluadas',
+    runePresets: 'Presets de runas',
+    statPresets: 'Presets de estadísticas',
     presetFastest: 'Mayor SPD',
+    presetFastestWill: 'Mayor SPD + Will',
     presetSwift: 'SPD con Swift',
     presetViolentWill: 'Violent + Will',
-    presetTank: 'Tank / RES',
+    presetViolentNemesis: 'Violent + Nemesis',
+    presetViolentDestroy: 'Violent + Destroy',
+    presetTank: 'Tank',
+    presetDamage: 'Daño',
+    presetTankHint: '30.000 HP · 700 DEF · 100% RES · Tick 5',
+    presetDamageHint: '100% CR · maximizar ATK y CD',
+    objectiveDamage: 'Daño estimado',
+    estimatedDamage: 'Daño estimado',
+    damageFormula: 'ATK × promedio crítico',
     potentialNote:
-      'El resultado final proyecta los atributos principales a +15 y aplica el mayor grind posible, conservando los substats existentes.',
+      'Actual usa el nivel y los grinds que tienen las runas ahora. Máximo proyecta los atributos principales a +15 y aplica el mayor grind posible, sin cambiar los substats existentes.',
     unknownMonster: 'Monstruo desconocido',
     dataRemoved: 'Datos locales eliminados.',
   },
@@ -274,6 +330,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Objectif du build',
     monster: 'Monstre',
     objective: 'Maximiser',
+    calculateUsing: 'Calculer avec',
+    current: 'Actuel',
+    usedForSearch: 'Utilisé pour la recherche',
     requiredSets: 'Sets obligatoires',
     anySet: 'Libre / set incomplet',
     poolTitle: 'Réserve de runes',
@@ -309,12 +368,23 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     sets: 'Sets',
     runes: 'Runes',
     candidates: 'combinaisons évaluées',
+    runePresets: 'Presets de runes',
+    statPresets: 'Presets de stats',
     presetFastest: 'VIT maximale',
+    presetFastestWill: 'VIT maximale + Will',
     presetSwift: 'VIT avec Swift',
     presetViolentWill: 'Violent + Will',
-    presetTank: 'Tank / RES',
+    presetViolentNemesis: 'Violent + Nemesis',
+    presetViolentDestroy: 'Violent + Destroy',
+    presetTank: 'Tank',
+    presetDamage: 'Dégâts',
+    presetTankHint: '30 000 HP · 700 DEF · 100 % RES · Tick 5',
+    presetDamageHint: '100 % CR · maximiser ATK et CD',
+    objectiveDamage: 'Dégâts estimés',
+    estimatedDamage: 'Dégâts estimés',
+    damageFormula: 'ATK × moyenne critique',
     potentialNote:
-      'Le résultat final projette les stats principales à +15 et applique le grind maximal possible, sans changer les substats existants.',
+      'Actuel utilise le niveau et les grinds présents sur les runes. Maximum projette les stats principales à +15 et applique le grind maximal possible, sans changer les substats existants.',
     unknownMonster: 'Monstre inconnu',
     dataRemoved: 'Données locales supprimées.',
   },
@@ -337,6 +407,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     builderTitle: 'Build-Ziel',
     monster: 'Monster',
     objective: 'Maximieren',
+    calculateUsing: 'Berechnen mit',
+    current: 'Aktuell',
+    usedForSearch: 'Für die Suche verwendet',
     requiredSets: 'Erforderliche Sets',
     anySet: 'Beliebig / Broken Set',
     poolTitle: 'Runenpool',
@@ -372,12 +445,23 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     sets: 'Sets',
     runes: 'Runen',
     candidates: 'Kombinationen geprüft',
+    runePresets: 'Runen-Presets',
+    statPresets: 'Status-Presets',
     presetFastest: 'Höchste GES',
+    presetFastestWill: 'Höchste GES + Will',
     presetSwift: 'GES mit Swift',
     presetViolentWill: 'Violent + Will',
-    presetTank: 'Tank / RES',
+    presetViolentNemesis: 'Violent + Nemesis',
+    presetViolentDestroy: 'Violent + Destroy',
+    presetTank: 'Tank',
+    presetDamage: 'Schaden',
+    presetTankHint: '30.000 HP · 700 DEF · 100 % RES · Tick 5',
+    presetDamageHint: '100 % CR · ATK und CD maximieren',
+    objectiveDamage: 'Geschätzter Schaden',
+    estimatedDamage: 'Geschätzter Schaden',
+    damageFormula: 'ATK × kritischer Mittelwert',
     potentialNote:
-      'Das Endergebnis rechnet Hauptwerte auf +15 und wendet den höchstmöglichen Grind an, ohne vorhandene Substats zu ersetzen.',
+      'Aktuell verwendet Runenstufe und vorhandene Grinds. Maximum rechnet Hauptwerte auf +15 und wendet den höchstmöglichen Grind an, ohne vorhandene Substats zu ersetzen.',
     unknownMonster: 'Unbekanntes Monster',
     dataRemoved: 'Lokale Daten gelöscht.',
   },

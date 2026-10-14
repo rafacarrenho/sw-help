@@ -27,6 +27,10 @@ export const buildStatKeys = [
 
 export type BuildStatKey = (typeof buildStatKeys)[number];
 
+export const optimizerObjectiveKeys = [...buildStatKeys, 'damage'] as const;
+
+export type OptimizerObjectiveKey = (typeof optimizerObjectiveKeys)[number];
+
 export const runeSetNames = [
   'Energy',
   'Guard',
@@ -146,7 +150,8 @@ export interface TickConstraint {
 
 export interface OptimizerQuery {
   monster: MonsterBaseStats;
-  objective: BuildStatKey;
+  objective: OptimizerObjectiveKey;
+  projection?: 'current' | 'potential';
   constraints: Partial<Record<BuildStatKey, StatRange>>;
   requiredSets: RuneSetName[];
   inventoryOnly: boolean;
@@ -162,7 +167,6 @@ export interface RuneBuildResult {
   current: StatValues;
   potential: StatValues;
   objectiveValue: number;
-  currentObjectiveValue: number;
 }
 
 export interface OptimizerResult {

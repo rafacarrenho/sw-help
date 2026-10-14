@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { seedEssentialPrivacyPreferences } from './helpers/privacy';
 
 test.beforeEach(async ({ page }) => {
@@ -38,6 +38,79 @@ const syntheticExport = {
   artifacts: [{ rid: 700001, slot: 1, rank: 4, level: 15 }],
 };
 
+async function importSyntheticExport(page: Page) {
+  await page.goto('/pt/summoners-war/otimizador-de-runas');
+  await page.locator('[data-file-input]').setInputFiles({
+    name: 'swex.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(syntheticExport)),
+  });
+  await expect(page.locator('[data-workspace]')).toBeVisible();
+}
+
+test('combina presets de runas e status sem apagar o outro grupo', async ({
+  page,
+}) => {
+  await importSyntheticExport(page);
+
+  const runePreset = page.getByRole('button', {
+    name: 'Violent + Destroy',
+    exact: true,
+  });
+  const damagePreset = page.getByRole('button', {
+    name: /Dano 100% CR/,
+  });
+  await runePreset.click();
+  await damagePreset.click();
+
+  await expect(runePreset).toHaveAttribute('aria-pressed', 'true');
+  await expect(damagePreset).toHaveAttribute('aria-pressed', 'true');
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-required-set]')
+        .evaluateAll((selects) =>
+          selects.map((select) => (select as HTMLSelectElement).value),
+        ),
+    )
+    .toEqual(['Violent', 'Destroy', '']);
+  await expect(page.locator('[data-objective]')).toHaveValue('damage');
+  await expect(page.locator('[data-constraint-min="critRate"]')).toHaveValue(
+    '100',
+  );
+  await expect(page.locator('[data-preset-summary]')).toHaveText(
+    'Violent + Destroy · Dano',
+  );
+
+  const tankPreset = page.getByRole('button', {
+    name: /Tank 30\.000 HP/,
+  });
+  await tankPreset.click();
+
+  await expect(runePreset).toHaveAttribute('aria-pressed', 'true');
+  await expect(damagePreset).toHaveAttribute('aria-pressed', 'false');
+  await expect(tankPreset).toHaveAttribute('aria-pressed', 'true');
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-required-set]')
+        .evaluateAll((selects) =>
+          selects.map((select) => (select as HTMLSelectElement).value),
+        ),
+    )
+    .toEqual(['Violent', 'Destroy', '']);
+  await expect(page.locator('[data-objective]')).toHaveValue('hp');
+  await expect(page.locator('[data-constraint-min="hp"]')).toHaveValue('30000');
+  await expect(page.locator('[data-constraint-min="defense"]')).toHaveValue(
+    '700',
+  );
+  await expect(page.locator('[data-constraint-min="resistance"]')).toHaveValue(
+    '100',
+  );
+  await expect(page.locator('[data-tick-enabled]')).toBeChecked();
+  await expect(page.locator('[data-tick]')).toHaveValue('5');
+});
+
 test('importa localmente e permite otimizar um monstro fora da conta', async ({
   page,
 }) => {
@@ -57,32 +130,45 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     '1 monstros · 6 runas · 1 artefatos',
   );
   await expect(page.getByLabel('Permitir runas bloqueadas')).toBeChecked();
+  await expect(page.getByLabel('Máximo', { exact: true })).toBeChecked();
+  await expect(page.getByLabel('Atual', { exact: true })).not.toBeChecked();
 
   const monsterSearch = page.getByRole('combobox', { name: 'Monstro' });
   await monsterSearch.fill('Tiana');
   await monsterSearch.press('ArrowDown');
   await page.getByRole('option', { name: 'Tiana', exact: true }).press('Enter');
   await expect(monsterSearch).toHaveValue('Tiana');
-  await page.getByRole('button', { name: 'Maior SPD' }).click();
+  await page.getByRole('button', { name: 'Maior SPD', exact: true }).click();
   await page.getByRole('button', { name: 'Encontrar builds exatas' }).click();
 
   await expect(page.locator('.build-result').first()).toBeVisible();
   const firstBuild = page.locator('.build-result').first();
   await expect(firstBuild).toContainText('Swift');
-  await expect(firstBuild.locator('.objective-score')).toContainText(
-    'SPD Adicional',
+  const currentScore = firstBuild.locator(
+    '.objective-score[data-projection="current"]',
   );
-  await expect(firstBuild.locator('.objective-score')).toContainText('+231');
-  await expect(firstBuild.locator('.objective-score')).toContainText(
-    'Total 327',
+  const maximumScore = firstBuild.locator(
+    '.objective-score[data-projection="potential"]',
   );
-  await expect(firstBuild.locator('.result-stats thead th')).toHaveText([
-    '',
-    'Base',
-    'Adicional',
-    'Total',
-  ]);
-  await expect(firstBuild).not.toContainText('Atual');
+  await expect(currentScore).toContainText('Atual · SPD Adicional');
+  await expect(currentScore).toContainText('+210');
+  await expect(currentScore).toContainText('Total 306');
+  await expect(maximumScore).toContainText('Máximo · SPD Adicional');
+  await expect(maximumScore).toContainText('+231');
+  await expect(maximumScore).toContainText('Total 327');
+  await expect(maximumScore).toContainText('Usado na busca');
+  await expect(maximumScore).toHaveClass(/is-selected/);
+  await expect(
+    firstBuild.locator('.result-stats thead tr').first().locator('th'),
+  ).toHaveText(['Status', 'Atual', 'Máximo']);
+  await expect(
+    firstBuild.locator('.result-stats thead tr').nth(1).locator('th'),
+  ).toHaveText(['Adicional', 'Total', 'Adicional', 'Total']);
+  await page.getByLabel('Atual', { exact: true }).check();
+  await page.getByRole('button', { name: 'Encontrar builds exatas' }).click();
+  await expect(currentScore).toHaveClass(/is-selected/);
+  await expect(currentScore).toContainText('Usado na busca');
+  await expect(maximumScore).not.toHaveClass(/is-selected/);
   await expect(firstBuild.locator('[data-rune-card]')).toHaveCount(6);
   const firstRune = firstBuild.locator('[data-rune-card="1"]');
   await expect(firstRune).toContainText('Slot 1 · Swift');

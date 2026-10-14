@@ -111,20 +111,90 @@ const statLabels = {
             <p class="eyebrow">1</p>
             <h2 id="builder-title">{copy.builderTitle}</h2>
           </div>
-          <div class="preset-list" aria-label="Presets">
-            <button type="button" data-preset="fastest">
-              {copy.presetFastest}
-            </button>
-            <button type="button" data-preset="swift">
-              {copy.presetSwift}
-            </button>
-            <button type="button" data-preset="violent-will">
-              {copy.presetViolentWill}
-            </button>
-            <button type="button" data-preset="tank">
-              {copy.presetTank}
-            </button>
-          </div>
+        </div>
+
+        <div class="preset-groups">
+          <section class="preset-group" aria-labelledby="rune-presets-title">
+            <h3 id="rune-presets-title">{copy.runePresets}</h3>
+            <div class="preset-list" role="group" aria-label={copy.runePresets}>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="fastest"
+                data-preset-label={copy.presetFastest}
+              >
+                {copy.presetFastest}
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="fastest-will"
+                data-preset-label={copy.presetFastestWill}
+              >
+                {copy.presetFastestWill}
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="swift"
+                data-preset-label={copy.presetSwift}
+              >
+                {copy.presetSwift}
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="violent-will"
+                data-preset-label={copy.presetViolentWill}
+              >
+                {copy.presetViolentWill}
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="violent-nemesis"
+                data-preset-label={copy.presetViolentNemesis}
+              >
+                {copy.presetViolentNemesis}
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-rune-preset="violent-destroy"
+                data-preset-label={copy.presetViolentDestroy}
+              >
+                {copy.presetViolentDestroy}
+              </button>
+            </div>
+          </section>
+          <section class="preset-group" aria-labelledby="stat-presets-title">
+            <h3 id="stat-presets-title">{copy.statPresets}</h3>
+            <div
+              class="preset-list stat-preset-list"
+              role="group"
+              aria-label={copy.statPresets}
+            >
+              <button
+                type="button"
+                aria-pressed="false"
+                data-stat-preset="tank"
+                data-preset-label={copy.presetTank}
+              >
+                <strong>{copy.presetTank}</strong>
+                <span>{copy.presetTankHint}</span>
+              </button>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-stat-preset="damage"
+                data-preset-label={copy.presetDamage}
+              >
+                <strong>{copy.presetDamage}</strong>
+                <span>{copy.presetDamageHint}</span>
+              </button>
+            </div>
+          </section>
+          <p class="preset-summary" data-preset-summary hidden></p>
         </div>
 
         <div class="builder-grid">
@@ -167,9 +237,35 @@ const statLabels = {
               {buildStatKeys.map((stat) => (
                 <option value={stat}>{statLabels[stat]}</option>
               ))}
+              <option value="damage">{copy.objectiveDamage}</option>
             </select>
           </label>
         </div>
+
+        <fieldset class="projection-fieldset">
+          <legend>{copy.calculateUsing}</legend>
+          <div class="projection-control">
+            <label>
+              <input
+                type="radio"
+                name="optimizer-projection"
+                value="current"
+                data-projection
+              />
+              <span>{copy.current}</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="optimizer-projection"
+                value="potential"
+                data-projection
+                checked
+              />
+              <span>{copy.maximum}</span>
+            </label>
+          </div>
+        </fieldset>
 
         <fieldset>
           <legend>{copy.requiredSets}</legend>
@@ -315,11 +411,15 @@ const statLabels = {
     loadRuneSnapshot,
     saveRuneSnapshot,
   } from '../../lib/rune-optimizer-storage.ts';
-  import { runePotentialEffects } from '../../lib/rune-optimizer.ts';
+  import {
+    buildObjectiveValue,
+    runePotentialEffects,
+  } from '../../lib/rune-optimizer.ts';
   import { runeVisualAssets } from '../../lib/rune-visual.ts';
   import type {
     AccountSnapshot,
     BuildStatKey,
+    OptimizerObjectiveKey,
     OptimizerQuery,
     OptimizerResult,
     RuneSetName,
@@ -608,7 +708,11 @@ const statLabels = {
         speed: catalogMonster.speed,
         ...catalogMonster.stats,
       },
-      objective: objectiveSelect.value as BuildStatKey,
+      objective: objectiveSelect.value as OptimizerObjectiveKey,
+      projection:
+        $<HTMLInputElement>('[data-projection]:checked').value === 'current'
+          ? 'current'
+          : 'potential',
       constraints,
       requiredSets: $$<HTMLSelectElement>('[data-required-set]')
         .map(({ value }) => value)
@@ -727,36 +831,100 @@ const statLabels = {
       const title = document.createElement('h3');
       title.textContent = `#${index + 1} · ${build.sets.length ? build.sets.join(' + ') : copy.anySet}`;
       const objective = query.objective;
-      const score = document.createElement('div');
-      score.className = 'objective-score';
-      const scoreLabel = document.createElement('span');
-      scoreLabel.textContent = `${statNames[objective]} ${copy.additional}`;
-      const scoreValue = document.createElement('strong');
-      scoreValue.textContent = formatStatValue(
-        objective,
-        build.potential[objective] - baseStats[objective],
-        true,
-      );
-      const scoreTotal = document.createElement('span');
-      scoreTotal.textContent = `${copy.total} ${formatStatValue(objective, build.potential[objective])}`;
-      score.append(scoreLabel, scoreValue, scoreTotal);
-      heading.append(title, score);
+      const scores = document.createElement('div');
+      scores.className = 'objective-scores';
+      for (const [projection, label, stats] of [
+        ['current', copy.current, build.current],
+        ['potential', copy.maximum, build.potential],
+      ] as const) {
+        const score = document.createElement('div');
+        score.className = 'objective-score';
+        score.dataset.projection = projection;
+        const isSelected = (query.projection ?? 'potential') === projection;
+        if (isSelected) score.classList.add('is-selected');
+
+        const scoreHeading = document.createElement('div');
+        scoreHeading.className = 'objective-score-heading';
+        const scoreLabel = document.createElement('span');
+        scoreLabel.textContent = `${label} · ${
+          objective === 'damage'
+            ? copy.estimatedDamage
+            : `${statNames[objective]} ${copy.additional}`
+        }`;
+        scoreHeading.append(scoreLabel);
+        if (isSelected) {
+          const used = document.createElement('span');
+          used.className = 'search-mode-badge';
+          used.textContent = copy.usedForSearch;
+          scoreHeading.append(used);
+        }
+
+        const scoreValue = document.createElement('strong');
+        scoreValue.textContent =
+          objective === 'damage'
+            ? buildObjectiveValue(stats, objective).toLocaleString(numberLocale)
+            : formatStatValue(
+                objective,
+                stats[objective] - baseStats[objective],
+                true,
+              );
+        const scoreTotal = document.createElement('span');
+        scoreTotal.textContent =
+          objective === 'damage'
+            ? copy.damageFormula
+            : `${copy.total} ${formatStatValue(objective, stats[objective])}`;
+        score.append(scoreHeading, scoreValue, scoreTotal);
+        scores.append(score);
+      }
+      heading.append(title, scores);
       article.append(heading);
 
       const statTable = document.createElement('table');
       statTable.className = 'result-stats';
-      const head = statTable.createTHead().insertRow();
-      for (const text of ['', copy.base, copy.additional, copy.total]) {
+      const tableHead = statTable.createTHead();
+      const groupHead = tableHead.insertRow();
+      const emptyHeading = document.createElement('th');
+      emptyHeading.textContent = copy.stat;
+      emptyHeading.rowSpan = 2;
+      emptyHeading.scope = 'col';
+      groupHead.append(emptyHeading);
+      for (const [projection, text] of [
+        ['current', copy.current],
+        ['potential', copy.maximum],
+      ] as const) {
         const th = document.createElement('th');
         th.textContent = text;
-        head.append(th);
+        th.colSpan = 2;
+        th.scope = 'colgroup';
+        th.dataset.projection = projection;
+        if ((query.projection ?? 'potential') === projection) {
+          th.classList.add('is-selected');
+        }
+        groupHead.append(th);
+      }
+      const valueHead = tableHead.insertRow();
+      for (const [projection, text] of [
+        ['current', copy.additional],
+        ['current', copy.total],
+        ['potential', copy.additional],
+        ['potential', copy.total],
+      ] as const) {
+        const th = document.createElement('th');
+        th.textContent = text;
+        th.scope = 'col';
+        th.dataset.projection = projection;
+        if ((query.projection ?? 'potential') === projection) {
+          th.classList.add('is-selected');
+        }
+        valueHead.append(th);
       }
       const body = statTable.createTBody();
       for (const stat of statOrder) {
         const row = body.insertRow();
         const values: Array<string | number> = [
           statNames[stat],
-          baseStats[stat],
+          build.current[stat] - baseStats[stat],
+          build.current[stat],
           build.potential[stat] - baseStats[stat],
           build.potential[stat],
         ];
@@ -768,9 +936,23 @@ const statLabels = {
           cell.textContent =
             cellIndex === 0
               ? String(value)
-              : formatStatValue(stat, Number(value), cellIndex === 2);
-          if (cellIndex === 2) cell.className = 'stat-additional';
-          if (cellIndex === 3) cell.className = 'stat-total';
+              : formatStatValue(
+                  stat,
+                  Number(value),
+                  cellIndex === 1 || cellIndex === 3,
+                );
+          if (cellIndex === 1 || cellIndex === 3) {
+            cell.classList.add('stat-additional');
+          }
+          if (cellIndex === 2 || cellIndex === 4) {
+            cell.classList.add('stat-total');
+          }
+          if (
+            (query.projection ?? 'potential') ===
+            (cellIndex <= 2 ? 'current' : 'potential')
+          ) {
+            cell.classList.add('is-selected');
+          }
           row.append(cell);
         });
       }
@@ -919,35 +1101,103 @@ const statLabels = {
     resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function clearForm(): void {
+  function clearStatPresetFields(): void {
     $$<HTMLInputElement>(
       '[data-constraint-min], [data-constraint-max]',
     ).forEach((input) => {
       input.value = '';
     });
-    $$<HTMLSelectElement>('[data-required-set]').forEach((select) => {
-      select.value = '';
-    });
     $<HTMLInputElement>('[data-tick-enabled]').checked = false;
   }
 
-  $$<HTMLButtonElement>('[data-preset]').forEach((button) => {
+  function setRequiredSets(requiredSets: RuneSetName[]): void {
+    $$<HTMLSelectElement>('[data-required-set]').forEach((select, index) => {
+      select.value = requiredSets[index] ?? '';
+    });
+  }
+
+  let activeRunePreset = '';
+  let activeStatPreset = '';
+
+  function updatePresetState(kind: 'rune' | 'stat', value: string): void {
+    if (kind === 'rune') activeRunePreset = value;
+    else activeStatPreset = value;
+    $$<HTMLButtonElement>('[data-rune-preset]').forEach((button) => {
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.runePreset === activeRunePreset),
+      );
+    });
+    $$<HTMLButtonElement>('[data-stat-preset]').forEach((button) => {
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.statPreset === activeStatPreset),
+      );
+    });
+    const labels = [
+      $$<HTMLButtonElement>('[data-rune-preset]').find(
+        (button) => button.dataset.runePreset === activeRunePreset,
+      )?.dataset.presetLabel,
+      $$<HTMLButtonElement>('[data-stat-preset]').find(
+        (button) => button.dataset.statPreset === activeStatPreset,
+      )?.dataset.presetLabel,
+    ].filter(Boolean);
+    const summary = $<HTMLElement>('[data-preset-summary]');
+    summary.textContent = labels.join(' · ');
+    summary.hidden = labels.length === 0;
+  }
+
+  const runePresetSets: Record<string, RuneSetName[]> = {
+    fastest: [],
+    'fastest-will': ['Will'],
+    swift: ['Swift'],
+    'violent-will': ['Violent', 'Will'],
+    'violent-nemesis': ['Violent', 'Nemesis'],
+    'violent-destroy': ['Violent', 'Destroy'],
+  };
+
+  $$<HTMLButtonElement>('[data-rune-preset]').forEach((button) => {
     button.addEventListener('click', () => {
-      clearForm();
-      const sets = $$<HTMLSelectElement>('[data-required-set]');
-      const preset = button.dataset.preset;
-      if (preset === 'swift') {
-        objectiveSelect.value = 'speed';
-        sets[0].value = 'Swift';
-      } else if (preset === 'violent-will') {
-        objectiveSelect.value = 'speed';
-        sets[0].value = 'Violent';
-        sets[1].value = 'Will';
-      } else if (preset === 'tank') {
-        objectiveSelect.value = 'resistance';
-      } else objectiveSelect.value = 'speed';
+      const preset = button.dataset.runePreset ?? '';
+      setRequiredSets(runePresetSets[preset] ?? []);
+      if (!activeStatPreset) objectiveSelect.value = 'speed';
+      updatePresetState('rune', preset);
     });
   });
+
+  $$<HTMLButtonElement>('[data-stat-preset]').forEach((button) => {
+    button.addEventListener('click', () => {
+      clearStatPresetFields();
+      const preset = button.dataset.statPreset ?? '';
+      if (preset === 'tank') {
+        $<HTMLInputElement>('[data-constraint-min="hp"]').value = '30000';
+        $<HTMLInputElement>('[data-constraint-min="defense"]').value = '700';
+        $<HTMLInputElement>('[data-constraint-min="resistance"]').value = '100';
+        $<HTMLInputElement>('[data-tick-enabled]').checked = true;
+        $<HTMLSelectElement>('[data-tick]').value = '5';
+        objectiveSelect.value = 'hp';
+      } else if (preset === 'damage') {
+        $<HTMLInputElement>('[data-constraint-min="critRate"]').value = '100';
+        objectiveSelect.value = 'damage';
+      }
+      updatePresetState('stat', preset);
+    });
+  });
+
+  $$<HTMLSelectElement>('[data-required-set]').forEach((select) => {
+    select.addEventListener('change', () => updatePresetState('rune', ''));
+  });
+  $$<HTMLInputElement>(
+    '[data-constraint-min], [data-constraint-max], [data-tick-enabled], [data-tower], [data-leader]',
+  ).forEach((input) => {
+    input.addEventListener('change', () => updatePresetState('stat', ''));
+  });
+  $<HTMLSelectElement>('[data-tick]').addEventListener('change', () =>
+    updatePresetState('stat', ''),
+  );
+  objectiveSelect.addEventListener('change', () =>
+    updatePresetState('stat', ''),
+  );
 
   fileInput.addEventListener('change', async () => {
     const file = fileInput.files?.[0];

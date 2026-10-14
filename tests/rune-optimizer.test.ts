@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import test from 'node:test';
 import {
+  buildObjectiveValue,
   optimizeRunes,
   runePotentialEffects,
   runeVectors,
@@ -263,6 +264,126 @@ test('optimizer finds the exact fastest build and applies Swift rounding', () =>
     'swift-5',
     'swift-6',
   ]);
+});
+
+test('optimizer ranks and constrains builds using the selected projection', () => {
+  const fixed = Array.from({ length: 5 }, (_, index) =>
+    rune(
+      `fixed-${index + 2}`,
+      (index + 2) as NormalizedRune['slot'],
+      'Energy',
+      'hpFlat',
+      0,
+    ),
+  );
+  const runes = [
+    rune('best-now', 1, 'Energy', 'speed', 30),
+    rune('best-max', 1, 'Energy', 'speed', 42, {
+      level: 9,
+      main: { stat: 'speed', currentValue: 10, value: 42 },
+    }),
+    ...fixed,
+  ];
+
+  const currentResult = optimizeRunes(
+    runes,
+    query({
+      projection: 'current',
+      constraints: { speed: { min: 120 } },
+      limit: 1,
+    }),
+  );
+  assert.equal(currentResult.builds[0].runeIds[0], 'best-now');
+  assert.equal(currentResult.builds[0].current.speed, 130);
+  assert.equal(currentResult.builds[0].potential.speed, 130);
+  assert.equal(currentResult.builds[0].objectiveValue, 130);
+
+  const maximumResult = optimizeRunes(
+    runes,
+    query({ projection: 'potential', limit: 1 }),
+  );
+  assert.equal(maximumResult.builds[0].runeIds[0], 'best-max');
+  assert.equal(maximumResult.builds[0].current.speed, 110);
+  assert.equal(maximumResult.builds[0].potential.speed, 142);
+  assert.equal(maximumResult.builds[0].objectiveValue, 142);
+});
+
+test('Tick validation follows the selected current or maximum values', () => {
+  const runes = Array.from({ length: 6 }, (_, index) =>
+    rune(
+      `tick-${index + 1}`,
+      (index + 1) as NormalizedRune['slot'],
+      index < 4 ? 'Swift' : 'Energy',
+      'hpFlat',
+      0,
+      {
+        substats: [{ stat: 'speed', value: 26, grind: 0, enchanted: false }],
+      },
+    ),
+  );
+  const tick = {
+    tick: 5 as const,
+    speedTowerPercent: 0,
+    leaderSkillPercent: 0,
+  };
+
+  const currentResult = optimizeRunes(
+    runes,
+    query({ projection: 'current', tick }),
+  );
+  assert.equal(currentResult.builds.length, 0);
+
+  const maximumResult = optimizeRunes(
+    runes,
+    query({ projection: 'potential', tick }),
+  );
+  assert.equal(maximumResult.builds.length, 1);
+  assert.equal(maximumResult.builds[0].current.speed, 281);
+  assert.equal(maximumResult.builds[0].potential.speed, 311);
+});
+
+test('damage objective balances ATK and critical damage at 100% CR', () => {
+  const runes = [
+    rune('pure-attack', 1, 'Energy', 'attackFlat', 500),
+    rune('balanced', 1, 'Energy', 'attackFlat', 250, {
+      substats: [{ stat: 'critDamage', value: 80, grind: 0, enchanted: false }],
+    }),
+    rune('pure-cd', 1, 'Energy', 'critDamage', 150),
+    ...Array.from({ length: 5 }, (_, index) =>
+      rune(
+        `fixed-${index + 2}`,
+        (index + 2) as NormalizedRune['slot'],
+        'Energy',
+        'hpFlat',
+        0,
+        {
+          substats: [
+            { stat: 'critRate', value: 17, grind: 0, enchanted: false },
+          ],
+        },
+      ),
+    ),
+  ];
+
+  const result = optimizeRunes(
+    runes,
+    query({
+      objective: 'damage',
+      constraints: { critRate: { min: 100 } },
+      limit: 1,
+    }),
+  );
+
+  assert.equal(result.builds.length, 1);
+  assert.equal(result.builds[0].runeIds[0], 'balanced');
+  assert.equal(result.builds[0].potential.attack, 1050);
+  assert.equal(result.builds[0].potential.critRate, 100);
+  assert.equal(result.builds[0].potential.critDamage, 130);
+  assert.equal(
+    result.builds[0].objectiveValue,
+    buildObjectiveValue(result.builds[0].potential, 'damage'),
+  );
+  assert.equal(result.builds[0].objectiveValue, 2415);
 });
 
 test('full required sets prune irrelevant Pareto candidates before searching', () => {
