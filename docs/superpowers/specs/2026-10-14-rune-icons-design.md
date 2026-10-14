@@ -31,8 +31,10 @@ pedras serão ancoradas pelo mesmo centro dentro do fundo de `58 × 58 px`. Os
 formatos horizontais dos slots 2, 3, 5 e 6 manterão a área de `42 × 50 px`; os
 formatos verticais dos slots 1 e 4 usarão `35 × 42 px` para que sua altura visual
 não fique maior que a das demais runas. O símbolo usará uma caixa de `28 × 28
-px`, ancorada nesse mesmo centro nos seis slots. O indicador `+15` ficará preso
-ao canto inferior direito do fundo, como na interface do jogo.
+px` e terá centralização óptica própria para cada pedra: slot 1 em `top: 55%` e
+`left: 49%`; slot 2 em `50%/47%`; slot 3 em `50%/48%`; slot 4 em `44%/49%`;
+slot 5 em `50%/52%`; e slot 6 em `49%/52%`. O indicador `+15` ficará preso ao
+canto inferior direito do fundo, como na interface do jogo.
 
 ## Assets e cobertura
 
@@ -63,6 +65,6 @@ Os testes confirmarão:
 - fundo Ancient e fundo comum;
 - cobertura de assets para todos os sets e slots suportados;
 - manutenção do texto, nível e layout sem rolagem horizontal;
-- ausência de filtro visual e centralização uniforme do símbolo nos seis slots;
+- ausência de filtro visual e aplicação dos seis centros ópticos do símbolo;
 - escala reduzida e idêntica para os formatos verticais dos slots 1 e 4;
 - funcionamento em desktop e mobile.
