@@ -499,9 +499,9 @@
 
 .rune-icon-background,
 .rune-icon-slot {
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 4px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
 }
 
@@ -511,45 +511,49 @@
 
 .rune-icon-slot {
   z-index: 1;
+  filter: sepia(1) saturate(3.8) hue-rotate(350deg) brightness(1.12)
+    contrast(1.06);
 }
 
 .rune-icon-set {
   z-index: 2;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
+  filter: sepia(1) saturate(3.8) hue-rotate(350deg) brightness(1.12)
+    contrast(1.06);
 }
 
 .rune-icon[data-slot='1'] .rune-icon-set {
-  top: 14px;
-  left: 10px;
+  top: 16px;
+  left: 13px;
 }
 
 .rune-icon[data-slot='2'] .rune-icon-set,
 .rune-icon[data-slot='3'] .rune-icon-set {
-  top: 10px;
-  left: 8px;
+  top: 13px;
+  left: 11px;
 }
 
 .rune-icon[data-slot='4'] .rune-icon-set {
-  top: 7px;
-  left: 10px;
-}
-
-.rune-icon[data-slot='5'] .rune-icon-set {
   top: 10px;
   left: 13px;
 }
 
+.rune-icon[data-slot='5'] .rune-icon-set {
+  top: 13px;
+  left: 15px;
+}
+
 .rune-icon[data-slot='6'] .rune-icon-set {
-  top: 10px;
-  left: 12px;
+  top: 13px;
+  left: 14px;
 }
 
 .rune-icon-level {
   position: absolute;
   z-index: 3;
-  right: 2px;
-  bottom: 0;
+  right: 4px;
+  bottom: 3px;
   color: #fff;
   font-size: 12px;
   font-weight: 850;
