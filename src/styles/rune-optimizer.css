@@ -531,6 +531,36 @@
   transform: translate(-50%, -50%);
 }
 
+.rune-icon[data-slot='1'] .rune-icon-set {
+  top: 55%;
+  left: 49%;
+}
+
+.rune-icon[data-slot='2'] .rune-icon-set {
+  top: 50%;
+  left: 47%;
+}
+
+.rune-icon[data-slot='3'] .rune-icon-set {
+  top: 50%;
+  left: 48%;
+}
+
+.rune-icon[data-slot='4'] .rune-icon-set {
+  top: 44%;
+  left: 49%;
+}
+
+.rune-icon[data-slot='5'] .rune-icon-set {
+  top: 50%;
+  left: 52%;
+}
+
+.rune-icon[data-slot='6'] .rune-icon-set {
+  top: 49%;
+  left: 52%;
+}
+
 .rune-icon-level {
   position: absolute;
   z-index: 3;

@@ -159,8 +159,8 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   expect(iconPresentation.slotCenterX).toBe(0);
   expect(iconPresentation.slotCenterY).toBe(0);
   expect(iconPresentation.setWidth).toBe(28);
-  expect(iconPresentation.setCenterX).toBe(0);
-  expect(iconPresentation.setCenterY).toBe(0);
+  expect(iconPresentation.setCenterX).toBeCloseTo(-0.58, 1);
+  expect(iconPresentation.setCenterY).toBeCloseTo(2.9, 1);
   expect(iconPresentation.slotFilter).toBe('none');
   expect(iconPresentation.setFilter).toBe('none');
 
@@ -210,11 +210,21 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     '5',
     '6',
   ]);
+  const expectedSetOffsets = {
+    '1': { x: -0.58, y: 2.9 },
+    '2': { x: -1.74, y: 0 },
+    '3': { x: -1.16, y: 0 },
+    '4': { x: -0.58, y: -3.48 },
+    '5': { x: 1.16, y: 0 },
+    '6': { x: 1.16, y: -0.58 },
+  } as const;
   for (const alignment of iconAlignment) {
     const isVerticalSlot = alignment.slot === '1' || alignment.slot === '4';
+    const expectedSetOffset =
+      expectedSetOffsets[alignment.slot as keyof typeof expectedSetOffsets];
     expect(alignment.setWidth).toBe(28);
-    expect(alignment.setCenterX).toBe(0);
-    expect(alignment.setCenterY).toBe(0);
+    expect(alignment.setCenterX).toBeCloseTo(expectedSetOffset.x, 1);
+    expect(alignment.setCenterY).toBeCloseTo(expectedSetOffset.y, 1);
     expect(alignment.slotWidth).toBe(isVerticalSlot ? 35 : 42);
     expect(alignment.slotHeight).toBe(isVerticalSlot ? 42 : 50);
     expect(alignment.slotCenterX).toBe(0);
