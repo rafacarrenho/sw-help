@@ -18,41 +18,42 @@ Ancient. Abaixo dele, os efeitos serão apresentados como uma lista compacta:
 
 ## Valores e estados
 
-Um substat grindável seguirá o formato `SPD +31 (+32 limite)`. O primeiro valor
-é o valor existente na runa, já incluindo o grind atual. Se ainda houver grind
-possível, o valor máximo usado pelo otimizador aparecerá entre parênteses com o
-rótulo `limite`. Se a runa já estiver no máximo, aparecerá somente `(limite)`
-depois do valor atual.
+Um substat grindável seguirá o formato `SPD +31 (+32)`. O primeiro valor é o
+valor existente na runa, já incluindo o grind atual. O valor máximo usado pelo
+otimizador aparecerá sempre entre parênteses, mesmo quando for igual ao valor
+atual. A palavra `limite` não será exibida.
 
 O valor atual será branco quando não tiver grind e dourado/laranja quando já
-tiver grind. A cor não será a única informação: a presença do limite entre
-parênteses continuará explicitando a projeção. Substats não grindáveis mostrarão
-apenas o valor atual.
+tiver grind. O limite terá uma terceira cor, visualmente distinta do branco e
+do dourado. Substats não grindáveis mostrarão apenas o valor atual.
 
 Substats gemados exibirão somente o símbolo `↻`, com nome acessível e tooltip
-localizado. O texto visível `Gemado` será removido.
+localizado. O texto visível `Gemado` será removido. Valor, limite e símbolo
+formarão um grupo contínuo: o limite ficará imediatamente depois do valor, e o
+símbolo imediatamente depois do limite ou do valor quando não houver limite.
 
 ## Alinhamento numérico
 
-Valores usarão algarismos tabulares e uma coluna de largura fixa. Dígitos como
-`1`, `5` e `0` ocuparão a mesma largura, fazendo `+15` e `+50` alinharem
-visualmente. Nome, valor, limite e símbolo terão colunas estáveis em todos os
-cards.
+Valores usarão algarismos tabulares. Dígitos como `1`, `5` e `0` ocuparão a
+mesma largura, fazendo `+15` e `+50` terem o mesmo tamanho visual. O grupo de
+valores será alinhado à direita, sem transformar limite e símbolo em colunas
+separadas.
 
 ## Responsividade e idiomas
 
 No desktop, os cards continuarão em duas colunas; no celular, em uma coluna. A
-linha poderá ajustar o texto do limite sem provocar rolagem horizontal. O rótulo
-`limite` será localizado nos cinco idiomas, e o texto secundário continuará com
-pelo menos 14 px.
+linha não provocará rolagem horizontal. A página identificará o Rune Optimizer
+como `BETA`, e o texto secundário continuará com pelo menos 14 px.
 
 ## Validação
 
 Os testes confirmarão:
 
 - valor atual branco sem grind e dourado com grind;
-- limite futuro e estado já no limite;
+- limite futuro sempre numérico, inclusive quando igual ao valor atual;
 - símbolo isolado para substat gemado;
+- agrupamento contínuo de valor, limite e símbolo;
+- badge `BETA` no título da ferramenta;
 - ausência do detalhamento verboso anterior;
 - alinhamento tabular configurado no CSS;
 - renderização funcional em desktop e mobile.
