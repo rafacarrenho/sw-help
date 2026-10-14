@@ -26,12 +26,13 @@ escuros originais e ficará menor, centralizada sobre o fundo. O símbolo do set
 será armazenado já em amarelo/dourado no próprio PNG: a interface não aplicará
 `filter`, máscara, sobreposição de cor ou outro tratamento em tempo de execução.
 
-O wrapper manterá uma área estável para não deslocar o texto entre slots. A pedra
-usará suas proporções originais de `42 × 50 px` dentro do fundo de `58 × 58 px`,
-criando respiro sem reduzir a moldura de qualidade. O símbolo usará uma caixa de
-`28 × 28 px`, ancorada no mesmo centro nos seis slots — inclusive no slot 1 — em
-vez de offsets independentes. O indicador `+15` ficará preso ao canto inferior
-direito do fundo, como na interface do jogo.
+O wrapper manterá uma área estável para não deslocar o texto entre slots. As
+pedras serão ancoradas pelo mesmo centro dentro do fundo de `58 × 58 px`. Os
+formatos horizontais dos slots 2, 3, 5 e 6 manterão a área de `42 × 50 px`; os
+formatos verticais dos slots 1 e 4 usarão `35 × 42 px` para que sua altura visual
+não fique maior que a das demais runas. O símbolo usará uma caixa de `28 × 28
+px`, ancorada nesse mesmo centro nos seis slots. O indicador `+15` ficará preso
+ao canto inferior direito do fundo, como na interface do jogo.
 
 ## Assets e cobertura
 
@@ -63,4 +64,5 @@ Os testes confirmarão:
 - cobertura de assets para todos os sets e slots suportados;
 - manutenção do texto, nível e layout sem rolagem horizontal;
 - ausência de filtro visual e centralização uniforme do símbolo nos seis slots;
+- escala reduzida e idêntica para os formatos verticais dos slots 1 e 4;
 - funcionamento em desktop e mobile.
