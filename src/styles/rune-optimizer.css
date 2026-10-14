@@ -490,53 +490,25 @@
   font-size: 16px;
 }
 
-.objective-scores {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(160px, 1fr));
-  min-width: min(100%, 360px);
-  gap: 8px;
-}
-
 .objective-score {
   display: grid;
   align-content: start;
   justify-items: end;
+  min-width: 220px;
   gap: 4px;
   padding: 10px;
   border: 1px solid var(--border, #30343a);
   border-radius: 10px;
-}
-
-.objective-score.is-selected {
   border-color: color-mix(in srgb, var(--accent, #ef9f3f) 65%, transparent);
   background: color-mix(in srgb, var(--accent, #ef9f3f) 9%, transparent);
 }
 
-.objective-score-heading {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-.objective-score-heading > span:first-child {
+.objective-score > span:first-child {
   color: var(--muted, #a5aab3);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.search-mode-badge {
-  padding: 2px 5px;
-  border-radius: 999px;
-  background: var(--accent, #ef9f3f);
-  color: #17120c;
-  font-size: 12px;
-  font-weight: 850;
-  line-height: 1.25;
 }
 
 .objective-score strong {
@@ -545,7 +517,7 @@
   line-height: 1;
 }
 
-.objective-score > span {
+.objective-score > span:last-child {
   color: var(--muted, #a5aab3);
   font-size: 14px;
 }
@@ -558,29 +530,7 @@
 }
 
 .result-stats {
-  min-width: 640px;
-}
-
-.result-stats thead th[data-projection] {
-  color: var(--text-muted, #a9adb5);
-}
-
-.result-stats thead tr:first-child th[data-projection] {
-  padding-bottom: 4px;
-  font-size: 14px;
-  text-align: center;
-}
-
-.result-stats thead tr:last-child th {
-  padding-top: 4px;
-}
-
-.result-stats .is-selected {
-  background: color-mix(in srgb, var(--accent, #ef9f3f) 7%, transparent);
-}
-
-.result-stats thead .is-selected {
-  color: var(--accent, #ef9f3f) !important;
+  min-width: 390px;
 }
 
 .result-stats .stat-additional {
@@ -848,7 +798,7 @@
     flex-direction: column;
   }
 
-  .objective-scores {
+  .objective-score {
     width: 100%;
     min-width: 0;
   }
@@ -868,11 +818,5 @@
   .constraints-table th,
   .constraints-table td {
     padding: 7px 4px;
-  }
-}
-
-@media (max-width: 480px) {
-  .objective-scores {
-    grid-template-columns: 1fr;
   }
 }

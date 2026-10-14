@@ -844,10 +844,7 @@ export function optimizeRunes(
   }
 
   const selected: CandidateRune[] = [];
-  const currentVector = emptyVector();
-  const potentialVector = emptyVector();
-  const selectedVector =
-    query.projection === 'current' ? currentVector : potentialVector;
+  const selectedVector = emptyVector();
   const results: RuneBuildResult[] = [];
   const limit = Math.max(1, Math.min(50, query.limit ?? 10));
   let combinationsEvaluated = 0;
@@ -1114,30 +1111,20 @@ export function optimizeRunes(
         .sort((a, b) => a.slot - b.slot);
       for (const variant of setVariants(runes)) {
         if (!containsRequiredSets(variant.sets, query.requiredSets)) continue;
-        const currentWithBonus = { ...currentVector };
-        addVector(currentWithBonus, variant.bonus);
-        const current = statsFromRuneVector(
+        const vectorWithBonus = { ...selectedVector };
+        addVector(vectorWithBonus, variant.bonus);
+        const stats = statsFromRuneVector(
           query.monster,
-          currentWithBonus,
+          vectorWithBonus,
           variant.swiftActive,
         );
-        const potentialWithBonus = { ...potentialVector };
-        addVector(potentialWithBonus, variant.bonus);
-        const potential = statsFromRuneVector(
-          query.monster,
-          potentialWithBonus,
-          variant.swiftActive,
-        );
-        const selectedStats =
-          query.projection === 'current' ? current : potential;
-        if (!satisfiesConstraints(selectedStats, query.constraints)) continue;
-        if (!reachesTick(selectedStats, query, variant.swiftActive)) continue;
+        if (!satisfiesConstraints(stats, query.constraints)) continue;
+        if (!reachesTick(stats, query, variant.swiftActive)) continue;
         const result = {
           runeIds: runes.map(({ id }) => id),
           sets: variant.sets,
-          current,
-          potential,
-          objectiveValue: buildObjectiveValue(selectedStats, query.objective),
+          stats,
+          objectiveValue: buildObjectiveValue(stats, query.objective),
         };
         if (
           canUsePartialPareto &&
@@ -1202,11 +1189,10 @@ export function optimizeRunes(
         );
       }
       selected.push(candidate);
-      addVector(currentVector, candidate.current);
-      addVector(potentialVector, candidate.potential);
+      const vector = candidateVector(candidate, query);
+      addVector(selectedVector, vector);
       visit(depth + 1);
-      subtractVector(potentialVector, candidate.potential);
-      subtractVector(currentVector, candidate.current);
+      subtractVector(selectedVector, vector);
       selected.pop();
       if (requiredSetIndex !== undefined) {
         selectedRequiredCounts[requiredSetIndex] = previousRequiredCount;

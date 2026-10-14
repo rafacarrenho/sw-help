@@ -164,8 +164,7 @@ export interface OptimizerQuery {
 export interface RuneBuildResult {
   runeIds: string[];
   sets: RuneSetName[];
-  current: StatValues;
-  potential: StatValues;
+  stats: StatValues;
   objectiveValue: number;
 }
 

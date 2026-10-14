@@ -411,10 +411,7 @@ const statLabels = {
     loadRuneSnapshot,
     saveRuneSnapshot,
   } from '../../lib/rune-optimizer-storage.ts';
-  import {
-    buildObjectiveValue,
-    runePotentialEffects,
-  } from '../../lib/rune-optimizer.ts';
+  import { runePotentialEffects } from '../../lib/rune-optimizer.ts';
   import { runeVisualAssets } from '../../lib/rune-visual.ts';
   import type {
     AccountSnapshot,
@@ -469,6 +466,7 @@ const statLabels = {
   const monsterOptions = $<HTMLElement>('[data-monster-options]');
   const excludeSelect = $<HTMLSelectElement>('[data-exclude-select]');
   const objectiveSelect = $<HTMLSelectElement>('[data-objective]');
+  const projectionInputs = $$<HTMLInputElement>('[data-projection]');
   const optimizeButton = $<HTMLButtonElement>('[data-optimize]');
   const cancelButton = $<HTMLButtonElement>('[data-cancel]');
   const calculationStatus = $<HTMLElement>('[data-calculation-status]');
@@ -652,6 +650,9 @@ const statLabels = {
 
   function finishCalculation(): void {
     optimizeButton.disabled = false;
+    projectionInputs.forEach((input) => {
+      input.disabled = false;
+    });
     cancelButton.hidden = true;
     calculationStatus.textContent = '';
   }
@@ -831,102 +832,53 @@ const statLabels = {
       const title = document.createElement('h3');
       title.textContent = `#${index + 1} · ${build.sets.length ? build.sets.join(' + ') : copy.anySet}`;
       const objective = query.objective;
-      const scores = document.createElement('div');
-      scores.className = 'objective-scores';
-      for (const [projection, label, stats] of [
-        ['current', copy.current, build.current],
-        ['potential', copy.maximum, build.potential],
-      ] as const) {
-        const score = document.createElement('div');
-        score.className = 'objective-score';
-        score.dataset.projection = projection;
-        const isSelected = (query.projection ?? 'potential') === projection;
-        if (isSelected) score.classList.add('is-selected');
-
-        const scoreHeading = document.createElement('div');
-        scoreHeading.className = 'objective-score-heading';
-        const scoreLabel = document.createElement('span');
-        scoreLabel.textContent = `${label} · ${
-          objective === 'damage'
-            ? copy.estimatedDamage
-            : `${statNames[objective]} ${copy.additional}`
-        }`;
-        scoreHeading.append(scoreLabel);
-        if (isSelected) {
-          const used = document.createElement('span');
-          used.className = 'search-mode-badge';
-          used.textContent = copy.usedForSearch;
-          scoreHeading.append(used);
-        }
-
-        const scoreValue = document.createElement('strong');
-        scoreValue.textContent =
-          objective === 'damage'
-            ? buildObjectiveValue(stats, objective).toLocaleString(numberLocale)
-            : formatStatValue(
-                objective,
-                stats[objective] - baseStats[objective],
-                true,
-              );
-        const scoreTotal = document.createElement('span');
-        scoreTotal.textContent =
-          objective === 'damage'
-            ? copy.damageFormula
-            : `${copy.total} ${formatStatValue(objective, stats[objective])}`;
-        score.append(scoreHeading, scoreValue, scoreTotal);
-        scores.append(score);
-      }
-      heading.append(title, scores);
+      const projection = query.projection ?? 'potential';
+      const score = document.createElement('div');
+      score.className = 'objective-score';
+      score.dataset.projection = projection;
+      const scoreLabel = document.createElement('span');
+      scoreLabel.textContent = `${
+        projection === 'current' ? copy.currentResult : copy.maximumResult
+      } · ${
+        objective === 'damage'
+          ? copy.estimatedDamage
+          : `${statNames[objective]} ${copy.additional}`
+      }`;
+      const scoreValue = document.createElement('strong');
+      scoreValue.textContent =
+        objective === 'damage'
+          ? build.objectiveValue.toLocaleString(numberLocale)
+          : formatStatValue(
+              objective,
+              build.stats[objective] - baseStats[objective],
+              true,
+            );
+      const scoreTotal = document.createElement('span');
+      scoreTotal.textContent =
+        objective === 'damage'
+          ? copy.damageFormula
+          : `${copy.total} ${formatStatValue(objective, build.stats[objective])}`;
+      score.append(scoreLabel, scoreValue, scoreTotal);
+      heading.append(title, score);
       article.append(heading);
 
       const statTable = document.createElement('table');
       statTable.className = 'result-stats';
-      const tableHead = statTable.createTHead();
-      const groupHead = tableHead.insertRow();
-      const emptyHeading = document.createElement('th');
-      emptyHeading.textContent = copy.stat;
-      emptyHeading.rowSpan = 2;
-      emptyHeading.scope = 'col';
-      groupHead.append(emptyHeading);
-      for (const [projection, text] of [
-        ['current', copy.current],
-        ['potential', copy.maximum],
-      ] as const) {
-        const th = document.createElement('th');
-        th.textContent = text;
-        th.colSpan = 2;
-        th.scope = 'colgroup';
-        th.dataset.projection = projection;
-        if ((query.projection ?? 'potential') === projection) {
-          th.classList.add('is-selected');
-        }
-        groupHead.append(th);
-      }
-      const valueHead = tableHead.insertRow();
-      for (const [projection, text] of [
-        ['current', copy.additional],
-        ['current', copy.total],
-        ['potential', copy.additional],
-        ['potential', copy.total],
-      ] as const) {
+      const head = statTable.createTHead().insertRow();
+      for (const text of [copy.stat, copy.base, copy.additional, copy.total]) {
         const th = document.createElement('th');
         th.textContent = text;
         th.scope = 'col';
-        th.dataset.projection = projection;
-        if ((query.projection ?? 'potential') === projection) {
-          th.classList.add('is-selected');
-        }
-        valueHead.append(th);
+        head.append(th);
       }
       const body = statTable.createTBody();
       for (const stat of statOrder) {
         const row = body.insertRow();
         const values: Array<string | number> = [
           statNames[stat],
-          build.current[stat] - baseStats[stat],
-          build.current[stat],
-          build.potential[stat] - baseStats[stat],
-          build.potential[stat],
+          baseStats[stat],
+          build.stats[stat] - baseStats[stat],
+          build.stats[stat],
         ];
         values.forEach((value, cellIndex) => {
           const cell =
@@ -936,23 +888,9 @@ const statLabels = {
           cell.textContent =
             cellIndex === 0
               ? String(value)
-              : formatStatValue(
-                  stat,
-                  Number(value),
-                  cellIndex === 1 || cellIndex === 3,
-                );
-          if (cellIndex === 1 || cellIndex === 3) {
-            cell.classList.add('stat-additional');
-          }
-          if (cellIndex === 2 || cellIndex === 4) {
-            cell.classList.add('stat-total');
-          }
-          if (
-            (query.projection ?? 'potential') ===
-            (cellIndex <= 2 ? 'current' : 'potential')
-          ) {
-            cell.classList.add('is-selected');
-          }
+              : formatStatValue(stat, Number(value), cellIndex === 2);
+          if (cellIndex === 2) cell.classList.add('stat-additional');
+          if (cellIndex === 3) cell.classList.add('stat-total');
           row.append(cell);
         });
       }
@@ -1198,6 +1136,14 @@ const statLabels = {
   objectiveSelect.addEventListener('change', () =>
     updatePresetState('stat', ''),
   );
+  projectionInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      activeQuery = null;
+      resultsPanel.hidden = true;
+      resultMeta.textContent = '';
+      resultsContainer.replaceChildren();
+    });
+  });
 
   fileInput.addEventListener('change', async () => {
     const file = fileInput.files?.[0];
@@ -1278,6 +1224,9 @@ const statLabels = {
       return;
     }
     optimizeButton.disabled = true;
+    projectionInputs.forEach((input) => {
+      input.disabled = true;
+    });
     cancelButton.hidden = false;
     calculationStatus.textContent = copy.calculating;
     activeQuery = query;

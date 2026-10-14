@@ -144,31 +144,28 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
   await expect(page.locator('.build-result').first()).toBeVisible();
   const firstBuild = page.locator('.build-result').first();
   await expect(firstBuild).toContainText('Swift');
-  const currentScore = firstBuild.locator(
-    '.objective-score[data-projection="current"]',
-  );
   const maximumScore = firstBuild.locator(
     '.objective-score[data-projection="potential"]',
   );
-  await expect(currentScore).toContainText('Atual · SPD Adicional');
-  await expect(currentScore).toContainText('+210');
-  await expect(currentScore).toContainText('Total 306');
-  await expect(maximumScore).toContainText('Máximo · SPD Adicional');
+  await expect(firstBuild.locator('.objective-score')).toHaveCount(1);
+  await expect(maximumScore).toContainText('Resultado máximo · SPD Adicional');
   await expect(maximumScore).toContainText('+231');
   await expect(maximumScore).toContainText('Total 327');
-  await expect(maximumScore).toContainText('Usado na busca');
-  await expect(maximumScore).toHaveClass(/is-selected/);
   await expect(
     firstBuild.locator('.result-stats thead tr').first().locator('th'),
-  ).toHaveText(['Status', 'Atual', 'Máximo']);
-  await expect(
-    firstBuild.locator('.result-stats thead tr').nth(1).locator('th'),
-  ).toHaveText(['Adicional', 'Total', 'Adicional', 'Total']);
+  ).toHaveText(['Status', 'Base', 'Adicional', 'Total']);
   await page.getByLabel('Atual', { exact: true }).check();
+  await expect(page.locator('[data-results-panel]')).toBeHidden();
   await page.getByRole('button', { name: 'Encontrar builds exatas' }).click();
-  await expect(currentScore).toHaveClass(/is-selected/);
-  await expect(currentScore).toContainText('Usado na busca');
-  await expect(maximumScore).not.toHaveClass(/is-selected/);
+  await expect(firstBuild).toBeVisible();
+  const currentScore = firstBuild.locator(
+    '.objective-score[data-projection="current"]',
+  );
+  await expect(firstBuild.locator('.objective-score')).toHaveCount(1);
+  await expect(currentScore).toContainText('Resultado atual · SPD Adicional');
+  await expect(currentScore).toContainText('+210');
+  await expect(currentScore).toContainText('Total 306');
+  await expect(firstBuild).not.toContainText('Resultado máximo');
   await expect(firstBuild.locator('[data-rune-card]')).toHaveCount(6);
   const firstRune = firstBuild.locator('[data-rune-card="1"]');
   await expect(firstRune).toContainText('Slot 1 · Swift');

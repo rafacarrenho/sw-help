@@ -19,7 +19,8 @@ export interface RuneOptimizerMessages {
   objective: string;
   calculateUsing: string;
   current: string;
-  usedForSearch: string;
+  currentResult: string;
+  maximumResult: string;
   requiredSets: string;
   anySet: string;
   poolTitle: string;
@@ -98,7 +99,8 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     objective: 'Maximize',
     calculateUsing: 'Calculate using',
     current: 'Current',
-    usedForSearch: 'Used for search',
+    currentResult: 'Current result',
+    maximumResult: 'Maximum result',
     requiredSets: 'Required sets',
     anySet: 'Any / broken set',
     poolTitle: 'Rune pool',
@@ -176,7 +178,8 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     objective: 'Maximizar',
     calculateUsing: 'Calcular usando',
     current: 'Atual',
-    usedForSearch: 'Usado na busca',
+    currentResult: 'Resultado atual',
+    maximumResult: 'Resultado máximo',
     requiredSets: 'Sets obrigatórios',
     anySet: 'Qualquer / set quebrado',
     poolTitle: 'Conjunto de runas',
@@ -254,7 +257,8 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     objective: 'Maximizar',
     calculateUsing: 'Calcular usando',
     current: 'Actual',
-    usedForSearch: 'Usado en la búsqueda',
+    currentResult: 'Resultado actual',
+    maximumResult: 'Resultado máximo',
     requiredSets: 'Sets obligatorios',
     anySet: 'Cualquiera / set roto',
     poolTitle: 'Grupo de runas',
@@ -332,7 +336,8 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     objective: 'Maximiser',
     calculateUsing: 'Calculer avec',
     current: 'Actuel',
-    usedForSearch: 'Utilisé pour la recherche',
+    currentResult: 'Résultat actuel',
+    maximumResult: 'Résultat maximum',
     requiredSets: 'Sets obligatoires',
     anySet: 'Libre / set incomplet',
     poolTitle: 'Réserve de runes',
@@ -409,7 +414,8 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
     objective: 'Maximieren',
     calculateUsing: 'Berechnen mit',
     current: 'Aktuell',
-    usedForSearch: 'Für die Suche verwendet',
+    currentResult: 'Aktuelles Ergebnis',
+    maximumResult: 'Maximales Ergebnis',
     requiredSets: 'Erforderliche Sets',
     anySet: 'Beliebig / Broken Set',
     poolTitle: 'Runenpool',

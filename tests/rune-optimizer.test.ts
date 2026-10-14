@@ -254,7 +254,7 @@ test('optimizer finds the exact fastest build and applies Swift rounding', () =>
   );
   runes.push(rune('slow-slot-6', 6, 'Will', 'speed', 1));
   const result = optimizeRunes(runes, query({ requiredSets: ['Swift'] }));
-  assert.equal(result.builds[0].potential.speed, 100 + 75 + 25);
+  assert.equal(result.builds[0].stats.speed, 100 + 75 + 25);
   assert.ok(result.builds[0].sets.includes('Swift'));
   assert.deepEqual(result.builds[0].runeIds, [
     'swift-1',
@@ -294,18 +294,22 @@ test('optimizer ranks and constrains builds using the selected projection', () =
     }),
   );
   assert.equal(currentResult.builds[0].runeIds[0], 'best-now');
-  assert.equal(currentResult.builds[0].current.speed, 130);
-  assert.equal(currentResult.builds[0].potential.speed, 130);
+  assert.equal(currentResult.builds[0].stats.speed, 130);
   assert.equal(currentResult.builds[0].objectiveValue, 130);
+  assert.ok(!('current' in currentResult.builds[0]));
+  assert.ok(!('potential' in currentResult.builds[0]));
 
   const maximumResult = optimizeRunes(
     runes,
     query({ projection: 'potential', limit: 1 }),
   );
   assert.equal(maximumResult.builds[0].runeIds[0], 'best-max');
-  assert.equal(maximumResult.builds[0].current.speed, 110);
-  assert.equal(maximumResult.builds[0].potential.speed, 142);
+  assert.equal(maximumResult.builds[0].stats.speed, 142);
   assert.equal(maximumResult.builds[0].objectiveValue, 142);
+  assert.notDeepEqual(
+    currentResult.builds[0].runeIds,
+    maximumResult.builds[0].runeIds,
+  );
 });
 
 test('Tick validation follows the selected current or maximum values', () => {
@@ -338,8 +342,7 @@ test('Tick validation follows the selected current or maximum values', () => {
     query({ projection: 'potential', tick }),
   );
   assert.equal(maximumResult.builds.length, 1);
-  assert.equal(maximumResult.builds[0].current.speed, 281);
-  assert.equal(maximumResult.builds[0].potential.speed, 311);
+  assert.equal(maximumResult.builds[0].stats.speed, 311);
 });
 
 test('damage objective balances ATK and critical damage at 100% CR', () => {
@@ -376,12 +379,12 @@ test('damage objective balances ATK and critical damage at 100% CR', () => {
 
   assert.equal(result.builds.length, 1);
   assert.equal(result.builds[0].runeIds[0], 'balanced');
-  assert.equal(result.builds[0].potential.attack, 1050);
-  assert.equal(result.builds[0].potential.critRate, 100);
-  assert.equal(result.builds[0].potential.critDamage, 130);
+  assert.equal(result.builds[0].stats.attack, 1050);
+  assert.equal(result.builds[0].stats.critRate, 100);
+  assert.equal(result.builds[0].stats.critDamage, 130);
   assert.equal(
     result.builds[0].objectiveValue,
-    buildObjectiveValue(result.builds[0].potential, 'damage'),
+    buildObjectiveValue(result.builds[0].stats, 'damage'),
   );
   assert.equal(result.builds[0].objectiveValue, 2415);
 });
@@ -435,10 +438,10 @@ test('full required sets prune irrelevant Pareto candidates before searching', (
   assert.ok(result.combinationsEvaluated <= 15);
   assert.ok(
     result.builds.every(
-      ({ sets, potential }) =>
+      ({ sets, stats }) =>
         sets.includes('Violent') &&
         sets.includes('Will') &&
-        potential.critRate === 100,
+        stats.critRate === 100,
     ),
   );
 });
@@ -521,5 +524,5 @@ test('constraints, locked rune filters, exclusions and Tick are enforced', () =>
     }),
   );
   assert.equal(tickResult.builds.length, 1);
-  assert.equal(tickResult.builds[0].potential.resistance, 75);
+  assert.equal(tickResult.builds[0].stats.resistance, 75);
 });
