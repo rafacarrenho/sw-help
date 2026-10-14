@@ -18,6 +18,17 @@ O nível `+15` será sobreposto no canto inferior direito. As estrelas continuar
 no texto do cabeçalho para preservar a leitura em tamanhos compactos. O ícone
 ficará à esquerda de `Slot N · Set`, com tamanho estável em desktop e celular.
 
+### Refinamento de cor e respiro
+
+A pedra e o símbolo do set terão um tratamento dourado uniforme, mais próximo da
+leitura visual predominante no jogo. O fundo de qualidade não será recolorido,
+preservando a distinção entre raridades e a variante Ancient.
+
+O wrapper manterá uma área estável para não deslocar o texto entre slots, enquanto
+as três camadas visuais ficarão menores e centralizadas dentro dele. Esse recuo
+evita que a runa pareça encostada nas bordas. O indicador `+15` acompanhará o
+limite interno do desenho, em vez da borda externa do wrapper.
+
 ## Assets e cobertura
 
 Os assets serão armazenados em `public/images/runes/`, sem dependência de rede em
