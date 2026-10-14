@@ -110,24 +110,35 @@ test('importa localmente e permite otimizar um monstro fora da conta', async ({
     )
     .toBe(true);
   const iconPresentation = await firstRuneIcon.evaluate((icon) => {
+    const background = icon.querySelector<HTMLElement>(
+      '[data-rune-asset="background"]',
+    );
     const slot = icon.querySelector<HTMLElement>('[data-rune-asset="slot"]');
-    if (!slot) throw new Error('Rune slot layer was not rendered');
+    const set = icon.querySelector<HTMLElement>('[data-rune-asset="set"]');
+    if (!background || !slot || !set) {
+      throw new Error('Rune icon layers were not rendered');
+    }
 
     const wrapperBounds = icon.getBoundingClientRect();
+    const backgroundBounds = background.getBoundingClientRect();
     const slotBounds = slot.getBoundingClientRect();
 
     return {
       wrapperWidth: wrapperBounds.width,
+      backgroundWidth: backgroundBounds.width,
       slotWidth: slotBounds.width,
       insetLeft: slotBounds.left - wrapperBounds.left,
       insetTop: slotBounds.top - wrapperBounds.top,
-      filter: getComputedStyle(slot).filter,
+      slotFilter: getComputedStyle(slot).filter,
+      setFilter: getComputedStyle(set).filter,
     };
   });
+  expect(iconPresentation.backgroundWidth).toBe(iconPresentation.wrapperWidth);
   expect(iconPresentation.slotWidth).toBeLessThan(iconPresentation.wrapperWidth);
-  expect(iconPresentation.insetLeft).toBeGreaterThanOrEqual(4);
-  expect(iconPresentation.insetTop).toBeGreaterThanOrEqual(4);
-  expect(iconPresentation.filter).not.toBe('none');
+  expect(iconPresentation.insetLeft).toBe(8);
+  expect(iconPresentation.insetTop).toBe(4);
+  expect(iconPresentation.slotFilter).toBe('none');
+  expect(iconPresentation.setFilter).not.toBe('none');
   await expect(firstRuneIcon.locator('.rune-icon-level')).toHaveText('+15');
   const secondRuneIcon = firstBuild
     .locator('[data-rune-card="2"]')
