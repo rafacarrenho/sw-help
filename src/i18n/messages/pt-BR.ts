@@ -284,7 +284,6 @@ export const ptBR: Messages = {
     offense: 'OFENSIVA',
     howToPlay: 'Como jogar',
     killOrder: 'Ordem de eliminação',
-    sources: 'Fontes',
     suggestedBuild: 'Configuração sugerida',
     offenseBuild: 'Configuração da ofensiva',
     status: 'Status',
@@ -454,7 +453,7 @@ export const ptBR: Messages = {
       'RTA usa ticks de 1,5%. A SPD mínima considera torre, liderança, Swift, boosts de ATB e buffs de SPD. O cálculo representa os quatro monstros após o ban.',
     adjustTeam: 'Ajuste o time',
     orderCopy:
-      'A ordem é da esquerda para a direita — ou de cima para baixo no celular.',
+      'A ordem é da esquerda para a direita, ou de cima para baixo no celular.',
     content: 'Conteúdo',
     speedTower: 'Torre SPD',
     clearTeam: 'Limpar time',

@@ -17,7 +17,6 @@
         "sets": "Violent / Will"
       }
     ],
-    "sources": [],
     "tick": 5,
     "matchups": [
       { "defenseId": "morris-eshir-orion" },
@@ -60,7 +59,6 @@
         }
       }
     ],
-    "sources": [],
     "tick": 5,
     "matchups": [
       { "defenseId": "morris-eshir-orion" },
@@ -129,7 +127,6 @@
         }
       }
     ],
-    "sources": [],
     "tick": 5,
     "matchups": [
       { "defenseId": "morris-eshir-orion" },
@@ -197,7 +194,6 @@
         }
       }
     ],
-    "sources": [],
     "tick": 5,
     "matchups": [
       { "defenseId": "morris-eshir-orion" },
@@ -230,5 +226,105 @@
         ]
       }
     ]
+  },
+  {
+    "id": "mihyang-chilling-mork",
+    "team": ["mihyang-water-613", "chilling-water-958", "mork-water-2626"],
+    "matchups": [{ "defenseId": "morris-rex-shumar" }]
+  },
+  {
+    "id": "vigor-tetra-groggo",
+    "team": ["vigor", "tetra-water-836", "groggo-light-422"],
+    "matchups": [{ "defenseId": "morris-rex-shumar" }]
+  },
+  {
+    "id": "tractor-lulu-windy",
+    "team": ["tractor", "lulu", "windy"],
+    "matchups": [{ "defenseId": "martina-shaina-triana" }]
+  },
+  {
+    "id": "mihyang-kahli-chloe",
+    "team": ["mihyang-water-613", "kahli-fire-1818", "chloe-fire-234"],
+    "matchups": [{ "defenseId": "conrad-kinki-robo-r40" }]
+  },
+  {
+    "id": "mihyang-imesety-bulldozer",
+    "team": ["mihyang-water-613", "imesety", "bulldozer"],
+    "matchups": [{ "defenseId": "conrad-grego-robo-r40" }]
+  },
+  {
+    "id": "mihyang-cichlid-shumar",
+    "team": ["mihyang-water-613", "cichlid-wind-837", "shumar-dark-2936"],
+    "matchups": [{ "defenseId": "morris-liu-mei-vigor" }]
+  },
+  {
+    "id": "jultan-lulu-shamann",
+    "team": ["jultan-dark-1327", "lulu", "shamann-light-1580"],
+    "matchups": [{ "defenseId": "fiona-emily-eshir" }]
+  },
+  {
+    "id": "jultan-shamann-lulu",
+    "team": ["jultan-dark-1327", "shamann-light-1580", "lulu"],
+    "matchups": [{ "defenseId": "fiona-eshir-truffle" }]
+  },
+  {
+    "id": "mihyang-chilling-chloe",
+    "team": ["mihyang-water-613", "chilling-water-958", "chloe-fire-234"],
+    "matchups": [{ "defenseId": "mihyang-cichlid-hraesvelg" }]
+  },
+  {
+    "id": "mei-hou-wang-racuni-camilla",
+    "team": ["mei-hou-wang-fire-282", "racuni-fire-984", "camilla-water-653"],
+    "matchups": [{ "defenseId": "platy-irene-qilin-slasher" }]
+  },
+  {
+    "id": "garo-triana-loren",
+    "team": ["garo-fire-246", "triana", "loren-light-410"],
+    "matchups": [{ "defenseId": "carcano-eladriel-miles" }]
+  },
+  {
+    "id": "leo-jeanne-helena",
+    "team": ["leo-wind-567", "jeanne-light-1166", "helena-fire-1039"],
+    "matchups": [{ "defenseId": "seara-lionel-vendhan" }]
+  },
+  {
+    "id": "tesarion-haegang-riley",
+    "team": ["tesarion-fire-280", "haegang-water-1602", "riley-wind-1878"],
+    "matchups": [{ "defenseId": "tarnisha-figaro-savannah" }]
+  },
+  {
+    "id": "conrad-robo-r40-bernard",
+    "team": ["conrad-light-659", "robo-r40-water-1862", "bernard-wind-1579"],
+    "matchups": [{ "defenseId": "seara-jeogun-lamiella" }]
+  },
+  {
+    "id": "smicer-riley-dagora",
+    "team": ["smicer-wind-2091", "riley-wind-1878", "dagora-water-1291"],
+    "matchups": [{ "defenseId": "seara-jeogun-lamiella" }]
+  },
+  {
+    "id": "velajuel-kumar-ashour",
+    "team": ["velajuel-fire-268", "kumar-fire-270", "ashour-fire-2173"],
+    "matchups": [{ "defenseId": "tarnisha-irene-shahat" }]
+  },
+  {
+    "id": "covenant-songseol-dova",
+    "team": ["covenant-water-1258", "songseol-water-1618", "dova-light-981"],
+    "matchups": [{ "defenseId": "geldnir-ophilia-theomars" }]
+  },
+  {
+    "id": "ariel-camilla-belial",
+    "team": ["ariel-water-627", "camilla-water-653", "belial-water-1308"],
+    "matchups": [{ "defenseId": "conrad-ophilia-theomars" }]
+  },
+  {
+    "id": "woosa-rica-ganymede",
+    "team": ["woosa", "rica-fire-284", "ganymede-wind-992"],
+    "matchups": [{ "defenseId": "lamiella-ashour-taranys" }]
+  },
+  {
+    "id": "bolverk-mo-long-aaliyah",
+    "team": ["bolverk-water-1248", "mo-long", "aaliyah-water-1876"],
+    "matchups": [{ "defenseId": "lamiella-byungchul-kumar" }]
   }
 ]

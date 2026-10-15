@@ -291,7 +291,6 @@ export const fr: Messages = {
     offense: 'OFFENSE',
     howToPlay: 'Comment jouer',
     killOrder: 'Ordre d’élimination',
-    sources: 'Sources',
     suggestedBuild: 'Build conseillé',
     offenseBuild: 'Build de l’offense',
     status: 'Stat',

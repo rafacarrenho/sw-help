@@ -51,6 +51,23 @@ test('estado vazio permite limpar busca e filtro', async ({ page }) => {
   );
 });
 
+test('counter incompleto exibe hífen simples nos detalhes ausentes', async ({
+  page,
+}) => {
+  await page.goto('/pt/summoners-war/siege-counter/morris-rex-shumar');
+
+  const counter = page.locator(
+    '.counter-card[data-counter-id="mihyang-chilling-mork"]',
+  );
+  await expect(counter).toHaveCount(1);
+  await expect(counter.locator('.speed-cell')).toHaveText(['-', '-', '-']);
+  await expect(counter.getByText(/^Tick/)).toHaveCount(0);
+
+  const detailRows = counter.locator('.counter-meta-table tbody tr');
+  await expect(detailRows.nth(0).locator('td')).toHaveText(['-', '-', '-']);
+  await expect(detailRows.nth(1).locator('td')).toHaveText(['-', '-', '-']);
+});
+
 test('counter específico mostra estratégia e ordem de eliminação da defesa', async ({
   page,
 }) => {
@@ -156,6 +173,10 @@ test('detalhes, recursos locais e layout funcionam sem erros', async ({
   await expect(
     firstCounter.getByRole('heading', { name: 'Configuração sugerida' }),
   ).toBeVisible();
+  await expect(page.locator('.source-list')).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Fontes', exact: true }),
+  ).toHaveCount(0);
   await expect(firstCounter.getByText('Plano de batalha')).toHaveCount(0);
   const configuration = firstCounter.getByRole('table', {
     name: 'Configuração da ofensiva 1',

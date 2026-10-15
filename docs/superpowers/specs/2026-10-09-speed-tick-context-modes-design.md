@@ -10,7 +10,7 @@ cortes permanecem no Spd Tuning.
 
 ## Alternativas consideradas
 
-1. **Três modos diretos no Spd Tick — escolhido.** Exibir `Individual`,
+1. **Três modos diretos no Spd Tick - escolhido.** Exibir `Individual`,
    `Siege` e `Arena` no mesmo controle segmentado, compartilhando busca,
    fórmula e apresentação dos resultados.
 2. **Manter `Individual` e `Time`, com um segundo seletor dentro de Time.**

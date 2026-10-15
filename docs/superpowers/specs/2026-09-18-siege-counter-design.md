@@ -1,4 +1,4 @@
-# SW Help — primeira versão do Siege Counter
+# SW Help - primeira versão do Siege Counter
 
 ## Objetivo e decisões confirmadas
 

@@ -289,7 +289,6 @@ export const de: Messages = {
     offense: 'ANGRIFF',
     howToPlay: 'Spielweise',
     killOrder: 'Eliminierungsreihenfolge',
-    sources: 'Quellen',
     suggestedBuild: 'Empfohlener Build',
     offenseBuild: 'Angriffs-Build',
     status: 'Wert',

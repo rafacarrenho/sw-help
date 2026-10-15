@@ -168,7 +168,7 @@ const counterStatsAfterSpeed = [
               tick: counter.tick,
               runeSets: rune?.sets ?? '',
             }),
-            sequence: sequenceIndex >= 0 ? sequenceIndex + 1 : '—',
+            sequence: sequenceIndex >= 0 ? sequenceIndex + 1 : '-',
           };
         });
 
@@ -233,16 +233,6 @@ const counterStatsAfterSpeed = [
                     </div>
                   </div>
                 )}
-                {counter.sources.length > 0 && (
-                  <div class="source-list">
-                    <h4>{messages.siege.sources}</h4>
-                    {counter.sources.map((source) => (
-                      <a href={source.url} target="_blank" rel="noreferrer">
-                        {source.title} ↗
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
             <div class="counter-build">
@@ -303,7 +293,7 @@ const counterStatsAfterSpeed = [
                           {build.runeSets.length > 0 ? (
                             build.runeSets.map((set) => <div>{set}</div>)
                           ) : (
-                            <span>—</span>
+                            <span>-</span>
                           )}
                         </td>
                       ))}
@@ -335,10 +325,16 @@ const counterStatsAfterSpeed = [
                       </th>
                       {builds.map((build) => (
                         <td class="speed-cell">
-                          <span>Tick {counter.tick}</span>
-                          <strong>
-                            {formatCounterSpeed(build.requiredSpeed)}
-                          </strong>
+                          {counter.tick === null ? (
+                            <span>-</span>
+                          ) : (
+                            <>
+                              <span>Tick {counter.tick}</span>
+                              <strong>
+                                {formatCounterSpeed(build.requiredSpeed)}
+                              </strong>
+                            </>
+                          )}
                         </td>
                       ))}
                     </tr>

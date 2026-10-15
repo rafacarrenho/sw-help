@@ -2228,8 +2228,7 @@ body.privacy-modal-open {
   padding: 0;
 }
 .counter-instruction h3,
-.counter-build-heading h3,
-.source-list h4 {
+.counter-build-heading h3 {
   font-size: var(--text-base);
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -2414,15 +2413,6 @@ body.privacy-modal-open {
   color: #d7bd94;
   font-size: var(--text-xs);
   line-height: 1.4;
-}
-.source-list {
-  margin-top: 20px;
-}
-.source-list a {
-  color: var(--gold);
-  font-size: var(--text-sm);
-  display: block;
-  text-decoration: underline;
 }
 .not-found {
   margin-top: 50px;
@@ -3170,9 +3160,6 @@ body.privacy-modal-open {
     font-size: var(--text-xs);
     white-space: normal;
     line-height: 1.3;
-  }
-  .source-list a {
-    font-size: var(--text-sm);
   }
   .sidebar {
     width: min(320px, calc(100vw - 32px));

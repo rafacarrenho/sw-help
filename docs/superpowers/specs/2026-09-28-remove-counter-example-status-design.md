@@ -1,4 +1,4 @@
-# SW Help — remoção do status de exemplo nos counters
+# SW Help - remoção do status de exemplo nos counters
 
 ## Objetivo
 

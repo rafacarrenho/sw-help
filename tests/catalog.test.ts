@@ -137,7 +137,6 @@ test('resolve counters genéricos e aplica overrides isolados por defesa', () =>
       },
     ],
     tick: 6,
-    sources: [{ title: 'Teste', url: 'https://example.com/counter' }],
   };
 
   const resolved = resolveCounterDefinitions([generic]);
@@ -158,7 +157,7 @@ test('resolve counters genéricos e aplica overrides isolados por defesa', () =>
   assert.equal(customized.id, 'platy-shihwa-iona-morris-trevor-figaro');
   assert.deepEqual(customized.turnOrder, targetMatchup.overrides.turnOrder);
   assert.equal(customized.tick, 6);
-  assert.deepEqual(customized.sources, targetMatchup.overrides.sources);
+  assert.equal('sources' in customized, false);
   assert.equal(customizedShihwa.sets, 'Swift / Will');
   assert.deepEqual(customizedShihwa.stats, {
     attack: 1200,
@@ -173,12 +172,76 @@ test('resolve counters genéricos e aplica overrides isolados por defesa', () =>
     attack: 1000,
     defense: 700,
   });
-  assert.equal(counterDefinitions[1].runes[1].sets, 'Violent / Destroy');
+  assert.equal(counterDefinitions[1].runes![1].sets, 'Violent / Destroy');
 });
 
-test('mantém 21 confrontos e usa instrução e Kill order específicos', () => {
-  assert.equal(counterDefinitions.length, 4);
-  assert.equal(counters.length, 21);
+test('normaliza detalhes ausentes de counters em estado incompleto', () => {
+  const incomplete = counterDefinitions.find(
+    ({ id }) => id === 'mihyang-chilling-mork',
+  )!;
+  const [resolved] = resolveCounterDefinitions([incomplete]);
+
+  assert.deepEqual(resolved.turnOrder, []);
+  assert.deepEqual(resolved.runes, []);
+  assert.equal(resolved.tick, null);
+});
+
+test('não permite metadados de fonte em counters', () => {
+  assert.equal(
+    counterDefinitions.some(
+      (definition) =>
+        'sources' in definition ||
+        definition.matchups.some(
+          (matchup) =>
+            matchup.overrides !== undefined && 'sources' in matchup.overrides,
+        ),
+    ),
+    false,
+  );
+  assert.equal(
+    counters.some((counter) => 'sources' in counter),
+    false,
+  );
+
+  const definitionWithSources = structuredClone(counterDefinitions);
+  Object.defineProperty(definitionWithSources[0], 'sources', {
+    value: [],
+    enumerable: true,
+  });
+  assert.throws(
+    () => validateCounterDefinitions(monsters, defenses, definitionWithSources),
+    /metadados de fonte/,
+  );
+
+  const overrideWithSources = structuredClone(counterDefinitions);
+  overrideWithSources[0].matchups[0].overrides = {};
+  Object.defineProperty(
+    overrideWithSources[0].matchups[0].overrides!,
+    'sources',
+    {
+      value: [],
+      enumerable: true,
+    },
+  );
+  assert.throws(
+    () => validateCounterDefinitions(monsters, defenses, overrideWithSources),
+    /metadados de fonte/,
+  );
+
+  const resolvedWithSources = structuredClone(counters);
+  Object.defineProperty(resolvedWithSources[0], 'sources', {
+    value: [],
+    enumerable: true,
+  });
+  assert.throws(
+    () => validateCatalog(monsters, defenses, resolvedWithSources, skills),
+    /metadados de fonte/,
+  );
+});
+
+test('mantém 41 confrontos e usa instrução e Kill order específicos', () => {
+  assert.equal(counterDefinitions.length, 24);
+  assert.equal(counters.length, 41);
 
   const genericByCounter = new Map(
     getCountersFor('morris-eshir-orion', 'pt-BR')
@@ -2206,7 +2269,7 @@ test('aceita apenas o sentinela -1 para habilidades sem slot normal', () => {
   );
 });
 test('diferencia bônus adicionais de metas finais nos counters', () => {
-  assert.equal(formatCounterStat(undefined, 'hp'), '—');
+  assert.equal(formatCounterStat(undefined, 'hp'), '-');
   assert.equal(formatCounterStat(30000, 'hp'), '+30k');
   assert.equal(formatCounterStat(30500, 'hp'), '+30,5k');
   assert.equal(formatCounterStat(1000, 'attack'), '+1k');
@@ -2214,7 +2277,7 @@ test('diferencia bônus adicionais de metas finais nos counters', () => {
   assert.equal(formatCounterStat(100, 'resistance'), '100%');
   assert.equal(formatCounterStat(85, 'accuracy'), '85%');
   assert.equal(formatCounterSpeed(149), '+149');
-  assert.equal(formatCounterSpeed(null), '—');
+  assert.equal(formatCounterSpeed(null), '-');
 });
 test('calcula a SPD do counter com Tick, líder, torre e Swift', () => {
   const speed = (
@@ -2323,6 +2386,24 @@ test('cada defesa tem o número de counters documentado', () => {
     'solveig-vigor-cichlid': 3,
     'solveig-cichlid-molly': 3,
     'solveig-iris-hraesvelg': 3,
+    'morris-rex-shumar': 2,
+    'martina-shaina-triana': 1,
+    'conrad-kinki-robo-r40': 1,
+    'conrad-grego-robo-r40': 1,
+    'morris-liu-mei-vigor': 1,
+    'fiona-emily-eshir': 1,
+    'fiona-eshir-truffle': 1,
+    'mihyang-cichlid-hraesvelg': 1,
+    'platy-irene-qilin-slasher': 1,
+    'carcano-eladriel-miles': 1,
+    'seara-lionel-vendhan': 1,
+    'tarnisha-figaro-savannah': 1,
+    'seara-jeogun-lamiella': 2,
+    'tarnisha-irene-shahat': 1,
+    'geldnir-ophilia-theomars': 1,
+    'conrad-ophilia-theomars': 1,
+    'lamiella-ashour-taranys': 1,
+    'lamiella-byungchul-kumar': 1,
   };
 
   for (const defense of defenses) {
@@ -2412,7 +2493,7 @@ test('impede IDs duplicados e monstros 5★ em torres 4★, inclusive no ataque'
     /ataque 5★/,
   );
 });
-test('exige ordem de turno pertencente ao time e URL de fonte válida', () => {
+test('exige ordem de turno pertencente ao time', () => {
   assert.throws(
     () =>
       validateCatalog(
@@ -2422,20 +2503,5 @@ test('exige ordem de turno pertencente ao time e URL de fonte válida', () => {
         skills,
       ),
     /ordem de turnos/,
-  );
-  assert.throws(
-    () =>
-      validateCatalog(
-        monsters,
-        defenses,
-        [
-          {
-            ...counters[0],
-            sources: [{ title: 'Inválida', url: 'javascript:alert(1)' }],
-          },
-        ],
-        skills,
-      ),
-    /fontes/,
   );
 });

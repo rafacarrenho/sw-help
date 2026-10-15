@@ -34,7 +34,7 @@ export function formatCounterStat(
   value: number | undefined,
   stat: CounterStatName,
 ): string {
-  if (value === undefined) return '—';
+  if (value === undefined) return '-';
 
   if (finalPercentageStats.has(stat)) {
     return `${decimal.format(value)}%`;
@@ -48,7 +48,7 @@ export function formatCounterStat(
 }
 
 export function formatCounterSpeed(value: number | null): string {
-  return value === null ? '—' : `+${decimal.format(value)}`;
+  return value === null ? '-' : `+${decimal.format(value)}`;
 }
 
 export function requiredCounterSpeed({
@@ -59,9 +59,10 @@ export function requiredCounterSpeed({
 }: {
   monster: Pick<Monster, 'element' | 'speed'>;
   leader: Pick<Monster, 'leaderSkill'>;
-  tick: number;
+  tick: number | null;
   runeSets: string;
 }): number | null {
+  if (tick === null) return null;
   const breakpoint = getTickBreakpoint(tick);
   if (!breakpoint || !monster.speed) return null;
 

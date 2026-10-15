@@ -1,4 +1,4 @@
-# SW Help — ação de limpar sempre visível
+# SW Help - ação de limpar sempre visível
 
 ## Objetivo
 

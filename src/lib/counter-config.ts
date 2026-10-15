@@ -67,12 +67,9 @@ export function resolveCounterDefinitions(
         counterId: definition.id,
         defenseId: matchup.defenseId,
         team: [...definition.team],
-        turnOrder: [...(overrides?.turnOrder ?? definition.turnOrder)],
-        runes: mergeRunes(definition.runes, overrides?.runes),
-        tick: overrides?.tick ?? definition.tick,
-        sources: (overrides?.sources ?? definition.sources).map((source) => ({
-          ...source,
-        })),
+        turnOrder: [...(overrides?.turnOrder ?? definition.turnOrder ?? [])],
+        runes: mergeRunes(definition.runes ?? [], overrides?.runes),
+        tick: overrides?.tick ?? definition.tick ?? null,
         killOrder: matchup.killOrder ? [...matchup.killOrder] : undefined,
       };
     }),

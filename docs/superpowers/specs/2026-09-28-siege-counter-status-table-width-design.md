@@ -1,4 +1,4 @@
-# SW Help — tabela de status sem rolagem no desktop
+# SW Help - tabela de status sem rolagem no desktop
 
 ## Objetivo
 

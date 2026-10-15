@@ -38,5 +38,15 @@ Este é um projeto pessoal de Rafael Carrenho.
   exemplo: "Vampire" em uma linha e "Will" em outra.
 - Na coluna de ordem de ataque, usar um título compacto como "Seq." em vez de
   "Ordem de atk" para reduzir o espaço visual.
+- Counters de Siege são conteúdo editorial do PlayerDojo. Não adicionar campos
+  de fonte, seções de fontes nem links de atribuição externa aos counters. Fontes
+  de pesquisa podem permanecer apenas em documentação técnica ou histórica.
+- Quando o usuário já tiver definido ou aprovado a direção de uma mudança,
+  documentar o desenho e seguir diretamente para a implementação, sem pedir
+  uma nova confirmação. Pausar somente se faltar uma decisão que altere
+  materialmente o resultado.
+- É proibido usar o caractere Unicode U+2014 (EM DASH) em código, conteúdo,
+  testes, assets ou documentação. Usar o hífen ASCII `-` ou outra pontuação
+  adequada ao contexto.
 - Validar as alterações com os comandos pertinentes: `pnpm test`, `pnpm build`
   e, para fluxos de navegação, `pnpm test:e2e` após gerar o build.

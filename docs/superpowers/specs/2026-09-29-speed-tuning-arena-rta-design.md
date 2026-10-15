@@ -146,7 +146,7 @@ As validações atuais serão preservadas e ampliadas:
 - SPD das runas não negativa;
 - modo desconhecido tratado como Siege;
 - IDs e alvos inexistentes ignorados com fallback seguro;
-- resultados incompletos apresentados como `—`;
+- resultados incompletos apresentados como `-`;
 - nenhum resultado `NaN`, infinito ou negativo será exibido.
 
 ## Testes

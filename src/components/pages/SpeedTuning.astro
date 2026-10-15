@@ -214,7 +214,7 @@ const slots = [
             </div>
             <div class="speed-tuning-base">
               <span>{messages.tuning.baseSpeed}</span>
-              <strong data-tuning-base>—</strong>
+              <strong data-tuning-base>-</strong>
             </div>
           </div>
 
@@ -326,7 +326,7 @@ const slots = [
                 ? messages.tuning.combatSpeed
                 : messages.tuning.minimumAdditionalSpeed}
             </span>
-            <strong data-tuning-result-value>—</strong>
+            <strong data-tuning-result-value>-</strong>
             <small data-tuning-result-detail>
               {index === 0
                 ? messages.tuning.enterRuneSpeed
@@ -975,7 +975,7 @@ const slots = [
         slotElements.name.textContent = messages.noMonster || 'No monster';
         slotElements.element.textContent =
           messages.selectAbove || 'Select one above';
-        slotElements.base.textContent = '—';
+        slotElements.base.textContent = '-';
         slotElements.leader.hidden = true;
         slotElements.initialBuffs.hidden = true;
         slotElements.miriamPassive.hidden = true;
@@ -1072,7 +1072,7 @@ const slots = [
       }
     };
 
-    const setEmptyResult = (slotIndex: number, detail: string, value = '—') => {
+    const setEmptyResult = (slotIndex: number, detail: string, value = '-') => {
       const slotElements = elements[slotIndex];
       if (!slotElements) return;
       slotElements.result.classList.add('is-empty');

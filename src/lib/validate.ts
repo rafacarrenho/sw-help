@@ -28,6 +28,8 @@ export function validateCounterDefinitions(
     fail('ID genérico inválido.');
 
   for (const definition of definitions) {
+    if ('sources' in definition)
+      fail(`metadados de fonte em ${definition.id}.`);
     if (
       !Array.isArray(definition.team) ||
       definition.team.length !== 3 ||
@@ -43,6 +45,8 @@ export function validateCounterDefinitions(
       fail(`defesas duplicadas em ${definition.id}.`);
 
     for (const matchup of definition.matchups) {
+      if (matchup.overrides && 'sources' in matchup.overrides)
+        fail(`metadados de fonte em ${definition.id}.${matchup.defenseId}.`);
       const defense = defenseMap.get(matchup.defenseId);
       if (!defense)
         fail(`defesa ${matchup.defenseId} de ${definition.id} não existe.`);
@@ -256,6 +260,7 @@ export function validateCatalog(
       fail(`monstro 5★ em torre 4★: ${defense.id}.`);
   }
   for (const counter of counters) {
+    if ('sources' in counter) fail(`metadados de fonte em ${counter.id}.`);
     const defense = defenseMap.get(counter.defenseId);
     if (!defense) fail(`defesa inexistente em ${counter.id}.`);
     if (
@@ -298,15 +303,11 @@ export function validateCatalog(
       )
     )
       fail(`runas de ${counter.id}.`);
-    if (!Number.isInteger(counter.tick) || !getTickBreakpoint(counter.tick))
-      fail(`Tick de ${counter.id}.`);
     if (
-      !Array.isArray(counter.sources) ||
-      counter.sources.some(
-        (source) => !source.title?.trim() || !/^https?:\/\//.test(source.url),
-      )
+      counter.tick !== null &&
+      (!Number.isInteger(counter.tick) || !getTickBreakpoint(counter.tick))
     )
-      fail(`fontes de ${counter.id}.`);
+      fail(`Tick de ${counter.id}.`);
     if (
       counter.killOrder !== undefined &&
       (!Array.isArray(counter.killOrder) ||

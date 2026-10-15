@@ -10,7 +10,7 @@ boosts de ATB e prevenção de cortes.
 
 ## Alternativas consideradas
 
-1. **Adicionar um modo `Time` ao Spd Tick — escolhido.** Mantém todos os
+1. **Adicionar um modo `Time` ao Spd Tick - escolhido.** Mantém todos os
    cálculos de breakpoint em uma única ferramenta, facilita descobrir a função
    nova e evita duplicar fórmula, busca de monstros e configurações.
 2. **Adicionar o cálculo ao Spd Tuning.** Colocaria o time no contexto correto,

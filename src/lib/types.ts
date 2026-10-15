@@ -104,22 +104,24 @@ export interface CounterConfiguration {
   team: string[];
   turnOrder: string[];
   runes: CounterRune[];
-  tick: number;
-  sources: { title: string; url: string }[];
+  tick: number | null;
 }
 export interface CounterMatchupOverrides {
   turnOrder?: string[];
   runes?: CounterRuneOverride[];
   tick?: number;
-  sources?: { title: string; url: string }[];
 }
 export interface CounterMatchup {
   defenseId: string;
   killOrder?: string[];
   overrides?: CounterMatchupOverrides;
 }
-export interface CounterDefinition extends CounterConfiguration {
+export interface CounterDefinition {
   id: string;
+  team: string[];
+  turnOrder?: string[];
+  runes?: CounterRune[];
+  tick?: number;
   matchups: CounterMatchup[];
 }
 export interface CounterBase extends CounterConfiguration {

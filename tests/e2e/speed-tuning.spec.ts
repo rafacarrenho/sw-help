@@ -305,7 +305,7 @@ test('aplica boost de alvo único e mantém somente uma liderança ativa', async
   await page.getByRole('button', { name: 'Limpar time' }).click();
   await expect(page.getByLabel('Torre SPD')).toHaveValue('15');
   await expect(firstSlot.getByRole('combobox')).toHaveValue('');
-  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText('—');
+  await expect(firstSlot.locator('[data-tuning-result-value]')).toHaveText('-');
 });
 
 test('reconhece buff de SPD em área da Adriana e do Chilling', async ({

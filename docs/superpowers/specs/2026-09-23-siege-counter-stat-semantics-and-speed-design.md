@@ -1,4 +1,4 @@
-# SW Help — semântica dos status e SPD automática nos counters
+# SW Help - semântica dos status e SPD automática nos counters
 
 ## Objetivo
 
@@ -24,7 +24,7 @@ Um atributo pode ser marcado como desejável sem receber uma meta numérica. A
 célula correspondente exibe o badge `Desejável`. Isso será usado inicialmente
 para ACC da Platy e da Shihwa, evitando inventar um percentual.
 
-Valores ausentes e não marcados como desejáveis continuam exibidos como `—`.
+Valores ausentes e não marcados como desejáveis continuam exibidos como `-`.
 Um mesmo atributo não pode ter simultaneamente uma meta numérica e a marcação
 `Desejável`.
 
@@ -35,10 +35,10 @@ atuais:
 
 | Monstro | HP adicional | ATK adicional | DEF adicional | RES final | ACC       |
 | ------- | ------------ | ------------- | ------------- | --------- | --------- |
-| Platy   | +30k         | —             | +700          | 100%      | Desejável |
-| Iona    | +30k         | —             | +700          | 100%      | —         |
-| Betta   | +30k         | —             | +700          | 100%      | —         |
-| Shihwa  | +20k         | +1k           | +700          | —         | Desejável |
+| Platy   | +30k         | -             | +700          | 100%      | Desejável |
+| Iona    | +30k         | -             | +700          | 100%      | -         |
+| Betta   | +30k         | -             | +700          | 100%      | -         |
+| Shihwa  | +20k         | +1k           | +700          | -         | Desejável |
 
 Não serão criadas metas numéricas para os demais monstros sem informação do
 usuário.
@@ -113,7 +113,7 @@ A validação do catálogo deve rejeitar:
 - liderança, monstro ou configuração com referência inválida, conforme as
   validações existentes.
 
-Se o catálogo não tiver SPD base para um monstro, a célula SPD exibe `—` sem
+Se o catálogo não tiver SPD base para um monstro, a célula SPD exibe `-` sem
 interromper a renderização. O catálogo atual possui SPD base para todos os
 monstros usados nos counters.
 

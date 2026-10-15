@@ -1,4 +1,4 @@
-# SW Help — tabela transposta nos counters de Siege
+# SW Help - tabela transposta nos counters de Siege
 
 ## Objetivo
 
@@ -76,7 +76,7 @@ conteúdo secundário e 12 px para rótulos curtos.
 
 Não haverá alteração no modelo de dados. O template organizará antecipadamente
 as três builds em ordem de ataque e reutilizará os formatadores e o cálculo de
-SPD existentes. Valores ausentes continuarão exibidos como `—`.
+SPD existentes. Valores ausentes continuarão exibidos como `-`.
 
 ## Testes
 

@@ -419,7 +419,7 @@ if (root && dataNode) {
         'selectAbove',
         'Select one above',
       );
-      sideElements.base.textContent = '—';
+      sideElements.base.textContent = '-';
       return;
     }
 
@@ -488,7 +488,7 @@ if (root && dataNode) {
       state.additionalSpeed === null
         ? message('structuralSpeed', 'Structural SPD')
         : message('combatSpeed', 'Combat SPD');
-    sideElements.speed.textContent = speed === null ? '—' : `${speed} SPD`;
+    sideElements.speed.textContent = speed === null ? '-' : `${speed} SPD`;
     sideElements.speedCopy.textContent =
       state.additionalSpeed === null || !state.monster
         ? message('noRuneStats', 'Without individual rune stats')

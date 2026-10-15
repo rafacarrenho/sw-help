@@ -57,7 +57,7 @@ const stats = monster.maxLevelStats
         messages.monster.maxDefense,
         monster.maxLevelStats.defense.toLocaleString(numberLocale(locale)),
       ],
-      [messages.monster.baseSpeed, String(monster.speed ?? '—')],
+      [messages.monster.baseSpeed, String(monster.speed ?? '-')],
       [messages.common.criticalRate, `${monster.maxLevelStats.critRate}%`],
       [messages.common.criticalDamage, `${monster.maxLevelStats.critDamage}%`],
       [messages.common.resistance, `${monster.maxLevelStats.resistance}%`],

@@ -1,4 +1,4 @@
-# SW Help — status prioritários nos counters de Siege
+# SW Help - status prioritários nos counters de Siege
 
 ## Objetivo
 
@@ -49,7 +49,7 @@ Todos os status representam somente o adicional fornecido pela build, nunca o
 status total do monstro. A apresentação usa sinal de positivo: HP, ATK e DEF
 podem ser abreviados em milhares (`+30k`); SPD usa número inteiro (`+120`); CR,
 CD, RES e ACC usam porcentagem (`+85%`). Status sem meta cadastrada aparecem
-como `—`.
+como `-`.
 
 ## Modelo de dados
 
@@ -59,7 +59,7 @@ ganhará um objeto opcional de bônus com valores numéricos:
 - `hp`, `attack`, `defense` e `speed`;
 - `critRate`, `critDamage`, `resistance` e `accuracy`.
 
-Um valor ausente significa que não há meta cadastrada e produz `—`. Guardar os
+Um valor ausente significa que não há meta cadastrada e produz `-`. Guardar os
 valores como números permite validar dados e centralizar a formatação visual.
 O texto antigo de estratégia, etapas e cuidado será substituído no contrato do
 counter por um único campo curto de instrução.

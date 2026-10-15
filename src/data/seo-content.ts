@@ -78,7 +78,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'What information is included with a Siege counter team?',
           answer:
-            'When available, a counter page shows the three-monster offense, how to play it, suggested rune sets, stat targets, SPD, and attack sequence. Sources are listed when the example came from an external reference.',
+            'When available, a counter page shows the three-monster offense, how to play it, suggested rune sets, stat targets, SPD, and attack sequence.',
         },
         {
           question: 'Does a listed Summoners War counter guarantee a win?',
@@ -439,7 +439,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         {
           question: 'Quais informações aparecem em um time de counter?',
           answer:
-            'Quando disponíveis, a página mostra os três monstros da ofensiva, como jogar, conjuntos de runas, metas de atributos, SPD e sequência de ataque. A fonte é indicada quando o exemplo veio de uma referência externa.',
+            'Quando disponíveis, a página mostra os três monstros da ofensiva, como jogar, conjuntos de runas, metas de atributos, SPD e sequência de ataque.',
         },
         {
           question: 'Um counter de Summoners War cadastrado garante vitória?',

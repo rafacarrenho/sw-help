@@ -289,7 +289,6 @@ export const es: Messages = {
     offense: 'OFENSIVA',
     howToPlay: 'Cómo jugar',
     killOrder: 'Orden de eliminación',
-    sources: 'Fuentes',
     suggestedBuild: 'Build sugerida',
     offenseBuild: 'Build de la ofensiva',
     status: 'Estadística',

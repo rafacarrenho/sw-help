@@ -248,7 +248,7 @@ export const institutionalContentFr: LocaleInstitutionalContent = {
       {
         heading: 'Données traitées',
         paragraphs: [
-          'PlayerDojo ne demande pas de compte. L’hébergement peut traiter les données techniques habituelles — adresse IP, appareil, navigateur, page et heure — pour livrer et protéger le site.',
+          'PlayerDojo ne demande pas de compte. L’hébergement peut traiter les données techniques habituelles, comme l’adresse IP, l’appareil, le navigateur, la page et l’heure, pour livrer et protéger le site.',
           'Si vous nous écrivez, nous traitons votre adresse e-mail et votre message afin de répondre.',
         ],
       },

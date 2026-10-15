@@ -45,7 +45,7 @@ export const seoContentEs: SeoContentCollection = {
       {
         question: '¿Qué información incluye un equipo counter de Siege?',
         answer:
-          'Cuando está disponible, la página del counter muestra la ofensiva de tres monstruos, cómo jugarla, los sets de runas sugeridos, los objetivos de estadísticas, la SPD y la secuencia de ataque. Si el ejemplo procede de una referencia externa, también se indican las fuentes.',
+          'Cuando está disponible, la página del counter muestra la ofensiva de tres monstruos, cómo jugarla, los sets de runas sugeridos, los objetivos de estadísticas, la SPD y la secuencia de ataque.',
       },
       {
         question:
@@ -414,7 +414,7 @@ export const seoContentFr: SeoContentCollection = {
       {
         question: 'Quelles informations contient une équipe counter de siège ?',
         answer:
-          'Lorsqu’elles sont disponibles, la page d’un counter présente l’offense de trois monstres, la manière de la jouer, les sets de runes conseillés, les objectifs de statistiques, la VIT et l’ordre d’attaque. Les sources sont indiquées lorsque l’exemple provient d’une référence externe.',
+          'Lorsqu’elles sont disponibles, la page d’un counter présente l’offense de trois monstres, la manière de la jouer, les sets de runes conseillés, les objectifs de statistiques, la VIT et l’ordre d’attaque.',
       },
       {
         question:
@@ -792,7 +792,7 @@ export const seoContentDe: SeoContentCollection = {
       {
         question: 'Welche Informationen enthält ein Belagerungs-Counterteam?',
         answer:
-          'Wenn verfügbar, zeigt die Counterseite den Angriff mit drei Monstern, die Spielweise, empfohlene Runensets, Zielwerte, GES und Angriffsreihenfolge. Stammt das Beispiel aus einer externen Referenz, werden die Quellen angegeben.',
+          'Wenn verfügbar, zeigt die Counterseite den Angriff mit drei Monstern, die Spielweise, empfohlene Runensets, Zielwerte, GES und Angriffsreihenfolge.',
       },
       {
         question:

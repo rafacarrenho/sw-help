@@ -283,7 +283,6 @@ export const en = {
     offense: 'OFFENSE',
     howToPlay: 'How to play',
     killOrder: 'Kill order',
-    sources: 'Sources',
     suggestedBuild: 'Suggested build',
     offenseBuild: 'Offense build',
     status: 'Stat',
@@ -450,7 +449,7 @@ export const en = {
     rtaNote:
       'RTA uses 1.5% ticks. Minimum SPD accounts for tower, leader skill, Swift, Attack Bar boosts, and SPD buffs. The calculation represents the four monsters remaining after the ban.',
     adjustTeam: 'Tune the team',
-    orderCopy: 'The order runs left to right — or top to bottom on mobile.',
+    orderCopy: 'The order runs left to right, or top to bottom on mobile.',
     content: 'Content',
     speedTower: 'SPD Tower',
     clearTeam: 'Clear team',
