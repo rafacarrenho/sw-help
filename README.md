@@ -1,21 +1,22 @@
 # PlayerDojo
 
-Toolkit bilíngue de Summoners War em **Astro + TypeScript**, com saída estática
-e prioridade atual no **Siege Counter**. O site também oferece catálogo de
-monstros, Spd Tuning, Comparador de SPD e Spd Tick. Não usa backend, banco de
-dados, login ou APIs em tempo de execução.
+Toolkit multilíngue de Summoners War em **Astro + TypeScript**, com saída
+estática. O site oferece Siege Counter, catálogo de monstros, Rune Optimizer,
+Spd Tuning, Spd Comparison e Spd Tick. Não usa backend, banco de dados, login ou
+APIs em tempo de execução.
 
 ## Executar
 
-Use Node.js 22.12+ (Node 24 recomendado para os testes TypeScript).
+Use Node.js 22.22+ (Node 24 recomendado para os testes TypeScript).
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-O `pnpm-workspace.yaml` autoriza o script de instalação do `esbuild`, necessário
-ao Astro. Mantenha `allowBuilds.esbuild: true` ao reinstalar as dependências.
+O `pnpm-workspace.yaml` autoriza os scripts de instalação de `esbuild` e
+`workerd`, necessários ao Astro e ao Wrangler. Mantenha essas autorizações ao
+reinstalar as dependências.
 
 Abra `http://localhost:4321`. Para produção:
 
@@ -72,24 +73,27 @@ produção.
 - Retratos e fontes locais; falha de imagem usa iniciais como fallback.
 - Spd Tuning para Siege, Arena e RTA, com estado compartilhável na URL.
 - Comparador estrutural de SPD e calculadora de breakpoints de Tick.
-- Interface e rotas canônicas em inglês e português.
+- Otimizador de runas com importação local de JSON do SWEX.
+- Interface e rotas canônicas em inglês, português, espanhol, francês e alemão.
 
-## Conteúdo inicial
+## Conteúdo atual
 
-O site contém **6 defesas e 21 counters**, além do catálogo de monstros
-importado. Os matchups e as sugestões de runas são pontos de partida,
-**não estratégias competitivas validadas**, e não apresentam estatísticas de
-vitória.
+O site contém **133 defesas**, sendo 127 documentadas e 6 demonstrativas, além
+de 24 definições de ofensiva que resolvem 41 confrontos. O catálogo importado
+contém 3.099 formas de monstros. Os matchups e as sugestões de runas são pontos
+de partida, **não estratégias competitivas validadas**, e não apresentam
+estatísticas de vitória.
 
 ## Editar o catálogo
 
-Os dados ficam em três arquivos JSON:
+Os dados estruturais ficam nos arquivos JSON abaixo. As instruções editoriais
+dos counters ficam separadas por idioma em `src/data/locales/<locale>/counters.json`.
 
-| Arquivo                  | Responsabilidade                                        |
-| ------------------------ | ------------------------------------------------------- |
-| `src/data/monsters.json` | Nomes, aliases, elementos, estrelas naturais e retratos |
-| `src/data/defenses.json` | Equipes de defesa e categoria de torre                  |
-| `src/data/counters.json` | Ofensivas, instruções, builds e fontes                  |
+| Arquivo                  | Responsabilidade                                            |
+| ------------------------ | ----------------------------------------------------------- |
+| `src/data/monsters.json` | Nomes, aliases, elementos, estrelas naturais e retratos     |
+| `src/data/defenses.json` | Equipes de defesa, status e categoria de torre              |
+| `src/data/counters.json` | Ofensivas reutilizáveis, builds, confrontos e substituições |
 
 1. Cadastre os monstros que faltarem em `monsters.json`. O `id` deve ser único,
    em minúsculas, com hífens; `element` aceita `fire`, `water`, `wind`, `light`
@@ -101,32 +105,26 @@ Os dados ficam em três arquivos JSON:
    é sempre o líder e aparece à esquerda; não há um campo `leader` separado.
    `tower` aceita `4star` ou `open`. O catálogo mostra os monstros, nomes e badges
    de elemento; `label` e `description` são usados somente na página de detalhes.
-4. Crie os counters com `defenseId` correspondente. Cada counter tem seu próprio
-   `id`, equipe e uma `instruction` curta. Nos counters, o primeiro integrante de
-   `team` também é sempre o líder. `turnOrder` pode ser um array vazio se não
-   houver ordem documentada. Cada entrada de `runes` aceita `monsterId`, os sets
-   e um objeto opcional `stats`. Em `stats`, `hp`, `attack` e `defense`
-   representam bônus adicionais; `critRate`, `critDamage`, `resistance` e
-   `accuracy` representam metas finais. Use `preferredStats` para marcar um
-   atributo como `Desejável` sem inventar um valor. O campo numérico `tick`
-   define o breakpoint; a SPD adicional é calculada automaticamente com a SPD
-   base, o líder em `team[0]`, torre de 15% e Swift quando presente nos sets.
-   `sources` também pode ser vazio.
+4. Crie uma definição de ofensiva com `id`, `team` e uma lista `matchups`. Cada
+   matchup usa o `defenseId` correspondente e pode definir `killOrder` e
+   `overrides` específicos. Nos counters, o primeiro integrante de `team` também
+   é sempre o líder. `turnOrder` pode ser um array vazio se não houver ordem
+   documentada. Cada entrada de `runes` aceita `monsterId`, os sets e um objeto
+   opcional `stats`. Em `stats`, `hp`, `attack` e `defense` representam bônus
+   adicionais; `critRate`, `critDamage`, `resistance` e `accuracy` representam
+   metas finais. Use `preferredStats` para marcar um atributo como `Desejável`
+   sem inventar um valor. O campo numérico `tick` define o breakpoint; a SPD
+   adicional é calculada automaticamente com a SPD base, o líder em `team[0]`,
+   torre de 15% e Swift quando presente nos sets. Adicione a instrução própria
+   do PlayerDojo em todos os arquivos localizados de counters. Não adicione
+   campos ou links de fontes externas aos counters.
 5. Rode `pnpm test`, `pnpm build` e `pnpm test:e2e`, confira o resultado e
    publique novamente.
 
-Exemplo de fonte em um counter:
-
-```json
-{
-  "title": "Análise da composição",
-  "url": "https://seu-dominio.com/analise"
-}
-```
-
 A validação do catálogo interrompe o build se houver IDs duplicados,
 referências inexistentes, equipes inválidas, monstros 5★
-em torres 4★ (inclusive na ofensiva) ou URLs de fonte inválidas.
+em torres 4★ (inclusive na ofensiva), configurações inválidas ou metadados de
+fonte nos counters.
 
 ## Estrutura
 

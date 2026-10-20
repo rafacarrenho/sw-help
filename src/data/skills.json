@@ -42956,11 +42956,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Effect Rate +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +10%\r",
+      "Effect Rate +10%",
+      "Damage +10%",
+      "Effect Rate +10%",
+      "Damage +10%",
+      "Effect Rate +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -43002,11 +43002,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Effect Rate +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +10%\r",
-      "Damage +10%\r",
-      "Effect Rate +10%\r",
+      "Effect Rate +10%",
+      "Damage +10%",
+      "Effect Rate +10%",
+      "Damage +10%",
+      "Effect Rate +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -45025,9 +45025,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Recovery +10%\r",
-      "Recovery +10%\r",
-      "Cooltime Turn -1\r",
+      "Recovery +10%",
+      "Recovery +10%",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -46113,9 +46113,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -46156,9 +46156,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61309,9 +61309,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Effect Rate +5%\r",
-      "Effect Rate +10%\r",
-      "Effect Rate +10%\r",
+      "Effect Rate +5%",
+      "Effect Rate +10%",
+      "Effect Rate +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61459,9 +61459,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Effect Rate +5%\r",
-      "Effect Rate +10%\r",
-      "Effect Rate +10%\r",
+      "Effect Rate +5%",
+      "Effect Rate +10%",
+      "Effect Rate +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -61559,7 +61559,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Cooltime Turn -1\r",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -62751,11 +62751,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
-      "Cooltime Turn -1\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
+      "Cooltime Turn -1",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -84213,8 +84213,8 @@
     "random": false,
     "maxLevel": 4,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110550,10 +110550,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110626,10 +110626,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -110702,10 +110702,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113036,10 +113036,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113112,10 +113112,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -113188,10 +113188,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +10%\r",
-      "Damage +10%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +10%",
+      "Damage +10%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -114744,7 +114744,7 @@
     "description": "Installs a bomb that detonates after 2 turns on the enemy target and stuns the enemy for 1 turn.",
     "slot": 2,
     "cooltime": 4,
-    "hits": 1,
+    "hits": 0,
     "passive": false,
     "aoe": false,
     "random": false,
@@ -114787,7 +114787,7 @@
     "description": "Installs a bomb that detonates after 2 turns on the enemy target and stuns the enemy for 1 turn.",
     "slot": 2,
     "cooltime": 4,
-    "hits": 1,
+    "hits": 0,
     "passive": false,
     "aoe": false,
     "random": false,
@@ -114878,7 +114878,7 @@
     "description": "Installs a bomb that detonates after 2 turns on the enemy target and stuns the enemy for 1 turn.",
     "slot": 2,
     "cooltime": 4,
-    "hits": 1,
+    "hits": 0,
     "passive": false,
     "aoe": false,
     "random": false,
@@ -127054,7 +127054,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Effect Rate +10%\r",
+      "Effect Rate +10%",
       "Effect Rate +10%"
     ],
     "effects": [
@@ -127699,7 +127699,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Effect Rate +10%\r",
+      "Effect Rate +10%",
       "Effect Rate +10%"
     ],
     "effects": [
@@ -129355,7 +129355,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +20%\r",
+      "Damage +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -130895,9 +130895,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +5%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Effect Rate +5%",
+      "Damage +15%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130927,9 +130927,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +5%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Effect Rate +5%",
+      "Damage +15%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130959,9 +130959,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +5%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Effect Rate +5%",
+      "Damage +15%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -130991,9 +130991,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +5%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Effect Rate +5%",
+      "Damage +15%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -131023,9 +131023,9 @@
     "random": false,
     "maxLevel": 5,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +5%\r",
-      "Damage +15%\r",
+      "Damage +5%",
+      "Effect Rate +5%",
+      "Damage +15%",
       "Effect Rate +15%"
     ],
     "effects": [
@@ -151696,10 +151696,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +10%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Effect Rate +10%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -151740,10 +151740,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +10%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Effect Rate +10%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -151784,10 +151784,10 @@
     "random": false,
     "maxLevel": 6,
     "levelProgress": [
-      "Damage +5%\r",
-      "Effect Rate +10%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Effect Rate +10%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156688,11 +156688,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156734,11 +156734,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -156780,11 +156780,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161829,11 +161829,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161875,11 +161875,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -161921,11 +161921,11 @@
     "random": false,
     "maxLevel": 7,
     "levelProgress": [
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +5%\r",
-      "Damage +15%\r",
-      "Effect Rate +20%\r",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +5%",
+      "Damage +15%",
+      "Effect Rate +20%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -164601,7 +164601,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169691,7 +169691,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -169768,7 +169768,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -170452,7 +170452,7 @@
     "random": false,
     "maxLevel": 3,
     "levelProgress": [
-      "Damage +15%\r",
+      "Damage +15%",
       "Cooltime Turn -1"
     ],
     "effects": [
@@ -173082,8 +173082,8 @@
     ],
     "effects": [
       {
-        "name": "Unrecoverable",
-        "description": "The target's HP cannot be recovered.",
+        "name": "Unrevivable",
+        "description": "Monsters under this effect cannot be revived during battle. Does not apply to bosses.",
         "isBuff": false,
         "type": "Debuff",
         "chance": null,
@@ -175855,5 +175855,706 @@
       "ATK"
     ],
     "source": "https://swarfarm.com/api/v2/skills/5391/"
+  },
+  {
+    "id": 5394,
+    "name": "Star Crash",
+    "description": "Attacks the enemy to decrease its Attack Power for 2 turns with a 50% chance.",
+    "slot": 1,
+    "cooltime": null,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATK",
+        "description": "The target's Attack Power will be decreased by 50%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "3.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5394/"
+  },
+  {
+    "id": 5395,
+    "name": "Star Crash",
+    "description": "Attacks the enemy to decrease its Attack Power for 2 turns with a 50% chance.",
+    "slot": 1,
+    "cooltime": null,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATK",
+        "description": "The target's Attack Power will be decreased by 50%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "3.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5395/"
+  },
+  {
+    "id": 5396,
+    "name": "Star Crash",
+    "description": "Attacks the enemy to decrease its Attack Power for 2 turns with a 50% chance.",
+    "slot": 1,
+    "cooltime": null,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATK",
+        "description": "The target's Attack Power will be decreased by 50%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "3.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5396/"
+  },
+  {
+    "id": 5397,
+    "name": "Star Crash",
+    "description": "Attacks the enemy to decrease its Attack Power for 2 turns with a 50% chance.",
+    "slot": 1,
+    "cooltime": null,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATK",
+        "description": "The target's Attack Power will be decreased by 50%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "3.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5397/"
+  },
+  {
+    "id": 5398,
+    "name": "Star Crash",
+    "description": "Attacks the enemy to decrease its Attack Power for 2 turns with a 50% chance.",
+    "slot": 1,
+    "cooltime": null,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATK",
+        "description": "The target's Attack Power will be decreased by 50%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "3.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5398/"
+  },
+  {
+    "id": 5399,
+    "name": "Splash",
+    "description": "Attacks the enemy to stun for 1 turn with an 80% chance. Afterwards, attacks a random enemy to decrease its Attack Speed for 2 turns with a 50% chance. If the random attack hits the same target as the first attack, additionally absorbs its Attack Bar by 50%.",
+    "slot": 2,
+    "cooltime": 4,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 6,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Stun",
+        "description": "The target will be stunned and won't be able to attack.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 80,
+        "quantity": 1,
+        "note": "1st hit"
+      },
+      {
+        "name": "Additional Attack",
+        "description": "Attacks an additional time on the same turn.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "name": "Decrease ATK SPD",
+        "description": "The target's Attack Speed will be decreased by 30%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": "2nd hit"
+      },
+      {
+        "name": "Absorb ATB",
+        "description": "Steal ATB from the enemy and add it to yourself",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 50,
+        "note": "2nd hit"
+      }
+    ],
+    "multiplierFormula": "5.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5399/"
+  },
+  {
+    "id": 5400,
+    "name": "Big Sigh",
+    "description": "Attacks all enemies 2 times. Each hit decreases their Attack Bar by 15% with an 80% chance and decreases their Defense for 2 turns with a 30% chance.",
+    "slot": 2,
+    "cooltime": 4,
+    "hits": 2,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
+      "Effect Rate +10%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATB",
+        "description": "Reduces the enemy's attack gauge",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 80,
+        "quantity": 15,
+        "note": ""
+      },
+      {
+        "name": "Decrease DEF",
+        "description": "The target's Defense will be decreased by 70%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 30,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "1.7*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5400/"
+  },
+  {
+    "id": 5401,
+    "name": "Big Sigh",
+    "description": "Attacks all enemies 2 times. Each hit decreases their Attack Bar by 15% with an 80% chance and decreases their Defense for 2 turns with a 30% chance.",
+    "slot": 2,
+    "cooltime": 4,
+    "hits": 2,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
+      "Effect Rate +10%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATB",
+        "description": "Reduces the enemy's attack gauge",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 80,
+        "quantity": 15,
+        "note": ""
+      },
+      {
+        "name": "Decrease DEF",
+        "description": "The target's Defense will be decreased by 70%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 30,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "1.7*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5401/"
+  },
+  {
+    "id": 5402,
+    "name": "Big Sigh",
+    "description": "Attacks all enemies 2 times. Each hit decreases their Attack Bar by 15% with an 80% chance and decreases their Defense for 2 turns with a 30% chance.",
+    "slot": 2,
+    "cooltime": 4,
+    "hits": 2,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 5,
+    "levelProgress": [
+      "Damage +10%\r",
+      "Effect Rate +10%\r",
+      "Effect Rate +10%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Decrease ATB",
+        "description": "Reduces the enemy's attack gauge",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 80,
+        "quantity": 15,
+        "note": ""
+      },
+      {
+        "name": "Decrease DEF",
+        "description": "The target's Defense will be decreased by 70%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 30,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "1.7*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5402/"
+  },
+  {
+    "id": 5403,
+    "name": "Splash",
+    "description": "Attacks the enemy to stun for 1 turn with an 80% chance. Afterwards, attacks a random enemy to decrease its Attack Speed for 2 turns with a 50% chance. If the random attack hits the same target as the first attack, additionally absorbs its Attack Bar by 50%.",
+    "slot": 2,
+    "cooltime": 4,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 6,
+    "levelProgress": [
+      "Damage +5%\r",
+      "Effect Rate +5%\r",
+      "Damage +15%\r",
+      "Effect Rate +15%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Stun",
+        "description": "The target will be stunned and won't be able to attack.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 80,
+        "quantity": 1,
+        "note": "1st hit"
+      },
+      {
+        "name": "Additional Attack",
+        "description": "Attacks an additional time on the same turn.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "name": "Decrease ATK SPD",
+        "description": "The target's Attack Speed will be decreased by 30%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 2,
+        "note": "2nd hit"
+      },
+      {
+        "name": "Absorb ATB",
+        "description": "Steal ATB from the enemy and add it to yourself",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 50,
+        "note": "2nd hit"
+      }
+    ],
+    "multiplierFormula": "5.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5403/"
+  },
+  {
+    "id": 5404,
+    "name": "Deep Inhale",
+    "description": "Attacks all enemies to steal all beneficial effects and disturb HP recovery for 2 turns. Afterwards, grants 1 of the stolen beneficial effects at random to each other ally for 2 turns.",
+    "slot": 3,
+    "cooltime": 5,
+    "hits": 1,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 2,
+    "levelProgress": [
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Steal Buff",
+        "description": "Remove a beneficial effect and take it for yourself",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": null,
+        "note": ""
+      },
+      {
+        "name": "Unrecoverable",
+        "description": "The target's HP cannot be recovered.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Transfer Buff",
+        "description": "Removes a buff from target monster and applies it to the casting monster.",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 2,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "4.8*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5404/"
+  },
+  {
+    "id": 5405,
+    "name": "Squash",
+    "description": "Attacks all enemies to stun for 1 turn and absorb their Attack Bar. The damage is proportionate to your MAX HP. The fewer enemies there are, the greater the damage dealt and the amount of Attack Bar absorbed. In addition, increases your MAX HP by 20%, up to 100%, each time this skill is used.",
+    "slot": 3,
+    "cooltime": 5,
+    "hits": 1,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 3,
+    "levelProgress": [
+      "Damage +20%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Stun",
+        "description": "The target will be stunned and won't be able to attack.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "name": "Absorb ATB",
+        "description": "Steal ATB from the enemy and add it to yourself",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 100,
+        "note": "The fewer enemies there are, the greater the amount of Attack Bar Absorbed"
+      },
+      {
+        "name": "Accumulate MAX HP",
+        "description": "MAX HP increases by given amount under certain conditions",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 20,
+        "note": "Up to 100%, each time this skill is used"
+      }
+    ],
+    "multiplierFormula": "{MAX HP}*(0.17*{Alive Enemies} + 0.23)/{Alive Enemies}",
+    "scalesWith": [
+      "Alive Enemies",
+      "MAX HP"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5405/"
+  },
+  {
+    "id": 5406,
+    "name": "Wormhole Dive",
+    "description": "Attacks all enemies to increase the duration of harmful effects on them by 1 turn, increase their chance of landing a Glancing Hit for 2 turns, and grant Silence for 1 to 2 turns. The damage is proportionate to your MAX HP.",
+    "slot": 3,
+    "cooltime": 5,
+    "hits": 1,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 3,
+    "levelProgress": [
+      "Damage +20%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Increase Debuff Duration",
+        "description": "Increases the duration of one or more debuffs on the enemy",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "name": "Increase Glancing Hit Chance",
+        "description": "The chance of landing a glancing hit will be increased by 50%. Glancing Hits will decrease the damage by 30% and if the attacker has attribute disadvantage, damage will be decreased additionally by 16%.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Silence",
+        "description": "Skills with cooldowns will be locked. (Passive skills not included)",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": ""
+      }
+    ],
+    "multiplierFormula": "0.33*{MAX HP}",
+    "scalesWith": [
+      "MAX HP"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5406/"
+  },
+  {
+    "id": 5407,
+    "name": "Cosmic Breath",
+    "description": "Attacks all enemies to deal damage that ignores all effects that resist death. Resets the cooldown of [Cosmic Breath] if an enemy is defeated by this attack. If the enemy's Defense is lower than your Attack Power, increases the damage by up to 100% in proportion to the difference.",
+    "slot": 3,
+    "cooltime": 5,
+    "hits": 1,
+    "passive": false,
+    "aoe": true,
+    "random": false,
+    "maxLevel": 3,
+    "levelProgress": [
+      "Damage +20%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Ignores Resist Death",
+        "description": "Ignores all effects that resist death",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": null,
+        "note": ""
+      },
+      {
+        "name": "Reduce Cooltime",
+        "description": "Reduces cool down counter of skills by 1 or more",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 5,
+        "note": "If an enemy is defeated by this attack."
+      },
+      {
+        "name": "Increase Damage",
+        "description": "Increases Damage under certain conditions",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 100,
+        "note": "If the enemy's Defense is lower than your Attack Power, increases by proportion to the difference"
+      }
+    ],
+    "multiplierFormula": "5.0*{ATK}",
+    "scalesWith": [
+      "ATK"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5407/"
+  },
+  {
+    "id": 5408,
+    "name": "Splash Splash",
+    "description": "Attacks the enemy to stun for 1 turn and leave a Branding effect for 2 turns. Afterwards, attacks random enemies 2 to 3 times, each hit stunning them for 1 turn with a 50% chance and blocking them from removing harmful effects for 1 turn with a 50% chance. Decreases the cooldown of this skill by 1 turn whenever you attack a stunned enemy. The damage increases according to your MAX HP.",
+    "slot": 3,
+    "cooltime": 5,
+    "hits": 1,
+    "passive": false,
+    "aoe": false,
+    "random": false,
+    "maxLevel": 3,
+    "levelProgress": [
+      "Damage +20%\r",
+      "Cooltime Turn -1"
+    ],
+    "effects": [
+      {
+        "name": "Stun",
+        "description": "The target will be stunned and won't be able to attack.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 1,
+        "note": "1st hit"
+      },
+      {
+        "name": "Brand",
+        "description": "The target will receive 25% increased damage.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 100,
+        "quantity": 2,
+        "note": "1st hit"
+      },
+      {
+        "name": "Additional Attack",
+        "description": "Attacks an additional time on the same turn.",
+        "isBuff": false,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 2,
+        "note": ""
+      },
+      {
+        "name": "Stun",
+        "description": "The target will be stunned and won't be able to attack.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 1,
+        "note": "2nd hit"
+      },
+      {
+        "name": "Harmful Effect Removal Blocked",
+        "description": "Harmful effects cannot be removed while this effect is on. This effect will be removed first when a harmful effect removal skill is used, and other harmful effects can be removed afterwards. Does not apply to bosses.",
+        "isBuff": false,
+        "type": "Debuff",
+        "chance": 50,
+        "quantity": 1,
+        "note": "2nd hit"
+      },
+      {
+        "name": "Reduce Cooltime",
+        "description": "Reduces cool down counter of skills by 1 or more",
+        "isBuff": true,
+        "type": "Neutral",
+        "chance": 100,
+        "quantity": 1,
+        "note": "Whenever you attack a stunned enemy"
+      }
+    ],
+    "multiplierFormula": "3.0*{ATK} + 0.33*{MAX HP}",
+    "scalesWith": [
+      "ATK",
+      "MAX HP"
+    ],
+    "source": "https://swarfarm.com/api/v2/skills/5408/"
   }
 ]

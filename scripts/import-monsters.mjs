@@ -202,13 +202,18 @@ if (skillRecords.length !== referencedSkillIds.size)
     'Uma ou mais habilidades referenciadas não foram encontradas.',
   );
 // Fail before changing the catalog if the upstream schema breaks a known invariant.
-const { validateCatalog } = await import('../src/lib/validate.ts');
+const { validateCatalog, validateCounterDefinitions } =
+  await import('../src/lib/validate.ts');
+const { resolveCounterDefinitions } =
+  await import('../src/lib/counter-config.ts');
 const defenses = JSON.parse(
   await readFile(resolve(root, 'src/data/defenses.json'), 'utf8'),
 );
-const counters = JSON.parse(
+const counterDefinitions = JSON.parse(
   await readFile(resolve(root, 'src/data/counters.json'), 'utf8'),
 );
+validateCounterDefinitions(records, defenses, counterDefinitions);
+const counters = resolveCounterDefinitions(counterDefinitions);
 validateCatalog(records, defenses, counters, skillRecords);
 await mkdir(resolve(root, 'public/monsters'), { recursive: true });
 const jobs = [...new Map(records.map((m) => [m.image, m])).values()];

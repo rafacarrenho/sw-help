@@ -1,10 +1,10 @@
 {
   "source": "https://swarfarm.com/api/v2/monsters/",
   "skillSource": "https://swarfarm.com/api/v2/skills/",
-  "importedAt": "2026-09-30T23:17:07.641Z",
-  "count": 3089,
-  "skills": 4913,
-  "portraits": 2173,
+  "importedAt": "2026-10-20T12:12:48.577Z",
+  "count": 3099,
+  "skills": 4928,
+  "portraits": 2183,
   "missingPortraits": [
     "https://swarfarm.com/static/herders/images/monsters/unit_icon_0008_5_3.png",
     "https://swarfarm.com/static/herders/images/monsters/unit_icon_0196_2_4.png"

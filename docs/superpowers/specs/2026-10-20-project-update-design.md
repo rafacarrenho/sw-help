@@ -9,7 +9,9 @@ importado do SWARFARM, documentação e validações automatizadas.
 ## Estratégia
 
 - Atualizar todas as dependências diretas para as versões estáveis mais recentes,
-  incluindo os majors de TypeScript e pnpm.
+  incluindo majors quando forem aceitos pelos peers oficiais. O pnpm será
+  atualizado para a série 12; o TypeScript permanecerá na série 6 enquanto o
+  `@astrojs/check` não declarar compatibilidade com a série 7.
 - Regenerar o lockfile apenas com pnpm e corrigir vulnerabilidades transitivas com
   versões diretas ou overrides somente quando a resolução normal não bastar.
 - Executar o importador existente do SWARFARM para preservar IDs locais, aliases,
