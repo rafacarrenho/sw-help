@@ -26,6 +26,7 @@ export interface SeoContentCollection {
   home: SeoPageContent;
   siegeCounter: SeoPageContent;
   monsters: SeoPageContent;
+  runeOptimizer: SeoPageContent;
   speedTuning: SeoPageContent;
   speedComparison: SeoPageContent;
   speedTick: SeoPageContent;
@@ -186,6 +187,74 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         { route: 'speedComparison', label: 'Compare monster base SPD' },
         { route: 'speedTuning', label: 'Build a tuned turn order' },
         { route: 'speedTick', label: 'Calculate tick breakpoints' },
+      ],
+    },
+    runeOptimizer: {
+      heading: 'Optimize Summoners War runes from your SWEX export',
+      intro: [
+        'Import a HubUserLogin JSON exported by SWEX, choose a monster, and search your own rune inventory for exact six-rune combinations. Required sets, stat minimums and maximums, equipped runes, locked runes, and Tick targets can all narrow the result.',
+        'The Rune Optimizer runs in your browser and keeps the imported data on your device. Compare each result with the current rune values or project its maximum potential before spending mana, grinds, or gems in Summoners War.',
+      ],
+      faqHeading: 'Summoners War Rune Optimizer FAQ',
+      faqIntro:
+        'Common questions about SWEX imports, rune constraints, projections, and results.',
+      faqs: [
+        {
+          question: 'What does the Summoners War Rune Optimizer do?',
+          answer:
+            'It searches the runes in your imported account data for exact six-rune builds that match the selected monster, objective, required sets, stat limits, and combat speed conditions.',
+        },
+        {
+          question: 'Which SWEX file should I import?',
+          answer:
+            'Select the HubUserLogin JSON exported by Summoners War Exporter. The optimizer reads the monsters, runes, artifacts, locked state, equipped state, and available account bonuses needed by the supported calculations.',
+        },
+        {
+          question: 'Is my Summoners War account data uploaded?',
+          answer:
+            'No. The file is processed locally in your browser and never sent to PlayerDojo. A sanitized snapshot can be stored on the device so the optimizer can reopen without retaining account or session identifiers.',
+        },
+        {
+          question: 'Does the optimizer test exact rune combinations?',
+          answer:
+            'Yes. It evaluates complete six-slot combinations from the allowed rune pool, prunes combinations that cannot satisfy the selected conditions, and ranks the valid builds by the chosen objective.',
+        },
+        {
+          question: 'Can I use equipped, inventory, and locked runes?',
+          answer:
+            'Yes. You can limit the pool to inventory runes, allow locked runes, or use equipped runes while excluding specific monsters whose builds you do not want to change.',
+        },
+        {
+          question: 'How do required rune sets work?',
+          answer:
+            'Choose the sets that every result must complete, such as Violent and Will or Swift. The Any option allows broken combinations when completing a particular set is not part of the build goal.',
+        },
+        {
+          question: 'Can I set minimum and maximum stats?',
+          answer:
+            'Yes. Add limits for HP, ATK, DEF, SPD, Critical Rate, Critical Damage, Resistance, and Accuracy. You can also display rune-added values without the monster base stats when defining those limits.',
+        },
+        {
+          question: 'What does maximum property potential mean?',
+          answer:
+            'It projects rune main stats to +15 and applies the maximum possible grind to existing eligible substats. It does not invent new substats, replace them, or predict a gem that has not been selected.',
+        },
+        {
+          question: 'Can the Rune Optimizer require a Tick target?',
+          answer:
+            'Yes. Select a Tick target and configure the SPD tower and leader skill that apply. The optimizer then rejects builds that do not reach the required combat speed under those settings.',
+        },
+        {
+          question: 'Does the first result guarantee the best in-game build?',
+          answer:
+            'No. The ranking follows the objective and constraints you selected. Artifacts, skill multipliers, team order, enemy stats, battle effects, and your intended content can make another valid build more appropriate.',
+        },
+      ],
+      relatedHeading: 'Validate and refine the build',
+      related: [
+        { route: 'monsters', label: 'Research monster stats and skills' },
+        { route: 'speedTuning', label: 'Check the complete turn order' },
+        { route: 'speedTick', label: 'Review SPD Tick breakpoints' },
       ],
     },
     speedTuning: {
@@ -551,6 +620,74 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
         { route: 'speedTick', label: 'Calcular breakpoints de Tick' },
       ],
     },
+    runeOptimizer: {
+      heading: 'Otimize suas runas de Summoners War com o arquivo do SWEX',
+      intro: [
+        'Importe o JSON HubUserLogin exportado pelo SWEX, escolha um monstro e procure combinações exatas de seis runas no seu próprio inventário. Sets obrigatórios, limites de status, runas equipadas ou bloqueadas e metas de Tick ajudam a refinar o resultado.',
+        'O Otimizador de Runas funciona no navegador e mantém os dados importados no seu dispositivo. Compare os valores atuais de cada build ou projete o potencial máximo antes de investir mana, grinds ou gemas no Summoners War.',
+      ],
+      faqHeading: 'Dúvidas sobre o Otimizador de Runas de Summoners War',
+      faqIntro:
+        'Respostas sobre importação do SWEX, limites, projeções e resultados.',
+      faqs: [
+        {
+          question: 'O que faz o Otimizador de Runas de Summoners War?',
+          answer:
+            'Ele pesquisa as runas da conta importada e encontra builds exatas de seis runas que atendem ao monstro, objetivo, sets obrigatórios, limites de status e condições de velocidade escolhidos.',
+        },
+        {
+          question: 'Qual arquivo do SWEX devo importar?',
+          answer:
+            'Selecione o JSON HubUserLogin exportado pelo Summoners War Exporter. O otimizador lê monstros, runas, artefatos, bloqueios, equipamentos e bônus da conta necessários para os cálculos compatíveis.',
+        },
+        {
+          question: 'Os dados da minha conta de Summoners War são enviados?',
+          answer:
+            'Não. O arquivo é processado localmente no navegador e não é enviado ao PlayerDojo. Uma cópia sanitizada pode ser salva no dispositivo sem manter identificadores de conta ou sessão.',
+        },
+        {
+          question: 'O otimizador testa combinações exatas de runas?',
+          answer:
+            'Sim. Ele avalia combinações completas dos seis slots no conjunto permitido, descarta caminhos que não podem cumprir as condições e ordena as builds válidas pelo objetivo escolhido.',
+        },
+        {
+          question: 'Posso usar runas equipadas, no inventário e bloqueadas?',
+          answer:
+            'Sim. Você pode limitar o conjunto às runas do inventário, permitir runas bloqueadas ou incluir runas equipadas enquanto protege monstros específicos cujas builds não deseja alterar.',
+        },
+        {
+          question: 'Como funcionam os sets obrigatórios?',
+          answer:
+            'Escolha os sets que todo resultado deve completar, como Violent e Will ou Swift. A opção Qualquer permite combinações quebradas quando completar um set específico não faz parte do objetivo.',
+        },
+        {
+          question: 'Posso definir status mínimos e máximos?',
+          answer:
+            'Sim. Defina limites de HP, ATK, DEF, SPD, Taxa Crítica, Dano Crítico, Resistência e Precisão. Também é possível exibir somente os valores adicionados pelas runas ao configurar esses limites.',
+        },
+        {
+          question: 'O que significa potencial máximo dos atributos?',
+          answer:
+            'A projeção eleva os status principais das runas para +15 e aplica o maior grind possível aos substats existentes e elegíveis. Ela não inventa novos substats, não os substitui e não prevê uma gema não selecionada.',
+        },
+        {
+          question: 'O Otimizador de Runas pode exigir uma meta de Tick?',
+          answer:
+            'Sim. Selecione o Tick e configure a torre e a liderança de SPD aplicáveis. O otimizador descarta as builds que não atingem a velocidade de combate exigida nessas condições.',
+        },
+        {
+          question: 'O primeiro resultado garante a melhor build no jogo?',
+          answer:
+            'Não. A ordem segue o objetivo e os limites escolhidos. Artefatos, multiplicadores de habilidade, ordem do time, status inimigos, efeitos de batalha e o conteúdo pretendido podem tornar outra build válida mais adequada.',
+        },
+      ],
+      relatedHeading: 'Valide e refine a build',
+      related: [
+        { route: 'monsters', label: 'Consultar status e habilidades' },
+        { route: 'speedTuning', label: 'Conferir a ordem completa do time' },
+        { route: 'speedTick', label: 'Revisar breakpoints de SPD Tick' },
+      ],
+    },
     speedTuning: {
       heading: 'Spd Tuning de Summoners War para Siege, Arena e RTA',
       intro: [
@@ -768,6 +905,7 @@ export const seoContent: Record<Locale, SeoContentCollection> = {
 const seoFaqPageNames = [
   'siegeCounter',
   'monsters',
+  'runeOptimizer',
   'speedTuning',
   'speedComparison',
   'speedTick',

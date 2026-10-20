@@ -82,9 +82,9 @@ export interface RuneOptimizerMessages {
 export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
   en: {
     nav: 'Rune Optimizer',
-    title: 'Rune Optimizer',
+    title: 'Summoners War Rune Optimizer',
     description:
-      'Import a SWEX JSON and find exact one-monster builds using your runes.',
+      'Import a SWEX JSON and find exact Summoners War builds locally using your own runes, sets, stat limits, and Tick targets.',
     privacy:
       'Your file never leaves this device. Only a sanitized snapshot is stored locally; account and session identifiers are discarded.',
     importTitle: 'Import your account',
@@ -164,9 +164,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
   },
   'pt-BR': {
     nav: 'Otimizador de Runas',
-    title: 'Otimizador de Runas',
+    title: 'Otimizador de Runas de Summoners War',
     description:
-      'Importe um JSON do SWEX e encontre builds exatas para um monstro usando suas runas.',
+      'Importe um JSON do SWEX e encontre builds exatas de Summoners War localmente usando suas runas, sets, limites de status e metas de Tick.',
     privacy:
       'Seu arquivo nunca sai deste dispositivo. Apenas uma cópia sanitizada é salva localmente; identificadores de conta e sessão são descartados.',
     importTitle: 'Importe sua conta',
@@ -246,9 +246,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
   },
   es: {
     nav: 'Optimizador de runas',
-    title: 'Optimizador de runas',
+    title: 'Optimizador de runas de Summoners War',
     description:
-      'Importa un JSON de SWEX y encuentra builds exactas para un monstruo con tus runas.',
+      'Importa un JSON de SWEX y encuentra builds exactas de Summoners War localmente con tus runas, sets, límites de estadísticas y objetivos de Tick.',
     privacy:
       'Tu archivo nunca sale de este dispositivo. Solo se guarda localmente una copia saneada; se descartan los identificadores de cuenta y sesión.',
     importTitle: 'Importa tu cuenta',
@@ -328,9 +328,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
   },
   fr: {
     nav: 'Optimiseur de runes',
-    title: 'Optimiseur de runes',
+    title: 'Optimiseur de runes Summoners War',
     description:
-      'Importez un JSON SWEX et trouvez des builds exacts pour un monstre avec vos runes.',
+      'Importez un JSON SWEX et trouvez localement des builds Summoners War exacts avec vos runes, sets, limites de stats et objectifs de Tick.',
     privacy:
       'Votre fichier ne quitte jamais cet appareil. Seule une copie assainie est enregistrée localement ; les identifiants de compte et de session sont supprimés.',
     importTitle: 'Importer votre compte',
@@ -410,9 +410,9 @@ export const runeOptimizerMessages: Record<Locale, RuneOptimizerMessages> = {
   },
   de: {
     nav: 'Runen-Optimierer',
-    title: 'Runen-Optimierer',
+    title: 'Summoners War Runen-Optimierer',
     description:
-      'Importiere eine SWEX-JSON-Datei und finde exakte Builds für ein Monster mit deinen Runen.',
+      'Importiere eine SWEX-JSON-Datei und finde lokal exakte Summoners-War-Builds mit deinen Runen, Sets, Wertebereichen und Tick-Zielen.',
     privacy:
       'Deine Datei verlässt dieses Gerät nie. Nur eine bereinigte Kopie wird lokal gespeichert; Konto- und Sitzungskennungen werden verworfen.',
     importTitle: 'Konto importieren',

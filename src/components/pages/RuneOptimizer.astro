@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import SeoContent from '../SeoContent.astro';
 import { monsters } from '../../data/catalog.ts';
+import { seoContent } from '../../data/seo-content';
 import { runeOptimizerMessages } from '../../i18n/rune-optimizer.ts';
 import { runeSetNames, buildStatKeys } from '../../lib/rune-optimizer-types.ts';
 import { getMessages, type Locale } from '../../i18n';
@@ -11,6 +13,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const copy = runeOptimizerMessages[locale];
+const searchContent = seoContent[locale].runeOptimizer;
 const messages = getMessages(locale);
 const clientCopy = {
   ...copy,
@@ -436,6 +439,7 @@ const statLabels = {
         <div data-results></div>
       </section>
     </section>
+    <SeoContent content={searchContent} locale={locale} id="rune-optimizer" />
   </main>
 </Layout>
 

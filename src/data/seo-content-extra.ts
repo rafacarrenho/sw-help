@@ -158,6 +158,74 @@ export const seoContentEs: SeoContentCollection = {
       { route: 'speedTick', label: 'Calcular breakpoints de Tick' },
     ],
   },
+  runeOptimizer: {
+    heading: 'Optimiza tus runas de Summoners War con el archivo de SWEX',
+    intro: [
+      'Importa el JSON HubUserLogin exportado por SWEX, elige un monstruo y busca combinaciones exactas de seis runas en tu inventario. Los sets obligatorios, límites de estadísticas, runas equipadas o bloqueadas y objetivos de Tick permiten acotar el resultado.',
+      'El Optimizador de runas funciona en el navegador y conserva los datos importados en tu dispositivo. Compara los valores actuales de cada build o proyecta su potencial máximo antes de gastar maná, grinds o gemas en Summoners War.',
+    ],
+    faqHeading: 'Preguntas sobre el Optimizador de runas de Summoners War',
+    faqIntro:
+      'Respuestas sobre la importación de SWEX, límites, proyecciones y resultados.',
+    faqs: [
+      {
+        question: '¿Qué hace el Optimizador de runas de Summoners War?',
+        answer:
+          'Busca en las runas de la cuenta importada builds exactas de seis runas que cumplan con el monstruo, objetivo, sets obligatorios, límites de estadísticas y condiciones de velocidad elegidos.',
+      },
+      {
+        question: '¿Qué archivo de SWEX debo importar?',
+        answer:
+          'Selecciona el JSON HubUserLogin exportado por Summoners War Exporter. El optimizador lee los monstruos, runas, artefactos, bloqueos, equipo y bonos de cuenta necesarios para los cálculos compatibles.',
+      },
+      {
+        question: '¿Se envían los datos de mi cuenta de Summoners War?',
+        answer:
+          'No. El archivo se procesa localmente en el navegador y no se envía a PlayerDojo. Se puede guardar una copia saneada en el dispositivo sin conservar identificadores de cuenta o sesión.',
+      },
+      {
+        question: '¿El optimizador prueba combinaciones exactas de runas?',
+        answer:
+          'Sí. Evalúa combinaciones completas de los seis slots en el conjunto permitido, descarta las que no pueden cumplir las condiciones y ordena las builds válidas según el objetivo elegido.',
+      },
+      {
+        question: '¿Puedo usar runas equipadas, del inventario y bloqueadas?',
+        answer:
+          'Sí. Puedes limitar el conjunto a las runas del inventario, permitir las bloqueadas o incluir runas equipadas mientras proteges monstruos concretos cuyas builds no quieres cambiar.',
+      },
+      {
+        question: '¿Cómo funcionan los sets de runas obligatorios?',
+        answer:
+          'Elige los sets que debe completar cada resultado, como Violent y Will o Swift. La opción Cualquiera admite combinaciones rotas cuando completar un set específico no forma parte del objetivo.',
+      },
+      {
+        question: '¿Puedo definir estadísticas mínimas y máximas?',
+        answer:
+          'Sí. Define límites de HP, ATK, DEF, SPD, Tasa Crítica, Daño Crítico, Resistencia y Precisión. También puedes mostrar solo los valores añadidos por las runas al configurar los límites.',
+      },
+      {
+        question: '¿Qué significa el potencial máximo de las propiedades?',
+        answer:
+          'Proyecta las propiedades principales de las runas a +15 y aplica el grind máximo posible a los subatributos existentes que lo admiten. No inventa ni reemplaza subatributos y tampoco predice una gema no seleccionada.',
+      },
+      {
+        question: '¿El Optimizador de runas puede exigir un objetivo de Tick?',
+        answer:
+          'Sí. Selecciona el Tick y configura la torre y el líder de SPD aplicables. El optimizador descarta las builds que no alcanzan la velocidad de combate requerida con esos ajustes.',
+      },
+      {
+        question: '¿El primer resultado garantiza la mejor build del juego?',
+        answer:
+          'No. El orden depende del objetivo y los límites elegidos. Los artefactos, multiplicadores de habilidad, orden del equipo, estadísticas enemigas, efectos de batalla y contenido pueden hacer más adecuada otra build válida.',
+      },
+    ],
+    relatedHeading: 'Valida y perfecciona la build',
+    related: [
+      { route: 'monsters', label: 'Consultar estadísticas y habilidades' },
+      { route: 'speedTuning', label: 'Comprobar el orden completo' },
+      { route: 'speedTick', label: 'Revisar breakpoints de SPD Tick' },
+    ],
+  },
   speedTuning: {
     heading: 'Spd Tuning para Siege, Arena y RTA',
     intro: [
@@ -532,6 +600,76 @@ export const seoContentFr: SeoContentCollection = {
       { route: 'speedTick', label: 'Calculer les seuils de Tick' },
     ],
   },
+  runeOptimizer: {
+    heading: 'Optimisez vos runes Summoners War avec le fichier SWEX',
+    intro: [
+      'Importez le JSON HubUserLogin exporté par SWEX, choisissez un monstre et recherchez des combinaisons exactes de six runes dans votre inventaire. Les sets requis, limites de stats, runes équipées ou verrouillées et objectifs de Tick permettent d’affiner le résultat.',
+      'L’Optimiseur de runes fonctionne dans le navigateur et conserve les données importées sur votre appareil. Comparez les valeurs actuelles de chaque build ou projetez son potentiel maximal avant de dépenser du mana, des grinds ou des gemmes dans Summoners War.',
+    ],
+    faqHeading: 'Questions sur l’Optimiseur de runes Summoners War',
+    faqIntro:
+      'Réponses sur l’import SWEX, les limites, les projections et les résultats.',
+    faqs: [
+      {
+        question: 'Que fait l’Optimiseur de runes Summoners War ?',
+        answer:
+          'Il recherche dans les runes du compte importé des builds exacts de six runes qui respectent le monstre, l’objectif, les sets requis, les limites de stats et les conditions de vitesse sélectionnés.',
+      },
+      {
+        question: 'Quel fichier SWEX dois-je importer ?',
+        answer:
+          'Sélectionnez le JSON HubUserLogin exporté par Summoners War Exporter. L’optimiseur lit les monstres, runes, artefacts, verrouillages, équipements et bonus de compte nécessaires aux calculs pris en charge.',
+      },
+      {
+        question:
+          'Les données de mon compte Summoners War sont-elles envoyées ?',
+        answer:
+          'Non. Le fichier est traité localement dans le navigateur et n’est jamais envoyé à PlayerDojo. Une copie assainie peut être conservée sur l’appareil sans identifiants de compte ou de session.',
+      },
+      {
+        question: 'L’optimiseur teste-t-il des combinaisons exactes de runes ?',
+        answer:
+          'Oui. Il évalue des combinaisons complètes sur les six emplacements dans la réserve autorisée, élimine celles qui ne peuvent pas respecter les conditions et classe les builds valides selon l’objectif choisi.',
+      },
+      {
+        question:
+          'Puis-je utiliser des runes équipées, en inventaire et verrouillées ?',
+        answer:
+          'Oui. Vous pouvez limiter la réserve aux runes de l’inventaire, autoriser les runes verrouillées ou inclure les runes équipées tout en protégeant les monstres dont vous ne voulez pas modifier le build.',
+      },
+      {
+        question: 'Comment fonctionnent les sets de runes requis ?',
+        answer:
+          'Choisissez les sets que chaque résultat doit compléter, comme Violent et Will ou Swift. L’option Tous autorise les combinaisons brisées lorsqu’un set précis ne fait pas partie de l’objectif.',
+      },
+      {
+        question: 'Puis-je définir des stats minimales et maximales ?',
+        answer:
+          'Oui. Définissez des limites pour les HP, l’ATK, la DEF, la VIT, le Taux critique, les Dégâts critiques, la Résistance et la Précision. Vous pouvez aussi afficher uniquement les valeurs ajoutées par les runes.',
+      },
+      {
+        question: 'Que signifie le potentiel maximal des propriétés ?',
+        answer:
+          'Cette projection porte les propriétés principales des runes à +15 et applique le grind maximal possible aux sous-propriétés existantes et éligibles. Elle n’invente ni ne remplace de sous-propriété et ne prévoit pas de gemme non sélectionnée.',
+      },
+      {
+        question: 'L’Optimiseur de runes peut-il imposer un objectif de Tick ?',
+        answer:
+          'Oui. Sélectionnez le Tick, puis configurez la tour et le leader de VIT applicables. L’optimiseur rejette les builds qui n’atteignent pas la vitesse de combat requise avec ces réglages.',
+      },
+      {
+        question: 'Le premier résultat garantit-il le meilleur build en jeu ?',
+        answer:
+          'Non. Le classement suit l’objectif et les limites choisis. Les artefacts, multiplicateurs de compétence, l’ordre de l’équipe, les stats ennemies, les effets de combat et le contenu peuvent rendre un autre build valide plus adapté.',
+      },
+    ],
+    relatedHeading: 'Validez et affinez le build',
+    related: [
+      { route: 'monsters', label: 'Consulter les stats et compétences' },
+      { route: 'speedTuning', label: 'Vérifier l’ordre complet' },
+      { route: 'speedTick', label: 'Revoir les seuils de SPD Tick' },
+    ],
+  },
   speedTuning: {
     heading: 'Spd Tuning pour le siège, l’arène et la RTA',
     intro: [
@@ -904,6 +1042,74 @@ export const seoContentDe: SeoContentCollection = {
       { route: 'speedComparison', label: 'Basis-GES vergleichen' },
       { route: 'speedTuning', label: 'Zugreihenfolge erstellen' },
       { route: 'speedTick', label: 'Tick-Schwellen berechnen' },
+    ],
+  },
+  runeOptimizer: {
+    heading: 'Optimiere deine Summoners-War-Runen mit der SWEX-Datei',
+    intro: [
+      'Importiere die von SWEX exportierte HubUserLogin-JSON-Datei, wähle ein Monster und suche in deinem Inventar nach exakten Kombinationen aus sechs Runen. Erforderliche Sets, Wertebereiche, ausgerüstete oder gesperrte Runen und Tick-Ziele grenzen das Ergebnis ein.',
+      'Der Runen-Optimierer arbeitet im Browser und behält die importierten Daten auf deinem Gerät. Vergleiche die aktuellen Werte eines Builds oder projiziere sein maximales Potenzial, bevor du in Summoners War Mana, Grinds oder Gems investierst.',
+    ],
+    faqHeading: 'Fragen zum Summoners War Runen-Optimierer',
+    faqIntro:
+      'Antworten zu SWEX-Import, Einschränkungen, Projektionen und Ergebnissen.',
+    faqs: [
+      {
+        question: 'Was macht der Summoners War Runen-Optimierer?',
+        answer:
+          'Er durchsucht die Runen der importierten Kontodaten nach exakten Builds aus sechs Runen, die zum gewählten Monster, Ziel, zu den erforderlichen Sets, Wertebereichen und Geschwindigkeitsbedingungen passen.',
+      },
+      {
+        question: 'Welche SWEX-Datei muss ich importieren?',
+        answer:
+          'Wähle die von Summoners War Exporter ausgegebene HubUserLogin-JSON-Datei. Der Optimierer liest Monster, Runen, Artefakte, Sperren, Ausrüstung und die für unterstützte Berechnungen benötigten Kontoboni.',
+      },
+      {
+        question: 'Werden meine Summoners-War-Kontodaten hochgeladen?',
+        answer:
+          'Nein. Die Datei wird lokal im Browser verarbeitet und nie an PlayerDojo gesendet. Eine bereinigte Kopie kann auf dem Gerät gespeichert werden, ohne Konto- oder Sitzungskennungen zu behalten.',
+      },
+      {
+        question: 'Prüft der Optimierer exakte Runenkombinationen?',
+        answer:
+          'Ja. Er bewertet vollständige Kombinationen für alle sechs Plätze aus dem erlaubten Runenpool, verwirft unerfüllbare Wege und sortiert gültige Builds nach dem gewählten Ziel.',
+      },
+      {
+        question: 'Kann ich ausgerüstete, freie und gesperrte Runen verwenden?',
+        answer:
+          'Ja. Du kannst den Pool auf freie Inventarrunen begrenzen, gesperrte Runen erlauben oder ausgerüstete Runen einbeziehen und dabei bestimmte Monster schützen, deren Builds unverändert bleiben sollen.',
+      },
+      {
+        question: 'Wie funktionieren erforderliche Runensets?',
+        answer:
+          'Wähle die Sets, die jedes Ergebnis vollständig bilden muss, zum Beispiel Violent und Will oder Swift. Die Option Beliebig erlaubt gebrochene Kombinationen, wenn kein bestimmtes Set zum Build-Ziel gehört.',
+      },
+      {
+        question: 'Kann ich minimale und maximale Werte festlegen?',
+        answer:
+          'Ja. Lege Grenzen für HP, ATK, DEF, GES, Kritische Rate, Kritischen Schaden, Widerstand und Genauigkeit fest. Du kannst beim Definieren auch nur die durch Runen hinzugefügten Werte anzeigen.',
+      },
+      {
+        question: 'Was bedeutet maximales Wertepotenzial?',
+        answer:
+          'Die Projektion erhöht Runen-Hauptwerte auf +15 und wendet den höchstmöglichen Grind auf vorhandene geeignete Nebenwerte an. Sie erfindet oder ersetzt keine Nebenwerte und nimmt keinen nicht gewählten Gem vorweg.',
+      },
+      {
+        question: 'Kann der Runen-Optimierer ein Tick-Ziel verlangen?',
+        answer:
+          'Ja. Wähle den Tick und konfiguriere den passenden GES-Turm sowie Leader-Skill. Der Optimierer verwirft Builds, die unter diesen Einstellungen die erforderliche Kampfgeschwindigkeit nicht erreichen.',
+      },
+      {
+        question: 'Garantiert das erste Ergebnis den besten Build im Spiel?',
+        answer:
+          'Nein. Die Rangfolge folgt dem gewählten Ziel und den Grenzen. Artefakte, Skillmultiplikatoren, Teamreihenfolge, gegnerische Werte, Kampfeffekte und der geplante Inhalt können einen anderen gültigen Build geeigneter machen.',
+      },
+    ],
+    relatedHeading: 'Build prüfen und verfeinern',
+    related: [
+      { route: 'monsters', label: 'Monsterwerte und Skills nachschlagen' },
+      { route: 'speedTuning', label: 'Komplette Zugreihenfolge prüfen' },
+      { route: 'speedTick', label: 'GES-Tick-Schwellen prüfen' },
     ],
   },
   speedTuning: {
