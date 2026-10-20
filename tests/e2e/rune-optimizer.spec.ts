@@ -68,6 +68,41 @@ test('exibe as configurações sem dropdown e limita CR, RES e ACC a 100', async
   await expect(page.locator('[data-speed-tower-source]')).toHaveText('Do JSON');
   await expect(page.locator('[data-tower]')).toHaveCount(0);
 
+  const controlPresentation = await page
+    .locator('[data-tick]')
+    .evaluate((select) => {
+      const selectStyle = getComputedStyle(select);
+      const accountStatStyle = getComputedStyle(
+        document.querySelector('[data-speed-tower]')!,
+      );
+      const accountStatValue = document
+        .querySelector('[data-speed-tower-value]')!
+        .getBoundingClientRect();
+      const accountStatSource = document
+        .querySelector('[data-speed-tower-source]')!
+        .getBoundingClientRect();
+      return {
+        selectAppearance: selectStyle.appearance,
+        selectPaddingRight: selectStyle.paddingRight,
+        selectBackgroundImage: selectStyle.backgroundImage,
+        selectBackgroundSize: selectStyle.backgroundSize,
+        accountStatDisplay: accountStatStyle.display,
+        accountStatBorderStyle: accountStatStyle.borderStyle,
+        accountStatBorderRadius: accountStatStyle.borderRadius,
+        accountStatOpacity: accountStatStyle.opacity,
+        accountStatTextGap: accountStatSource.left - accountStatValue.right,
+      };
+    });
+  expect(controlPresentation.selectAppearance).toBe('none');
+  expect(controlPresentation.selectPaddingRight).toBe('42px');
+  expect(controlPresentation.selectBackgroundImage).toContain('svg');
+  expect(controlPresentation.selectBackgroundSize).toBe('12px 8px');
+  expect(controlPresentation.accountStatDisplay).toBe('flex');
+  expect(controlPresentation.accountStatBorderStyle).toBe('solid');
+  expect(controlPresentation.accountStatBorderRadius).toBe('10px');
+  expect(controlPresentation.accountStatOpacity).toBe('0.72');
+  expect(controlPresentation.accountStatTextGap).toBeGreaterThanOrEqual(12);
+
   const sectionPresentation = await page
     .locator('.optimizer-config-section')
     .first()
