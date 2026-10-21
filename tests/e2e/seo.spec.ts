@@ -523,10 +523,12 @@ test('paginação e detalhes recebem metadados únicos', async ({
   );
 
   await page.goto('/summoners-war/monsters/clara');
-  await expect(page).toHaveTitle(/Clara \(Fire\) – Summoners War Monster/);
+  await expect(page).toHaveTitle(
+    'Clara (Fire Pierrette): Summoners War Stats & Skills · PlayerDojo',
+  );
 
   await page.goto('/summoners-war/siege-counter/morris-eshir-orion');
   await expect(page).toHaveTitle(
-    /Morris · Eshir · Orion Siege Counters – Summoners War/,
+    'Morris + Eshir + Orion: Summoners War Siege Defense · PlayerDojo',
   );
 });

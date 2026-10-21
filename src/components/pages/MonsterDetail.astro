@@ -20,7 +20,13 @@ import {
   elementLabelsFor,
 } from '../../lib/monster-catalog';
 import type { Monster } from '../../lib/types';
-import { getMessages, numberLocale, routePath, type Locale } from '../../i18n';
+import {
+  getMessages,
+  localizedHref,
+  numberLocale,
+  routePath,
+  type Locale,
+} from '../../i18n';
 import { localeCopy } from '../../i18n/copy';
 
 interface Props {
@@ -32,6 +38,10 @@ const messages = getMessages(locale);
 const localCopy = localeCopy(locale);
 const elementNames = elementLabelsFor(locale);
 const archetypeLabels = archetypeLabelsFor(locale);
+const elementName = elementNames[monster.element];
+const archetypeName =
+  archetypeLabels[monster.archetype ?? ''] ?? monster.archetype ?? '-';
+const familyName = monster.family ?? monster.name;
 const leaderIcon = leaderSkillIcon(monster.leaderSkill);
 const monsterSkills = (monster.skillIds ?? [])
   .flatMap((id) => {
@@ -94,6 +104,50 @@ const uses = defenses.filter(
     d.team.includes(monster.id) ||
     counters.some((c) => c.defenseId === d.id && c.team.includes(monster.id)),
 );
+const mechanicNames = [
+  ...new Set(
+    monsterSkills.flatMap((skill) =>
+      skill.effects.map((effect) => effect.name.trim()).filter(Boolean),
+    ),
+  ),
+].slice(0, 8);
+const toolLinks = [
+  {
+    href: localizedHref(
+      'speedTick',
+      locale,
+      {},
+      `?monster=${encodeURIComponent(monster.id)}`,
+    ),
+    icon: 'clock',
+    label: localCopy.monsterSpeedTickLink(monster.name),
+  },
+  {
+    href: localizedHref(
+      'speedComparison',
+      locale,
+      {},
+      `?ally=${encodeURIComponent(monster.id)}`,
+    ),
+    icon: 'speed',
+    label: localCopy.monsterSpeedComparisonLink(monster.name),
+  },
+  {
+    href: localizedHref(
+      'speedTuning',
+      locale,
+      {},
+      `?m1=${encodeURIComponent(monster.id)}`,
+    ),
+    icon: 'pure',
+    label: localCopy.monsterSpeedTuningLink(monster.name),
+  },
+  {
+    href: routePath('runeOptimizer', locale),
+    icon: 'rune',
+    label: localCopy.monsterRuneOptimizerLink(monster.name),
+  },
+];
 const updated = new Date(metadata.importedAt).toLocaleDateString(
   numberLocale(locale),
   {
@@ -108,7 +162,7 @@ const importedContentLanguage = locale === 'en' ? undefined : 'en';
 ---
 
 <Layout
-  title={localCopy.monsterTitle(monster.name, elementNames[monster.element])}
+  title={localCopy.monsterTitle(monster.name, elementName, familyName)}
   section="monsters"
   detail
   locale={locale}
@@ -116,7 +170,9 @@ const importedContentLanguage = locale === 'en' ? undefined : 'en';
   routeParams={{ id: monster.id }}
   description={localCopy.monsterDescription(
     monster.name,
-    elementNames[monster.element],
+    elementName,
+    familyName,
+    monster.speed,
   )}
 >
   <div class="detail-toolbar">
@@ -183,12 +239,22 @@ const importedContentLanguage = locale === 'en' ? undefined : 'en';
       <span class="eyebrow">{monster.family}</span>
       <h1>{monster.name}</h1>
       <div class="monster-profile-tags">
-        <span>{elementNames[monster.element]}</span>
+        <span>{elementName}</span>
         {monster.awakenLevel === 2 && <span>{formLabel(monster, locale)}</span>}
-        <span>
-          {archetypeLabels[monster.archetype ?? ''] ?? monster.archetype}
-        </span>
+        <span>{archetypeName}</span>
       </div>
+      <p class="monster-profile-summary">
+        {localCopy.monsterSummary(
+          monster.name,
+          monster.naturalStars,
+          elementName,
+          archetypeName,
+          familyName,
+          monster.speed,
+          monsterSkills.length,
+          uses.length,
+        )}
+      </p>
       <div class="monster-leader-panel">
         {leaderIcon && (
           <img
@@ -250,6 +316,51 @@ const importedContentLanguage = locale === 'en' ? undefined : 'en';
           </div>
         </div>
       )}
+    </div>
+  </section>
+  <section
+    class="monster-related monster-overview"
+    aria-labelledby="monster-overview-title"
+  >
+    <div class="section-heading">
+      <div>
+        <h2 id="monster-overview-title">
+          {localCopy.monsterOverviewTitle(monster.name)}
+        </h2>
+        <p>{localCopy.monsterOverviewIntro}</p>
+      </div>
+    </div>
+    <div
+      class:list={[
+        'monster-overview-grid',
+        { 'monster-overview-grid--tools-only': mechanicNames.length === 0 },
+      ]}
+    >
+      {mechanicNames.length > 0 && (
+        <div class="monster-overview-card">
+          <h3>{localCopy.monsterMechanicsTitle}</h3>
+          <ul class="monster-mechanics">
+            {mechanicNames.map((mechanic) => (
+              <li lang={importedContentLanguage}>{mechanic}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <nav
+        class="monster-overview-card"
+        aria-label={localCopy.monsterToolsTitle}
+      >
+        <h3>{localCopy.monsterToolsTitle}</h3>
+        <div class="monster-tool-links">
+          {toolLinks.map((tool) => (
+            <a href={tool.href}>
+              <Icon name={tool.icon} size={18} />
+              <span>{tool.label}</span>
+              <Icon name="arrow" size={16} />
+            </a>
+          ))}
+        </div>
+      </nav>
     </div>
   </section>
   {monsterSkills.length > 0 && (

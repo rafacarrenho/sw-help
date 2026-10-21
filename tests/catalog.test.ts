@@ -89,6 +89,7 @@ import {
   numberLocale,
   routePath,
 } from '../src/i18n/index.ts';
+import { localeCopy } from '../src/i18n/copy.ts';
 import {
   createPrivacyPreferences,
   parsePrivacyPreferences,
@@ -491,6 +492,28 @@ test('opções de elemento acompanham o idioma do catálogo', () => {
     ['light', 'Luz'],
     ['dark', 'Trevas'],
   ]);
+});
+
+test('títulos de detalhes usam o nome completo de Summoners War', () => {
+  for (const locale of locales) {
+    const copy = localeCopy(locale);
+    const monsterTitle = copy.monsterTitle('Tiana', 'Wind', 'Polar Queen');
+    const familyTitle = copy.monsterTitle(
+      'Forest Keeper',
+      'Fire',
+      'Forest Keeper',
+    );
+    const siegeTitle = copy.siegeTitle('Solveig + Iris + Hraesvelg');
+
+    assert.match(monsterTitle, /Summoners War/);
+    assert.equal(
+      siegeTitle,
+      'Solveig + Iris + Hraesvelg: Summoners War Siege Defense',
+    );
+    assert.doesNotMatch(monsterTitle, /Summoners Wars/);
+    assert.doesNotMatch(familyTitle, /Forest Keeper \(Fire Forest Keeper\)/);
+    assert.doesNotMatch(siegeTitle, /Summoners Wars/);
+  }
 });
 
 test('registro de jogos mantém o menu contextual centralizado', () => {

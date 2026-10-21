@@ -91,7 +91,7 @@ export const de: Messages = {
     available: 'Jetzt verfügbar',
   },
   landing: {
-    title: 'Summoners-War-Tools für Belagerung, GES und Monster',
+    title: 'Summoners War Tools für Belagerung, GES und Monster',
     description:
       'Kostenlose Summoners-War-Tools für Belagerungs-Counter, Monsterwerte, Spd Tuning, Geschwindigkeitsvergleich und Tick-Schwellen.',
     eyebrow: 'DEIN BESCHWÖRER-TOOLKIT',

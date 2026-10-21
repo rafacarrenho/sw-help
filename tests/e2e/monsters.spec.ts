@@ -254,6 +254,27 @@ test('ficha exibe atributos, habilidades originais e formas de obtenção', asyn
   page,
 }) => {
   await page.goto('/pt/summoners-war/monstros/carcano');
+  await expect(page.locator('.monster-profile-summary')).toContainText(
+    'Carcano é um monstro de Fogo',
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Visão geral de Carcano' }),
+  ).toBeVisible();
+  const mechanics = page.locator('.monster-mechanics li');
+  expect(await mechanics.count()).toBeGreaterThan(0);
+  await expect(mechanics.first()).toHaveAttribute('lang', 'en');
+  await expect(
+    page.getByRole('link', { name: 'Calcular o SPD Tick de Carcano' }),
+  ).toHaveAttribute('href', '/pt/summoners-war/spd-tick?monster=carcano');
+  await expect(
+    page.getByRole('link', { name: 'Comparar o SPD de Carcano' }),
+  ).toHaveAttribute('href', '/pt/summoners-war/comparador-spd?ally=carcano');
+  await expect(
+    page.getByRole('link', { name: 'Ajustar um time com Carcano' }),
+  ).toHaveAttribute('href', '/pt/summoners-war/spd-tuning?m1=carcano');
+  await expect(
+    page.getByRole('link', { name: 'Otimizar runas para Carcano' }),
+  ).toHaveAttribute('href', '/pt/summoners-war/otimizador-de-runas');
   await expect(page.getByText('9.225')).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Accurate Fire' }),

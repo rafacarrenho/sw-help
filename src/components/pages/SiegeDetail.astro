@@ -23,6 +23,7 @@ const messages = getMessages(locale);
 const localCopy = localeCopy(locale);
 const counters = getCountersFor(defense.id, locale);
 const name = teamName(defense.team);
+const seoName = defense.team.map((id) => monsterById.get(id)!.name).join(' + ');
 const leader = monsterById.get(defense.team[0])!;
 const counterStatsBeforeSpeed = [
   { label: 'HP', title: messages.common.health, key: 'hp' },
@@ -42,8 +43,8 @@ const counterStatsAfterSpeed = [
 ---
 
 <Layout
-  title={localCopy.siegeTitle(name)}
-  description={localCopy.siegeDescription(name)}
+  title={localCopy.siegeTitle(seoName)}
+  description={localCopy.siegeDescription(seoName)}
   detail
   locale={locale}
   section="siege"

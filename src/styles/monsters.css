@@ -252,6 +252,13 @@ a.monster:hover .monster-name {
   color: #d4d8df;
   font-size: 14px;
 }
+.monster-profile-summary {
+  max-width: 76ch;
+  margin: 0 0 24px;
+  color: #dfe2e7;
+  font-size: 16px;
+  line-height: 1.65;
+}
 .monster-evolution {
   margin: 20px 0 24px;
 }
@@ -365,6 +372,64 @@ a.monster:hover .monster-name {
 }
 .monster-related {
   margin-top: 36px;
+}
+.monster-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+}
+.monster-overview-grid--tools-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+.monster-overview-card {
+  min-width: 0;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.monster-overview-card h3 {
+  margin: 0 0 14px;
+  color: #f2f3f5;
+  font-size: 18px;
+}
+.monster-mechanics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.monster-mechanics li {
+  padding: 6px 10px;
+  color: #dfe2e7;
+  background: #202229;
+  border: 1px solid #3b3f48;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.monster-tool-links {
+  display: grid;
+  gap: 8px;
+}
+.monster-tool-links a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 12px;
+  color: #e6e8ec;
+  background: #17191e;
+  border: 1px solid #343841;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.monster-tool-links a:hover {
+  color: var(--gold);
+  border-color: var(--gold);
 }
 .monster-skill-list {
   display: grid;
@@ -693,6 +758,9 @@ a.monster:hover .monster-name {
   .monster-facts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+  }
+  .monster-overview-grid {
+    grid-template-columns: 1fr;
   }
   .monster-skill-list,
   .monster-source-list {
