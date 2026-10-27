@@ -1,5 +1,12 @@
 # SW Help
 
+## Skills do projeto
+
+Antes de tarefas de SEO, tráfego orgânico, indexação, sitemap ou análise de
+demanda, ler `.codex/skills/playerdojo-search-console/SKILL.md` e seguir a
+rotina documentada ali. A propriedade canônica é
+`sc-domain:playerdojo.com`.
+
 ## Identidade Git
 
 Este é um projeto pessoal de Rafael Carrenho.
